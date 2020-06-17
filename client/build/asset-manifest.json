@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/static/css/main.79ce8c3a.chunk.css",
+    "main.js": "/static/js/main.7ee973d2.chunk.js",
+    "main.js.map": "/static/js/main.7ee973d2.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.b240f91f.js",
+    "runtime-main.js.map": "/static/js/runtime-main.b240f91f.js.map",
+    "static/js/2.b7bb7cff.chunk.js": "/static/js/2.b7bb7cff.chunk.js",
+    "static/js/2.b7bb7cff.chunk.js.map": "/static/js/2.b7bb7cff.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.edaa81f07057a4296f9b39e41563ee38.js": "/precache-manifest.edaa81f07057a4296f9b39e41563ee38.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.79ce8c3a.chunk.css.map": "/static/css/main.79ce8c3a.chunk.css.map",
+    "static/media/argon-react-white.png": "/static/media/argon-react-white.275a2629.png",
+    "static/media/argon-react.png": "/static/media/argon-react.f38ddea9.png",
+    "static/media/my-css.css": "/static/media/empty.cfb49f55.svg",
+    "static/media/all.min.css": "/static/media/fa-solid-900.815694de.woff",
+    "static/media/nucleo.css": "/static/media/nucleo-icons.f82ec6ba.ttf",
+    "static/media/team-4-800x800.jpg": "/static/media/team-4-800x800.23007132.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.b240f91f.js",
+    "static/js/2.b7bb7cff.chunk.js",
+    "static/css/main.79ce8c3a.chunk.css",
+    "static/js/main.7ee973d2.chunk.js"
+  ]
+}
