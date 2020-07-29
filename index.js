@@ -19,19 +19,14 @@ const dataRouter = require('./routes/api/data');
 const medicationEvent = require('./routes/api/medicationEvent');
 const exportDataRouter = require('./routes/api/exportData');
 const PORT = process.env.PORT || 4000;
+const MONGO_URI = process.env.MONGODB_URI || configVars.MONGODB_URI;
 
 if(process.env.NODE_ENV !='production'){
     const cors = require('cors');
     app.use(cors());
 }
 
-var mongoURL = configVars.MONGODB_KEY;
-if(process.env.MONGODB_URI){
-    mongoURL = process.env.MONGODB_URI;
-
-}
-
-mongoose.connect(mongoURL,{ useNewUrlParser: true,useUnifiedTopology: true},function(err) {
+mongoose.connect(MONGO_URI,{ useNewUrlParser: true,useUnifiedTopology: true},function(err) {
     if (err) throw err;
 });
 
