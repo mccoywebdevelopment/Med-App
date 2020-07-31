@@ -1,0 +1,123 @@
+.my-side-bar{
+  width:60px;
+  background:#ffffff;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  box-shadow: 0 7px 12px rgba(0,0,0,0.25), 0 3px 3px rgba(0,0,0,0.22);
+}
+.main{
+  left:60px;
+  top:40px;
+  height: calc(90% - 40px);
+  width: calc(100% - 60px);
+  position: absolute;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+.my-top-nav{
+  top:0;
+  left:60px;
+  position: absolute;
+  width: calc(100% - 60px);
+  text-align: center;
+}
+html,body,#root{
+  height: 100%;
+  background-color: #F0F1F1;
+}
+.my-side-bar>div{
+  margin-bottom: 30px;
+  text-align: center;
+  color:#2196F3;
+  font-size: 20px;
+  cursor: pointer;
+}
+.my-brand{
+  margin-top: 30px;
+  font-size: 30px;
+  margin-bottom: 50px!important;
+}
+.my-nav-selected{
+  border-left: solid #2196F3;
+}
+.view-header{
+  font-weight: bolder;
+}
+.row{
+  width: 100%;
+  margin: auto;
+}
+.col-lg-12{
+  padding:0px;
+}
+tr{
+  background: #ffffff;
+}
+tbody>tr>td{
+  height: 50px!important;
+}
+table{
+  border-radius: 10px;
+  box-shadow: 0 0 0 0 rgba(90, 113, 208, 0.11), 0 4px 16px 0 rgba(167, 175, 183, 0.33);
+  table-layout : fixed;
+}
+tbody tr:last-child th {
+  border-bottom-left-radius: 10px;
+}
+thead tr th:first-child{
+  width: 50px;
+}
+tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 10px;
+}
+.grid-margin{
+  margin-bottom: 0px;
+}
+.average-price-card .card {
+  background: #ffffff;
+  color:#212D40
+}
+.card{
+  border-radius: 10px;
+}
+tbody tr:hover{
+  /* opacity: 0.5; */
+  cursor: pointer;
+  background: transparent;
+}
+thead tr th:first-child{
+  border-top-left-radius: 10px;
+}
+thead tr th:last-child{
+  border-top-right-radius: 10px;
+}
+.footer{
+  background-color: #F0F1F1;
+  text-align: center;
+}
+i:hover{
+  cursor: pointer;
+}
+
+i{
+  color: #2196F3;
+}
+.fa-times{
+  font-size: 20px;
+}
+a span{
+  color: #2196F3;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.my-med-table thead tr{
+  background-color: #f9f9f9;
+} 
+.my-med-table tbody tr{
+  background-color: #f9f9f9;
+} 
+
+
+
+/*#0056B3*/
