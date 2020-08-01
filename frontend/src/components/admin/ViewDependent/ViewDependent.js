@@ -8,9 +8,9 @@ export default function ViewDependent(){
             <div className="row">
                 <div className="col-lg-12">
                     <h4 style={{display:'inline'}}>Dependent Overview</h4>
-                    <i title="edit" class="fas fa-edit" style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
-                    <i title="delete" class="fas fa-trash" style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
-                    <i title="close" style={{float:'right'}} class="fas fa-times"></i>
+                    <i title="edit" className="fas fa-edit" style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
+                    <i title="delete" className="fas fa-trash" style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
+                    <i title="close" style={{float:'right'}} className="fas fa-times"></i>
                 </div>
             </div>
             <div className="row" style={{marginTop:'30px'}}>
@@ -19,7 +19,7 @@ export default function ViewDependent(){
             <div className="row" style={{marginTop:'30px'}}>
                 <div className="col-lg-12">
                     <h4 style={{display:'inline'}}>Medications <span style={{fontSize:'17px'}}>(4)</span></h4>
-                    <i title="add" class="fas fa-plus" style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
+                    <i title="add" className="fas fa-plus" style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
                 </div>
             </div>
             <div className="row" style={{marginTop:'30px'}}>
@@ -30,7 +30,7 @@ export default function ViewDependent(){
             <div className="row" style={{marginTop:'30px'}}>
                 <div className="col-lg-12">
                     <h4 style={{display:'inline'}}>Notes <span style={{fontSize:'17px'}}>(4)</span></h4>
-                    <i title="add" class="fas fa-plus" style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
+                    <i title="add" className="fas fa-plus" style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
                 </div>
             </div>
             <div className="row" style={{marginTop:'30px'}}>

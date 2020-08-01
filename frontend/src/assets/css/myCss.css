@@ -124,7 +124,52 @@ a span{
   -o-background-size: cover;
   background-size: cover;
 }
+.my-loader{
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+  vertical-align: middle;
+  z-index:-1;
+  /* background: blue; */
+  height: 100%;
+}
+.my-darker{
+  /* background: rgba(0, 0, 0, 0.5); */
+  filter: brightness(80%);
+  /* opacity: 50%; */
+  
+}
+/* style={{marginTop:'12%',width:'fit-content',padding:'60px',marginLeft:'auto',marginRight:'auto',textAlign:'center'}} */
+.my-loader-card{
+  position: relative;
+  transition: width 2s, height 4s;
+  margin-top: 12%;
+  width: fit-content;
+  padding: 60px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+.z-100{
+  z-index:100;
+}
+@-webkit-keyframes fadeIn {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
 
+@keyframes fadeIn {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
+
+.fadeIn {
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
+}
 
 
 /*#0056B3*/

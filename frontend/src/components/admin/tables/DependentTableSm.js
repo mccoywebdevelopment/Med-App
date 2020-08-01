@@ -2,13 +2,13 @@ import React from 'react';
  /* Add a function to redirect when user clicks table row!!!*/
 export default function DependentTableSm() {
   return (
-    <table class="table">
+    <table className="table">
       <thead>
         <tr>
           <th scope="col">#</th>
           <th scope="col">Name</th>
           <th scope="col">Age</th>
-          <th scope="col">DOB<i title="Add" class="fas fa-user-plus" style={{float:'right'}}></i></th>
+          <th scope="col">DOB<i title="Add" className="fas fa-user-plus" style={{float:'right'}}></i></th>
         </tr>
       </thead>
       <tbody>

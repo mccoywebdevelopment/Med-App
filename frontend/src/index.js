@@ -2,16 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import {createStore} from 'redux';
-import allReducer from './reducers';
 import {Provider} from 'react-redux';
+
+import Loading from "./components/shared/Loading/Loading";
 
 import store from './store';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-    <App />
+      <Loading>
+        <App />
+      </Loading>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

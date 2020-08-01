@@ -1,7 +1,8 @@
 import { FETCH_LOGIN } from '../actions/types';
 
 const initialState = {
-    login:null
+    jwt:null,
+    isAdmin:false
 }
 
 export default function(state = initialState, action){
@@ -9,7 +10,7 @@ export default function(state = initialState, action){
         case FETCH_LOGIN:
             return{
                 ...state,
-                login: action.payload
+                JWT: action.payload
             }
         default:
             return state;

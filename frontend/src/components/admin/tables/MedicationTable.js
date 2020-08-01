@@ -3,14 +3,14 @@ import React from "react";
 export default function MedicationTable() {
   return (
     <>
-      <table class="table my-med-table">
+      <table className="table my-med-table">
         <thead>
           <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
             <th scope="col">Dosage</th>
             <th scope="col">Rxs#</th>
-            <th scope="col">Actions<i title="expand" class="fas fa-expand" style={{ float: 'right' }}></i></th>
+            <th scope="col">Actions<i title="expand" className="fas fa-expand" style={{ float: 'right' }}></i></th>
           </tr>
         </thead>
         <tbody>
@@ -23,9 +23,9 @@ export default function MedicationTable() {
             <td>2 MG</td>
             <td>2342342334</td>
             <td>
-              <i title="view" class="fas fa-eye" style={{ paddingRight: '20px', color: '#2196F3' }}></i>
-              <i title="edit" class="fas fa-edit" style={{ paddingRight: '20px', color: '#2196F3' }}></i>
-              <i title="Delete" class="fas fa-trash" style={{ color: '#2196F3' }}></i>
+              <i title="view" className="fas fa-eye" style={{ paddingRight: '20px', color: '#2196F3' }}></i>
+              <i title="edit" className="fas fa-edit" style={{ paddingRight: '20px', color: '#2196F3' }}></i>
+              <i title="Delete" className="fas fa-trash" style={{ color: '#2196F3' }}></i>
             </td>
           </tr>
           <tr>
@@ -37,15 +37,15 @@ export default function MedicationTable() {
             <td>2 MG</td>
             <td>2342342334</td>
             <td>
-              <i title="view" class="fas fa-eye" style={{ paddingRight: '20px', color: '#2196F3' }}></i>
-              <i title="edit" class="fas fa-edit" style={{ paddingRight: '20px', color: '#2196F3' }}></i>
-              <i title="Delete" class="fas fa-trash" style={{ color: '#2196F3' }}></i>
+              <i title="view" className="fas fa-eye" style={{ paddingRight: '20px', color: '#2196F3' }}></i>
+              <i title="edit" className="fas fa-edit" style={{ paddingRight: '20px', color: '#2196F3' }}></i>
+              <i title="Delete" className="fas fa-trash" style={{ color: '#2196F3' }}></i>
             </td>
           </tr>
         </tbody>
       </table>
       <p title="view" style={{ marginTop: '15px', marginLeft: '5px', cursor: 'pointer', color: '#2196F3',marginBottom:'0' }}>
-        <i class="fas fa-plus" style={{paddingRight:'10px'}}></i> 
+        <i className="fas fa-plus" style={{paddingRight:'10px'}}></i> 
         2 More Medications
       </p>
     </>

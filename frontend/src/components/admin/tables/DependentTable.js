@@ -3,7 +3,7 @@ import React from 'react';
 export default function DependentTable() {
   /* Add a function to redirect when user clicks table row!!!*/
   return (
-    <table class="table">
+    <table className="table">
       <thead>
         <tr>
           <th scope="col">#</th>
@@ -26,9 +26,9 @@ export default function DependentTable() {
             <td>Ventrent</td>
             <td>Yes</td>
             <td>
-              <i title="view" class="fas fa-eye" style={{ paddingRight: '20px', color: '#2196F3' }}></i>
-              <i title="edit" class="fas fa-edit" style={{ paddingRight: '20px', color: '#2196F3' }}></i>
-              <i title="Delete" class="fas fa-trash" style={{ color: '#2196F3' }}></i>
+              <i title="view" className="fas fa-eye" style={{ paddingRight: '20px', color: '#2196F3' }}></i>
+              <i title="edit" className="fas fa-edit" style={{ paddingRight: '20px', color: '#2196F3' }}></i>
+              <i title="Delete" className="fas fa-trash" style={{ color: '#2196F3' }}></i>
             </td>
           </tr>
       </tbody>
