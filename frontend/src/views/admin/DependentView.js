@@ -13,8 +13,8 @@ export default function DependentView() {
     return (
         <>
             <div className="row">
-                <div className="col-lg-6">
-                    {/* <div className="row">
+                <div className="col-lg-12">
+                    <div className="row">
                         <div className="col-lg-12">
                             <h4 className="view-header">Dependents</h4>
                         </div>
@@ -24,17 +24,17 @@ export default function DependentView() {
                         <div className="col-lg-12" style={{ marginBottom: "30px" }}>
                             <button type="button" class="btn btn-primary btn-fw">Create</button>
                         </div>
-                    </div> */}
+                    </div>
                     <div className="row">
                         <div className="col-lg-12" style={{height:'1000px'}}>
-                            {/* <DependentTable /> */}
-                            <DependentTableSm/>
+                            <DependentTable />
+                            {/* <DependentTableSm/> */}
                         </div>
                     </div>
                 </div>
-                <div className="col-lg-6">
+                {/* <div className="col-lg-6">
                     <ViewDependent/>
-                </div>
+                </div> */}
             </div>
         </>
     );

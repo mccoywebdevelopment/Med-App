@@ -1,5 +1,6 @@
 import DependentView from "./views/admin/DependentView";
 import GroupView from "./views/admin/GroupView";
+import Login from "./views/shared/Login";
 
 const adminRoutes = [
     {
@@ -11,6 +12,18 @@ const adminRoutes = [
         component: DependentView,
     }
 ];
-const userRoutes = [];
 
-export {adminRoutes,userRoutes}
+const userRoutes = [
+    {
+        path:'/user/dependents/all'
+    }
+];
+
+const authRoutes = [
+    {
+        path: "/auth/login",
+        component: Login
+    }
+]
+
+export {adminRoutes,userRoutes,authRoutes}
