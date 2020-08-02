@@ -99,7 +99,7 @@ function logginUser(body,callback){
                                 }else{
                                     var redirect = "/user/dashboard";
                                     if(userFound.isAdmin){
-                                        redirect = "/admin/users";
+                                        redirect = "/admin/dependents";
                                     }
                                     var obj = {
                                         JWT:token,

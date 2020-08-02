@@ -10,7 +10,7 @@ import AuthLayout from "./layouts/shared/AuthLayout";
 function App() {
   const adminRouteList = () =>{
     return adminRoutes.map((route,key)=>{
-      let component = <AdminLayout>{route.component()}</AdminLayout>
+      let component = <AdminLayout>{route.component}</AdminLayout>
       return(
           <Route exact path={route.path} key={"adminRoute"+key}>
             {component}
@@ -20,7 +20,7 @@ function App() {
   }
   const authRouteList = () =>{
     return authRoutes.map((route,key)=>{
-      let component = <AuthLayout><route.component/></AuthLayout>
+      let component = <AuthLayout>{route.component}</AuthLayout>
       return(
           <Route exact path={route.path} key={"authRoute"+key}>
             {component}

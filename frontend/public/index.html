@@ -41,15 +41,4 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
   </body>
-  <script>
-    document.addEventListener("DOMContentLoaded", function(){
-        let items = document.getElementsByClassName('my-nav-item');
-        for(var i=0;i<items.length;++i){
-          if(window.location.href.includes(items[i])){
-            console.log(items[i].parentElement);
-            items[i].parentElement.classList.add('my-nav-selected');
-          }
-        }
-    });
-  </script>
 </html>

@@ -2,8 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchLogin } from "../../actions/auth";
+import { changeRedirectURL } from "../../actions/auth";
+import { Redirect } from 'react-router-dom';
+import { emailValidator,passwordValidator } from '../../config/validators';
 
 class Login extends React.Component{
+  static propTypes = {
+      auth: PropTypes.object.isRequired,
+  };
   constructor(props){
     super(props);
     this._updateFormData = this._updateFormData.bind(this);
@@ -11,17 +17,36 @@ class Login extends React.Component{
   }
   state = {
     email:"",
-    password:""
+    password:"",
+    emailErrMsg:"",
+    passwordErrMsg:""
   }
   _updateFormData = (e) =>{
     this.setState({ [e.target.name]: e.target.value });
   }
+  _validation = () =>{
+    let newState = this.state;
+    newState.emailErrMsg = emailValidator(this.state.email,true).errorMsg;
+    newState.passwordErrMsg = passwordValidator(this.state.password,true).errorMsg;
+    this.setState(newState);
+  }
   _submit = (e) =>{
     e.preventDefault();
-    this.props.fetchLogin();
+    
+    this._validation();
+    console.log(this.state);
+    if(this.state.passwordErrMsg.length<1 && this.state.emailErrMsg.length<1){
+      let body = {
+        username:this.state.email,
+        password:this.state.password
+      }
+      this.props.fetchLogin(body);
+    }
   }
-
-  render(){
+  componentWillUnmount =() =>{
+    this.props.changeRedirectURL(null);
+  }
+  _renderForm =() =>{
     return (
       <div className="container-scroller" style={{ height: 'auto', minHeight: 'initial' }}>
         <div className="container-fluid page-body-wrapper full-page-wrapper" style={{ height: 'auto', minHeight: 'initial' }}>
@@ -30,16 +55,22 @@ class Login extends React.Component{
               <div className="col-lg-4 mx-auto">
                 <div className="auto-form-wrapper">
                   <form action="#">
-                    <div className="form-group">
+                    <div className="form-group" style={{marginBottom:'30px'}}>
                       <label className="label">Email</label>
                       <div className="input-group">
                         <input type="text" className="form-control" name="email" placeholder="Email" value={this.state.email} onChange={this._updateFormData} />
+                        <div className="invalid-feedback" style={{display:'block'}}>
+                          {this.state.emailErrMsg}
+                        </div>
                       </div>
                     </div>
-                    <div className="form-group">
+                    <div className="form-group" style={{marginBottom:'30px'}}>
                       <label className="label">Password</label>
                       <div className="input-group">
                         <input type="password" className="form-control" placeholder="*********" name="password" value={this.state.password} onChange={this._updateFormData} />
+                        <div className="invalid-feedback" style={{display:'block'}}>
+                          {this.state.passwordErrMsg}
+                        </div>
                       </div>
                     </div>
                     <div className="form-group">
@@ -49,7 +80,7 @@ class Login extends React.Component{
                       <a href="#" className="text-small forgot-password text-black">Forgot Password</a>
                     </div>
                     <div className="text-block text-center my-3">
-                      <span className="text-small font-weight-semibold">Not a member?</span>
+                      <p style={{marginBottom:'0px'}} className="text-small font-weight-semibold">Not a member?</p>
                       <a href="register.html" className="text-black text-small">Create new account</a>
                     </div>
                   </form>
@@ -61,9 +92,30 @@ class Login extends React.Component{
       </div>
     );
   }
+  _renderRedirect =()=>{
+    const redirectURL = this.props.auth.redirectURL;
+    return(
+      <Redirect to={redirectURL}/>
+    )
+  }
+  render(){
+    return(
+    <>
+      {this.props.auth.redirectURL?
+        this._renderRedirect()
+        :
+        this._renderForm()
+      }
+    </>
+    );
+  }
 }
 Login.propTypes = {
-  fetchLogin: PropTypes.func.isRequired
+  fetchLogin: PropTypes.func.isRequired,
+  changeRedirectURL: PropTypes.func.isRequired
 };
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
 
-export default connect(null, { fetchLogin})(Login);
+export default connect(mapStateToProps, {fetchLogin,changeRedirectURL})(Login);

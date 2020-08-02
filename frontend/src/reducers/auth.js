@@ -1,8 +1,9 @@
-import { FETCH_LOGIN } from '../actions/types';
+import { FETCH_LOGIN , CHANGE_REDIRECT_URL} from '../actions/types';
 
 const initialState = {
     jwt:null,
-    isAdmin:false
+    isAdmin:false,
+    redirectURL:null
 }
 
 export default function(state = initialState, action){
@@ -10,9 +11,16 @@ export default function(state = initialState, action){
         case FETCH_LOGIN:
             return{
                 ...state,
-                JWT: action.payload
+                JWT: action.payload.JWT,
+                redirectURL:action.payload.redirectURL
+            }
+        case CHANGE_REDIRECT_URL:
+            return{
+                ...state,
+                redirectURL:action.payload
             }
         default:
             return state;
     }
 }
+

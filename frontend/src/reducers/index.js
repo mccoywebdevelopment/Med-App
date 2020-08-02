@@ -2,10 +2,12 @@ import { combineReducers } from 'redux';
 import auth from './auth';
 import message from './messages';
 import loading from './loading';
+import popUp from './popUp';
 
 
 export default combineReducers({
   auth,
   message,
-  loading
+  loading,
+  popUp
 });

@@ -1,3 +1,4 @@
+
 .my-side-bar{
   width:60px;
   background:#ffffff;
@@ -14,6 +15,7 @@
   position: absolute;
   padding-left: 50px;
   padding-right: 50px;
+  
 }
 .my-top-nav{
   top:0;
@@ -138,14 +140,14 @@ a span{
 }
 .my-darker{
   /* background: rgba(0, 0, 0, 0.5); */
-  filter: brightness(80%);
+  /* filter: ; */
+  filter: blur(2px) brightness(60%);
   /* opacity: 50%; */
   
 }
 /* style={{marginTop:'12%',width:'fit-content',padding:'60px',marginLeft:'auto',marginRight:'auto',textAlign:'center'}} */
 .my-loader-card{
   position: relative;
-  transition: width 2s, height 4s;
   margin-top: 12%;
   width: fit-content;
   padding: 60px;
@@ -156,19 +158,24 @@ a span{
 .z-100{
   z-index:100;
 }
-@-webkit-keyframes fadeIn {
-  0% {opacity: 0;}
-  100% {opacity: 1;}
+.auth.theme-one .auto-form-wrapper .form-group .input-group .form-control{
+  border-right: 1px solid #cfd5db;
+  border-radius: 6px;
 }
-
-@keyframes fadeIn {
-  0% {opacity: 0;}
-  100% {opacity: 1;}
+.my-popUp-container{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  padding-top: 15%;
 }
-
-.fadeIn {
-  -webkit-animation-name: fadeIn;
-  animation-name: fadeIn;
+.my-popUp{
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  min-height: 200px;
+}
+.opacity-50{
+  opacity: 50%;
 }
 
 

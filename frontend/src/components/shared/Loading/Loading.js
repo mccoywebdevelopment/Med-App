@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import BounceLoader from "react-spinners/ClipLoader";
+import BounceLoader from "react-spinners/MoonLoader";
 import { fadeInDown } from 'react-animations';
 import Radium, {StyleRoot} from 'radium';
 
@@ -16,7 +16,7 @@ class Loading extends React.Component{
     render(){
         const styles = {
             bounce: {
-              animation: 'x 2s',
+              animation: 'x 1s',
               animationName: Radium.keyframes(fadeInDown, 'fadeInDown')
             }
           }
