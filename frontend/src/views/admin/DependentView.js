@@ -2,9 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchLogin } from "../../actions/auth";
+import { togglePopUp } from '../../actions/popUp';
 
 import DependentTable from "../../components/admin/tables/DependentTable";
 import Overview from "../../components/admin/Overview/Overview";
+import DepOverview from "../../components/admin/forms/DepOverview";
 
 class DependentView extends React.Component {
     /*
@@ -31,7 +33,9 @@ class DependentView extends React.Component {
                                     <Overview />
                                 </div>
                                 <div className="col-lg-12" style={{ marginBottom: "30px" }}>
-                                    <button type="button" className="btn btn-primary btn-fw">Create</button>
+                                    <button type="button" 
+                                    onClick={()=>{this.props.togglePopUp("Create Dependent",<DepOverview/>)}} 
+                                    className="btn btn-primary btn-fw">Create</button>
                                 </div>
                             </div>
                             :
@@ -56,10 +60,10 @@ class DependentView extends React.Component {
 }
 DependentView.propTypes = {
     fetchLogin: PropTypes.func.isRequired,
-    changeRedirectURL: PropTypes.func.isRequired
+    togglePopUp: PropTypes.func.isRequired
 };
 const mapStateToProps = (state) => ({
     auth: state.auth,
 });
 
-export default connect(mapStateToProps, { fetchLogin })(DependentView);
+export default connect(mapStateToProps, { fetchLogin, togglePopUp })(DependentView);

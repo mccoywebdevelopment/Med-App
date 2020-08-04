@@ -8,4 +8,8 @@ export const GET_ERRORS = "GET_ERRORS";
 export const TOGGLE_LOADING = "TOGGLE_LOADING";
 //====================popUp===============
 export const TOGGLE_POPUP = "TOGGLE_POPUP";
+//====================Group===============
+export const FETCH_GROUPS = "FETCH_GROUPS";
+//====================Dependent===========
+export const UPDATE_DEPENDENT_FORM = "UPDATE_DEPENDENT_FORM";
 

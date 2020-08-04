@@ -1,7 +1,7 @@
 import { FETCH_LOGIN , CHANGE_REDIRECT_URL} from '../actions/types';
 
 const initialState = {
-    jwt:null,
+    JWT:null,
     isAdmin:false,
     redirectURL:null
 }

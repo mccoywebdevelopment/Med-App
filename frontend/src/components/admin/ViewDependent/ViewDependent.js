@@ -13,27 +13,27 @@ export default function ViewDependent(){
                     <i title="close" style={{float:'right'}} className="fas fa-times"></i>
                 </div>
             </div>
-            <div className="row" style={{marginTop:'30px'}}>
+            <div className="row" style={{marginTop:'10px'}}>
                 {DependentDetails()}
             </div>
-            <div className="row" style={{marginTop:'30px'}}>
+            <div className="row" style={{marginTop:'10px'}}>
                 <div className="col-lg-12">
                     <h4 style={{display:'inline'}}>Medications <span style={{fontSize:'17px'}}>(4)</span></h4>
                     <i title="add" className="fas fa-plus" style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
                 </div>
             </div>
-            <div className="row" style={{marginTop:'30px'}}>
+            <div className="row" style={{marginTop:'10px'}}>
                 <div className="col-lg-12">
                     <MedicationTable/>
                 </div>
             </div>
-            <div className="row" style={{marginTop:'30px'}}>
+            <div className="row" style={{marginTop:'10px'}}>
                 <div className="col-lg-12">
                     <h4 style={{display:'inline'}}>Notes <span style={{fontSize:'17px'}}>(4)</span></h4>
                     <i title="add" className="fas fa-plus" style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
                 </div>
             </div>
-            <div className="row" style={{marginTop:'30px'}}>
+            <div className="row" style={{marginTop:'10px'}}>
                 <div className="col-lg-12">
                     {Notes()}
                 </div>
@@ -46,19 +46,22 @@ function DependentDetails(){
     return(
         <>
             <div className="col-lg-5" style={{paddingLeft:'0px'}}>
-                <span>Name:</span><span style={{paddingLeft:'20px'}}>Christopher McCoy</span>
+                <span>Name:</span><span style={{paddingLeft:'10px'}}>Christopher McCoy</span>
             </div>
             <div className="col-lg-3">
-                <span>Age:</span><span style={{paddingLeft:'20px'}}>23</span>
+                <span>Age:</span><span style={{paddingLeft:'10px'}}>23</span>
             </div>
             <div className="col-lg-4">
-                <span>Belongs to Group:</span><span style={{paddingLeft:'20px',color:'#19d895'}}>Yes</span>
+                <span>Belongs to Group:</span><span style={{paddingLeft:'10px',color:'#19d895'}}>Yes</span>
             </div>
-            <div className="col-lg-5" style={{paddingLeft:'0px',marginTop:'30px'}}>
-                <span>Group ID:</span><a target="_blank" href="/groups/2342234234"><span style={{paddingLeft:'20px'}}>789988374892</span></a>
+            <div className="col-lg-5" style={{paddingLeft:'0px',marginTop:'10px'}}>
+                <span>Group Name:</span><span style={{paddingLeft:'10px'}}>Daniels House</span>
             </div>
-            <div className="col-lg-7" style={{marginTop:'30px'}}>
-                <span>Date Created:</span><span style={{paddingLeft:'20px'}}>7/22/2020</span>
+            <div className="col-lg-5" style={{marginTop:'10px'}}>
+                <span>Group ID:</span><a target="_blank" href="/groups/2342234234"><span style={{paddingLeft:'10px'}}>789988374892</span></a>
+            </div>
+            <div className="col-lg-12" style={{marginTop:'10px'}}>
+                <span>Date Created:</span><span style={{paddingLeft:'10px'}}>7/22/2020</span>
             </div>
         </>
     );

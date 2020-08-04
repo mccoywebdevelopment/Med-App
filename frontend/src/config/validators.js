@@ -9,6 +9,34 @@ function nameValidator(name,isRequired){
     }
     return feedback;
 }
+function prevDateValidator(date,isRequired){
+    var feedback = {
+        isValid:true,
+        errorMsg:""
+    }
+    if(date.length<1 && isRequired){
+        feedback.errorMsg = "This field is required";
+        feedback.isValid = false;
+    }else if(date && date<Date.now()){
+        feedback.errorMsg = "This is a future date.";
+        feedback.isValid = false;
+    }
+    return feedback;
+}
+function firstAndLastNameValidator(name,isRequired){
+    var feedback = {
+        isValid:true,
+        errorMsg:""
+    }
+    if(name.length<1 && isRequired){
+        feedback.errorMsg = "This field is required";
+        feedback.isValid = false;
+    }else if(name.length>0 && !name.includes(' ')){
+        feedback.errorMsg = "Please enter first & last Name";
+        feedback.isValid = false;
+    }
+    return feedback;
+}
 function phoneNumberValidator(phoneNumber,isRequired){
     var feedback = {
         isValid:true,
@@ -73,4 +101,5 @@ function passwordValidator(password,isRequired){
     }
     return feedback;
 }
-module.exports = {nameValidator,phoneNumberValidator,numberValidator,emailValidator,passwordValidator};
+module.exports = {nameValidator,phoneNumberValidator,numberValidator,
+    emailValidator,passwordValidator,firstAndLastNameValidator,prevDateValidator};

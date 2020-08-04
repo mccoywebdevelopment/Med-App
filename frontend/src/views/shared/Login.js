@@ -34,7 +34,6 @@ class Login extends React.Component{
     e.preventDefault();
     
     this._validation();
-    console.log(this.state);
     if(this.state.passwordErrMsg.length<1 && this.state.emailErrMsg.length<1){
       let body = {
         username:this.state.email,
