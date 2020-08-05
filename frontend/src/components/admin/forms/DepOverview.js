@@ -5,9 +5,10 @@ import { fetchGroups } from '../../../actions/group';
 import { firstAndLastNameValidator, prevDateValidator} from '../../../config/validators';
 import SearchBox from './SearchBox'
 
-class CreateDependent extends React.Component {
+class DepOverview extends React.Component {
     static propTypes = {
         groups: PropTypes.object.isRequired,
+        dependents: PropTypes.object.isRequired
     };
     state = {
         nameError: "",
@@ -23,6 +24,9 @@ class CreateDependent extends React.Component {
             this._setPropsData();
         } else {
             this._setEmptyData();
+        }
+        if(this.props.dependents.newDep.isSubmit){
+            this._validation();
         }
     }
     _updateFormData = (e) =>{
@@ -71,7 +75,7 @@ class CreateDependent extends React.Component {
         let newState = this.state;
         newState.nameError = firstAndLastNameValidator(newState.name,true).errorMsg;
         newState.dateOfBirthError = prevDateValidator(newState.dateOfBirth,true).errorMsg;
-        //group error
+        
         this.setState(newState);
       }
       _submit = (e) =>{
@@ -146,18 +150,22 @@ class CreateDependent extends React.Component {
                         <div className="col-sm-4" style={{ paddingLeft: '0px' }}>
                             <div className="form-radio">
                                 <label className="form-check-label">
-                                    <input readOnly={true} type="radio" className="form-check-input" name="membershipRadios" id="membershipRadios1"
-                                        value="Yes" onClick={() => { this._toggleBelongsToGroupOption() }} 
-                                        checked={this.state.belongsToGroup} aria-describedby="passwordHelpBlock"/> Yes <i className="input-helper"></i>
+                                    <input readOnly={true} type="radio" className="form-check-input" 
+                                        name="membershipRadios" id="membershipRadios1" value="Yes" 
+                                        onClick={() => { this._toggleBelongsToGroupOption() }} 
+                                        checked={this.state.belongsToGroup} aria-describedby="passwordHelpBlock"/>
+                                        Yes 
+                                        <i className="input-helper"></i>
                                 </label>
                             </div>
                         </div>
                         <div className="col-sm-5">
                             <div className="form-radio">
                                 <label className="form-check-label">
-                                    <input readOnly={true} type="radio" className="form-check-input" name="membershipRadios" id="membershipRadios2"
-                                        value="no" onClick={() => { this._toggleBelongsToGroupOption() }} 
-                                        checked={!this.state.belongsToGroup || (this.state.didFetchGroups && this.props.groups.length<1) } /> No <i className="input-helper"></i>
+                                    <input readOnly={true} type="radio" className="form-check-input" name="membershipRadios"
+                                     id="membershipRadios2" value="no" onClick={() => { this._toggleBelongsToGroupOption() }} 
+                                        checked={!this.state.belongsToGroup || (this.state.didFetchGroups && this.props.groups.length<1) } />
+                                        No <i className="input-helper"></i>
                                 </label>
                             </div>
                         </div>
@@ -173,12 +181,13 @@ class CreateDependent extends React.Component {
         );
     }
 }
-CreateDependent.propTypes = {
+DepOverview.propTypes = {
     fetchGroups: PropTypes.func.isRequired
   };
   const mapStateToProps = (state) => ({
     groups: state.groups,
+    dependents: state.dependents
   });
 
-export default connect(mapStateToProps,{fetchGroups})(CreateDependent);
+export default connect(mapStateToProps,{fetchGroups})(DepOverview);
 

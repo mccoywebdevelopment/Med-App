@@ -4,6 +4,7 @@ import message from './messages';
 import loading from './loading';
 import popUp from './popUp';
 import groups from './groups';
+import dependents from './dependents';
 
 
 export default combineReducers({
@@ -11,5 +12,6 @@ export default combineReducers({
   message,
   loading,
   popUp,
-  groups
+  groups,
+  dependents
 });

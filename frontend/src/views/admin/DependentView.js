@@ -6,7 +6,7 @@ import { togglePopUp } from '../../actions/popUp';
 
 import DependentTable from "../../components/admin/tables/DependentTable";
 import Overview from "../../components/admin/Overview/Overview";
-import DepOverview from "../../components/admin/forms/DepOverview";
+import CreateDependent from "../../components/admin/forms/CreateDependent";
 
 class DependentView extends React.Component {
     /*
@@ -34,7 +34,7 @@ class DependentView extends React.Component {
                                 </div>
                                 <div className="col-lg-12" style={{ marginBottom: "30px" }}>
                                     <button type="button" 
-                                    onClick={()=>{this.props.togglePopUp("Create Dependent",<DepOverview/>)}} 
+                                    onClick={()=>{this.props.togglePopUp("Create Dependent",<CreateDependent/>)}} 
                                     className="btn btn-primary btn-fw">Create</button>
                                 </div>
                             </div>

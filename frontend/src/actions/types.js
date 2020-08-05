@@ -11,5 +11,6 @@ export const TOGGLE_POPUP = "TOGGLE_POPUP";
 //====================Group===============
 export const FETCH_GROUPS = "FETCH_GROUPS";
 //====================Dependent===========
-export const UPDATE_DEPENDENT_FORM = "UPDATE_DEPENDENT_FORM";
+export const UPDATE_FORM_OVERVIEW = "UPDATE_FORM_OVERVIEW";
+export const SUBMIT_NEW_DEPENDENT = "SUBMIT_NEW_DEPENDENT";
 

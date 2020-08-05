@@ -1,9 +1,16 @@
-import { TOGGLE_LOADING } from './types';
+import { UPDATE_FORM_OVERVIEW, SUBMIT_NEW_DEPENDENT } from './types';
 
 // CREATE MESSAGE
-export const toggleLoading = () => {
-  return {
-    type: TOGGLE_LOADING,
-    payload: null,
-  };
+export const updateFormOverview = (name,dob,groupID) => (dispatch) =>{
+  dispatch({
+    type: UPDATE_FORM_OVERVIEW,
+    payload: {name,dob,groupID}
+  })
+};
+
+export const submitNewDependent = () => (dispatch) =>{
+  dispatch({
+    type: SUBMIT_NEW_DEPENDENT,
+    payload:null
+  })
 };
