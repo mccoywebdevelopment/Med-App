@@ -1,11 +1,16 @@
 import { FETCH_GROUPS } from '../actions/types';
 
-const initialState = {}
+const initialState = {
+    all:null
+}
 
 export default function(state = initialState, action){
     switch(action.type){
         case FETCH_GROUPS:
-            return(state = action.payload)
+            return{
+                ...state,
+                all:action.payload
+            }
         default:
             return state;
     }

@@ -3,36 +3,18 @@ import { UPDATE_FORM_OVERVIEW, SUBMIT_NEW_DEPENDENT } from '../actions/types';
 const initialState = {
     newDep:{
         overview:{
-            name:null,
-            dob:null,
-            groupID:null,
-
-            nameErrorMsg:null,
-            dobErrorMsg:null,
-            groupIDErrorMsg:null,
+            isValid:false,
+            data:null,
         },
-        medications:[{
-            name:null,
-            rxsNumber:null,
-            datePrescribed:null,
-            doctorNumber:null,
-            doctorName:null,
-            reason:null,
-            instructions:null,
-            endDate:null,
-            dosageQuantity:null,
-            whenToTake:null,
-
-            nameErrorMsg:null,
-            datePrescribedErrorMsg:null,
-            doctorNumberErrorMsg:null,
-            doctorNameErrorMsg:null,
-            reasonErrorMsg:null,
-            instructionsErrorMsg:null,
-            endDateErrorMsg:null,
-            dosageQuantityErrorMsg:null,
-            whenToTakeErrorMsg:null,
+        rxsMedications:[{
+            isValid:false,
+            data:null
         }],
+        notes:[{
+            isValid:false,
+            data:null
+        }],
+
         isSubmit:false
     }
 }
@@ -40,14 +22,14 @@ const initialState = {
 export default function(state = initialState, action){
     switch(action.type){
         case UPDATE_FORM_OVERVIEW:
+            alert("update")
             return{
                 ...state,
                 newDep:{
-                    ...state,
+                    ...state.newDep,
                     overview:{
-                        name:action.payload.name,
-                        dob:action.payload.dob,
-                        groupID:action.payload.groupID
+                        isValid:action.payload.isValid,
+                        data:action.payload.data
                     }
                 }
             }
@@ -55,7 +37,7 @@ export default function(state = initialState, action){
             return{
                 ...state,
                newDep:{
-                   ...state,
+                   ...state.newDep,
                    isSubmit:true
                }
             }

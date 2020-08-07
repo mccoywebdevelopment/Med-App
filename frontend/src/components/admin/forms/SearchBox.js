@@ -11,7 +11,6 @@ export default class SearchBox extends React.Component {
                 placeholder={this.props.placeholder}
                 data={this.props.data}
                 onSelect={record => this.props._setGroupInput(null,record.value,record.key)}
-                onChange={record => this.props._setGroupInput(record,null)}
                 fuseConfigs={{
                     threshold: 0.05,
                 }}
