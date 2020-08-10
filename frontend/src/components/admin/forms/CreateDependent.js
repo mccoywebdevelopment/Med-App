@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchGroups } from '../../../actions/group'
 import { submitNewDependent } from '../../../actions/dependent';
-import { firstAndLastNameValidator, prevDateValidator } from '../../../config/validators';
+import { firstAndLastNameValidator, prevDateValidator, nameValidator, numberValidator, phoneNumberValidator } from '../../../config/validators';
 import BelongsToGroup from './BelongsToGroup';
 
 import DepOverview from './DepOverview';
@@ -50,22 +50,6 @@ class CreateDependent extends React.Component {
         },
         notes:[]
     }
-    /*
-        List:[{
-            isEdit:false,
-            errors:{
-                name,
-                reason,
-                datePrescribed,
-                instructions,
-                endDate,
-                dosageQuantity
-                doctorName,
-                doctorPhone,
-                rxsNumber,
-            }
-        }]
-    */
     _updateGroupValue = (form,name,value)=>{
         let newState = this.state;
         newState[form].values['group'][name] = value;
@@ -88,7 +72,6 @@ class CreateDependent extends React.Component {
         }
         newState.rxsMedList.list.splice(index,1);
         this.setState(newState);
-        console.log(this.state);
     }
     _toggleRxsMedAdd = () =>{
         let newState = this.state;
@@ -116,6 +99,7 @@ class CreateDependent extends React.Component {
                     instructions:"",
                     endDate:"",
                     dosageQuantity:"",
+                    dosageUnits:"",
                     doctorName:"",
                     doctorPhone:"",
                     rxsNumber:"",
@@ -145,7 +129,6 @@ class CreateDependent extends React.Component {
         let newState = this.state;
         newState[form].errors[inputName] = value;
         this.setState(newState);
-        console.log(this.state);
     }
     _overviewValidation = () =>{
         let newState = this.state;
@@ -157,12 +140,39 @@ class CreateDependent extends React.Component {
         this.setState(newState);
     }
     _rxsMedValidation = () =>{
-        // let newState = this.state;
-        // for(var i)
         if(this.state.rxsMedList.isAdd){
-            // let newState = this.state;
-            // newState.rxsMedList.list[]
-            // this.setState(newState);
+            let newState = this.state;
+            let index = newState.rxsMedList.list.length-1;
+
+            //Required fields:
+            let name = newState.rxsMedList.list[index].values.name;
+            let reason = newState.rxsMedList.list[index].values.reason;
+            let datePrescribed = newState.rxsMedList.list[index].values.datePrescribed;
+            let dosageQuantity = newState.rxsMedList.list[index].values.dosageQuantity;
+            let dosageUnits = newState.rxsMedList.list[index].values.dosageUnits;
+            let doctorName = newState.rxsMedList.list[index].values.doctorName;
+            let doctorPhone = newState.rxsMedList.list[index].values.doctorPhone;
+            let rxsNumber = newState.rxsMedList.list[index].values.rxsNumber;
+
+            newState.rxsMedList.list[index].errors.name = nameValidator(name,true).errorMsg;
+            newState.rxsMedList.list[index].errors.reason = nameValidator(reason,true).errorMsg;
+            newState.rxsMedList.list[index].errors.datePrescribed = prevDateValidator(datePrescribed,true).errorMsg;
+            newState.rxsMedList.list[index].errors.dosageQuantity = numberValidator(dosageQuantity,true).errorMsg;
+            newState.rxsMedList.list[index].errors.dosageUnits = nameValidator(dosageUnits,true).errorMsg;
+            newState.rxsMedList.list[index].errors.doctorName = firstAndLastNameValidator(doctorName,true).errorMsg;
+            newState.rxsMedList.list[index].errors.doctorPhone = phoneNumberValidator(doctorPhone,true).errorMsg;
+            newState.rxsMedList.list[index].errors.rxsNumber = numberValidator(rxsNumber,true).errorMsg;
+
+            //Optional fields:
+            let instuctions = newState.rxsMedList.list[index].values.instructions;
+            let endDate = newState.rxsMedList.list[index].values.endDate;
+            let whenToTake = newState.rxsMedList.list[index].values.whenToTake;
+
+            newState.rxsMedList.list[index].errors.instructions = nameValidator(instuctions,false).errorMsg;
+            newState.rxsMedList.list[index].errors.endDate = nameValidator(endDate,false).errorMsg;
+            newState.rxsMedList.list[index].errors.whenToTake = nameValidator(whenToTake,false).errorMsg;
+
+            this.setState(newState);
         }
     }
     _groupValidation = () =>{
@@ -178,6 +188,16 @@ class CreateDependent extends React.Component {
         }
         return error;
     }
+    _isRxsMedErrors = () =>{
+        if(this.state.rxsMedList.isAdd){
+            for(var errProp in this.state.rxsMedList.list[this.state.rxsMedList.list.length-1].errors){
+                if(this.state.rxsMedList.list[this.state.rxsMedList.list.length-1].errors[errProp].length>0){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     _isOverviewErrors = () =>{
         for(var errProp in this.state.overview.errors){
             if(this.state.overview.errors[errProp].length>0){
@@ -188,8 +208,8 @@ class CreateDependent extends React.Component {
     }
     _validation = () =>{
         this._overviewValidation();
-
-        if(this._isOverviewErrors()){
+        this._rxsMedValidation();
+        if(this._isOverviewErrors() || this._isRxsMedErrors()){
             alert("Please fix the errors below:");
         }
     }

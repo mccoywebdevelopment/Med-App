@@ -28,7 +28,7 @@ export default class RxsMedForm extends React.Component {
                     <div className="form-group">
                         <label className="label">Reason</label>
                         <div className="input-group">
-                            <input type="number" className="form-control" name="name" placeholder="Reason"
+                            <input type="text" className="form-control" name="name" placeholder="Reason"
                                 value={this.props.data.values.reason} onChange={(e) => { this.props.update(0, "reason", e.target.value) }} />
                             <div className="invalid-feedback" style={{ display: 'block' }}>
                                 {this.props.data.errors.reason}&nbsp;
@@ -88,10 +88,10 @@ export default class RxsMedForm extends React.Component {
                     <div className="form-group">
                         <label className="label">Doctor's Number</label>
                         <div className="input-group">
-                            <input type="text" className="form-control" name="name" placeholder="000-000-0000"
-                                value={this.props.data.values.doctorNumber} onChange={(e) => { this.props.update(0, "doctorNumber", e.target.value) }} />
+                            <input type="tel" className="form-control" name="name" placeholder="000-000-0000" minLength="10" maxLength="10"
+                                value={this.props.data.values.doctorPhone} onChange={(e) => { this.props.update(0, "doctorPhone", e.target.value) }} />
                             <div className="invalid-feedback" style={{ display: 'block' }}>
-                                {this.props.data.errors.doctorNumber}&nbsp;
+                                {this.props.data.errors.doctorPhone}&nbsp;
                             </div>
                         </div>
                     </div>
@@ -126,11 +126,11 @@ export default class RxsMedForm extends React.Component {
                         <div className="input-group">
                             {/* <input type="date" className="form-control" name="name" placeholder="mm/dd/yyyy"
                                 value={this.props.data.values.endDate} onChange={(e) => { this.props.update(0, "endDate", e.target.value) }} /> */}
-                            <select class="form-control" id="exampleFormControlSelect2">
-                                <option>-----Select Any-----</option>
-                                <option>Morning</option>
-                                <option>Afternoon</option>
-                                <option>Evening</option>
+                            <select class="form-control" id="exampleFormControlSelect2"  onChange={(e) => { this.props.update(0, "whenToTake", e.target.value) }}>
+                                <option selected value="">---------Select Any---------</option>
+                                <option value="morning">Morning</option>
+                                <option value="afternoon">Afternoon</option>
+                                <option value="evening">Evening</option>
                             </select>
                             <div className="invalid-feedback" style={{ display: 'block' }}>
                                 {this.props.data.errors.endDate}&nbsp;
@@ -143,9 +143,9 @@ export default class RxsMedForm extends React.Component {
                         <label className="label">Instructions (optional)</label>
                         <div className="input-group">
                             <textarea type="text" className="form-control" name="name" placeholder="Take two..."
-                                value={this.props.data.values.endDate} onChange={(e) => { this.props.update(0, "endDate", e.target.value) }} />
+                                value={this.props.data.values.instructions} onChange={(e) => { this.props.update(0, "instructions", e.target.value) }} />
                             <div className="invalid-feedback" style={{ display: 'block' }}>
-                                {this.props.data.errors.endDate}&nbsp;
+                                {this.props.data.errors.instructions}&nbsp;
                             </div>
                         </div>
                     </div>

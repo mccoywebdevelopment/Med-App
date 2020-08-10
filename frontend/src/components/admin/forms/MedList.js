@@ -8,7 +8,6 @@ export default class MedList extends React.Component{
         super(props);
     }
     render(){
-        console.log(this.props);
         return(
             <>
                 {this.props.data.isAdd?
