@@ -5,7 +5,6 @@ import SearchBox from './SearchBox'
 export default class BelongsToGroup extends React.Component {
     constructor(props){
         super(props);
-        console.log(props);
     }
     _setGroupInput = (value,select,id) =>{
         id = id || "";

@@ -185,7 +185,7 @@ a span{
 }
 .react-search-box-dropdown>ul{
   position: fixed;
-
+  z-index:100;
 }
 .react-search-box-dropdown{
   margin-top: 0px;
@@ -208,4 +208,5 @@ a span{
 .my-hidden{
   visibility: hidden;
 }
+
 /*#0056B3*/

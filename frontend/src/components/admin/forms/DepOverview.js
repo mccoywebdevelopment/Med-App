@@ -10,7 +10,7 @@ export default class DepOverview extends React.Component {
         return (
             <>
                 <div className="col-lg-4">
-                    <div className="form-group" style={{ marginBottom: '30px' }}>
+                    <div className="form-group">
                         <label className="label">Name</label>
                         <div className="input-group">
                             <input type="text" className="form-control" name="name" placeholder="First & Last Name"

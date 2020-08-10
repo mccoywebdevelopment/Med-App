@@ -34,7 +34,7 @@ class DependentView extends React.Component {
                                 </div>
                                 <div className="col-lg-12" style={{ marginBottom: "30px" }}>
                                     <button type="button" 
-                                    onClick={()=>{this.props.togglePopUp("Create Dependent",<CreateDependent/>)}} 
+                                    onClick={()=>{this.props.togglePopUp("Create Dependent",<CreateDependent/>,"90%")}} 
                                     className="btn btn-primary btn-fw">Create</button>
                                 </div>
                             </div>

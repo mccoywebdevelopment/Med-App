@@ -17,7 +17,7 @@ function prevDateValidator(date,isRequired){
     if(date.length<1 && isRequired){
         feedback.errorMsg = "This field is required";
         feedback.isValid = false;
-    }else if(date && date<Date.now()){
+    }else if(new Date(date)>Date.now()){
         feedback.errorMsg = "This is a future date.";
         feedback.isValid = false;
     }
@@ -28,13 +28,23 @@ function firstAndLastNameValidator(name,isRequired){
         isValid:true,
         errorMsg:""
     }
-    if(name.length<1 && isRequired){
+    var nameList = name.split(' ');
+    for(var i=0;i<nameList.length;++i){
+        if(nameList[i]==''){
+            nameList.splice(i,1);
+        }
+    }
+    if(name.length<1 && isRequired ){
         feedback.errorMsg = "This field is required";
         feedback.isValid = false;
-    }else if(name.length>0 && !name.includes(' ')){
-        feedback.errorMsg = "Please enter first & last Name";
+    }else if(isRequired && !name.includes(' ')){
+        feedback.errorMsg = "Please provide first & last name";
+        feedback.isValid = false;
+    }else if(nameList.length!=2){
+        feedback.errorMsg = "Please enter first & last name";
         feedback.isValid = false;
     }
+
     return feedback;
 }
 function phoneNumberValidator(phoneNumber,isRequired){

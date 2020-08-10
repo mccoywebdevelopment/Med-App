@@ -16,17 +16,17 @@ class PopUp extends React.Component{
         const styles = {
             bounce: {
               animation: 'x 1s',
-              animationName: Radium.keyframes(fadeInDown, 'fadeInDown')
+              animationName: Radium.keyframes(fadeInDown, 'fadeInDown'),
             }
           }
         return(
             <StyleRoot>
                 {this.props.popUp.component?
                 <div className="z-100 my-popUp-container text-centered" style={styles.bounce}>
-                    <div className="card my-popUp" style={{paddingLeft:"15px",paddingRight:"15px"}}>
-                        <div className="row" style={{marginTop:'10px'}}>
+                    <div className="card my-popUp" style={{padding:'20px',width:this.props.popUp.width||'80%'}}>
+                        <div className="row">
                             <div className="col-lg-12">
-                                <h4 style={{display:'inline'}}>{this.props.popUp.title}&nbsp;</h4>
+                                <h2 style={{display:'inline'}}>{this.props.popUp.title}&nbsp;</h2>
                                 <i title="close" onClick={()=>{this.props.togglePopUp()}} style={{float:'right'}} className="fas fa-times"></i>
                             </div>
                         </div>

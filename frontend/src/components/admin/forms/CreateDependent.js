@@ -7,6 +7,7 @@ import { firstAndLastNameValidator, prevDateValidator } from '../../../config/va
 import BelongsToGroup from './BelongsToGroup';
 
 import DepOverview from './DepOverview';
+import MedList from './MedList';
 
 class CreateDependent extends React.Component {
     static propTypes = {
@@ -19,6 +20,8 @@ class CreateDependent extends React.Component {
         this._updateError = this._updateError.bind(this);
         this._updateGroupValue = this._updateGroupValue.bind(this);
         this._toggleGroupBtn = this._toggleGroupBtn.bind(this);
+        this._updateRxsMedValues = this._updateRxsMedValues.bind(this);
+        this._toggleRxsMedDelete = this._toggleRxsMedDelete.bind(this);
     }
     state = {
         overview:{
@@ -36,8 +39,33 @@ class CreateDependent extends React.Component {
                 }
             },
             body:null
-        }
+        },
+        rxsMedList:{
+            isAdd:false,
+            list:[]
+        },
+        otcMedList:{
+            isAdd:false,
+            list:[]
+        },
+        notes:[]
     }
+    /*
+        List:[{
+            isEdit:false,
+            errors:{
+                name,
+                reason,
+                datePrescribed,
+                instructions,
+                endDate,
+                dosageQuantity
+                doctorName,
+                doctorPhone,
+                rxsNumber,
+            }
+        }]
+    */
     _updateGroupValue = (form,name,value)=>{
         let newState = this.state;
         newState[form].values['group'][name] = value;
@@ -48,12 +76,65 @@ class CreateDependent extends React.Component {
         newState[form].values[inputName] = value;
         this.setState(newState);
     }
+    _updateRxsMedValues = (index,name,value) =>{
+        let newState = this.state;
+        newState.rxsMedList.list[index].values[name] = value;
+        this.setState(newState);
+    }
+    _toggleRxsMedDelete = (index) =>{
+        let newState = this.state;
+        if(index==newState.rxsMedList.list.length-1){
+            newState.rxsMedList.isAdd = false;
+        }
+        newState.rxsMedList.list.splice(index,1);
+        this.setState(newState);
+        console.log(this.state);
+    }
+    _toggleRxsMedAdd = () =>{
+        let newState = this.state;
+        newState.rxsMedList.isAdd = !newState.rxsMedList.isAdd;
+        if(newState.rxsMedList.isAdd){
+            newState.rxsMedList.list.push({
+                isEdit:false,
+                errors:{
+                    name:"",
+                    reason:"",
+                    datePrescribed:"",
+                    instructions:"",
+                    endDate:"",
+                    dosageQuantity:"",
+                    dosageUnits:"",
+                    doctorName:"",
+                    doctorPhone:"",
+                    rxsNumber:"",
+                    whenToTake:""
+                },
+                values:{
+                    name:"",
+                    reason:"",
+                    datePrescribed:"",
+                    instructions:"",
+                    endDate:"",
+                    dosageQuantity:"",
+                    doctorName:"",
+                    doctorPhone:"",
+                    rxsNumber:"",
+                    whenToTake:""
+                },
+                body:null
+            });
+        }
+        this.setState(newState);
+    }
     _toggleGroupBtn = () =>{
         let newState = this.state;
         if(!newState.overview.values.group.isYes && this.props.groups.all.length<1){
             alert("No groups");
         }else{
             newState.overview.values.group.isYes = !newState.overview.values.group.isYes;
+            if(!newState.overview.values.group.isYes){
+                newState.overview.errors.group = "";
+            }
         }
         if(!newState.overview.values.group.isYes){
             newState.overview.values.group.value = "";
@@ -74,6 +155,15 @@ class CreateDependent extends React.Component {
             newState.overview.errors.group = this._groupValidation();
         }
         this.setState(newState);
+    }
+    _rxsMedValidation = () =>{
+        // let newState = this.state;
+        // for(var i)
+        if(this.state.rxsMedList.isAdd){
+            // let newState = this.state;
+            // newState.rxsMedList.list[]
+            // this.setState(newState);
+        }
     }
     _groupValidation = () =>{
         var error = "";
@@ -105,16 +195,15 @@ class CreateDependent extends React.Component {
     }
     _submit = () =>{
         this._validation();
+        console.log(this.state);
     }
     componentDidMount = () =>{
         this.props.fetchGroups();
-        console.log(this.state);
-        console.log(this.props.groups);
     }
     render() {
         return (
             <>
-                <div className="row">
+                <div className="row" style={{marginTop:'10px'}}>
                     {this.props.groups.all?
                         <DepOverview data={this.state.overview} update={this._update} updateError={this._updateError}>
                             <BelongsToGroup toggle={this._toggleGroupBtn} update={this._updateGroupValue} form={"overview"} 
@@ -122,7 +211,42 @@ class CreateDependent extends React.Component {
                         </DepOverview>
                     :null}
                 </div>
-                <div className="row">
+                <div className="row" style={{marginTop:'10px'}}>
+                    <div className="col-lg-12">
+                        <h4 style={{display:'inline'}}>RXS Medications <span style={{fontSize:'17px'}}>({this.state.rxsMedList.list.length})</span></h4>
+                        <i title="add" className="fas fa-plus" onClick={this._toggleRxsMedAdd} style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
+                        {this.state.rxsMedList.isAdd?
+                            <i title="delete empty med" className="fas fa-trash" 
+                                onClick={()=>{this._toggleRxsMedDelete(this.state.rxsMedList.list.length-1)}} 
+                                style={{ color: '#2196F3',float:'right' }}></i>
+                        :null}
+                    </div>
+                </div>
+                <div className="row" style={{marginTop:'10px'}}>
+                    <MedList data={this.state.rxsMedList} update={this._updateRxsMedValues}/>
+                </div>
+                <div className="row" style={{marginTop:'10px'}}>
+                    <div className="col-lg-12">
+                        <h4 style={{display:'inline'}}>OTC Medications <span style={{fontSize:'17px'}}>({this.state.otcMedList.list.length})</span></h4>
+                        <i title="add" onClick={this._to} className="fas fa-plus" style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
+                    </div>
+                </div>
+                <div className="row" style={{marginTop:'10px'}}>
+                    <div className="col-lg-12">
+                        {/* <MedList data={this.state.medList}/> */}
+                    </div>
+                </div>
+                <div className="row" style={{marginTop:'10px'}}>
+                    <div className="col-lg-12">
+                        <h4 style={{display:'inline'}}>Notes <span style={{fontSize:'17px'}}>({this.state.notes.length})</span></h4>
+                        <i title="add" className="fas fa-plus" style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
+                    </div>
+                </div>
+                <div className="row" style={{marginTop:'10px'}}>
+                    <div className="col-lg-12">
+                    </div>
+                </div>
+                <div className="row" style={{marginTop:'30px',marginBottom:'30px'}}>
                     <button className="btn btn-primary" onClick={()=>{this._submit()}}>Submit</button>
                 </div>
             </>
