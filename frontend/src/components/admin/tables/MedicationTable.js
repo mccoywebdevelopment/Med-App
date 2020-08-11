@@ -67,6 +67,11 @@ export default class MedicationTable extends React.Component{
           <i className="fas fa-plus" style={{paddingRight:'10px'}}></i> 
           {this.state.left.length} More Medications
         </p>
+        :this.props.showMore && this.state.list.length>2?
+          <p onClick={this.props.toggleShowMore} title="view" style={{ marginTop: '15px', marginLeft: '5px', cursor: 'pointer', color: '#2196F3',marginBottom:'0' }}>
+            <i className="fas fa-minus" style={{paddingRight:'10px'}}></i> 
+            Show Less
+          </p>
         :null
         }
       </>

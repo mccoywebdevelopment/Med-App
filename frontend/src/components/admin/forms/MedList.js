@@ -21,12 +21,12 @@ export default class MedList extends React.Component{
             <>
                 {this.props.data.isAdd?
                     <>
-                        <RxsMedForm data={this.props.data.list[this.props.data.index]} update={this.props.update} index={this.props.data.index}/>
+                        <RxsMedForm data={this.props.data.list[this.props.data.indexSelected]} update={this.props.update} index={this.props.data.indexSelected}/>
                     </>
                     :   null
                 }
                 {this.props.data.list.length>1?
-                    <MedicationTable list={this.props.data.list} index={this.props.data.index}
+                    <MedicationTable list={this.props.data.list} index={this.props.data.indexSelected}
                          showMore={this.state.showMore} toggleShowMore={this._toggleShowMore}/>
                     :null
                 }

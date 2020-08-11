@@ -22,6 +22,7 @@ class CreateDependent extends React.Component {
         this._toggleGroupBtn = this._toggleGroupBtn.bind(this);
         this._updateRxsMedValues = this._updateRxsMedValues.bind(this);
         this._toggleRxsMedDelete = this._toggleRxsMedDelete.bind(this);
+        this._toggleRxsMedAdd = this._toggleRxsMedAdd.bind(this);
         this._test()
     }
     state = {
@@ -43,7 +44,7 @@ class CreateDependent extends React.Component {
         },
         rxsMedList:{
             isAdd:false,
-            index:null,
+            indexSelected:0,
             list:[]
         },
         otcMedList:{
@@ -69,23 +70,20 @@ class CreateDependent extends React.Component {
     }
     _toggleRxsMedDelete = (index) =>{
         let newState = this.state;
+        //Last element don't show form
         if(index==newState.rxsMedList.list.length-1){
             newState.rxsMedList.isAdd = false;
         }
         newState.rxsMedList.list.splice(index,1);
-        if(newState.rxsMedList.list.length>0){
-            newState.rxsMedList.index = newState.rxsMedList.list.length - 1;
-        }else{
-            newState.rxsMedList.index = null;
-        }
         this.setState(newState);
     }
     _toggleRxsMedAdd = () =>{
         let newState = this.state;
-        newState.rxsMedList.isAdd = true;
         this._rxsMedValidation();
-        if(!this._isRxsMedErrors()){
+        if(!this._isRxsMedErrors() || !this.state.rxsMedList.isAdd){
+            let index = newState.rxsMedList.list.length;
             newState.rxsMedList.list.push({
+                index:index,
                 isEdit:false,
                 errors:{
                     name:"",
@@ -115,11 +113,13 @@ class CreateDependent extends React.Component {
                 },
                 body:null
             });
-            newState.rxsMedList.index = newState.rxsMedList.list.length-1;
         }else if(this._isRxsMedErrors()){
             alert("Please fix the errors below:");
         }
         
+        //index selected will always be the last one!!!!
+        newState.rxsMedList.indexSelected = newState.rxsMedList.list.length - 1;
+        newState.rxsMedList.isAdd = true;
         this.setState(newState);
         console.log(this.state);
     }
@@ -155,6 +155,7 @@ class CreateDependent extends React.Component {
     _test = () =>{
         let newState = this.state;
         newState.rxsMedList.list.push({
+            index:0,
             isEdit:false,
             errors:{
                 name:"",
@@ -185,6 +186,7 @@ class CreateDependent extends React.Component {
             body:null
         });
         newState.rxsMedList.list.push({
+            index:1,
             isEdit:false,
             errors:{
                 name:"",
@@ -215,6 +217,7 @@ class CreateDependent extends React.Component {
             body:null
         });
         newState.rxsMedList.list.push({
+            index:2,
             isEdit:false,
             errors:{
                 name:"",
@@ -245,6 +248,7 @@ class CreateDependent extends React.Component {
             body:null
         });
         newState.rxsMedList.list.push({
+            index:3,
             isEdit:false,
             errors:{
                 name:"",
@@ -274,6 +278,7 @@ class CreateDependent extends React.Component {
             },
             body:null
         });
+        newState.rxsMedList.indexSelected = newState.rxsMedList.list.length - 1;
         this.setState(newState);
     }
     _rxsMedValidation = () =>{
