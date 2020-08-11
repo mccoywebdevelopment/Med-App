@@ -22,6 +22,7 @@ class CreateDependent extends React.Component {
         this._toggleGroupBtn = this._toggleGroupBtn.bind(this);
         this._updateRxsMedValues = this._updateRxsMedValues.bind(this);
         this._toggleRxsMedDelete = this._toggleRxsMedDelete.bind(this);
+        this._test()
     }
     state = {
         overview:{
@@ -42,6 +43,7 @@ class CreateDependent extends React.Component {
         },
         rxsMedList:{
             isAdd:false,
+            index:null,
             list:[]
         },
         otcMedList:{
@@ -71,12 +73,18 @@ class CreateDependent extends React.Component {
             newState.rxsMedList.isAdd = false;
         }
         newState.rxsMedList.list.splice(index,1);
+        if(newState.rxsMedList.list.length>0){
+            newState.rxsMedList.index = newState.rxsMedList.list.length - 1;
+        }else{
+            newState.rxsMedList.index = null;
+        }
         this.setState(newState);
     }
     _toggleRxsMedAdd = () =>{
         let newState = this.state;
-        newState.rxsMedList.isAdd = !newState.rxsMedList.isAdd;
-        if(newState.rxsMedList.isAdd){
+        newState.rxsMedList.isAdd = true;
+        this._rxsMedValidation();
+        if(!this._isRxsMedErrors()){
             newState.rxsMedList.list.push({
                 isEdit:false,
                 errors:{
@@ -107,8 +115,13 @@ class CreateDependent extends React.Component {
                 },
                 body:null
             });
+            newState.rxsMedList.index = newState.rxsMedList.list.length-1;
+        }else if(this._isRxsMedErrors()){
+            alert("Please fix the errors below:");
         }
+        
         this.setState(newState);
+        console.log(this.state);
     }
     _toggleGroupBtn = () =>{
         let newState = this.state;
@@ -139,8 +152,132 @@ class CreateDependent extends React.Component {
         }
         this.setState(newState);
     }
+    _test = () =>{
+        let newState = this.state;
+        newState.rxsMedList.list.push({
+            isEdit:false,
+            errors:{
+                name:"",
+                reason:"",
+                datePrescribed:"",
+                instructions:"",
+                endDate:"",
+                dosageQuantity:"",
+                dosageUnits:"",
+                doctorName:"",
+                doctorPhone:"",
+                rxsNumber:"",
+                whenToTake:""
+            },
+            values:{
+                name:"a",
+                reason:"",
+                datePrescribed:"",
+                instructions:"",
+                endDate:"",
+                dosageQuantity:"",
+                dosageUnits:"",
+                doctorName:"",
+                doctorPhone:"",
+                rxsNumber:"",
+                whenToTake:""
+            },
+            body:null
+        });
+        newState.rxsMedList.list.push({
+            isEdit:false,
+            errors:{
+                name:"",
+                reason:"",
+                datePrescribed:"",
+                instructions:"",
+                endDate:"",
+                dosageQuantity:"",
+                dosageUnits:"",
+                doctorName:"",
+                doctorPhone:"",
+                rxsNumber:"",
+                whenToTake:""
+            },
+            values:{
+                name:"a",
+                reason:"",
+                datePrescribed:"",
+                instructions:"",
+                endDate:"",
+                dosageQuantity:"",
+                dosageUnits:"",
+                doctorName:"",
+                doctorPhone:"",
+                rxsNumber:"",
+                whenToTake:""
+            },
+            body:null
+        });
+        newState.rxsMedList.list.push({
+            isEdit:false,
+            errors:{
+                name:"",
+                reason:"",
+                datePrescribed:"",
+                instructions:"",
+                endDate:"",
+                dosageQuantity:"",
+                dosageUnits:"",
+                doctorName:"",
+                doctorPhone:"",
+                rxsNumber:"",
+                whenToTake:""
+            },
+            values:{
+                name:"a",
+                reason:"",
+                datePrescribed:"",
+                instructions:"",
+                endDate:"",
+                dosageQuantity:"",
+                dosageUnits:"",
+                doctorName:"",
+                doctorPhone:"",
+                rxsNumber:"",
+                whenToTake:""
+            },
+            body:null
+        });
+        newState.rxsMedList.list.push({
+            isEdit:false,
+            errors:{
+                name:"",
+                reason:"",
+                datePrescribed:"",
+                instructions:"",
+                endDate:"",
+                dosageQuantity:"",
+                dosageUnits:"",
+                doctorName:"",
+                doctorPhone:"",
+                rxsNumber:"",
+                whenToTake:""
+            },
+            values:{
+                name:"a",
+                reason:"",
+                datePrescribed:"",
+                instructions:"",
+                endDate:"",
+                dosageQuantity:"",
+                dosageUnits:"",
+                doctorName:"",
+                doctorPhone:"",
+                rxsNumber:"",
+                whenToTake:""
+            },
+            body:null
+        });
+        this.setState(newState);
+    }
     _rxsMedValidation = () =>{
-        if(this.state.rxsMedList.isAdd){
+        if(this.state.rxsMedList.isAdd && this.state.rxsMedList.list.length>0){
             let newState = this.state;
             let index = newState.rxsMedList.list.length-1;
 
@@ -189,7 +326,7 @@ class CreateDependent extends React.Component {
         return error;
     }
     _isRxsMedErrors = () =>{
-        if(this.state.rxsMedList.isAdd){
+        if(this.state.rxsMedList.isAdd && this.state.rxsMedList.list.length>0){
             for(var errProp in this.state.rxsMedList.list[this.state.rxsMedList.list.length-1].errors){
                 if(this.state.rxsMedList.list[this.state.rxsMedList.list.length-1].errors[errProp].length>0){
                     return true;
@@ -215,7 +352,6 @@ class CreateDependent extends React.Component {
     }
     _submit = () =>{
         this._validation();
-        console.log(this.state);
     }
     componentDidMount = () =>{
         this.props.fetchGroups();
@@ -245,18 +381,13 @@ class CreateDependent extends React.Component {
                 <div className="row" style={{marginTop:'10px'}}>
                     <MedList data={this.state.rxsMedList} update={this._updateRxsMedValues}/>
                 </div>
-                <div className="row" style={{marginTop:'10px'}}>
+                <div className="row" style={{marginTop:'30px'}}>
                     <div className="col-lg-12">
                         <h4 style={{display:'inline'}}>OTC Medications <span style={{fontSize:'17px'}}>({this.state.otcMedList.list.length})</span></h4>
                         <i title="add" onClick={this._to} className="fas fa-plus" style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
                     </div>
                 </div>
-                <div className="row" style={{marginTop:'10px'}}>
-                    <div className="col-lg-12">
-                        {/* <MedList data={this.state.medList}/> */}
-                    </div>
-                </div>
-                <div className="row" style={{marginTop:'10px'}}>
+                <div className="row" style={{marginTop:'30px'}}>
                     <div className="col-lg-12">
                         <h4 style={{display:'inline'}}>Notes <span style={{fontSize:'17px'}}>({this.state.notes.length})</span></h4>
                         <i title="add" className="fas fa-plus" style={{ paddingLeft: '20px', color: '#2196F3' }}></i>

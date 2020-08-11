@@ -22,7 +22,7 @@ export default class DepOverview extends React.Component {
                     </div>
                 </div>
                 <div className="col-lg-4">
-                    <div className="form-group" style={{ marginBottom: '30px' }}>
+                    <div className="form-group">
                         <label className="label">Date of Bith</label>
                         <div className="input-group">
                             <input type="date" className="form-control" name="dateOfBirth" placeholder="mm/dd/yyyy"

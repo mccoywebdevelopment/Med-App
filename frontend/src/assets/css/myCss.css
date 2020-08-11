@@ -114,11 +114,15 @@ a span{
   cursor: pointer;
 }
 .my-med-table thead tr{
+  background-color: transparent;
+} 
+.my-med-table tbody tr:nth-child(odd){
   background-color: #f9f9f9;
 } 
-.my-med-table tbody tr{
-  background-color: #f9f9f9;
-} 
+.my-med-table{
+  border-radius: 0px;
+  box-shadow: none;
+}
 .auth.auth-bg-1 {
   background: url("../images/auth/login_pic.svg");
   -webkit-background-size: cover;

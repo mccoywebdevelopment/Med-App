@@ -1,53 +1,75 @@
 import React from "react";
 
-export default function MedicationTable() {
-  return (
-    <>
-      <table className="table my-med-table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Dosage</th>
-            <th scope="col">Rxs#</th>
-            <th scope="col">Actions<i title="expand" className="fas fa-expand" style={{ float: 'right' }}></i></th>
+export default class MedicationTable extends React.Component{
+  constructor(props){
+    super(props);
+  }
+  render(){
+    const list = () =>{
+      return this.state.list.map((element,index)=>{
+        return(
+          <>
+          {index!=this.props.index?
+            <tr>
+              <th scope="row" style={{paddingBottom:'0',paddingTop:'0'}}>
+                <p style={{marginBottom:'0px',paddingTop:'28px'}}>1</p>
+                <p title="view rest of med" style={{color:'#2196F3',paddingTop:"5px",marginBottom:'10px'}}>More</p>
+              </th>
+              <td>{element.values.name}</td>
+              <td>{element.values.dosageQuantity} {element.values.dosageUnits}</td>
+              <td>{element.values.rxsNumber}</td>
+              <td>
+                <i title="view" className="fas fa-eye" style={{ paddingRight: '20px', color: '#2196F3' }}></i>
+                <i title="edit" className="fas fa-edit" style={{ paddingRight: '20px', color: '#2196F3' }}></i>
+                <i title="Delete" className="fas fa-trash" style={{ color: '#2196F3' }}></i>
+              </td>
           </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row" style={{paddingBottom:'0',paddingTop:'0'}}>
-              <p style={{marginBottom:'0px',paddingTop:'28px'}}>1</p>
-              <p title="view rest of med" style={{color:'#2196F3',paddingTop:"5px",marginBottom:'10px'}}>More</p>
-            </th>
-            <td>Benzoid</td>
-            <td>2 MG</td>
-            <td>2342342334</td>
-            <td>
-              <i title="view" className="fas fa-eye" style={{ paddingRight: '20px', color: '#2196F3' }}></i>
-              <i title="edit" className="fas fa-edit" style={{ paddingRight: '20px', color: '#2196F3' }}></i>
-              <i title="Delete" className="fas fa-trash" style={{ color: '#2196F3' }}></i>
-            </td>
-          </tr>
-          <tr>
-            <th scope="row" style={{paddingBottom:'0',paddingTop:'0'}}>
-              <p style={{marginBottom:'0px',paddingTop:'20px'}}>1</p>
-              <p title="view rest of med" style={{color:'#2196F3',paddingTop:"10px",marginBottom:'10px'}}>More</p>
-            </th>
-            <td>Benzoid</td>
-            <td>2 MG</td>
-            <td>2342342334</td>
-            <td>
-              <i title="view" className="fas fa-eye" style={{ paddingRight: '20px', color: '#2196F3' }}></i>
-              <i title="edit" className="fas fa-edit" style={{ paddingRight: '20px', color: '#2196F3' }}></i>
-              <i title="Delete" className="fas fa-trash" style={{ color: '#2196F3' }}></i>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <p title="view" style={{ marginTop: '15px', marginLeft: '5px', cursor: 'pointer', color: '#2196F3',marginBottom:'0' }}>
-        <i className="fas fa-plus" style={{paddingRight:'10px'}}></i> 
-        2 More Medications
-      </p>
-    </>
-  );
+          :null
+          }
+          </>
+        )
+      });
+    }
+    var left = [];
+    if(this.props.list.length>2){
+      for(var i=2;i<this.props.list.length;++i){
+        left.push(this.props.list[i]);
+      }
+    }
+    this.state = {
+      list:[this.props.list[0],this.props.list[1]],
+      left:left
+    }
+    if(this.props.showMore){
+      this.state = {
+        list:this.props.list,
+        left:[]
+      }
+    }
+    return (
+      <>
+        <table className="table my-med-table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Dosage</th>
+              <th scope="col">Rxs#</th>
+              <th scope="col">Actions<i title="expand" className="fas fa-expand" style={{ float: 'right' }}></i></th>
+            </tr>
+          </thead>
+          <tbody>
+            {list()}
+          </tbody>
+        </table>
+        {this.state.left.length>0?
+        <p onClick={this.props.toggleShowMore} title="view" style={{ marginTop: '15px', marginLeft: '5px', cursor: 'pointer', color: '#2196F3',marginBottom:'0' }}>
+          <i className="fas fa-plus" style={{paddingRight:'10px'}}></i> 
+          {this.state.left.length} More Medications
+        </p>
+        :null
+        }
+      </>
+    );
+  }
 }
