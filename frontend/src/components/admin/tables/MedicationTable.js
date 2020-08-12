@@ -5,14 +5,30 @@ export default class MedicationTable extends React.Component{
     super(props);
   }
   render(){
+    var left = [];
+    if(this.props.list.length>2 ){
+      for(var i=2;i<this.props.list.length;++i){
+        left.push(this.props.list[i]);
+      }
+    }
+    this.state = {
+      list:[this.props.list[0],this.props.list[1]],
+      left:left
+    }
+    if(this.props.showMore){
+      this.state = {
+        list:this.props.list,
+        left:[]
+      }
+    }
     const list = () =>{
       return this.state.list.map((element,index)=>{
         return(
           <>
           {index!=this.props.index?
-            <tr>
+            <tr index={"medTable^&*&^"+index}>
               <th scope="row" style={{paddingBottom:'0',paddingTop:'0'}}>
-                <p style={{marginBottom:'0px',paddingTop:'28px'}}>1</p>
+                <p style={{marginBottom:'0px',paddingTop:'28px'}}>{index + 1}</p>
                 <p title="view rest of med" style={{color:'#2196F3',paddingTop:"5px",marginBottom:'10px'}}>More</p>
               </th>
               <td>{element.values.name}</td>
@@ -29,22 +45,6 @@ export default class MedicationTable extends React.Component{
           </>
         )
       });
-    }
-    var left = [];
-    if(this.props.list.length>2){
-      for(var i=2;i<this.props.list.length;++i){
-        left.push(this.props.list[i]);
-      }
-    }
-    this.state = {
-      list:[this.props.list[0],this.props.list[1]],
-      left:left
-    }
-    if(this.props.showMore){
-      this.state = {
-        list:this.props.list,
-        left:[]
-      }
     }
     return (
       <>

@@ -264,7 +264,7 @@ class CreateDependent extends React.Component {
                 whenToTake:""
             },
             values:{
-                name:"a",
+                name:"kkkkk",
                 reason:"",
                 datePrescribed:"",
                 instructions:"",

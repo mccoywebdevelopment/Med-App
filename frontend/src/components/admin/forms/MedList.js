@@ -5,29 +5,52 @@ import MedicationTable from '../tables/MedicationTable';
 
 export default class MedList extends React.Component{
     state = {
-        showMore:false
+        showMore:false,
+        list:[],
+        rxsList:[]
     }
     constructor(props){
         super(props);
         this._toggleShowMore = this._toggleShowMore.bind(this);
+        this._updateMyState = this._updateMyState.bind(this);
+        this._updateMyState(this.props.data.list,this.props.data.isAdd);
     }
     _toggleShowMore = () =>{
         let newState = this.state;
         newState.showMore = !newState.showMore;
         this.setState(newState);
     }
+    _updateMyState = (list,isAdd) =>{
+        let newState = this.state;
+        newState.list = list;
+        newState.isAdd = isAdd;
+        newState.rxsList = [];
+        for(var i=0;i<list.length;++i){
+            if(!isAdd || i!=list.length-1){
+                newState.rxsList.push(list[i]);
+            }
+        }
+    
+        this.setState(newState);
+    }
+    //PASS LIST rxsMEDLIST and SELECTED!!!!!!
+    componentWillReceiveProps=(newProps) =>{
+        if(newProps.data.list!=this.state.list || newProps.data.isAdd!=this.state.isAdd){
+            this._updateMyState(newProps.data.list,newProps.data.isAdd);
+        }
+    }
     render(){
         return(
             <>
                 {this.props.data.isAdd?
                     <>
-                        <RxsMedForm data={this.props.data.list[this.props.data.indexSelected]} update={this.props.update} index={this.props.data.indexSelected}/>
+                        <RxsMedForm data={this.props.data.list[this.props.data.indexSelected]} update={this.props.update} 
+                            index={this.props.data.indexSelected}/>
                     </>
                     :   null
                 }
                 {this.props.data.list.length>1?
-                    <MedicationTable list={this.props.data.list} index={this.props.data.indexSelected}
-                         showMore={this.state.showMore} toggleShowMore={this._toggleShowMore}/>
+                    <MedicationTable list={this.state.rxsList} showMore={this.state.showMore} toggleShowMore={this._toggleShowMore}/>
                     :null
                 }
             </>
