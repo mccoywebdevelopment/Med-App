@@ -314,6 +314,11 @@ class CreateDependent extends React.Component {
             newState.rxsMedList.list[index].errors.endDate = nameValidator(endDate,false).errorMsg;
             newState.rxsMedList.list[index].errors.whenToTake = nameValidator(whenToTake,false).errorMsg;
 
+            newState.rxsMedList.list[index].body = {
+                name:name,
+                rxsNumber:rxsNumber
+            }
+
             this.setState(newState);
         }
     }

@@ -25,7 +25,7 @@ export default class MedList extends React.Component{
         newState.list = list;
         newState.isAdd = isAdd;
         newState.rxsList = [];
-        for(var i=0;i<list.length;++i){
+        for(var i=list.length-1;i>-1;--i){
             if(!isAdd || i!=list.length-1){
                 newState.rxsList.push(list[i]);
             }
@@ -34,12 +34,23 @@ export default class MedList extends React.Component{
         this.setState(newState);
     }
     //PASS LIST rxsMEDLIST and SELECTED!!!!!!
-    componentWillReceiveProps=(newProps) =>{
-        if(newProps.data.list!=this.state.list || newProps.data.isAdd!=this.state.isAdd){
-            this._updateMyState(newProps.data.list,newProps.data.isAdd);
-        }
-    }
+    // componentWillReceiveProps=(newProps) =>{
+    //     // alert("update")
+    //     console.log(newProps);
+    //     console.log(this.state);
+    //     if(newProps.data.list!=this.state.list || newProps.data.isAdd!=this.state.isAdd){
+    //         console.log("update")
+    //         this._updateMyState(newProps.data.list,newProps.data.isAdd);
+    //     }
+    // }
     render(){
+        let rxsList = [];
+        for(var i=this.props.data.list.length-1;i>-1;--i){
+            if(!this.props.data.isAdd || i!=this.props.data.list.length-1){
+                rxsList.push(this.props.data.list[i]);
+            }
+        }
+        console.log(this.props);
         return(
             <>
                 {this.props.data.isAdd?
@@ -50,7 +61,7 @@ export default class MedList extends React.Component{
                     :   null
                 }
                 {this.props.data.list.length>1?
-                    <MedicationTable list={this.state.rxsList} showMore={this.state.showMore} toggleShowMore={this._toggleShowMore}/>
+                    <MedicationTable list={rxsList} showMore={this.state.showMore} toggleShowMore={this._toggleShowMore}/>
                     :null
                 }
             </>

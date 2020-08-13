@@ -35,7 +35,6 @@ export default class MedicationTable extends React.Component{
               <td>{element.values.dosageQuantity} {element.values.dosageUnits}</td>
               <td>{element.values.rxsNumber}</td>
               <td>
-                <i title="view" className="fas fa-eye" style={{ paddingRight: '20px', color: '#2196F3' }}></i>
                 <i title="edit" className="fas fa-edit" style={{ paddingRight: '20px', color: '#2196F3' }}></i>
                 <i title="Delete" className="fas fa-trash" style={{ color: '#2196F3' }}></i>
               </td>
