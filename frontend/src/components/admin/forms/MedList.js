@@ -33,16 +33,6 @@ export default class MedList extends React.Component{
     
         this.setState(newState);
     }
-    //PASS LIST rxsMEDLIST and SELECTED!!!!!!
-    // componentWillReceiveProps=(newProps) =>{
-    //     // alert("update")
-    //     console.log(newProps);
-    //     console.log(this.state);
-    //     if(newProps.data.list!=this.state.list || newProps.data.isAdd!=this.state.isAdd){
-    //         console.log("update")
-    //         this._updateMyState(newProps.data.list,newProps.data.isAdd);
-    //     }
-    // }
     render(){
         let rxsList = [];
         for(var i=this.props.data.list.length-1;i>-1;--i){
@@ -60,8 +50,9 @@ export default class MedList extends React.Component{
                     </>
                     :   null
                 }
-                {this.props.data.list.length>1?
-                    <MedicationTable list={rxsList} showMore={this.state.showMore} toggleShowMore={this._toggleShowMore}/>
+                {rxsList.length>0?
+                    <MedicationTable list={rxsList} showMore={this.state.showMore}
+                         toggleShowMore={this._toggleShowMore} delete={this.props.delete} edit={this.props.edit}/>
                     :null
                 }
             </>

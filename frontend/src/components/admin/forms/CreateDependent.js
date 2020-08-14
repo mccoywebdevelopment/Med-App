@@ -23,6 +23,8 @@ class CreateDependent extends React.Component {
         this._updateRxsMedValues = this._updateRxsMedValues.bind(this);
         this._toggleRxsMedDelete = this._toggleRxsMedDelete.bind(this);
         this._toggleRxsMedAdd = this._toggleRxsMedAdd.bind(this);
+        this._toggleEditRxsMed = this._toggleEditRxsMed.bind(this);
+
         this._test()
     }
     state = {
@@ -45,7 +47,8 @@ class CreateDependent extends React.Component {
         rxsMedList:{
             isAdd:false,
             indexSelected:0,
-            list:[]
+            list:[],
+            body:null
         },
         otcMedList:{
             isAdd:false,
@@ -58,7 +61,27 @@ class CreateDependent extends React.Component {
         newState[form].values['group'][name] = value;
         this.setState(newState);
     }
-    _update(form,inputName,value){
+    _toggleEditRxsMed = (index) =>{
+        this._rxsMedValidation();
+        if((this.state.rxsMedList.isAdd && !this._isRxsMedErrors()) || (!this.state.rxsMedList.isAdd)){
+            alert(true);
+            let newState = this.state;
+            let newList = [];
+            let item = newState.rxsMedList.list[index];
+
+            for(var i=0;i<newState.rxsMedList.list.length;++i){
+                if(newState.rxsMedList.list[i] != item){
+                    newList.push(newState.rxsMedList.list[i]);
+                }
+            }
+            newList.push(item);
+            newState.rxsMedList.list = newList;
+            newState.rxsMedList.isAdd = true;
+            this.setState(newState);
+        }
+        console.log(this.state);
+    }
+    _update=(form,inputName,value)=>{
         let newState = this.state;
         newState[form].values[inputName] = value;
         this.setState(newState);
@@ -75,6 +98,12 @@ class CreateDependent extends React.Component {
             newState.rxsMedList.isAdd = false;
         }
         newState.rxsMedList.list.splice(index,1);
+        for(var i=0;i<newState.rxsMedList.list.length;++i){
+            if(newState.rxsMedList.list[i].index == newState.rxsMedList.indexSelected){
+                newState.rxsMedList.indexSelected = i;
+            }
+            newState.rxsMedList.list[i].index = i;
+        }
         this.setState(newState);
     }
     _toggleRxsMedAdd = () =>{
@@ -389,7 +418,8 @@ class CreateDependent extends React.Component {
                     </div>
                 </div>
                 <div className="row" style={{marginTop:'10px'}}>
-                    <MedList data={this.state.rxsMedList} update={this._updateRxsMedValues}/>
+                    <MedList data={this.state.rxsMedList} update={this._updateRxsMedValues} delete={this._toggleRxsMedDelete}
+                     edit={this._toggleEditRxsMed}/>
                 </div>
                 <div className="row" style={{marginTop:'30px'}}>
                     <div className="col-lg-12">
