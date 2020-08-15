@@ -116,12 +116,18 @@ a span{
 .my-med-table thead tr{
   background-color: transparent;
 } 
-.my-med-table tbody tr:nth-child(odd){
-  background-color: #f9f9f9;
+.my-med-table tbody tr:nth-child(2n){
+  /* background-color: #f9f9f9; */
 } 
 .my-med-table{
-  border-radius: 0px;
+  border-radius: 0px!important;
   box-shadow: none;
+}
+.my-med-table>tbody>tr:last-child th {
+  border-bottom-left-radius: 0px!important;
+}
+.my-med-table>tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 0px!important;
 }
 .auth.auth-bg-1 {
   background: url("../images/auth/login_pic.svg");
@@ -172,6 +178,15 @@ a span{
   position: absolute;
   padding-top: 5%;
 }
+.no-border > td{
+  border: none;
+}
+.no-border-top > td{
+  border-top: none;
+  border-bottom: 1px solid #dee2e6;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+}
 .my-popUp{
   width: 60%;
   margin-left: auto;
@@ -211,6 +226,11 @@ a span{
 }
 .my-hidden{
   visibility: hidden;
+}
+.inner-title{
+  font-Weight:500;
+  color:"#212529";
+  padding-right: 30px;
 }
 
 /*#0056B3*/

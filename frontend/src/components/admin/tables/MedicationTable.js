@@ -23,25 +23,58 @@ export default class MedicationTable extends React.Component{
     }
     const list = () =>{
       return this.state.list.map((element,index)=>{
+        let style = {
+          background:'inherit'
+        }
+        if(index % 2 == 0){
+          style.background = "#ededed";
+        }
         return(
           <>
-          {index!=this.props.index?
-            <tr index={"medTable^&*&^"+index}>
-              <th scope="row" style={{paddingBottom:'0',paddingTop:'0'}}>
-                <p style={{marginBottom:'0px',paddingTop:'28px'}}>{index + 1}</p>
-                <p title="view rest of med" style={{color:'#2196F3',paddingTop:"5px",marginBottom:'10px'}}>More</p>
-              </th>
-              <td>{element.values.name}</td>
-              <td>{element.values.dosageQuantity} {element.values.dosageUnits}</td>
-              <td>{element.values.rxsNumber}</td>
-              <td>{element.values.datePrescribed}</td>
-              <td>
-                <i onClick={()=>{this.props.edit(element.index)}} title="edit" className="fas fa-edit" style={{ paddingRight: '20px', color: '#2196F3' }}></i>
-                <i onClick={()=>{this.props.delete(element.index)}} title="Delete" className="fas fa-trash" style={{ color: '#2196F3' }}></i>
-              </td>
-          </tr>
-          :null
-          }
+              <tr index={"medTable^&*&^"+index} style={style}>
+                <th scope="row" style={{paddingBottom:'0',paddingTop:'0'}}>
+                  <p style={{marginBottom:'0px',paddingTop:'28px'}}>{index + 1}</p>
+                  <p onClick={()=>{this.props.expandItem(element.index)}} title="view rest of med" 
+                    style={{color:'#2196F3',paddingTop:"5px",marginBottom:'10px'}}>{!element.isExpand?"More":""}&nbsp;</p>
+                </th>
+                <td>{element.values.name}</td>
+                <td>{element.values.dosageQuantity} {element.values.dosageUnits}</td>
+                <td>{element.values.rxsNumber}</td>
+                <td>{element.values.datePrescribed}</td>
+                <td>
+                  <i onClick={()=>{this.props.edit(element.index)}} title="edit" className="fas fa-edit" style={{ paddingRight: '20px', color: '#2196F3' }}></i>
+                  <i onClick={()=>{this.props.delete(element.index)}} title="Delete" className="fas fa-trash" style={{ color: '#2196F3' }}></i>
+                </td>
+            </tr>
+            {element.isExpand?
+              <>
+              <tr index={"medTableInside^&*&^"+index} className="no-border" style={style}>
+                <td></td>
+                <td>
+                  <span className="inner-title">Doctor's Name:</span>{element.values.doctorName}
+                </td>
+                <td>
+                <span className="inner-title">Doctor's Number:</span>{element.values.doctorPhone}
+                </td>
+                <td>
+                <span className="inner-title">End Date:</span>{element.values.endDate}
+                </td>
+                <td colSpan="2">
+                <span className="inner-title">When to Take:</span>{element.values.whenToTake}
+                </td>
+              </tr>
+              <tr index={"medTableInhjkhkhside^&*&^"+index} className="no-border-top" style={style}>
+                <td>
+                  <p onClick={()=>{this.props.expandItem(element.index)}} title="less of med" style={{color:'#2196F3',marginBottom:'0px',fontWeight:'bold'}}>
+                  {element.isExpand?"Less":""}&nbsp;
+                  </p>
+                </td>
+                <td colSpan="2"><span className="inner-title">Reason:</span>{element.values.Reason}</td>
+                <td colSpan="3"><span className="inner-title">Intructions:</span>{element.values.intructions}</td>
+              </tr>
+              </>
+              :null
+            }
           </>
         )
       });

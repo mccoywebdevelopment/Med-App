@@ -24,6 +24,7 @@ class CreateDependent extends React.Component {
         this._toggleRxsMedDelete = this._toggleRxsMedDelete.bind(this);
         this._toggleRxsMedAdd = this._toggleRxsMedAdd.bind(this);
         this._toggleEditRxsMed = this._toggleEditRxsMed.bind(this);
+        this._toggleExpandRxsMed = this._toggleExpandRxsMed.bind(this);
 
         this._test()
     }
@@ -56,6 +57,11 @@ class CreateDependent extends React.Component {
         },
         notes:[]
     }
+    _toggleExpandRxsMed = (index) =>{
+        let newState = this.state;
+        newState.rxsMedList.list[index].isExpand = !newState.rxsMedList.list[index].isExpand;
+        this.setState(newState);
+    }
     _updateGroupValue = (form,name,value)=>{
         let newState = this.state;
         newState[form].values['group'][name] = value;
@@ -64,7 +70,6 @@ class CreateDependent extends React.Component {
     _toggleEditRxsMed = (index) =>{
         this._rxsMedValidation();
         if((this.state.rxsMedList.isAdd && !this._isRxsMedErrors()) || (!this.state.rxsMedList.isAdd)){
-            alert(true);
             let newState = this.state;
             let newList = [];
             let item = newState.rxsMedList.list[index];
@@ -77,6 +82,7 @@ class CreateDependent extends React.Component {
             newList.push(item);
             newState.rxsMedList.list = newList;
             newState.rxsMedList.isAdd = true;
+            newState.rxsMedList.indexSelected = newState.rxsMedList.list.length-1;
             this.setState(newState);
         }
         console.log(this.state);
@@ -113,7 +119,7 @@ class CreateDependent extends React.Component {
             let index = newState.rxsMedList.list.length;
             newState.rxsMedList.list.push({
                 index:index,
-                isEdit:false,
+                isExpand:false,
                 errors:{
                     name:"",
                     reason:"",
@@ -185,7 +191,6 @@ class CreateDependent extends React.Component {
         let newState = this.state;
         newState.rxsMedList.list.push({
             index:0,
-            isEdit:false,
             errors:{
                 name:"",
                 reason:"",
@@ -200,23 +205,22 @@ class CreateDependent extends React.Component {
                 whenToTake:""
             },
             values:{
-                name:"a",
-                reason:"",
-                datePrescribed:"",
-                instructions:"",
+                name:"Benzoid",
+                reason:"For headaches and animesia.",
+                datePrescribed:"2020-07-24",
+                instructions:"Take daily.",
                 endDate:"",
-                dosageQuantity:"",
-                dosageUnits:"",
-                doctorName:"",
-                doctorPhone:"",
-                rxsNumber:"",
-                whenToTake:""
+                dosageQuantity:"2",
+                dosageUnits:"pills",
+                doctorName:"Dr. Kendle",
+                doctorPhone:"4808901678",
+                rxsNumber:"3242887434313467",
+                whenToTake:"Morning"
             },
             body:null
         });
         newState.rxsMedList.list.push({
             index:1,
-            isEdit:false,
             errors:{
                 name:"",
                 reason:"",
@@ -231,23 +235,22 @@ class CreateDependent extends React.Component {
                 whenToTake:""
             },
             values:{
-                name:"a",
-                reason:"",
-                datePrescribed:"",
-                instructions:"",
+                name:"Tyfoid",
+                reason:"For metabolic systoms",
+                datePrescribed:"2020-08-04",
+                instructions:"Take monthly.",
                 endDate:"",
-                dosageQuantity:"",
-                dosageUnits:"",
-                doctorName:"",
-                doctorPhone:"",
-                rxsNumber:"",
-                whenToTake:""
+                dosageQuantity:"1",
+                dosageUnits:"pills",
+                doctorName:"Dr. Kendle",
+                doctorPhone:"4808901678",
+                rxsNumber:"324288744542342342467",
+                whenToTake:"Morning"
             },
             body:null
         });
         newState.rxsMedList.list.push({
             index:2,
-            isEdit:false,
             errors:{
                 name:"",
                 reason:"",
@@ -262,48 +265,17 @@ class CreateDependent extends React.Component {
                 whenToTake:""
             },
             values:{
-                name:"a",
-                reason:"",
-                datePrescribed:"",
-                instructions:"",
+                name:"Tyfoid",
+                reason:"For metabolic systoms",
+                datePrescribed:"2020-08-04",
+                instructions:"Take monthly.",
                 endDate:"",
-                dosageQuantity:"",
-                dosageUnits:"",
-                doctorName:"",
-                doctorPhone:"",
-                rxsNumber:"",
-                whenToTake:""
-            },
-            body:null
-        });
-        newState.rxsMedList.list.push({
-            index:3,
-            isEdit:false,
-            errors:{
-                name:"",
-                reason:"",
-                datePrescribed:"",
-                instructions:"",
-                endDate:"",
-                dosageQuantity:"",
-                dosageUnits:"",
-                doctorName:"",
-                doctorPhone:"",
-                rxsNumber:"",
-                whenToTake:""
-            },
-            values:{
-                name:"kkkkk",
-                reason:"",
-                datePrescribed:"",
-                instructions:"",
-                endDate:"",
-                dosageQuantity:"",
-                dosageUnits:"",
-                doctorName:"",
-                doctorPhone:"",
-                rxsNumber:"",
-                whenToTake:""
+                dosageQuantity:"1",
+                dosageUnits:"pills",
+                doctorName:"Dr. Kendle",
+                doctorPhone:"4808901678",
+                rxsNumber:"3242887434313467",
+                whenToTake:"Morning"
             },
             body:null
         });
@@ -419,7 +391,7 @@ class CreateDependent extends React.Component {
                 </div>
                 <div className="row" style={{marginTop:'10px'}}>
                     <MedList data={this.state.rxsMedList} update={this._updateRxsMedValues} delete={this._toggleRxsMedDelete}
-                     edit={this._toggleEditRxsMed}/>
+                     edit={this._toggleEditRxsMed} toggleExpandMed={this._toggleExpandRxsMed}/>
                 </div>
                 <div className="row" style={{marginTop:'30px'}}>
                     <div className="col-lg-12">

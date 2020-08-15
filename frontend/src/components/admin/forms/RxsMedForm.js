@@ -15,7 +15,7 @@ export default class RxsMedForm extends React.Component {
         if (this.state.isScroll) {
             scrollTo = (ref) => {
                 if (ref /* + other conditions */) {
-                    ref.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                    ref.scrollIntoView({ behavior: 'smooth', block: 'center' })
                 }
             }
         }
