@@ -67,6 +67,13 @@ class CreateDependent extends React.Component {
         newState[form].values['group'][name] = value;
         this.setState(newState);
     }
+    _reformatIndexsRxList = () =>{
+        let newState = this.state;
+        for(var i=0;i<newState.rxsMedList.list.length;++i){
+            newState.rxsMedList.list[i].index = i;
+        }
+        this.setState(newState);
+    }
     _toggleEditRxsMed = (index) =>{
         this._rxsMedValidation();
         if((this.state.rxsMedList.isAdd && !this._isRxsMedErrors()) || (!this.state.rxsMedList.isAdd)){
@@ -75,10 +82,14 @@ class CreateDependent extends React.Component {
             let item = newState.rxsMedList.list[index];
 
             for(var i=0;i<newState.rxsMedList.list.length;++i){
-                if(newState.rxsMedList.list[i] != item){
-                    newList.push(newState.rxsMedList.list[i]);
+                var curEle = newState.rxsMedList.list[i];
+                if(item!=curEle){
+                    curEle.index = i;
+                    newList.push(curEle);
                 }
             }
+
+            item.index = newList.length;
             newList.push(item);
             newState.rxsMedList.list = newList;
             newState.rxsMedList.isAdd = true;
@@ -98,19 +109,21 @@ class CreateDependent extends React.Component {
         this.setState(newState);
     }
     _toggleRxsMedDelete = (index) =>{
-        let newState = this.state;
-        //Last element don't show form
-        if(index==newState.rxsMedList.list.length-1){
-            newState.rxsMedList.isAdd = false;
-        }
-        newState.rxsMedList.list.splice(index,1);
-        for(var i=0;i<newState.rxsMedList.list.length;++i){
-            if(newState.rxsMedList.list[i].index == newState.rxsMedList.indexSelected){
-                newState.rxsMedList.indexSelected = i;
+        if(window.confirm("Are you sure you want to delete "+this.state.rxsMedList.list[index].values.name+" medication?")){
+            let newState = this.state;
+            //Last element don't show form
+            if(index==newState.rxsMedList.list.length-1){
+                newState.rxsMedList.isAdd = false;
             }
-            newState.rxsMedList.list[i].index = i;
+            newState.rxsMedList.list.splice(index,1);
+            for(var i=0;i<newState.rxsMedList.list.length;++i){
+                if(newState.rxsMedList.list[i].index == newState.rxsMedList.indexSelected){
+                    newState.rxsMedList.indexSelected = i;
+                }
+                newState.rxsMedList.list[i].index = i;
+            }
+            this.setState(newState);
         }
-        this.setState(newState);
     }
     _toggleRxsMedAdd = () =>{
         let newState = this.state;
@@ -206,10 +219,10 @@ class CreateDependent extends React.Component {
             },
             values:{
                 name:"Benzoid",
-                reason:"For headaches and animesia.",
+                reason:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
                 datePrescribed:"2020-07-24",
-                instructions:"Take daily.",
-                endDate:"",
+                instructions:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                endDate:"2020-09-12",
                 dosageQuantity:"2",
                 dosageUnits:"pills",
                 doctorName:"Dr. Kendle",
@@ -265,16 +278,16 @@ class CreateDependent extends React.Component {
                 whenToTake:""
             },
             values:{
-                name:"Tyfoid",
-                reason:"For metabolic systoms",
-                datePrescribed:"2020-08-04",
-                instructions:"Take monthly.",
+                name:"Selium",
+                reason:"For aging dynosoum",
+                datePrescribed:"2020-02-12",
+                instructions:"Take yearly.",
                 endDate:"",
-                dosageQuantity:"1",
+                dosageQuantity:"8",
                 dosageUnits:"pills",
-                doctorName:"Dr. Kendle",
+                doctorName:"Dr. Morgan",
                 doctorPhone:"4808901678",
-                rxsNumber:"3242887434313467",
+                rxsNumber:"13467",
                 whenToTake:"Morning"
             },
             body:null
@@ -393,7 +406,7 @@ class CreateDependent extends React.Component {
                     <MedList data={this.state.rxsMedList} update={this._updateRxsMedValues} delete={this._toggleRxsMedDelete}
                      edit={this._toggleEditRxsMed} toggleExpandMed={this._toggleExpandRxsMed}/>
                 </div>
-                <div className="row" style={{marginTop:'30px'}}>
+                {/* <div className="row" style={{marginTop:'30px'}}>
                     <div className="col-lg-12">
                         <h4 style={{display:'inline'}}>OTC Medications <span style={{fontSize:'17px'}}>({this.state.otcMedList.list.length})</span></h4>
                         <i title="add" onClick={this._to} className="fas fa-plus" style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
@@ -408,7 +421,7 @@ class CreateDependent extends React.Component {
                 <div className="row" style={{marginTop:'10px'}}>
                     <div className="col-lg-12">
                     </div>
-                </div>
+                </div> */}
                 <div className="row" style={{marginTop:'30px',marginBottom:'30px'}}>
                     <button className="btn btn-primary" onClick={()=>{this._submit()}}>Submit</button>
                 </div>

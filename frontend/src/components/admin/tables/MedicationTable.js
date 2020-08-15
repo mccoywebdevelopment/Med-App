@@ -64,13 +64,13 @@ export default class MedicationTable extends React.Component{
                 </td>
               </tr>
               <tr index={"medTableInhjkhkhside^&*&^"+index} className="no-border-top" style={style}>
-                <td>
-                  <p onClick={()=>{this.props.expandItem(element.index)}} title="less of med" style={{color:'#2196F3',marginBottom:'0px',fontWeight:'bold'}}>
-                  {element.isExpand?"Less":""}&nbsp;
-                  </p>
-                </td>
-                <td colSpan="2"><span className="inner-title">Reason:</span>{element.values.Reason}</td>
-                <td colSpan="3"><span className="inner-title">Intructions:</span>{element.values.intructions}</td>
+                <th scope="row" style={{paddingBottom:'0',paddingTop:'0',borderTop:'none'}}>
+                  <p style={{marginBottom:'0px',paddingTop:'28px'}}></p>
+                  <p onClick={()=>{this.props.expandItem(element.index)}} title="view rest of med" 
+                    style={{color:'#2196F3',paddingTop:"5px",marginBottom:'10px'}}>{element.isExpand?"Less":""}&nbsp;</p>
+                </th>
+                <td colSpan="2" style={{verticalAlign:'top'}}><span className="inner-title">Reason:</span>{element.values.reason}</td>
+                <td colSpan="3" style={{verticalAlign:'top'}}><span className="inner-title">Intructions:</span>{element.values.instructions}</td>
               </tr>
               </>
               :null

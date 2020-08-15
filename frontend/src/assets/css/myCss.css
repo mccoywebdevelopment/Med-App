@@ -56,13 +56,12 @@ html,body,#root{
 tr{
   background: #ffffff;
 }
-tbody>tr>td{
-  height: 50px!important;
-}
+
 table{
   border-radius: 10px;
   box-shadow: 0 0 0 0 rgba(90, 113, 208, 0.11), 0 4px 16px 0 rgba(167, 175, 183, 0.33);
   table-layout : fixed;
+  width: 100%;
 }
 tbody tr:last-child th {
   border-bottom-left-radius: 10px;
@@ -122,6 +121,9 @@ a span{
 .my-med-table{
   border-radius: 0px!important;
   box-shadow: none;
+}
+td{
+  word-wrap: break-word;
 }
 .my-med-table>tbody>tr:last-child th {
   border-bottom-left-radius: 0px!important;
@@ -232,5 +234,11 @@ a span{
   color:"#212529";
   padding-right: 30px;
 }
-
+td{
+  white-space: pre-wrap!important;      /* CSS3 */   
+  white-space: -moz-pre-wrap!important; /* Firefox */    
+  white-space: -pre-wrap!important;     /* Opera <7 */   
+  white-space: -o-pre-wrap!important;   /* Opera 7 */    
+  word-wrap: break-word!important; 
+}
 /*#0056B3*/
