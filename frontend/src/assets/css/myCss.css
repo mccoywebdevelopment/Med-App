@@ -205,7 +205,7 @@ td{
   margin-top: 6px;
 }
 .react-search-box-dropdown>ul{
-  position: fixed;
+  /* position: fixed; */
   z-index:100;
 }
 .react-search-box-dropdown{

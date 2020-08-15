@@ -6,6 +6,8 @@ import { adminRoutes, authRoutes } from "./Routes";
 import AdminLayout from "./layouts/admin/AdminLayout";
 import AuthLayout from "./layouts/shared/AuthLayout";
 
+import "./assets/css/shared/fontawesome/css/all.min.css";
+
 
 function App() {
   const adminRouteList = () =>{

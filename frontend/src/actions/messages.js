@@ -14,4 +14,13 @@ export const createMessage = (text,alertType) => (dispatch) =>{
     type: CREATE_MESSAGE,
     payload: {text, alertType},
   })
+  setTimeout(()=>{
+    dispatch({
+      type: CREATE_MESSAGE,
+      payload: {
+        text:null,
+        alertType:""
+      }
+    })
+  },7000)
 };

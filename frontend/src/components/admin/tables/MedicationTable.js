@@ -69,8 +69,10 @@ export default class MedicationTable extends React.Component{
                   <p onClick={()=>{this.props.expandItem(element.index)}} title="view rest of med" 
                     style={{color:'#2196F3',paddingTop:"5px",marginBottom:'10px'}}>{element.isExpand?"Less":""}&nbsp;</p>
                 </th>
-                <td colSpan="2" style={{verticalAlign:'top'}}><span className="inner-title">Reason:</span>{element.values.reason}</td>
-                <td colSpan="3" style={{verticalAlign:'top'}}><span className="inner-title">Intructions:</span>{element.values.instructions}</td>
+                <td colSpan="2" style={{verticalAlign:'top'}}>
+                  <span className="inner-title">Reason:</span><br/><br/>{element.values.reason}</td>
+                <td colSpan="3" style={{verticalAlign:'top'}}>
+                  <span className="inner-title">Intructions:</span><br/><br/>{element.values.instructions}</td>
               </tr>
               </>
               :null

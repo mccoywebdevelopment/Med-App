@@ -67,30 +67,26 @@ class CreateDependent extends React.Component {
         newState[form].values['group'][name] = value;
         this.setState(newState);
     }
-    _reformatIndexsRxList = () =>{
-        let newState = this.state;
-        for(var i=0;i<newState.rxsMedList.list.length;++i){
-            newState.rxsMedList.list[i].index = i;
-        }
-        this.setState(newState);
-    }
     _toggleEditRxsMed = (index) =>{
         this._rxsMedValidation();
         if((this.state.rxsMedList.isAdd && !this._isRxsMedErrors()) || (!this.state.rxsMedList.isAdd)){
             let newState = this.state;
             let newList = [];
             let item = newState.rxsMedList.list[index];
+            let indexCounter = 0;
 
             for(var i=0;i<newState.rxsMedList.list.length;++i){
                 var curEle = newState.rxsMedList.list[i];
                 if(item!=curEle){
-                    curEle.index = i;
+                    curEle.index = indexCounter;
                     newList.push(curEle);
+                    indexCounter++;
                 }
             }
 
             item.index = newList.length;
             newList.push(item);
+            console.log(newList);
             newState.rxsMedList.list = newList;
             newState.rxsMedList.isAdd = true;
             newState.rxsMedList.indexSelected = newState.rxsMedList.list.length-1;
@@ -249,9 +245,9 @@ class CreateDependent extends React.Component {
             },
             values:{
                 name:"Tyfoid",
-                reason:"For metabolic systoms",
+                reason:"For medical reasons",
                 datePrescribed:"2020-08-04",
-                instructions:"Take monthly.",
+                instructions:"None",
                 endDate:"",
                 dosageQuantity:"1",
                 dosageUnits:"pills",
