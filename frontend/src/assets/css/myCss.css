@@ -241,4 +241,11 @@ td{
   white-space: -o-pre-wrap!important;   /* Opera 7 */    
   word-wrap: break-word!important; 
 }
+input,select,textarea{
+  font-weight: 500!important;
+  color:black!important;
+}
+::placeholder{
+  font-weight: 200!important;
+}
 /*#0056B3*/
