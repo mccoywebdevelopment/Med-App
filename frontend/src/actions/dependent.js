@@ -1,16 +1,29 @@
-import { UPDATE_FORM_OVERVIEW, SUBMIT_NEW_DEPENDENT } from './types';
+import { createMessage } from './messages';
+import { toggleLoading } from './loading';
+import { API_URI } from '../config/variables';
+import { addDependent } from './group';
 
 // CREATE MESSAGE
-export const updateFormOverview = (isValid,data) => (dispatch) =>{
-  dispatch({
-    type: UPDATE_FORM_OVERVIEW,
-    payload: {isValid,data}
-  })
-};
 
-export const submitNewDependent = () => (dispatch) =>{
-  dispatch({
-    type: SUBMIT_NEW_DEPENDENT,
-    payload:null
+export const fetchCreateDependent = (depBody,groupID,oldDependents) => (dispatch) => {
+  dispatch(toggleLoading());
+  fetch(API_URI + "/dependents/"+localStorage.getItem('JWT'), {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify(depBody)
   })
+    .then(res => res.json())
+    .then(res => {
+      dispatch(toggleLoading());
+      if (res.error) {
+        dispatch(createMessage(res.error, 'danger'));
+      } else {
+        if(groupID.length>0){
+          dispatch(addDependent(groupID,res,oldDependents));
+        }
+        dispatch(createMessage(depBody.firstName + " was successfully created.","success"));
+      }
+    });
 };

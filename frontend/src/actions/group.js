@@ -24,3 +24,28 @@ export const fetchGroups = () => dispatch => {
       }
     });
 };
+
+export const  addDependent = (groupID,newDependent,oldDependents) => (dispatch) => {
+  dispatch(toggleLoading());
+  if(!oldDependents){
+    oldDependents = [];
+  }
+  oldDependents.push(newDependent);
+  let updatedFields = {
+    dependents:oldDependents
+  }
+  fetch(API_URI + "/groups/"+groupID+"/"+localStorage.getItem('JWT'), {
+    method:'PATCH',
+      body: JSON.stringify({updatedFields:updatedFields}),
+      headers: {
+          'Content-Type': 'application/json',
+      },
+  })
+    .then(res => res.json())
+    .then(res => {
+      dispatch(toggleLoading());
+      if (res.error) {
+        dispatch(createMessage(res.error, 'danger'));
+      }
+    });
+}

@@ -1,9 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchGroups } from '../../../actions/group'
-import { submitNewDependent } from '../../../actions/dependent';
-import { firstAndLastNameValidator, prevDateValidator, nameValidator, numberValidator, phoneNumberValidator } from '../../../config/validators';
+import { fetchGroups } from '../../../actions/group';
+import { togglePopUp } from "../../../actions/popUp"
+import { fetchCreateDependent } from '../../../actions/dependent';
+import { firstAndLastNameValidator, prevDateValidator, nameValidator,
+         numberValidator, phoneNumberValidator } from '../../../config/validators';
 import BelongsToGroup from './BelongsToGroup';
 
 import DepOverview from './DepOverview';
@@ -415,20 +417,25 @@ class CreateDependent extends React.Component {
         return rxsArr;
     }
     _formatBody = () =>{
-        //belongs to group after submit dependent
-        let rxsObj = this._groupRxs();
         let body = {
             firstName: this.state.overview.values.name.split(' ')[0],
             lastName: this.state.overview.values.name.split(' ')[1],
             dateOfBirth: this.state.overview.values.dateOfBirth,
             rxs:this._formatRxs(this._groupRxs())
         }
-        console.log(body);
+        return body;
     }
     _submit = () =>{
         this._validation();
         if(!this._isOverviewErrors() && !this._isRxsMedErrors()){
-            this._formatBody();
+            let oldDependents = null;
+            for(var i=0;i<this.props.groups.length;++i){
+                if(this.props.groups[i]._id == this.state.overview.values.group.value){
+                    oldDependents = this.props.groups[i].dependents;
+                }
+            }
+            this.props.fetchCreateDependent(this._formatBody(),this.state.overview.values.group.value,oldDependents);
+            this.props.togglePopUp();
         }
     }
     componentDidMount = () =>{
@@ -486,12 +493,12 @@ class CreateDependent extends React.Component {
 }
 
 CreateDependent.propTypes = {
-    submitNewDependent: PropTypes.func.isRequired,
+    fetchCreateDependent: PropTypes.func.isRequired,
+    togglePopUp: PropTypes.func.isRequired,
     fetchGroups: PropTypes.func.isRequired
 };
 const mapStateToProps = (state) => ({
-    dependents: state.dependents,
     groups: state.groups
 });
 
-export default connect(mapStateToProps, { submitNewDependent, fetchGroups })(CreateDependent);
+export default connect(mapStateToProps, { fetchCreateDependent, fetchGroups, togglePopUp })(CreateDependent);

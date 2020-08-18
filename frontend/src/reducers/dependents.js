@@ -1,4 +1,4 @@
-import { SUBMIT_NEW_DEPENDENT } from '../actions/types';
+import { FETCH_CREATE_DEPENDENT } from '../actions/types';
 
 const initialState = {
     dependents:[]
@@ -6,13 +6,9 @@ const initialState = {
 
 export default function(state = initialState, action){
     switch(action.type){
-        case SUBMIT_NEW_DEPENDENT:
+        case FETCH_CREATE_DEPENDENT:
             return{
-                ...state,
-               newDep:{
-                   ...state.newDep,
-                   isSubmit:true
-               }
+                ...state
             }
         default:
             return state;

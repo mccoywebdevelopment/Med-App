@@ -2,7 +2,6 @@ import { FETCH_LOGIN, CHANGE_REDIRECT_URL } from './types';
 import { createMessage } from './messages';
 import { toggleLoading } from './loading';
 import { API_URI } from '../config/variables';
-import store from '../store';
 
 export const fetchLogin = postData => dispatch => {
   dispatch(toggleLoading());

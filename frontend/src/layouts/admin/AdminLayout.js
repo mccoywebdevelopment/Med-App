@@ -21,7 +21,7 @@ class AdminLayout extends React.Component {
         if (this.props.message.text.length > 0) {
             setTimeout(() => {
                 this.props.createMessage("", "");
-            }, 5000)
+            }, 8000)
         }
     }
     _isCurrentURL = (url) => {

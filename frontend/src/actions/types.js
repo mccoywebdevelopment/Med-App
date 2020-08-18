@@ -10,7 +10,7 @@ export const TOGGLE_LOADING = "TOGGLE_LOADING";
 export const TOGGLE_POPUP = "TOGGLE_POPUP";
 //====================Group===============
 export const FETCH_GROUPS = "FETCH_GROUPS";
+export const PATCH_GROUP_BY_ID = "PATCH_GROUP_BY_ID";
 //====================Dependent===========
-export const UPDATE_FORM_OVERVIEW = "UPDATE_FORM_OVERVIEW";
-export const SUBMIT_NEW_DEPENDENT = "SUBMIT_NEW_DEPENDENT";
+export const FETCH_CREATE_DEPENDENT ="FETCH_CREATE_DEPENDENT";
 
