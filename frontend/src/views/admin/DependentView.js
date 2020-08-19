@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchLogin } from "../../actions/auth";
 import { togglePopUp } from '../../actions/popUp';
+import { fetchGroups } from '../../actions/group';
+import { fetchPopulatedDependents} from "../../actions/dependent";
 
 import DependentTable from "../../components/admin/tables/DependentTable";
 import Overview from "../../components/admin/Overview/Overview";
@@ -15,9 +17,29 @@ class DependentView extends React.Component {
     */
     static propTypes = {
         auth: PropTypes.object.isRequired,
+        dependents: PropTypes.object.isRequired,
+        groups: PropTypes.object.isRequired
     };
     constructor(props) {
         super(props);
+    }
+    _getTotalNumberOfDependents = () =>{
+        return this.props.dependents.length;
+    }
+    _getAverageMeds = () =>{
+        let meds = 0;
+        if(this.props.dependents.length<1){
+            return 0;
+        }
+        for(var i=0;i<this.props.dependents.length;++i){
+            for(var ix=0;ix<this.props.dependents[i].rxs.length;++ix){
+                meds = meds + this.props.dependents[i].rxs[ix].rxsMedications.length;
+            }
+        }
+        return (meds/this.props.dependents.length);
+    }
+    componentDidMount = () =>{
+        this.props.fetchPopulatedDependents();
     }
     render() {
         return (
@@ -30,7 +52,7 @@ class DependentView extends React.Component {
                                     <h4 className="view-header">Dependents</h4>
                                 </div>
                                 <div className="col-lg-12" style={{ marginBottom: "30px" }}>
-                                    <Overview />
+                                    <Overview dependentsLength={this._getTotalNumberOfDependents()} averageMed={this._getAverageMeds()}/>
                                 </div>
                                 <div className="col-lg-12" style={{ marginBottom: "30px" }}>
                                     <button type="button" 
@@ -44,7 +66,9 @@ class DependentView extends React.Component {
                         <div className="row">
                             {!this.props.children ?
                                 <div className="col-lg-12">
-                                    <DependentTable />
+                                    {this.props.dependents.length>0?
+                                    <DependentTable dependents={this.props.dependents}/>
+                                    :null}
                                 </div>
                                 :
                                 <>
@@ -60,10 +84,14 @@ class DependentView extends React.Component {
 }
 DependentView.propTypes = {
     fetchLogin: PropTypes.func.isRequired,
+    fetchPopulatedDependents: PropTypes.func.isRequired,
+    fetchGroups: PropTypes.func.isRequired,
     togglePopUp: PropTypes.func.isRequired
 };
 const mapStateToProps = (state) => ({
     auth: state.auth,
+    dependents: state.dependents,
+    groups: state.groups
 });
 
-export default connect(mapStateToProps, { fetchLogin, togglePopUp })(DependentView);
+export default connect(mapStateToProps, { fetchLogin, togglePopUp, fetchPopulatedDependents, fetchGroups })(DependentView);

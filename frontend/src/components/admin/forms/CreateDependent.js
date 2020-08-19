@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchGroups } from '../../../actions/group';
 import { togglePopUp } from "../../../actions/popUp"
-import { fetchCreateDependent } from '../../../actions/dependent';
+import { fetchCreateDependent, fetchPopulatedDependents } from '../../../actions/dependent';
 import { firstAndLastNameValidator, prevDateValidator, nameValidator,
          numberValidator, phoneNumberValidator } from '../../../config/validators';
 import BelongsToGroup from './BelongsToGroup';
@@ -368,9 +368,6 @@ class CreateDependent extends React.Component {
             alert("Please fix the errors below:");
         }
     }
-    _fetchCreate = () =>{
-
-    }
     _groupRxs = () =>{
         let data = JSON.parse(JSON.stringify(this.state.rxsMedList.list));
         let arr = [];
@@ -494,6 +491,7 @@ class CreateDependent extends React.Component {
 
 CreateDependent.propTypes = {
     fetchCreateDependent: PropTypes.func.isRequired,
+    fetchPopulatedDependents: PropTypes.func.isRequired,
     togglePopUp: PropTypes.func.isRequired,
     fetchGroups: PropTypes.func.isRequired
 };
@@ -501,4 +499,4 @@ const mapStateToProps = (state) => ({
     groups: state.groups
 });
 
-export default connect(mapStateToProps, { fetchCreateDependent, fetchGroups, togglePopUp })(CreateDependent);
+export default connect(mapStateToProps, { fetchCreateDependent, fetchGroups, togglePopUp, fetchPopulatedDependents })(CreateDependent);

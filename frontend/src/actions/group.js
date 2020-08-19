@@ -3,7 +3,7 @@ import { createMessage } from './messages';
 import { toggleLoading } from './loading';
 import { API_URI } from '../config/variables';
 
-export const fetchGroups = () => dispatch => {
+export const fetchGroups= () => (dispatch)=>{
   dispatch(toggleLoading());
   fetch(API_URI + "/groups/"+localStorage.getItem('JWT'), {
     method: 'GET',
@@ -20,10 +20,11 @@ export const fetchGroups = () => dispatch => {
         dispatch({
           type: FETCH_GROUPS,
           payload: res
-        })
+        });
       }
     });
-};
+  } 
+
 
 export const  addDependent = (groupID,newDependent,oldDependents) => (dispatch) => {
   dispatch(toggleLoading());

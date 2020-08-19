@@ -1,13 +1,14 @@
 import React from 'react';
+import { FETCH_DEPENDENTS } from '../../../actions/types';
 
-export default function Overview() {
+export default function Overview(props) {
   return (
     <div className="row">
     <div className="col-md-4" style={{paddingLeft:'0px'}}>
       <div className="card" style={{minHeight:'140px'}}>
         <div className="card-body row">
           <div className="col-lg-6">
-            <h2 className="font-weight-semibold mb-0">12</h2>
+            <h2 className="font-weight-semibold mb-0">{props.dependentsLength}</h2>
             <h5 className="font-weight-semibold mb-0">Dependents</h5>
           </div>
           <div className="col-lg-6" style={{textAlign:'center'}}>
@@ -20,7 +21,7 @@ export default function Overview() {
       <div className="card" style={{minHeight:'140px'}}>
         <div className="card-body row">
           <div className="col-lg-6">
-            <h2 className="font-weight-semibold mb-0">2.1</h2>
+            <h2 className="font-weight-semibold mb-0">{props.averageMed.toFixed(2)}</h2>
             <h5 className="font-weight-semibold mb-0">Avg # of Meds Per Dependent</h5>
           </div>
           <div className="col-lg-6" style={{textAlign:'center'}}>
@@ -33,7 +34,7 @@ export default function Overview() {
       <div className="card" style={{minHeight:'140px'}}>
         <div className="card-body row">
           <div className="col-lg-6">
-            <h2 className="font-weight-semibold mb-0">16.23</h2>
+            <h2 className="font-weight-semibold mb-0">{props.averageAge}</h2>
             <h5 className="font-weight-semibold mb-0">Average Age of Dependent</h5>
           </div>
           <div className="col-lg-6" style={{textAlign:'center'}}>

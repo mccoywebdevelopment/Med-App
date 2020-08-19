@@ -75,6 +75,7 @@ router.route('/dependents-medication/medication/:JWT')
             console.log(err);
             res.status(errors.code.BAD_REQUEST).json({error:err});
         }else{
+            console.log(result);
             res.send(result);
         }
     });

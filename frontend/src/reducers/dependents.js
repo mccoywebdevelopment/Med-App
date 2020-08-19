@@ -1,4 +1,4 @@
-import { FETCH_CREATE_DEPENDENT } from '../actions/types';
+import { FETCH_DEPENDENTS } from '../actions/types';
 
 const initialState = {
     dependents:[]
@@ -6,10 +6,8 @@ const initialState = {
 
 export default function(state = initialState, action){
     switch(action.type){
-        case FETCH_CREATE_DEPENDENT:
-            return{
-                ...state
-            }
+        case FETCH_DEPENDENTS:
+            return(action.payload)
         default:
             return state;
     }

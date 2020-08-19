@@ -22,7 +22,7 @@ export const fetchLogin = postData => dispatch => {
         dispatch({
           type: FETCH_LOGIN,
           payload: res.result
-        })
+        });
       }
     });
 };

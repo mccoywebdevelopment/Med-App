@@ -17,13 +17,6 @@ class AdminLayout extends React.Component {
     constructor(props) {
         super(props);
     }
-    _setMsgEmpty = () => {
-        if (this.props.message.text.length > 0) {
-            setTimeout(() => {
-                this.props.createMessage("", "");
-            }, 8000)
-        }
-    }
     _isCurrentURL = (url) => {
         // alert(url);
         if (window.location.href.includes(url)) {

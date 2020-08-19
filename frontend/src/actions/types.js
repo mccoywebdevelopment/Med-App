@@ -12,5 +12,5 @@ export const TOGGLE_POPUP = "TOGGLE_POPUP";
 export const FETCH_GROUPS = "FETCH_GROUPS";
 export const PATCH_GROUP_BY_ID = "PATCH_GROUP_BY_ID";
 //====================Dependent===========
-export const FETCH_CREATE_DEPENDENT ="FETCH_CREATE_DEPENDENT";
+export const FETCH_DEPENDENTS ="FETCH_DEPENDENTS";
 
