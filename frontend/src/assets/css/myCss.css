@@ -82,10 +82,10 @@ tbody tr:last-child td:last-child {
 .card{
   border-radius: 10px;
 }
-tbody tr:hover{
-  /* opacity: 0.5; */
+.dependentTable>tbody tr:hover{
   cursor: pointer;
-  background: transparent;
+  /* background: transparent; */
+  filter:brightness(84%);
 }
 thead tr th:first-child{
   border-top-left-radius: 10px;
@@ -252,5 +252,8 @@ input,select,textarea{
   z-index:200;
   position: fixed;
   width: 88.59%;
+}
+.dependentTable > tbody> tr:nth-child(2n){
+  background-color:#F0F1F1;
 }
 /*#0056B3*/

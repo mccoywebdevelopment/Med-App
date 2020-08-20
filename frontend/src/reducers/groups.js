@@ -1,7 +1,7 @@
 import { FETCH_GROUPS } from '../actions/types';
 
 const initialState = {
-    all:null
+    all:[]
 }
 
 export default function(state = initialState, action){

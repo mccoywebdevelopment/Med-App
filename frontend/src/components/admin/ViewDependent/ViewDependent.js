@@ -24,7 +24,7 @@ export default function ViewDependent(){
             </div>
             <div className="row" style={{marginTop:'10px'}}>
                 <div className="col-lg-12">
-                    <MedicationTable/>
+                    {/* <MedicationTable/> */}
                 </div>
             </div>
             <div className="row" style={{marginTop:'10px'}}>

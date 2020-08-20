@@ -94,7 +94,7 @@ class Login extends React.Component{
   _renderRedirect =()=>{
     const redirectURL = this.props.auth.redirectURL;
     return(
-      <Redirect to={redirectURL}/>
+      <Redirect push to={redirectURL}/>
     )
   }
   render(){

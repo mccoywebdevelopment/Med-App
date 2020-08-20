@@ -18,7 +18,7 @@ export const createMessage = (text,alertType) => (dispatch) =>{
     dispatch({
       type: CREATE_MESSAGE,
       payload: {
-        text:null,
+        text:"",
         alertType:""
       }
     })

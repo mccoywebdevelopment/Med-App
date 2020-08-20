@@ -35,7 +35,7 @@ export default class MedicationTable extends React.Component{
                 <th scope="row" style={{paddingBottom:'0',paddingTop:'0'}}>
                   <p style={{marginBottom:'0px',paddingTop:'28px'}}>{index + 1}</p>
                   <p onClick={()=>{this.props.expandItem(element.index)}} title="view rest of med" 
-                    style={{color:'#2196F3',paddingTop:"5px",marginBottom:'10px'}}>{!element.isExpand?"More":""}&nbsp;</p>
+                    style={{color:'#2196F3',paddingTop:"5px",marginBottom:'10px',cursor:"pointer"}}>{!element.isExpand?"More":""}&nbsp;</p>
                 </th>
                 <td>{element.values.name}</td>
                 <td>{element.values.dosageQuantity} {element.values.dosageUnits}</td>
@@ -67,7 +67,7 @@ export default class MedicationTable extends React.Component{
                 <th scope="row" style={{paddingBottom:'0',paddingTop:'0',borderTop:'none'}}>
                   <p style={{marginBottom:'0px',paddingTop:'28px'}}></p>
                   <p onClick={()=>{this.props.expandItem(element.index)}} title="view rest of med" 
-                    style={{color:'#2196F3',paddingTop:"5px",marginBottom:'10px'}}>{element.isExpand?"Less":""}&nbsp;</p>
+                    style={{color:'#2196F3',paddingTop:"5px",marginBottom:'10px',cursor:"pointer"}}>{element.isExpand?"Less":""}&nbsp;</p>
                 </th>
                 <td colSpan="2" style={{verticalAlign:'top'}}>
                   <span className="inner-title">Reason:</span><br/><br/>{element.values.reason}</td>

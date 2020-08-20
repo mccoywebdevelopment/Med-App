@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { fetchLogin } from "../../actions/auth";
 import { togglePopUp } from '../../actions/popUp';
 import { fetchGroups } from '../../actions/group';
-import { fetchPopulatedDependents} from "../../actions/dependent";
+import { fetchPopulatedDependents, fetchDeleteDependent} from "../../actions/dependent";
 
 import DependentTable from "../../components/admin/tables/DependentTable";
 import Overview from "../../components/admin/Overview/Overview";
@@ -22,9 +22,21 @@ class DependentView extends React.Component {
     };
     constructor(props) {
         super(props);
+        this._deleteDependent = this._deleteDependent.bind(this);
     }
     _getTotalNumberOfDependents = () =>{
         return this.props.dependents.length;
+    }
+    _getAverageAge = () =>{
+        if(this.props.dependents.length<1){
+            return 0;
+        }
+        let age = 0;
+        for(var i=0;i<this.props.dependents.length;++i){
+            let birthday = +new Date(this.props.dependents[i].dateOfBirth);
+            age = age + ~~((Date.now() - birthday) / (31557600000));
+        }
+        return age/this.props.dependents.length;
     }
     _getAverageMeds = () =>{
         let meds = 0;
@@ -37,6 +49,11 @@ class DependentView extends React.Component {
             }
         }
         return (meds/this.props.dependents.length);
+    }
+    _deleteDependent = (dep) =>{
+        if(window.confirm("Are you sure you want to delete "+dep.name.firstName+" profile and all their data?")){
+            this.props.fetchDeleteDependent(dep._id);
+        }
     }
     componentDidMount = () =>{
         this.props.fetchPopulatedDependents();
@@ -52,7 +69,7 @@ class DependentView extends React.Component {
                                     <h4 className="view-header">Dependents</h4>
                                 </div>
                                 <div className="col-lg-12" style={{ marginBottom: "30px" }}>
-                                    <Overview dependentsLength={this._getTotalNumberOfDependents()} averageMed={this._getAverageMeds()}/>
+                                    <Overview dependentsLength={this._getTotalNumberOfDependents()} averageMed={this._getAverageMeds()} averageAge={this._getAverageAge()}/>
                                 </div>
                                 <div className="col-lg-12" style={{ marginBottom: "30px" }}>
                                     <button type="button" 
@@ -67,7 +84,7 @@ class DependentView extends React.Component {
                             {!this.props.children ?
                                 <div className="col-lg-12">
                                     {this.props.dependents.length>0?
-                                    <DependentTable dependents={this.props.dependents}/>
+                                    <DependentTable dependents={this.props.dependents} delete={this._deleteDependent}/>
                                     :null}
                                 </div>
                                 :
@@ -85,6 +102,7 @@ class DependentView extends React.Component {
 DependentView.propTypes = {
     fetchLogin: PropTypes.func.isRequired,
     fetchPopulatedDependents: PropTypes.func.isRequired,
+    fetchDeleteDependent: PropTypes.func.isRequired,
     fetchGroups: PropTypes.func.isRequired,
     togglePopUp: PropTypes.func.isRequired
 };
@@ -94,4 +112,4 @@ const mapStateToProps = (state) => ({
     groups: state.groups
 });
 
-export default connect(mapStateToProps, { fetchLogin, togglePopUp, fetchPopulatedDependents, fetchGroups })(DependentView);
+export default connect(mapStateToProps, { fetchLogin, fetchDeleteDependent, togglePopUp, fetchPopulatedDependents, fetchGroups })(DependentView);

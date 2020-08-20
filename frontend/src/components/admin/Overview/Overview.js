@@ -34,7 +34,7 @@ export default function Overview(props) {
       <div className="card" style={{minHeight:'140px'}}>
         <div className="card-body row">
           <div className="col-lg-6">
-            <h2 className="font-weight-semibold mb-0">{props.averageAge}</h2>
+            <h2 className="font-weight-semibold mb-0">{props.averageAge.toFixed(2)}</h2>
             <h5 className="font-weight-semibold mb-0">Average Age of Dependent</h5>
           </div>
           <div className="col-lg-6" style={{textAlign:'center'}}>

@@ -231,7 +231,7 @@ function deleteDependentById(id,callback){
             if(err){
               callback(err);
             }else{
-              callback(null,result);
+              callback(null,dependentFound);
             }
           });
         }

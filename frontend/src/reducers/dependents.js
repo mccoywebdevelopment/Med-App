@@ -1,8 +1,6 @@
 import { FETCH_DEPENDENTS } from '../actions/types';
 
-const initialState = {
-    dependents:[]
-}
+const initialState = []
 
 export default function(state = initialState, action){
     switch(action.type){

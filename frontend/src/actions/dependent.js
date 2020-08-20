@@ -30,6 +30,27 @@ export const fetchCreateDependent = (depBody,groupID,oldDependents) => (dispatch
     });
 };
 
+export const fetchDeleteDependent = (depID) => (dispatch) => {
+  // dispatch(toggleLoading());
+  fetch(API_URI + "/dependents/"+depID.toString()+"/"+localStorage.getItem('JWT'), {
+    method: 'DELETE',
+    headers: {
+      'content-type': 'application/json'
+    }
+  })
+    .then(res => res.json())
+    .then(res => {
+      // dispatch(toggleLoading());
+      if (res.error) {
+        dispatch(createMessage(res.error, 'danger'));
+      } else {
+        console.log(res);
+        dispatch(createMessage(res.deletedDoc.name.firstName + " was successfully deleted.","info"));
+        dispatch(fetchPopulatedDependents());
+      }
+    });
+};
+
 export const fetchPopulatedDependents = () => (dispatch) =>{
     dispatch(toggleLoading());
     fetch(API_URI + "/dependents/dependents-medication/medication/"+localStorage.getItem('JWT'), {
