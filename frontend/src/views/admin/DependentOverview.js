@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { useLocation, Switch } from 'react-router-dom';
 
 import DependentTableSm from "../../components/admin/tables/DependentTableSm";
 import ViewDependent from "../../components/admin/ViewDependent/ViewDependent";
@@ -12,21 +13,36 @@ class DependentOverview extends React.Component{
         dependents: PropTypes.object.isRequired,
         groups: PropTypes.object.isRequired
     };
+    state = {
+        depSelected:null,
+    }
     constructor(props){
         super(props);
+        this.changeDepSel = this.changeDepSel.bind(this);
+        if(this.props.depSelected){
+            this.state = {
+                depSelected:this.props.depSelected
+            }
+        }
+    }
+    changeDepSel = (dep) =>{
+        let newState = this.state;
+        newState.depSelected = dep;
+        this.setState(newState);
+        alert(dep.name.firstName)
     }
     render(){
         return(
             <>
                 <div className="col-lg-6">
                     {this.props.dependents?
-                    <DependentTable dependents={this.props.dependents} isSmall={true}/>
+                    <DependentTable changeDepSel={this.changeDepSel} dependents={this.props.dependents} isSmall={true}/>
                     :null}
                 </div>
                 <div className="col-lg-6">
                     {/* <ViewDependent isEdit={true}/> */}
                     <div className="card" style={{padding:"20px"}}>
-                        <CreateDependent isEdit={true}/>
+                        <CreateDependent isDepSelected={this.state.depSelected}/>
                     </div>
                 </div>
             </>

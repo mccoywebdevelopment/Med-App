@@ -29,8 +29,10 @@ class CreateDependent extends React.Component {
         this._toggleExpandRxsMed = this._toggleExpandRxsMed.bind(this);
 
         this._test()
+        alert(JSON.stringify(this.props.isDepSelected))
     }
     state = {
+        isEdit:false,
         overview:{
             errors:{
                 name:"",
@@ -441,20 +443,25 @@ class CreateDependent extends React.Component {
     render() {
         return (
             <>
-                <div className="row" style={{marginTop:'10px'}}>
-                    {this.props.isEdit?
+                <div className="row">
+                    {this.props.isDepSelected?
                         <div className="col-lg-12">
                             <h4 style={{display:'inline'}}>Dependent Overview</h4>
                             <i title="edit" className="fas fa-edit" style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
                             <i title="delete" className="fas fa-trash" style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
                             <i title="close" style={{float:'right'}} className="fas fa-times"></i>
                         </div>
-                        :
+                        :null
+                    }
+                    {this.props.isDepSelected && !this.state.isEdit?
+                        <h1>{this.props.isDepSelected.name.firstName}</h1>
+                    :
                         <DepOverview data={this.state.overview} update={this._update} updateError={this._updateError}>
                             <BelongsToGroup toggle={this._toggleGroupBtn} update={this._updateGroupValue} form={"overview"} 
-                                groups={this.props.groups} data={this.state.overview.values.group} error={this.state.overview.errors.group}/>
+                            groups={this.props.groups} data={this.state.overview.values.group} error={this.state.overview.errors.group}/>
                         </DepOverview>
                     }
+
                 </div>
                 <div className="row" style={{marginTop:'10px'}}>
                     <div className="col-lg-12">

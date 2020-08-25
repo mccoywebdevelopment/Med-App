@@ -5,6 +5,7 @@ import loading from './loading';
 import popUp from './popUp';
 import groups from './groups';
 import dependents from './dependents';
+import table from './table';
 
 
 export default combineReducers({
@@ -13,5 +14,6 @@ export default combineReducers({
   loading,
   popUp,
   groups,
-  dependents
+  dependents,
+  table
 });

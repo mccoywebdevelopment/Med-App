@@ -1,8 +1,8 @@
 import { createMessage } from './messages';
 import { toggleLoading } from './loading';
 import { API_URI } from '../config/variables';
-import { addDependent, fetchGroups } from './group';
-import { FETCH_DEPENDENTS, FETCH_GROUPS } from './types';
+import { addDependent } from './group';
+import { FETCH_DEPENDENTS } from './types';
 
 // CREATE MESSAGE
 

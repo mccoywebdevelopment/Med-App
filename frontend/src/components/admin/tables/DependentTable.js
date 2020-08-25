@@ -1,19 +1,25 @@
 
 import React from 'react';
 import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { selectItem } from '../../../actions/table';
 
-export default class DependentTable extends React.Component{
-  /* Add a function to redirect when user clicks table row!!!*/
-  state = {
-    redirect:false
-  }
+
+class DependentTable extends React.Component{
+  static propTypes = {
+    table: PropTypes.object.isRequired
+  };
   constructor(props){
     super(props);
+    console.log(props);
   }
-  _redirect =(depID)=>{
-    let newState = this.state;
-    newState.redirect = depID;
-    this.setState(newState);
+  _selectItem = (dep) =>{
+    if(typeof(this.props.toggleRedirect)!='undefined'){
+      this.props.toggleRedirect(dep);
+    }else{
+      this.props.changeDepSel(dep)
+    }
   }
   render(){
     const list=() =>{
@@ -38,20 +44,26 @@ export default class DependentTable extends React.Component{
             color:"red"
           }
         }
+        let trStyle = {
+        }
         if(dep.groups.length>0){
           group.text = "Yes";
           group.style.color = "#19d895";
         }
+        if(this.props.table.itemSelected == dep._id && this.props.isSmall){
+          trStyle.background = '#bfe1fb';
+        }
       
         return(
-            <tr onClick={()=>{this._redirect(dep._id)}}>
-              <th scope="row">{index + 1}</th>
-              <td>{dep.name.firstName + " " + dep.name.lastName}</td>
+          <>
+            <tr style={trStyle}>
+              <th scope="row" onClick={()=>{this._selectItem(dep._id)}}>{index + 1}</th>
+              <td onClick={()=>this._selectItem(dep)}>{dep.name.firstName + " " + dep.name.lastName}</td>
               {!this.props.isSmall?<td>{age}</td>:null}
-              <td>{dateOfBirth}</td>
-              <td>{rxsMeds}</td>
+              <td onClick={()=>this._selectItem(dep)}>{dateOfBirth}</td>
+              <td onClick={()=>this._selectItem(dep)}>{rxsMeds}</td>
               {/* <td>Ventrent</td> */}
-              <td style={group.style}>{group.text}</td>
+              <td style={group.style} onClick={()=>this._selectItem(dep._id)}>{group.text}</td>
               {!this.props.isSmall?
               <td>
                 <i title="view" className="fas fa-eye" style={{ paddingRight: '20px', color: '#2196F3' }}></i>
@@ -60,12 +72,11 @@ export default class DependentTable extends React.Component{
               </td>
               :null}
             </tr>
+            </>
         );
       });
     }
     return (
-      <>
-      {!this.state.redirect?
       <table className="table dependentTable">
         <thead>
           <tr>
@@ -83,9 +94,15 @@ export default class DependentTable extends React.Component{
             {list()}
         </tbody>
       </table>
-      :<Redirect push to={window.location.pathname+"/"+this.state.redirect}/>
-      }
-      </>
     );
   }
 }
+
+DependentTable.propTypes = {
+  selectItem: PropTypes.func.isRequired
+};
+const mapStateToProps = (state) => ({
+  table: state.table
+});
+
+export default connect(mapStateToProps, {selectItem})(DependentTable);

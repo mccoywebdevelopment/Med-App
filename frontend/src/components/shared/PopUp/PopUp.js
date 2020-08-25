@@ -30,7 +30,7 @@ class PopUp extends React.Component{
                                 <i title="close" onClick={()=>{this.props.togglePopUp()}} style={{float:'right'}} className="fas fa-times"></i>
                             </div>
                         </div>
-                        <div className="row" style={{marginTop:'0px'}}>
+                        <div className="row" style={{marginTop:'0px',paddingTop:'10px'}}>
                             {this.props.popUp.component}
                         </div>
                     </div>
