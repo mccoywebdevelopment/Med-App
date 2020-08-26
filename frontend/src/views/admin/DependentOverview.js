@@ -19,17 +19,11 @@ class DependentOverview extends React.Component{
     constructor(props){
         super(props);
         this.changeDepSel = this.changeDepSel.bind(this);
-        if(this.props.depSelected){
-            this.state = {
-                depSelected:this.props.depSelected
-            }
-        }
     }
     changeDepSel = (dep) =>{
         let newState = this.state;
         newState.depSelected = dep;
         this.setState(newState);
-        alert(dep.name.firstName)
     }
     render(){
         return(

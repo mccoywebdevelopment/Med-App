@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchGroups } from '../../../actions/group';
+import {fetchGroups} from '../../../actions/group';
 import { togglePopUp } from "../../../actions/popUp"
 import { fetchCreateDependent, fetchPopulatedDependents } from '../../../actions/dependent';
 import { firstAndLastNameValidator, prevDateValidator, nameValidator,
@@ -28,8 +28,7 @@ class CreateDependent extends React.Component {
         this._toggleEditRxsMed = this._toggleEditRxsMed.bind(this);
         this._toggleExpandRxsMed = this._toggleExpandRxsMed.bind(this);
 
-        this._test()
-        alert(JSON.stringify(this.props.isDepSelected))
+        // this._test()
     }
     state = {
         isEdit:false,
@@ -60,6 +59,31 @@ class CreateDependent extends React.Component {
             list:[]
         },
         notes:[]
+    }
+    _formatSelDep = (dep) =>{
+        let newState = this.state;
+        newState.overview.values.name = dep.name.firstName + " " + dep.name.lastName;
+        newState.overview.values.dateOfBirth = dep.dateOfBirth;
+        newState.overview.values.group = this._getGroupSelDep(dep);
+        this.setState(newState);
+        console.log(this.state);
+        console.log(this.props.groups);
+    }
+    _getGroupSelDep = (dep) =>{
+        for(var i=0;i<this.props.groups.length;++i){
+            for(var ix=0;ix<this.props.groups[i].dependents.length;++ix){
+                if(dep._id == this.props.groups[i].dependents[ix]._id){
+                    return{
+                        isYes:true,
+                        value:this.props.groups[i]._id
+                    }
+                }
+            }
+        }
+        return{
+            isYes:false,
+            value:""
+        }
     }
     _toggleExpandRxsMed = (index) =>{
         let newState = this.state;
@@ -438,7 +462,11 @@ class CreateDependent extends React.Component {
         }
     }
     componentDidMount = () =>{
-        this.props.fetchGroups();
+        this.props.fetchGroups(()=>{
+            if(this.props.isDepSelected){
+                this._formatSelDep(this.props.isDepSelected);
+            }
+        });
     }
     render() {
         return (
@@ -453,14 +481,14 @@ class CreateDependent extends React.Component {
                         </div>
                         :null
                     }
-                    {this.props.isDepSelected && !this.state.isEdit?
+                    {/* {this.props.isDepSelected && !this.state.isEdit?
                         <h1>{this.props.isDepSelected.name.firstName}</h1>
-                    :
+                    : */}
                         <DepOverview data={this.state.overview} update={this._update} updateError={this._updateError}>
                             <BelongsToGroup toggle={this._toggleGroupBtn} update={this._updateGroupValue} form={"overview"} 
                             groups={this.props.groups} data={this.state.overview.values.group} error={this.state.overview.errors.group}/>
                         </DepOverview>
-                    }
+                    {/* } */}
 
                 </div>
                 <div className="row" style={{marginTop:'10px'}}>

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchLogin } from "../../actions/auth";
 import { togglePopUp } from '../../actions/popUp';
-import { fetchGroups } from '../../actions/group';
 import { fetchPopulatedDependents, fetchDeleteDependent } from "../../actions/dependent";
 import { Redirect } from 'react-router-dom';
 
@@ -109,7 +108,7 @@ class DependentView extends React.Component {
                                    <div className="col-lg-6">
                                         {this.props.dependents?
                                         <DependentTable toggleRedirect={this._toggleRedirect} dependents={this.props.dependents}
-                                            isSmall={true}/>
+                                            isSmall={true} selected={this.state.isOverview._id}/>
                                         :null}
                                     </div>
                                     <div className="col-lg-6">
@@ -132,7 +131,6 @@ DependentView.propTypes = {
     fetchLogin: PropTypes.func.isRequired,
     fetchPopulatedDependents: PropTypes.func.isRequired,
     fetchDeleteDependent: PropTypes.func.isRequired,
-    fetchGroups: PropTypes.func.isRequired,
     togglePopUp: PropTypes.func.isRequired
 };
 const mapStateToProps = (state) => ({
@@ -141,4 +139,4 @@ const mapStateToProps = (state) => ({
     groups: state.groups
 });
 
-export default connect(mapStateToProps, { fetchLogin, fetchDeleteDependent, togglePopUp, fetchPopulatedDependents, fetchGroups })(DependentView);
+export default connect(mapStateToProps, { fetchLogin, fetchDeleteDependent, togglePopUp, fetchPopulatedDependents})(DependentView);

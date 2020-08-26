@@ -1,7 +1,5 @@
 import React from 'react';
 
-import BelongsToGroup from './BelongsToGroup';
-
 export default class DepOverview extends React.Component {
     constructor(props){
         super(props);
@@ -26,7 +24,7 @@ export default class DepOverview extends React.Component {
                         <label className="label">Date of Bith</label>
                         <div className="input-group">
                             <input type="date" className="form-control" name="dateOfBirth" placeholder="mm/dd/yyyy"
-                                value={this.props.data.dateOfBirth} onChange={(e)=>{this.props.update("overview","dateOfBirth",e.target.value)}} />
+                                value={this.props.data.values.dateOfBirth} onChange={(e)=>{this.props.update("overview","dateOfBirth",e.target.value)}} />
                             <div className="invalid-feedback" style={{ display: 'block' }}>
                                 {this.props.data.errors.dateOfBirth}&nbsp;
                             </div>

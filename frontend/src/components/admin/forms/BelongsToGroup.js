@@ -12,8 +12,8 @@ export default class BelongsToGroup extends React.Component {
     }
     _getSearchBoxData = () => {
         let data = [];
-        for (var i = 0; i < this.props.groups.all.length; ++i) {
-            data.push({ key: this.props.groups.all[i]._id, value: this.props.groups.all[i].name });
+        for (var i = 0; i < this.props.groups.length; ++i) {
+            data.push({ key: this.props.groups[i]._id, value: this.props.groups[i].name });
         }
         return data;
     }
@@ -49,11 +49,14 @@ export default class BelongsToGroup extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className={"col-lg-4 my-search-box " + (!this.props.data.isYes? 'my-hidden' : '')}>
+                <div className={"col-lg-4 my-search-box " + 
+                    (!this.props.data.isYes? 'my-hidden ' : '') +
+                    (this.props.data.value.length>0? 'my-search-box-selected ' : '')}>
                     <div className="form-group" style={{ marginBottom: '0px' }}>
                         <label className="label">Group Name</label>
                     </div>
-                    <SearchBox _setGroupInput={this._setGroupInput} data={this._getSearchBoxData()} placeholder={"Enter Group Name"} />
+                    <SearchBox _setGroupInput={this._setGroupInput} data={this._getSearchBoxData()} 
+                        placeholder={"Enter Group Name"} defaultValue="test"/>
                     <div className="invalid-feedback" style={{ display: 'block' }}>
                         {this.props.error}&nbsp;
                     </div>

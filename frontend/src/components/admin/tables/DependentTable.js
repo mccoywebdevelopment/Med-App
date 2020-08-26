@@ -50,7 +50,7 @@ class DependentTable extends React.Component{
           group.text = "Yes";
           group.style.color = "#19d895";
         }
-        if(this.props.table.itemSelected == dep._id && this.props.isSmall){
+        if(this.props.selected == dep._id && this.props.isSmall){
           trStyle.background = '#bfe1fb';
         }
       

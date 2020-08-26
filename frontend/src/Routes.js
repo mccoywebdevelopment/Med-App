@@ -13,12 +13,8 @@ const adminRoutes = [
         path: "/admin/dependents",
         component: <DependentView/>,
     },
-    {
-        path: "/admin/dependents/:id",
-        component: <DependentView/>,
-    },
     // {
-    //     path: "/admin/dependents/view",
+    //     path: "/admin/dependents/:id",
     //     component: <DependentView children={<DependentOverview/>}/>
     // }
 ];

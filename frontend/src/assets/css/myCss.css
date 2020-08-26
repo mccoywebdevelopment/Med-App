@@ -256,4 +256,7 @@ input,select,textarea{
 .dependentTable > tbody> tr:nth-child(2n){
   background-color:#F0F1F1;
 }
+.my-search-box-selected>div>input::placeholder{
+  color: blue;
+}
 /*#0056B3*/
