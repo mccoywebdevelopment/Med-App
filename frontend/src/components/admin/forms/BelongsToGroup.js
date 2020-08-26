@@ -18,6 +18,14 @@ export default class BelongsToGroup extends React.Component {
         return data;
     }
     render() {
+        let placeholderValue = "Enter Group Name";
+        if(this.props.data.value.length>0){
+            for(var i=0;i<this.props.groups.length;++i){
+                if(this.props.groups[i]._id == this.props.data.value){
+                    placeholderValue = this.props.groups[i].name;
+                }
+            }
+        }
         return (
             <>
                 <div className="col-lg-4">
@@ -56,7 +64,7 @@ export default class BelongsToGroup extends React.Component {
                         <label className="label">Group Name</label>
                     </div>
                     <SearchBox _setGroupInput={this._setGroupInput} data={this._getSearchBoxData()} 
-                        placeholder={"Enter Group Name"} defaultValue="test"/>
+                        placeholder={placeholderValue} defaultValue="test"/>
                     <div className="invalid-feedback" style={{ display: 'block' }}>
                         {this.props.error}&nbsp;
                     </div>

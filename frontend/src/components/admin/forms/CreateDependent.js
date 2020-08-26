@@ -31,6 +31,7 @@ class CreateDependent extends React.Component {
         // this._test()
     }
     state = {
+        fetchedGroups:false,
         isEdit:false,
         overview:{
             errors:{
@@ -193,7 +194,7 @@ class CreateDependent extends React.Component {
     }
     _toggleGroupBtn = () =>{
         let newState = this.state;
-        if(!newState.overview.values.group.isYes && this.props.groups.all.length<1){
+        if(!newState.overview.values.group.isYes && this.props.groups.length<1){
             alert("No groups");
         }else{
             newState.overview.values.group.isYes = !newState.overview.values.group.isYes;
@@ -359,8 +360,8 @@ class CreateDependent extends React.Component {
     _groupValidation = () =>{
         var error = "";
         var found = false;
-        for(var i=0;i<this.props.groups.all.length;++i){
-            if(this.props.groups.all[i]._id == this.state.overview.values.group.value){
+        for(var i=0;i<this.props.groups.length;++i){
+            if(this.props.groups[i]._id == this.state.overview.values.group.value){
                 found = true;
             }
         }
@@ -467,6 +468,19 @@ class CreateDependent extends React.Component {
                 this._formatSelDep(this.props.isDepSelected);
             }
         });
+    }
+    _fetchGroups = (done) =>{
+        let newState = this.state;
+        this.props.fetchGroups(()=>{
+            newState.fetchedGroups = true;
+            this.setState(newState);
+            done();
+        });
+    }
+    componentWillReceiveProps = (newProps) =>{
+        if(newProps.isDepSelected){
+            this._formatSelDep(newProps.isDepSelected);
+        }
     }
     render() {
         return (

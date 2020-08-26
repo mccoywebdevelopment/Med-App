@@ -10,14 +10,7 @@ import DependentTable from "../../components/admin/tables/DependentTable";
 import Overview from "../../components/admin/Overview/Overview";
 import CreateDependent from "../../components/admin/forms/CreateDependent";
 
-//Make this component redirect to overview
-//overiew just dispatches the store.state to update dependent
-//use window location to update url that way it doesn't have to rerender the overview!!!!!
 class DependentView extends React.Component {
-    /*
-    Height for the table when user selects Dependent will be the max height of the 
-    ViewDependent.
-    */
    state = {
        isOverview:null
    }
@@ -74,7 +67,6 @@ class DependentView extends React.Component {
     render() {
         return (
             <>
-            {!this.state.isRedirect?
                 <div className="row">
                     <div className="col-lg-12">
                         {!this.state.isOverview?
@@ -121,8 +113,6 @@ class DependentView extends React.Component {
                         </div>
                     </div>
                 </div>
-                :<Redirect push to={this.state.isRedirect}/>
-                }
             </>
         );
     }
