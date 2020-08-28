@@ -31,7 +31,6 @@ export const fetchCreateDependent = (depBody,groupID,oldDependents) => (dispatch
 };
 
 export const fetchDeleteDependent = (depID) => (dispatch) => {
-  // dispatch(toggleLoading());
   fetch(API_URI + "/dependents/"+depID.toString()+"/"+localStorage.getItem('JWT'), {
     method: 'DELETE',
     headers: {
@@ -51,7 +50,7 @@ export const fetchDeleteDependent = (depID) => (dispatch) => {
     });
 };
 
-export const fetchPopulatedDependents = () => (dispatch) =>{
+export const fetchPopulatedDependents = (done) => (dispatch) =>{
     dispatch(toggleLoading());
     fetch(API_URI + "/dependents/dependents-medication/medication/"+localStorage.getItem('JWT'), {
       method: 'GET',
@@ -81,7 +80,8 @@ export const fetchPopulatedDependents = () => (dispatch) =>{
               dispatch({
                 type: FETCH_DEPENDENTS,
                 payload: dependents
-              })
+              });
+              done(null,"done");
             });
           }
       });

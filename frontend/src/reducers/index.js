@@ -13,7 +13,7 @@ export default combineReducers({
   message,
   loading,
   popUp,
-  groups,
-  dependents,
+  groupState:groups,
+  dependentState:dependents,
   table
 });

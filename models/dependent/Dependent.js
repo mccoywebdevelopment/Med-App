@@ -15,10 +15,12 @@ var DependentSchema = new mongoose.Schema({
         ref: 'Medication'
     }],
     pictureUrl:String,
+    dateCreated:Date
 
 });
 
 DependentSchema.pre('save',function(next){
+    this.dateCreated = new Date();
     if(this.name.firstName.length<3){
         next("Server Error: First Name must be at least 3 characters.");
     }else if(this.name.lastName.length<3){

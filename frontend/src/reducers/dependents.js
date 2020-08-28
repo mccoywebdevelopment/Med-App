@@ -1,11 +1,18 @@
 import { FETCH_DEPENDENTS } from '../actions/types';
 
-const initialState = []
+const initialState = {
+    fetched:false,
+    data:[]
+}
 
 export default function(state = initialState, action){
     switch(action.type){
         case FETCH_DEPENDENTS:
-            return(action.payload)
+            return{
+                ...state,
+                fetched:true,
+                data:action.payload
+            }
         default:
             return state;
     }

@@ -13,8 +13,7 @@ import MedList from './MedList';
 
 class CreateDependent extends React.Component {
     static propTypes = {
-        dependents: PropTypes.object.isRequired,
-        groups: PropTypes.object.isRequired
+        groupState: PropTypes.object.isRequired
     };
     constructor(props) {
         super(props);
@@ -68,15 +67,15 @@ class CreateDependent extends React.Component {
         newState.overview.values.group = this._getGroupSelDep(dep);
         this.setState(newState);
         console.log(this.state);
-        console.log(this.props.groups);
+        console.log(this.props.groupState.data);
     }
     _getGroupSelDep = (dep) =>{
-        for(var i=0;i<this.props.groups.length;++i){
-            for(var ix=0;ix<this.props.groups[i].dependents.length;++ix){
-                if(dep._id == this.props.groups[i].dependents[ix]._id){
+        for(var i=0;i<this.props.groupState.data.length;++i){
+            for(var ix=0;ix<this.props.groupState.data[i].dependents.length;++ix){
+                if(dep._id == this.props.groupState.data[i].dependents[ix]._id){
                     return{
                         isYes:true,
-                        value:this.props.groups[i]._id
+                        value:this.props.groupState.data[i]._id
                     }
                 }
             }
@@ -194,7 +193,7 @@ class CreateDependent extends React.Component {
     }
     _toggleGroupBtn = () =>{
         let newState = this.state;
-        if(!newState.overview.values.group.isYes && this.props.groups.length<1){
+        if(!newState.overview.values.group.isYes && this.props.groupState.data.length<1){
             alert("No groups");
         }else{
             newState.overview.values.group.isYes = !newState.overview.values.group.isYes;
@@ -360,8 +359,8 @@ class CreateDependent extends React.Component {
     _groupValidation = () =>{
         var error = "";
         var found = false;
-        for(var i=0;i<this.props.groups.length;++i){
-            if(this.props.groups[i]._id == this.state.overview.values.group.value){
+        for(var i=0;i<this.props.groupState.data.length;++i){
+            if(this.props.groupState.data[i]._id == this.state.overview.values.group.value){
                 found = true;
             }
         }
@@ -453,9 +452,9 @@ class CreateDependent extends React.Component {
         this._validation();
         if(!this._isOverviewErrors() && !this._isRxsMedErrors()){
             let oldDependents = null;
-            for(var i=0;i<this.props.groups.length;++i){
-                if(this.props.groups[i]._id == this.state.overview.values.group.value){
-                    oldDependents = this.props.groups[i].dependents;
+            for(var i=0;i<this.props.groupState.data.length;++i){
+                if(this.props.groupState.data[i]._id == this.state.overview.values.group.value){
+                    oldDependents = this.props.groupState.data[i].dependents;
                 }
             }
             this.props.fetchCreateDependent(this._formatBody(),this.state.overview.values.group.value,oldDependents);
@@ -487,7 +486,7 @@ class CreateDependent extends React.Component {
             <>
                 <div className="row">
                     {this.props.isDepSelected?
-                        <div className="col-lg-12">
+                        <div className="col-lg-12" style={{marginBottom:'10px'}}>
                             <h4 style={{display:'inline'}}>Dependent Overview</h4>
                             <i title="edit" className="fas fa-edit" style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
                             <i title="delete" className="fas fa-trash" style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
@@ -498,9 +497,11 @@ class CreateDependent extends React.Component {
                     {/* {this.props.isDepSelected && !this.state.isEdit?
                         <h1>{this.props.isDepSelected.name.firstName}</h1>
                     : */}
-                        <DepOverview data={this.state.overview} update={this._update} updateError={this._updateError}>
+                        <DepOverview data={this.state.overview} update={this._update} updateError={this._updateError} isDepSelected={this.props.isDepSelected}>
+                            {!this.props.isDepSelected?
                             <BelongsToGroup toggle={this._toggleGroupBtn} update={this._updateGroupValue} form={"overview"} 
-                            groups={this.props.groups} data={this.state.overview.values.group} error={this.state.overview.errors.group}/>
+                            groups={this.props.groupState.data} data={this.state.overview.values.group} error={this.state.overview.errors.group}/>
+                            :null}
                         </DepOverview>
                     {/* } */}
 
@@ -552,7 +553,7 @@ CreateDependent.propTypes = {
     fetchGroups: PropTypes.func.isRequired
 };
 const mapStateToProps = (state) => ({
-    groups: state.groups
+    groupState: state.groupState
 });
 
 export default connect(mapStateToProps, { fetchCreateDependent, fetchGroups, togglePopUp, fetchPopulatedDependents })(CreateDependent);

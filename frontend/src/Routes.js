@@ -1,5 +1,5 @@
-import DependentView from "./views/admin/DependentView";
-import DependentOverview from "./views/admin/DependentOverview";
+import DependentView from "./views/admin/DependentsView";
+import DependentDetails from "./views/admin/DependentDetails";
 import GroupView from "./views/admin/GroupView";
 import Login from "./views/shared/Login";
 import React from 'react';
@@ -13,10 +13,10 @@ const adminRoutes = [
         path: "/admin/dependents",
         component: <DependentView/>,
     },
-    // {
-    //     path: "/admin/dependents/:id",
-    //     component: <DependentView children={<DependentOverview/>}/>
-    // }
+    {
+        path: "/admin/dependents/:id",
+        component: <DependentDetails/>
+    }
 ];
 
 const userRoutes = [
