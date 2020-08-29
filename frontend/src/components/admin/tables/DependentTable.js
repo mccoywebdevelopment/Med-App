@@ -15,11 +15,7 @@ class DependentTable extends React.Component{
     console.log(props);
   }
   _selectItem = (dep) =>{
-    if(typeof(this.props.toggleRedirect)!='undefined'){
-      this.props.toggleRedirect(dep);
-    }else{
-      this.props.changeDepSel(dep)
-    }
+    this.props.changeDepSel(dep)
   }
   render(){
     const list=() =>{

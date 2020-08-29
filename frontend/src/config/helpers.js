@@ -10,3 +10,11 @@ export function formateDate(date){
     
     return d;
 }
+export function getPath(window,index){
+    let arr = window.location.pathname.split('/');
+    if(index == "end"){
+        return arr[arr.length-1];
+    }else{
+        return arr[index];
+    }
+}

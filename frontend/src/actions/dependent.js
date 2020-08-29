@@ -81,7 +81,9 @@ export const fetchPopulatedDependents = (done) => (dispatch) =>{
                 type: FETCH_DEPENDENTS,
                 payload: dependents
               });
-              done(null,"done");
+              if(done){
+                done(null,"done");
+              }
             });
           }
       });
