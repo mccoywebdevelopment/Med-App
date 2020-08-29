@@ -43,7 +43,6 @@ export const fetchDeleteDependent = (depID) => (dispatch) => {
       if (res.error) {
         dispatch(createMessage(res.error, 'danger'));
       } else {
-        console.log(res);
         dispatch(createMessage(res.deletedDoc.name.firstName + " was successfully deleted.","info"));
         dispatch(fetchPopulatedDependents());
       }
@@ -66,7 +65,6 @@ export const fetchPopulatedDependents = (done) => (dispatch) =>{
         }else{
             fetch_Groups(dispatch,function(groups){
               var dependents = res;
-              console.log(dependents);
               for(var i=0;i<dependents.length;++i){
                 dependents[i].groups = [];
                 for(var ix=0;ix<groups.length;++ix){

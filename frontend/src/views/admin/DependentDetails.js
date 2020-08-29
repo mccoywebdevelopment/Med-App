@@ -11,7 +11,8 @@ import CreateDependent from '../../components/admin/forms/CreateDependent';
 class DependentDetails extends React.Component{
     state = {
         dependent:null,
-        isRedirect:false
+        isRedirect:false,
+        goHome:false
     }
     static propTypes = {
         dependentState: PropTypes.object.isRequired,
@@ -21,6 +22,7 @@ class DependentDetails extends React.Component{
         super(props);
         this._setDep = this._setDep.bind(this);
         this._toggleRedirect = this._toggleRedirect.bind(this);
+        this._toggleHome = this._toggleHome.bind(this);
     }
     _findDepByID = (id) =>{
         for(var i=0;i<this.props.dependentState.data.length;++i){
@@ -35,14 +37,25 @@ class DependentDetails extends React.Component{
         newState.dependent = dep;
         this.setState(newState);
     }
-    _toggleRedirect = (depID) =>{
-        let newState = this.state;
-        newState.isRedirect = depID;
-        this.setState(newState);
+    _toggleRedirect = (dep) =>{
+        if(!dep){
+            let newState = this.state;
+            newState.isRedirect = false;
+            this.setState(newState);
+        }else if(dep._id != this.state.dependent._id){
+            let newState = this.state;
+            newState.isRedirect = dep._id;
+            this.setState(newState);
+        }
     }
     _redirectURL = () =>{
         return (
-            <Redirect push to={'/admin/dependents/'+this.state.isRedirect._id} />
+            <Redirect push to={'/admin/dependents/'+this.state.isRedirect} />
+        );
+    }
+    _goHome = () =>{
+        return (
+            <Redirect push to={'/admin/dependents/'} />
         );
     }
     _getID = () =>{
@@ -51,9 +64,14 @@ class DependentDetails extends React.Component{
         }
         return "";
     }
+    _toggleHome = () =>{
+        let newState = this.state;
+        newState.goHome = true;
+        this.setState(newState);
+    }
     componentDidUpdate = () =>{
         let id = getPath(window,"end");
-        if(id != this.state.dependent._id){
+        if(id != this.state.dependent._id && !this.state.goHome){
             this._setDep(this._findDepByID(id));
             this._toggleRedirect(false);
         }
@@ -64,7 +82,6 @@ class DependentDetails extends React.Component{
             this.props.fetchPopulatedDependents(()=>{});
         }
         this._setDep(this._findDepByID(id));
-        console.log(this.state)
     }
     render(){
         return(
@@ -73,17 +90,21 @@ class DependentDetails extends React.Component{
                 <>
                     {this._redirectURL()}
                 </>
+            :this.state.goHome?
+                <>
+                    {this._goHome()}
+                </>
             :
             <div className="row">
                 <div className="col-lg-6">
                     {this.props.dependentState.data?
-                    <DependentTable selected={this._getID()} changeDepSel={this._toggleRedirect} dependents={this.props.dependentState.data}
-                        isSmall={true}/>
+                    <DependentTable selected={this._getID()} changeDepSel={this._toggleRedirect} 
+                        dependents={this.props.dependentState.data} isSmall={true}/>
                     :null}
                 </div>
                 <div className="col-lg-6">
                     <div className="card" style={{padding:"20px"}}>
-                        <CreateDependent isDepSelected={this.state.dependent}/>
+                        <CreateDependent isDepSelected={this.state.dependent} goHome={this._toggleHome}/>
                     </div>
                 </div>
             </div>

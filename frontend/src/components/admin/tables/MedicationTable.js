@@ -3,7 +3,6 @@ import React from "react";
 export default class MedicationTable extends React.Component{
   constructor(props){
     super(props);
-    console.log(this.props)
   }
   render(){
     var left = [];

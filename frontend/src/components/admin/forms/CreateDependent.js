@@ -66,8 +66,6 @@ class CreateDependent extends React.Component {
         newState.overview.values.dateOfBirth = dep.dateOfBirth;
         newState.overview.values.group = this._getGroupSelDep(dep);
         this.setState(newState);
-        console.log(this.state);
-        console.log(this.props.groupState.data);
     }
     _getGroupSelDep = (dep) =>{
         for(var i=0;i<this.props.groupState.data.length;++i){
@@ -490,7 +488,7 @@ class CreateDependent extends React.Component {
                             <h4 style={{display:'inline'}}>Dependent Overview</h4>
                             <i title="edit" className="fas fa-edit" style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
                             <i title="delete" className="fas fa-trash" style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
-                            <i title="close" style={{float:'right'}} className="fas fa-times"></i>
+                            <i title="close" onClick={()=>{this.props.goHome()}} style={{float:'right'}} className="fas fa-times"></i>
                         </div>
                         :null
                     }

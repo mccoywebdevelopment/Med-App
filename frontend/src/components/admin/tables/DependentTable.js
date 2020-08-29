@@ -12,7 +12,6 @@ class DependentTable extends React.Component{
   };
   constructor(props){
     super(props);
-    console.log(props);
   }
   _selectItem = (dep) =>{
     this.props.changeDepSel(dep)

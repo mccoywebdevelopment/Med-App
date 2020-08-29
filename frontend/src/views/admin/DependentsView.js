@@ -20,7 +20,6 @@ class DependentView extends React.Component {
         super(props);
         this._deleteDependent = this._deleteDependent.bind(this);
         this._toggleRedirect = this._toggleRedirect.bind(this);
-        console.log(this.props)
     }
     _getTotalNumberOfDependents = () =>{
         return this.props.dependentState.data.length;
@@ -29,7 +28,6 @@ class DependentView extends React.Component {
         let newState = this.state;
         window.location = "/admin/dependents/" + dep._id
         this.setState(newState);
-        console.log(this.state);
     }
     _getAverageAge = () =>{
         if(this.props.dependentState.data.length<1){
@@ -60,7 +58,6 @@ class DependentView extends React.Component {
         }
     }
     componentDidMount = () =>{
-        console.log(this.props)
         this.props.fetchPopulatedDependents(()=>{});
     }
     render() {
@@ -86,7 +83,7 @@ class DependentView extends React.Component {
                             <div className="col-lg-12">
                                 {this.props.dependentState.data.length>0?
                                 <DependentTable dependents={this.props.dependentState.data} delete={this._deleteDependent} 
-                                    toggleRedirect={this._toggleRedirect}/>
+                                    changeDepSel={this._toggleRedirect}/>
                                 :null}
                             </div>
                         </div>
