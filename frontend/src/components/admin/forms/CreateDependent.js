@@ -75,16 +75,24 @@ class CreateDependent extends React.Component {
 
         newState.oldData = {
             overview:JSON.stringify(newState.overview.values),
-            rxsMedList:JSON.stringify(newState.rxsMedList.list.values)
+            rxsMedList:JSON.stringify(this._getRxsValues(newState.rxsMedList))
         }
 
         this.setState(newState);
+        console.log(this.state);
+    }
+    _getRxsValues =(rxsMedList)=>{
+        let data =[];
+        for(var i=0;i<rxsMedList.list.length;++i){
+            data.push(rxsMedList.list[i].values);
+        }
+        return data;
     }
     _isUpdated = () =>{
         let oldDataOverview = this.state.oldData.overview;
         let oldDataRxs = this.state.oldData.rxsMedList;
         let overview = JSON.stringify(this.state.overview.values);
-        let rxs = JSON.stringify(this.state.rxsMedList.list.values);
+        let rxs = JSON.stringify(this._getRxsValues(this.state.rxsMedList));
 
         // console.log(oldDataRxs);
         // console.log(rxs);
@@ -560,7 +568,8 @@ class CreateDependent extends React.Component {
                             <h4 style={{display:'inline'}}>Dependent Overview</h4>
                             <i title="edit" onClick={()=>{this._toggleIsEditOverview()}} className="fas fa-edit" 
                                 style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
-                            <i title="delete" className="fas fa-trash" style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
+                            <i title="delete" onClick={()=>{this.props.delete(this.props.isDepSelected)}} className="fas fa-trash"
+                                style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
                             <i title="close" onClick={()=>{this.props.goHome()}} style={{float:'right'}} className="fas fa-times"></i>
                         </div>
                         :null

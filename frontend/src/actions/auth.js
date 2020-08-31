@@ -4,7 +4,7 @@ import { toggleLoading } from './loading';
 import { API_URI } from '../config/variables';
 
 export const fetchLogin = postData => dispatch => {
-  dispatch(toggleLoading());
+  dispatch(toggleLoading(true));
   fetch(API_URI + "/auth/login", {
     method: 'POST',
     headers: {
@@ -14,7 +14,7 @@ export const fetchLogin = postData => dispatch => {
   })
     .then(res => res.json())
     .then(res => {
-      dispatch(toggleLoading());
+      dispatch(toggleLoading(false));
       if (res.error) {
         dispatch(createMessage(res.error, 'danger'));
       } else {

@@ -4,7 +4,7 @@ import { toggleLoading } from './loading';
 import { API_URI } from '../config/variables';
 
 export const fetchGroups = (done) => (dispatch) =>{
-    dispatch(toggleLoading());
+    dispatch(toggleLoading(true));
     fetch(API_URI + "/groups/" + localStorage.getItem('JWT'), {
       method: 'GET',
       headers: {
@@ -13,7 +13,7 @@ export const fetchGroups = (done) => (dispatch) =>{
     })
     .then(res => res.json())
     .then(res => {
-      dispatch(toggleLoading());
+      dispatch(toggleLoading(false));
       if (res.error) {
         dispatch(createMessage(res.error, 'danger'));
       } else {
@@ -28,7 +28,7 @@ export const fetchGroups = (done) => (dispatch) =>{
 
 
 export const addDependent = (groupID, newDependent, oldDependents) => (dispatch) => {
-  dispatch(toggleLoading());
+  dispatch(toggleLoading(true));
   if (!oldDependents) {
     oldDependents = [];
   }
@@ -45,7 +45,7 @@ export const addDependent = (groupID, newDependent, oldDependents) => (dispatch)
   })
     .then(res => res.json())
     .then(res => {
-      dispatch(toggleLoading());
+      dispatch(toggleLoading(false));
       if (res.error) {
         dispatch(createMessage(res.error, 'danger'));
       }

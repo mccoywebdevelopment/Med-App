@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchPopulatedDependents } from '../../actions/dependent';
+import { fetchPopulatedDependents, fetchDeleteDependent } from "../../actions/dependent";
 import { getPath } from '../../config/helpers';
 import { Redirect } from 'react-router-dom';
 
@@ -23,6 +23,13 @@ class DependentDetails extends React.Component{
         this._setDep = this._setDep.bind(this);
         this._toggleRedirect = this._toggleRedirect.bind(this);
         this._toggleHome = this._toggleHome.bind(this);
+        this._deleteDependent = this._deleteDependent.bind(this);
+
+        let id = getPath(window,"end");
+        if(!this.props.dependentState.fetched){
+            this.props.fetchPopulatedDependents(()=>{});
+        }
+        this._setDep(this._findDepByID(id));
     }
     _findDepByID = (id) =>{
         for(var i=0;i<this.props.dependentState.data.length;++i){
@@ -69,9 +76,17 @@ class DependentDetails extends React.Component{
         newState.goHome = true;
         this.setState(newState);
     }
+    _deleteDependent = (dep) =>{
+        if(window.confirm("Are you sure you want to delete "+dep.name.firstName+" profile and all their data?")){
+            this.props.fetchDeleteDependent(dep._id);
+        }
+    }
     componentDidUpdate = () =>{
         let id = getPath(window,"end");
-        if(id != this.state.dependent._id && !this.state.goHome){
+        if(!this.state.dependent){
+            
+        }
+        else if(id != this.state.dependent._id && !this.state.goHome){
             this._setDep(this._findDepByID(id));
             this._toggleRedirect(false);
         }
@@ -104,7 +119,7 @@ class DependentDetails extends React.Component{
                 </div>
                 <div className="col-lg-6">
                     <div className="card" style={{padding:"20px"}}>
-                        <CreateDependent isDepSelected={this.state.dependent} goHome={this._toggleHome}/>
+                        <CreateDependent isDepSelected={this.state.dependent} goHome={this._toggleHome} delete={this._deleteDependent}/>
                     </div>
                 </div>
             </div>
@@ -114,10 +129,11 @@ class DependentDetails extends React.Component{
     }
 }
 DependentDetails.propTypes = {
-    fetchPopulatedDependents: PropTypes.func.isRequired
+    fetchPopulatedDependents: PropTypes.func.isRequired,
+    fetchDeleteDependent: PropTypes.func.isRequired
 }
 const mapStateToProps = (state) => ({
     dependentState: state.dependentState,
     groupState: state.groupState
 });
-export default connect(mapStateToProps,{fetchPopulatedDependents})(DependentDetails);
+export default connect(mapStateToProps,{fetchPopulatedDependents,fetchDeleteDependent})(DependentDetails);

@@ -1,4 +1,3 @@
 TODO:
 
-- for select dependent we need a id parameter in window that prevents
-    react from rerender losing data.
+- 

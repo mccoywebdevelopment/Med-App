@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { fetchLogin } from "../../actions/auth";
 import { togglePopUp } from '../../actions/popUp';
 import { fetchPopulatedDependents, fetchDeleteDependent } from "../../actions/dependent";
-import { Redirect } from 'react-router-dom';
 
 import DependentTable from "../../components/admin/tables/DependentTable";
 import Overview from "../../components/admin/Overview/Overview";

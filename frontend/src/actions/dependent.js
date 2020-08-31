@@ -7,7 +7,7 @@ import { FETCH_DEPENDENTS } from './types';
 // CREATE MESSAGE
 
 export const fetchCreateDependent = (depBody,groupID,oldDependents) => (dispatch) => {
-  dispatch(toggleLoading());
+  dispatch(toggleLoading(true));
   fetch(API_URI + "/dependents/"+localStorage.getItem('JWT'), {
     method: 'POST',
     headers: {
@@ -17,7 +17,7 @@ export const fetchCreateDependent = (depBody,groupID,oldDependents) => (dispatch
   })
     .then(res => res.json())
     .then(res => {
-      dispatch(toggleLoading());
+      dispatch(toggleLoading(false));
       if (res.error) {
         dispatch(createMessage(res.error, 'danger'));
       } else {
@@ -50,7 +50,7 @@ export const fetchDeleteDependent = (depID) => (dispatch) => {
 };
 
 export const fetchPopulatedDependents = (done) => (dispatch) =>{
-    dispatch(toggleLoading());
+    dispatch(toggleLoading(true));
     fetch(API_URI + "/dependents/dependents-medication/medication/"+localStorage.getItem('JWT'), {
       method: 'GET',
       headers: {
@@ -59,7 +59,7 @@ export const fetchPopulatedDependents = (done) => (dispatch) =>{
     })
       .then(res => res.json())
       .then(res => {
-        dispatch(toggleLoading());
+        dispatch(toggleLoading(false));
         if (res.error) {
           dispatch(createMessage(res.error,'danger'));
         }else{
