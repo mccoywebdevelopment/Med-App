@@ -22,5 +22,5 @@ export const createMessage = (text,alertType) => (dispatch) =>{
         alertType:""
       }
     })
-  },7000)
+  },2000)
 };

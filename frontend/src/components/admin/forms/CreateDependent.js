@@ -27,11 +27,14 @@ class CreateDependent extends React.Component {
         this._toggleEditRxsMed = this._toggleEditRxsMed.bind(this);
         this._toggleExpandRxsMed = this._toggleExpandRxsMed.bind(this);
 
-        // this._test()
+        this._test()
     }
     state = {
+        oldData:{
+            overview:null,
+            rxsMedList:null
+        },
         fetchedGroups:false,
-        isEdit:false,
         overview:{
             errors:{
                 name:"",
@@ -46,7 +49,8 @@ class CreateDependent extends React.Component {
                     value:""
                 }
             },
-            body:null
+            body:null,
+            isEdit:false,
         },
         rxsMedList:{
             isAdd:false,
@@ -62,10 +66,73 @@ class CreateDependent extends React.Component {
     }
     _formatSelDep = (dep) =>{
         let newState = this.state;
+
         newState.overview.values.name = dep.name.firstName + " " + dep.name.lastName;
         newState.overview.values.dateOfBirth = dep.dateOfBirth;
         newState.overview.values.group = this._getGroupSelDep(dep);
+        
+        newState.rxsMedList.list = this._getRxsSelDep(dep);
+
+        newState.oldData = {
+            overview:JSON.stringify(newState.overview.values),
+            rxsMedList:JSON.stringify(newState.rxsMedList.list.values)
+        }
+
         this.setState(newState);
+    }
+    _isUpdated = () =>{
+        let oldDataOverview = this.state.oldData.overview;
+        let oldDataRxs = this.state.oldData.rxsMedList;
+        let overview = JSON.stringify(this.state.overview.values);
+        let rxs = JSON.stringify(this.state.rxsMedList.list.values);
+
+        // console.log(oldDataRxs);
+        // console.log(rxs);
+
+        if(oldDataOverview != overview || oldDataRxs != rxs){
+            return true;
+        }
+        return false;
+    }
+    _getRxsSelDep = (dep) =>{
+        let list = [];
+        let index = 0;
+        for(var i=0;i<dep.rxs.length;++i){
+            for(var ix=0;ix<dep.rxs[i].rxsMedications.length;++ix){
+                list.push({
+                    index:index,
+                    errors:{
+                        name:"",
+                        reason:"",
+                        datePrescribed:"",
+                        instructions:"",
+                        endDate:"",
+                        dosageQuantity:"",
+                        dosageUnits:"",
+                        doctorName:"",
+                        doctorPhone:"",
+                        rxsNumber:"",
+                        whenToTake:""
+                    },
+                    values:{
+                        name:dep.rxs[i].rxsMedications[ix].name,
+                        reason:dep.rxs[i].rxsMedications[ix].reason,
+                        datePrescribed:dep.rxs[i].rxsMedications[ix].datePrescribed,
+                        instructions:dep.rxs[i].rxsMedications[ix].instructions || "",
+                        endDate:dep.rxs[i].rxsMedications[ix].endDate || "",
+                        dosageQuantity:dep.rxs[i].rxsMedications[ix].dosage.quantity,
+                        dosageUnits:dep.rxs[i].rxsMedications[ix].dosage.unit,
+                        doctorName:dep.rxs[i].doctorContacts.name.firstName + " " + dep.rxs[i].doctorContacts.name.lastName,
+                        doctorPhone:dep.rxs[i].doctorContacts.phoneNumber,
+                        rxsNumber:dep.rxs[i].rxsNumber,
+                        whenToTake:dep.rxs[i].rxsMedications[ix].whenToTake.value || ""
+                    },
+                    body:null
+                });
+                index = index + 1;
+            }
+        }
+        return list;
     }
     _getGroupSelDep = (dep) =>{
         for(var i=0;i<this.props.groupState.data.length;++i){
@@ -216,6 +283,11 @@ class CreateDependent extends React.Component {
         if(this.state.overview.values.group.isYes){
             newState.overview.errors.group = this._groupValidation();
         }
+        this.setState(newState);
+    }
+    _toggleIsEditOverview = () =>{
+        let newState = this.state;
+        newState.overview.isEdit = !newState.overview.isEdit;
         this.setState(newState);
     }
     _test = () =>{
@@ -486,28 +558,29 @@ class CreateDependent extends React.Component {
                     {this.props.isDepSelected?
                         <div className="col-lg-12" style={{marginBottom:'10px'}}>
                             <h4 style={{display:'inline'}}>Dependent Overview</h4>
-                            <i title="edit" className="fas fa-edit" style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
+                            <i title="edit" onClick={()=>{this._toggleIsEditOverview()}} className="fas fa-edit" 
+                                style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
                             <i title="delete" className="fas fa-trash" style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
                             <i title="close" onClick={()=>{this.props.goHome()}} style={{float:'right'}} className="fas fa-times"></i>
                         </div>
                         :null
                     }
-                    {/* {this.props.isDepSelected && !this.state.isEdit?
-                        <h1>{this.props.isDepSelected.name.firstName}</h1>
-                    : */}
-                        <DepOverview data={this.state.overview} update={this._update} updateError={this._updateError} isDepSelected={this.props.isDepSelected}>
-                            {!this.props.isDepSelected?
+                        <DepOverview data={this.state.overview} update={this._update} updateError={this._updateError} 
+                            isDepSelected={this.props.isDepSelected} groups={this.props.groupState.data}>
+                            {!this.props.isDepSelected || this.state.overview.isEdit?
                             <BelongsToGroup toggle={this._toggleGroupBtn} update={this._updateGroupValue} form={"overview"} 
-                            groups={this.props.groupState.data} data={this.state.overview.values.group} error={this.state.overview.errors.group}/>
+                                groups={this.props.groupState.data} data={this.state.overview.values.group} 
+                                error={this.state.overview.errors.group}/>
                             :null}
                         </DepOverview>
-                    {/* } */}
-
                 </div>
                 <div className="row" style={{marginTop:'10px'}}>
                     <div className="col-lg-12">
-                        <h4 style={{display:'inline'}}>RXS Medications <span style={{fontSize:'17px'}}>({this.state.rxsMedList.list.length})</span></h4>
-                        <i title="add" className="fas fa-plus" onClick={this._toggleRxsMedAdd} style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
+                        <h4 style={{display:'inline'}}>RXS Medications <span style={{fontSize:'17px'}}>
+                            ({this.state.rxsMedList.list.length})
+                            </span></h4>
+                        <i title="add" className="fas fa-plus" onClick={this._toggleRxsMedAdd} 
+                            style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
                         {this.state.rxsMedList.isAdd?
                             <i title="delete empty med" className="fas fa-trash" 
                                 onClick={()=>{this._toggleRxsMedDelete(this.state.rxsMedList.list.length-1)}} 
@@ -536,7 +609,12 @@ class CreateDependent extends React.Component {
                     </div>
                 </div> */}
                 <div className="row" style={{marginTop:'30px',marginBottom:'30px'}}>
-                    <button className="btn btn-primary" onClick={()=>{this._submit()}}>Submit</button>
+                    {!this.props.isDepSelected?
+                        <button className="btn btn-primary" onClick={()=>{this._submit()}}>Submit</button>
+                    :this.props.isDepSelected && this._isUpdated()?
+                        <button className="btn btn-primary" onClick={()=>{this._submit()}}>Update</button>
+                    :   <button className="btn btn-primary" style={{visibility:'hidden'}}>&nbsp;</button>
+                    }
                 </div>
             </>
 

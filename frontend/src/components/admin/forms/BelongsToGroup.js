@@ -33,7 +33,7 @@ export default class BelongsToGroup extends React.Component {
                         <label className="label">Belongs to Group</label>
                     </div>
                     <div className="form-group row">
-                        <div className="col-sm-4" style={{ paddingLeft: '0px' }}>
+                        <div className="col-sm-6" style={{ paddingLeft: '0px' }}>
                             <div className="form-radio">
                                 <label className="form-check-label">
                                     <input readOnly={true} type="radio" className="form-check-input"
@@ -45,7 +45,7 @@ export default class BelongsToGroup extends React.Component {
                                 </label>
                             </div>
                         </div>
-                        <div className="col-sm-5">
+                        <div className="col-sm-6">
                             <div className="form-radio">
                                 <label className="form-check-label">
                                     <input readOnly={true} type="radio" className="form-check-input" name="membershipRadios"

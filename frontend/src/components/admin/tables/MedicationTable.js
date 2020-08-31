@@ -1,4 +1,5 @@
 import React from "react";
+import { formateDate } from "../../../config/helpers";
 
 export default class MedicationTable extends React.Component{
   constructor(props){
@@ -39,7 +40,7 @@ export default class MedicationTable extends React.Component{
                 <td>{element.values.name}</td>
                 <td>{element.values.dosageQuantity} {element.values.dosageUnits}</td>
                 <td>{element.values.rxsNumber}</td>
-                <td>{element.values.datePrescribed}</td>
+                <td>{formateDate(element.values.datePrescribed)}</td>
                 <td>
                   <i onClick={()=>{this.props.edit(element.index)}} title="edit" className="fas fa-edit" style={{ paddingRight: '20px', color: '#2196F3' }}></i>
                   <i onClick={()=>{this.props.delete(element.index)}} title="Delete" className="fas fa-trash" style={{ color: '#2196F3' }}></i>
@@ -47,22 +48,25 @@ export default class MedicationTable extends React.Component{
             </tr>
             {element.isExpand?
               <>
-              <tr index={"medTableInside^&*&^"+index} className="no-border" style={style}>
+              <tr index={"lkjmedTableInside^sdf&*&^"+index} className="no-border" style={style}>
                 <td></td>
-                <td>
-                  <span className="inner-title">Doctor's Name:</span>{element.values.doctorName}
-                </td>
-                <td>
-                <span className="inner-title">Doctor's Number:</span>{element.values.doctorPhone}
-                </td>
-                <td>
-                <span className="inner-title">End Date:</span>{element.values.endDate}
-                </td>
                 <td colSpan="2">
-                <span className="inner-title">When to Take:</span>{element.values.whenToTake}
+                  <span className="inner-title">Doctor's Name:</span><br/><br/>{element.values.doctorName}
+                </td>
+                <td colSpan="3">
+                <span className="inner-title">Doctor's Number:</span><br/><br/>{element.values.doctorPhone}
                 </td>
               </tr>
-              <tr index={"medTableInhjkhkhside^&*&^"+index} className="no-border-top" style={style}>
+              <tr index={"medTableInside^&23*&^"+index} className="no-border" style={style}>
+                <td></td>
+                <td colSpan="2">
+                <span className="inner-title">End Date:</span><br/><br/>{element.values.endDate}
+                </td>
+                <td colSpan="3">
+                <span className="inner-title">When to Take:</span><br/><br/>{element.values.whenToTake}
+                </td>
+              </tr>
+              <tr index={"mAedTableInhjkhkhside^&*&^"+index} className="no-border-top" style={style}>
                 <th scope="row" style={{paddingBottom:'0',paddingTop:'0',borderTop:'none'}}>
                   <p style={{marginBottom:'0px',paddingTop:'28px'}}></p>
                   <p onClick={()=>{this.props.expandItem(element.index)}} title="view rest of med" 
