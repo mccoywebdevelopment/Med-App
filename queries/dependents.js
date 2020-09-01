@@ -35,6 +35,8 @@ function patchUpdateDependentById(body,id,callback){
       if(err){
         callback(err);
       }else{
+        console.log("1.1")
+        console.log(foundDoc);
         updateModifiedFields(foundDoc,body.updatedFields,function(err,obj){
           if(err){
             callback(err);
@@ -85,6 +87,7 @@ function updateModifiedFields(oldDoc,updatedFields,callback){
   }
   if(updatedFields.rxs){
     createRxsAndAttatch(obj,updatedFields.rxs,function(err,obj){
+      console.log('2.2')
       if(err){
         callback(err);
       }else{

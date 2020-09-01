@@ -5,6 +5,43 @@ import { addDependent } from './group';
 import { FETCH_DEPENDENTS } from './types';
 
 // CREATE MESSAGE
+/*
+  isGroupModified:{
+     groupID:group.value,
+    isSwitched:true,
+    isRemoved:false,
+    isAdd:false
+  } or null
+*/
+
+export const fetchUpdateDependent = (id,depBody,groups,isGroupModified,oldDependents) => (dispatch) => {
+  depBody = {
+    updatedFields:depBody
+  }
+  dispatch(toggleLoading(true));
+  fetch(API_URI + "/dependents/"+id+"/"+localStorage.getItem('JWT'), {
+    method: 'PATCH',
+    headers: {
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify(depBody)
+  })
+    .then(res => res.json())
+    .then(res => {
+      dispatch(toggleLoading(false));
+      if (res.error) {
+        dispatch(createMessage(res.error, 'danger'));
+      } else {
+        if(isGroupModified){
+          if(isGroupModified.isAdd){
+            dispatch(addDependent(isGroupModified.groupID,res,oldDependents));
+          }
+        }
+        dispatch(createMessage(depBody.firstName + " was successfully updated.","success"));
+        dispatch(fetchPopulatedDependents());
+      }
+    });
+};
 
 export const fetchCreateDependent = (depBody,groupID,oldDependents) => (dispatch) => {
   dispatch(toggleLoading(true));

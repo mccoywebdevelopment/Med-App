@@ -51,3 +51,32 @@ export const addDependent = (groupID, newDependent, oldDependents) => (dispatch)
       }
     });
 }
+
+export const deleteDependent = (groupID, newDependent, oldDependents) => (dispatch) => {
+  dispatch(toggleLoading(true));
+  if (!oldDependents) {
+    oldDependents = [];
+  }
+  oldDependents.splice(newDependent);
+  let updatedFields = {
+    dependents: oldDependents
+  }
+  fetch(API_URI + "/groups/" + groupID + "/" + localStorage.getItem('JWT'), {
+    method: 'PATCH',
+    body: JSON.stringify({ updatedFields: updatedFields }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then(res => res.json())
+    .then(res => {
+      dispatch(toggleLoading(false));
+      if (res.error) {
+        dispatch(createMessage(res.error, 'danger'));
+      }
+    });
+}
+
+function getIndexOfDep(groups){
+  
+}
