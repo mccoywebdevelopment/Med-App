@@ -1,5 +1,5 @@
-import { CREATE_MESSAGE } from './types';
-import { togglePopUp } from './popUp'
+import { CREATE_MESSAGE, CHANGE_REDIRECT_URL } from './types';
+import { togglePopUp } from './popUp';
 
 
 // CREATE MESSAGE
@@ -21,6 +21,12 @@ export const createMessage = (text,alertType) => (dispatch) =>{
         text:"",
         alertType:""
       }
-    })
+    });
+    if(text=="Token expired"){
+      dispatch({
+        type: CHANGE_REDIRECT_URL,
+        payload:"/auth/login"
+      })
+    }
   },5000)
 };
