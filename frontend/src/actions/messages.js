@@ -22,7 +22,7 @@ export const createMessage = (text,alertType) => (dispatch) =>{
         alertType:""
       }
     });
-    if(text=="Token expired"){
+    if(text=="Token expired" || text=="User not found."){
       dispatch({
         type: CHANGE_REDIRECT_URL,
         payload:"/auth/login"

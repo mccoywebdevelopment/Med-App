@@ -13,8 +13,8 @@
   height: calc(90% - 40px);
   width: calc(100% - 60px);
   position: absolute;
-  padding-left: 50px;
-  padding-right: 50px;
+  padding-left: 25px;
+  padding-right: 25px;
   
 }
 .my-top-nav{

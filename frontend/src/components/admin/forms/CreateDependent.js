@@ -29,7 +29,7 @@ class CreateDependent extends React.Component {
         this._toggleEditRxsMed = this._toggleEditRxsMed.bind(this);
         this._toggleExpandRxsMed = this._toggleExpandRxsMed.bind(this);
 
-        this._test()
+        // this._test()
     }
     state = {
         oldData: {

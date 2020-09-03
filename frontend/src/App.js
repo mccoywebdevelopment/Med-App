@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Route, Switch } from "react-router";
+import { Route, Switch } from "react-router-dom";
 import { BrowserRouter } from 'react-router-dom'
 import { adminRoutes, authRoutes } from "./Routes";
 import { changeRedirectURL } from "./actions/auth";

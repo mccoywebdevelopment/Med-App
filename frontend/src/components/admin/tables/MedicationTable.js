@@ -30,24 +30,28 @@ export default class MedicationTable extends React.Component{
           style.background = "#ededed";
         }
         return(
-          <>
+          <React.Fragment key={"slk3(((asdf"+index}>
               <tr index={"medTable^&*&^"+index} style={style}>
                 <th scope="row" style={{paddingBottom:'0',paddingTop:'0'}}>
                   <p style={{marginBottom:'0px',paddingTop:'28px'}}>{index + 1}</p>
                   <p onClick={()=>{this.props.expandItem(element.index)}} title="view rest of med" 
-                    style={{color:'#2196F3',paddingTop:"5px",marginBottom:'10px',cursor:"pointer"}}>{!element.isExpand?"More":""}&nbsp;</p>
+                    style={{color:'#2196F3',paddingTop:"5px",marginBottom:'10px',cursor:"pointer"}}>
+                      {!element.isExpand?"More":""}&nbsp;
+                  </p>
                 </th>
                 <td>{element.values.name}</td>
                 <td>{element.values.dosageQuantity} {element.values.dosageUnits}</td>
                 <td>{element.values.rxsNumber}</td>
                 <td>{formateDate(element.values.datePrescribed)}</td>
                 <td>
-                  <i onClick={()=>{this.props.edit(element.index)}} title="edit" className="fas fa-edit" style={{ paddingRight: '20px', color: '#2196F3' }}></i>
-                  <i onClick={()=>{this.props.delete(element.index)}} title="Delete" className="fas fa-trash" style={{ color: '#2196F3' }}></i>
+                  <i onClick={()=>{this.props.edit(element.index)}} title="edit" className="fas fa-edit" 
+                    style={{ paddingRight: '20px', color: '#2196F3' }}></i>
+                  <i onClick={()=>{this.props.delete(element.index)}} title="Delete" className="fas fa-trash" 
+                    style={{ color: '#2196F3' }}></i>
                 </td>
             </tr>
             {element.isExpand?
-              <>
+              <React.Fragment key={"slk3((("+index}>
               <tr index={"lkjmedTableInside^sdf&*&^"+index} className="no-border" style={style}>
                 <td></td>
                 <td colSpan="2">
@@ -77,10 +81,10 @@ export default class MedicationTable extends React.Component{
                 <td colSpan="3" style={{verticalAlign:'top'}}>
                   <span className="inner-title">Intructions:</span><br/><br/>{element.values.instructions}</td>
               </tr>
-              </>
+              </React.Fragment>
               :null
             }
-          </>
+          </React.Fragment>
         )
       });
     }

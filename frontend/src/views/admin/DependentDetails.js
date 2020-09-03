@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { fetchPopulatedDependents, fetchDeleteDependent } from "../../actions/dependent";
 import { getPath } from '../../config/helpers';
 import { Redirect } from 'react-router-dom';
+import { browserHistory } from 'react-router';
 
 import DependentTable from '../../components/admin/tables/DependentTable';
 import CreateDependent from '../../components/admin/forms/CreateDependent';
@@ -83,12 +84,11 @@ class DependentDetails extends React.Component{
     }
     componentDidUpdate = () =>{
         let id = getPath(window,"end");
-        if(!this.state.dependent){
-            
-        }
-        else if(id != this.state.dependent._id && !this.state.goHome){
+        if(id != this.state.dependent._id && !this.state.goHome){
             this._setDep(this._findDepByID(id));
             this._toggleRedirect(false);
+        }else if(id != this.state.dependent._id){
+            this._setDep(this._findDepByID(id));
         }
     }
     componentDidMount =()=>{
@@ -97,6 +97,13 @@ class DependentDetails extends React.Component{
             this.props.fetchPopulatedDependents(()=>{});
         }
         this._setDep(this._findDepByID(id));
+
+        this.backListener = browserHistory.listen(location => {
+            if (location.action === "POP") {
+                id = getPath(window,"end");
+                this._setDep(this._findDepByID(id));
+            }
+        });
     }
     render(){
         return(
@@ -111,13 +118,13 @@ class DependentDetails extends React.Component{
                 </>
             :
             <div className="row">
-                <div className="col-lg-6">
+                <div className="col-lg-6" style={{paddingLeft:'0px'}}>
                     {this.props.dependentState.data?
                     <DependentTable selected={this._getID()} changeDepSel={this._toggleRedirect} 
                         dependents={this.props.dependentState.data} isSmall={true}/>
                     :null}
                 </div>
-                <div className="col-lg-6">
+                <div className="col-lg-6" style={{padding:'none'}} style={{paddingRight:'0px'}}>
                     <div className="card" style={{padding:"20px"}}>
                         <CreateDependent isDepSelected={this.state.dependent} goHome={this._toggleHome} delete={this._deleteDependent}/>
                     </div>

@@ -50,8 +50,7 @@ class DependentTable extends React.Component{
         }
       
         return(
-          <>
-            <tr style={trStyle}>
+            <tr style={trStyle} key={"depTable"+index}>
               <th scope="row" onClick={()=>{this._selectItem(dep._id)}}>{index + 1}</th>
               <td onClick={()=>this._selectItem(dep)}>{dep.name.firstName + " " + dep.name.lastName}</td>
               {!this.props.isSmall?<td>{age}</td>:null}
@@ -67,7 +66,6 @@ class DependentTable extends React.Component{
               </td>
               :null}
             </tr>
-            </>
         );
       });
     }

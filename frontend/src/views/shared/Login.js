@@ -47,7 +47,7 @@ class Login extends React.Component{
   }
   _renderForm =() =>{
     return (
-      <div className="container-scroller" style={{ height: 'auto', minHeight: 'initial' }}>
+      <div className="container-scroller" style={{ height: 'auto', minHeight: 'initial' }} style={{marginTop:'100px'}}>
         <div className="container-fluid page-body-wrapper full-page-wrapper" style={{ height: 'auto', minHeight: 'initial' }}>
           <div className="content-wrapper d-flex align-items-center auth  theme-one" style={{ background: 'transparent', height: 'auto', minHeight: 'initial' }}>
             <div className="row w-100">
@@ -63,7 +63,7 @@ class Login extends React.Component{
                         </div>
                       </div>
                     </div>
-                    <div className="form-group" style={{marginBottom:'30px'}}>
+                    <div className="form-group" style={{marginBottom:'60px'}}>
                       <label className="label">Password</label>
                       <div className="input-group">
                         <input type="password" className="form-control" placeholder="*********" name="password" value={this.state.password} onChange={this._updateFormData} />

@@ -21,7 +21,7 @@ export default class RxsMedForm extends React.Component {
         }
         return (
             <>
-                <div ref={scrollTo} className="col-lg-3">
+                <div ref={scrollTo} className="col-lg-4">
                     <div className="form-group">
                         <label className="label">Medication Name</label>
                         <div className="input-group">
@@ -33,7 +33,7 @@ export default class RxsMedForm extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="col-lg-3">
+                <div className="col-lg-4">
                     <div className="form-group">
                         <label className="label">Reason</label>
                         <div className="input-group">
@@ -45,7 +45,7 @@ export default class RxsMedForm extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="col-lg-3">
+                <div className="col-lg-4">
                     <div className="form-group">
                         <label className="label">Dosage Quantity</label>
                         <div className="input-group">
@@ -57,7 +57,7 @@ export default class RxsMedForm extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="col-lg-3">
+                <div className="col-lg-4">
                     <div className="form-group">
                         <label className="label">Dosage Units</label>
                         <div className="input-group">
@@ -69,7 +69,7 @@ export default class RxsMedForm extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="col-lg-3">
+                <div className="col-lg-4">
                     <div className="form-group">
                         <label className="label">Rxs Number</label>
                         <div className="input-group">
@@ -81,7 +81,7 @@ export default class RxsMedForm extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="col-lg-3">
+                <div className="col-lg-4">
                     <div className="form-group">
                         <label className="label">Doctor's Name</label>
                         <div className="input-group">
@@ -93,7 +93,7 @@ export default class RxsMedForm extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="col-lg-3">
+                <div className="col-lg-4">
                     <div className="form-group">
                         <label className="label">Doctor's Number</label>
                         <div className="input-group">
@@ -105,7 +105,7 @@ export default class RxsMedForm extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="col-lg-3">
+                <div className="col-lg-4">
                     <div className="form-group">
                         <label className="label">Date Prescribed</label>
                         <div className="input-group">
@@ -117,7 +117,7 @@ export default class RxsMedForm extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="col-lg-3">
+                <div className="col-lg-4">
                     <div className="form-group">
                         <label className="label">End Date (optional)</label>
                         <div className="input-group">
@@ -129,13 +129,13 @@ export default class RxsMedForm extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="col-lg-3">
+                <div className="col-lg-4">
                     <div className="form-group">
                         <label className="label">When to Take (optional)</label>
                         <div className="input-group">
                             {/* <input type="date" className="form-control" name="name" placeholder="mm/dd/yyyy"
 value={this.props.data.values.endDate} onChange={(e) => { this.props.update(this.props.index, "endDate", e.target.value) }} /> */}
-                            <select class="form-control" id="exampleFormControlSelect2" onChange={(e) => { this.props.update(this.props.index, "whenToTake", e.target.value) }}>
+                            <select className="form-control" id="exampleFormControlSelect2" onChange={(e) => { this.props.update(this.props.index, "whenToTake", e.target.value) }}>
                                 <option selected value="">---------Select Any---------</option>
                                 <option value="morning">Morning</option>
                                 <option value="afternoon">Afternoon</option>
