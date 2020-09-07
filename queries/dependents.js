@@ -1,6 +1,7 @@
 const dependentModel = require('../models/dependent/Dependent');
 const val = require('./helpers/helper');
 const createRxs = require('./prescription').create;
+const updateRxs = require('./prescription').patchUpdateById;
 const createMedication = require('./medication').create;
 const rxsMedicationModel = require('../models/rxsMedication/RxsMedication');
 const Medication = require('../models/medication/Medication');
@@ -35,8 +36,6 @@ function patchUpdateDependentById(body, id, callback) {
       if (err) {
         callback(err);
       } else {
-        console.log("1.1")
-        console.log(foundDoc);
         updateModifiedFields(foundDoc, body.updatedFields, function (err, obj) {
           if (err) {
             callback(err);
@@ -85,36 +84,49 @@ function updateModifiedFields(oldDoc, updatedFields, callback) {
     rxs: rxs,
     medications: medications
   }
-  if (updatedFields.rxs) {
-    createRxsAndAttatch(obj, updatedFields.rxs, function (err, obj) {
-      console.log('2.2')
-      if (err) {
-        callback(err);
-      } else {
-        if (updatedFields.medication) {
-          createMedicationAndAttactch(obj, updatedFields.medication, function (err, obj) {
-            if (err) {
-              callback(err);
-            } else {
-              callback(null, obj);
-            }
-          });
-        } else {
-          callback(null, obj);
-        }
+  if(updatedFields.rxs){
+    getRxs(updatedFields,function(err,rxs){
+      if(err){
+        callback(err)
+      }else{
+        obj.rxs = rxs;
+        callback(null,obj);
       }
     });
-  } else if (updatedFields.medication) {
-    createMedicationAndAttactch(obj, updatedFields.medication, function (err, obj) {
-      if (err) {
-        callback(err);
-      } else {
-        callback(null, obj);
-      }
-    });
-  } else {
-    callback(null, obj);
+  }else{
+    callback(null,obj);
   }
+
+  // if (updatedFields.rxs) {
+  //   createRxsAndAttatch(obj, updatedFields.rxs, function (err, obj) {
+  //     console.log('2.2')
+  //     if (err) {
+  //       callback(err);
+  //     } else {
+  //       if (updatedFields.medication) {
+  //         createMedicationAndAttactch(obj, updatedFields.medication, function (err, obj) {
+  //           if (err) {
+  //             callback(err);
+  //           } else {
+  //             callback(null, obj);
+  //           }
+  //         });
+  //       } else {
+  //         callback(null, obj);
+  //       }
+  //     }
+  //   });
+  // } else if (updatedFields.medication) {
+  //   createMedicationAndAttactch(obj, updatedFields.medication, function (err, obj) {
+  //     if (err) {
+  //       callback(err);
+  //     } else {
+  //       callback(null, obj);
+  //     }
+  //   });
+  // } else {
+  //   callback(null, obj);
+  // }
 }
 // function createRxsAndAttatch(obj, rxs, callback) {
 //   if (rxs.length < 1) {
@@ -151,15 +163,51 @@ function updateModifiedFields(oldDoc, updatedFields, callback) {
 
 /*
   if update rxs also need to check for rxsMed _id to see if we need to create or update
-  we may need to also delete 
+  we may need to also delete
 */
-function updateDependentV2(dep,callback){
+/* delete not working*/
+function getRxs(dep,callback){
+  console.log(dep);
+  let i = 0;
+  let rxsArr = [];
+  if(!dep.rxs || dep.rxs.length<1){
+    console.log('none')
+    callback(null,[]);
+    return;
+  }
   dep.rxs.forEach(rxs => {
-    if(rxs._id){
+  if(rxs._id){
       //update rxs
+      console.log("update")
+      updateRxs({updatedFields:rxs},rxs._id,function(err,rxsUpdated){
+        i++;
+        if(err){
+          console.log(err);
+        }else{
+          rxsArr.push(rxsUpdated);
+        }
+        if(i == dep.rxs.length){
+          callback(null,rxsArr);
+          return;
+        }
+      });
     }else{
       //create
+      console.log("create")
+      createRxs(rxs,function(err,rxsCreated){
+        i++;
+        if(err){
+          console.log(err);
+        }else{
+          rxsArr.push(rxsCreated);
+        }
+        if(i == dep.rxs.length){
+          callback(null,rxsArr);
+          return;
+        }
+      });
     }
+
   });
 }
 function createMedicationAndAttactch(obj, medication, callback) {
@@ -259,6 +307,7 @@ function deleteDependentById(id, callback) {
 }
 
 function saveToDoc(bodyData, schemaModel, callback) {
+  console.log(bodyData);
   //Later maybe make this generic
   var newDoc = new schemaModel({
     name: {
@@ -273,33 +322,19 @@ function saveToDoc(bodyData, schemaModel, callback) {
 
 
   if (typeof (bodyData.rxs) != 'undefined') {
-    createRxsAndAttatch(newDoc, bodyData.rxs, function (err, newDoc) {
+    getRxs(bodyData,function (err, rxs) {
       if (err) {
         callback(err);
-      } else {
-        if (bodyData.medication) {
-          createMedicationAndAttactch(newDoc, bodyData.medication, function (err, newDoc) {
-            if (err) {
-              callback(err);
-            } else {
-              newDoc.save(function (err, result) {
-                if (err) {
-                  callback(err);
-                } else {
-                  callback(null, result);
-                }
-              });
-            }
-          });
-        } else {
-          newDoc.save(function (err, result) {
-            if (err) {
-              callback(err);
-            } else {
-              callback(null, result);
-            }
-          });
-        }
+      }else{
+        newDoc.rxs = rxs;
+        newDoc.save(function (err, result) {
+          if (err) {
+            callback(err);
+          } else {
+            console.log(result);
+            callback(null, result);
+          }
+        });
       }
     });
   } else if (bodyData.medication) {
@@ -328,7 +363,6 @@ function saveToDoc(bodyData, schemaModel, callback) {
 }
 
 function createDependent(body, callback) {
-  console.log(body);
   val.validator(dependentModel, body, function (err, result) {
     if (err) {
       callback(err);

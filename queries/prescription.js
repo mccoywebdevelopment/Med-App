@@ -24,6 +24,8 @@ function findAll(callback){
 }
 
 function patchUpdateById(body,id,callback){
+  console.log("================id==================\n\n")
+  console.log(id);
   if(!body.updatedFields){
     callback("body.updatedFields is not defined");
   }else{
@@ -35,7 +37,9 @@ function patchUpdateById(body,id,callback){
           if(err){
             callback(err);
           }else{
-            foundDoc.update(obj,function(err,result){
+            console.log("\n\n\nfound doc");
+            console.log(foundDoc);
+            rxsModel.findByIdAndUpdate(id,obj,function(err,result){
               if(err){
                 callback(err);
               }else{
@@ -54,6 +58,7 @@ function updateModifiedFields(oldDoc,updatedFields,callback){
   var lastName = oldDoc.doctorContacts.name.lastName;
   var phoneNumber = oldDoc.doctorContacts.phoneNumber;
   var rxsNumber = oldDoc.rxsNumber;
+  // var _id = oldDoc._id;
   var rxsMedications = oldDoc.rxsMedications;
 
   if(updatedFields.firstName){
@@ -68,8 +73,8 @@ function updateModifiedFields(oldDoc,updatedFields,callback){
   if(updatedFields.rxsNumber){
     rxsNumber = updatedFields.rxsNumber;
   }
-
   var obj = {
+    // _id:_id,
     doctorContacts:{
       name:{
         firstName:firstName,
@@ -78,20 +83,24 @@ function updateModifiedFields(oldDoc,updatedFields,callback){
       phoneNumber:phoneNumber
     },
     rxsNumber:rxsNumber,
-    rxsMedications:rxsMedications
+    // rxsMedications:rxsMedications
   }
+  console.log("================obj=================\n\n")
+  console.log(obj);
+  console.log("\n\n")
 
-  if(updatedFields.rxsMedication){
-    createRxsMedicationAndAttatch(obj,updatedFields.rxsMedication,function(err,obj){
-      if(err){
-        callback(err);
-      }else{
-        callback(null,obj);
-      }
-    });
-  }else{
-    callback(null,obj);
-  }
+  // if(updatedFields.rxsMedication){
+  //   createRxsMedicationAndAttatch(obj,updatedFields.rxsMedication,function(err,obj){
+  //     if(err){
+  //       callback(err);
+  //     }else{
+  //       callback(null,obj);
+  //     }
+  //   });
+  // }else{
+  //   callback(null,obj);
+  // }
+  callback(null,obj)
 
 }
 

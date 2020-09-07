@@ -29,7 +29,7 @@ class CreateDependent extends React.Component {
         this._toggleEditRxsMed = this._toggleEditRxsMed.bind(this);
         this._toggleExpandRxsMed = this._toggleExpandRxsMed.bind(this);
 
-        // this._test()
+        this._test()
     }
     state = {
         oldData: {
@@ -586,9 +586,9 @@ class CreateDependent extends React.Component {
             }
             if (this.props.isDepSelected) {
                 //check if group is modified if so update group then call get populated dependents
-                // this.props.fetchUpdateDependent(this.props.isDepSelected._id, this._formatBody(), this.props.groups,
-                //     this._isGroupModified(), oldDependents);
-                this._formatBody()
+                this.props.fetchUpdateDependent(this.props.isDepSelected._id, this._formatBody(), this.props.groups,
+                    this._isGroupModified(), oldDependents);
+                // this._formatBody()
             } else {
                 this.props.fetchCreateDependent(this._formatBody(), this.state.overview.values.group.value, oldDependents);
             }

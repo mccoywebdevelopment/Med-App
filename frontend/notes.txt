@@ -1,4 +1,2 @@
 TODO:
-
 - fontend format works still need to add functionality to the backend.
-- go back and forward doesn't update dependent by ID
