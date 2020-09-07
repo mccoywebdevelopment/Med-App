@@ -1,7 +1,7 @@
 import { createMessage } from './messages';
 import { toggleLoading } from './loading';
 import { API_URI } from '../config/variables';
-import { addDependent } from './group';
+import { addDependent, removeDependent, switchDependent } from './group';
 import { FETCH_DEPENDENTS } from './types';
 
 // CREATE MESSAGE
@@ -34,7 +34,15 @@ export const fetchUpdateDependent = (id,depBody,groups,isGroupModified,oldDepend
       } else {
         if(isGroupModified){
           if(isGroupModified.isAdd){
-            dispatch(addDependent(isGroupModified.groupID,res,oldDependents));
+            alert("is Add");
+            alert(JSON.stringify(res));
+            dispatch(addDependent(isGroupModified.groupID,res));
+          }else if(isGroupModified.isRemoved){
+            alert("is Removed")
+            dispatch(removeDependent(isGroupModified.groupID,res,oldDependents));
+          }else{
+            alert("is Switch")
+            dispatch(switchDependent(isGroupModified.groupID,res,oldDependents));
           }
         }
         dispatch(createMessage(depBody.firstName + " was successfully updated.","success"));

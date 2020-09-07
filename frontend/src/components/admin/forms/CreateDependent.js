@@ -94,6 +94,7 @@ class CreateDependent extends React.Component {
         let oldDataRxs = this.state.oldData.rxsMedList;
         let overview = JSON.stringify(this.state.overview.values);
         let rxs = JSON.stringify(this._getRxsValues(this.state.rxsMedList));
+        //Need to add isGrouped updated!!!!!!!!!!!!!!!!
 
         if (oldDataOverview != overview || oldDataRxs != rxs) {
             return true;
@@ -575,22 +576,27 @@ class CreateDependent extends React.Component {
             return null;
         }
     }
+    _getDepsFromGroupSel = () =>{
+        let oldDependents = [];
+        for (var i = 0; i < this.props.groupState.data.length; ++i) {
+            if (this.props.groupState.data[i]._id == this.state.overview.values.group.value) {
+                oldDependents = this.props.groupState.data[i].dependents;
+            }
+        }
+        return oldDependents;
+    }
     _submit = () => {
         this._validation();
         if (!this._isOverviewErrors() && !this._isRxsMedErrors()) {
-            let oldDependents = null;
-            for (var i = 0; i < this.props.groupState.data.length; ++i) {
-                if (this.props.groupState.data[i]._id == this.state.overview.values.group.value) {
-                    oldDependents = this.props.groupState.data[i].dependents;
-                }
-            }
+            let depsFromGroupSel = this._getDepsFromGroupSel();
             if (this.props.isDepSelected) {
                 //check if group is modified if so update group then call get populated dependents
                 this.props.fetchUpdateDependent(this.props.isDepSelected._id, this._formatBody(), this.props.groups,
-                    this._isGroupModified(), oldDependents);
+                    this._isGroupModified(),depsFromGroupSel);
+                this._formatSelDep(this.props.isDepSelected);
                 // this._formatBody()
             } else {
-                this.props.fetchCreateDependent(this._formatBody(), this.state.overview.values.group.value, oldDependents);
+                this.props.fetchCreateDependent(this._formatBody(), this.state.overview.values.group.value, depsFromGroupSel);
             }
             this.props.togglePopUp();
         }

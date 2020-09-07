@@ -118,7 +118,6 @@ function getAvgRxsMedsOfDep(rxsLen,depLen){
     if(depLen == 0){
         return 0;
     }else{
-        console.log(rxsLen/depLen);
         return(Math.round(rxsLen/depLen * 100) / 100);
     }
 }

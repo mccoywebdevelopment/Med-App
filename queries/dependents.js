@@ -167,18 +167,15 @@ function updateModifiedFields(oldDoc, updatedFields, callback) {
 */
 /* delete not working*/
 function getRxs(dep,callback){
-  console.log(dep);
   let i = 0;
   let rxsArr = [];
   if(!dep.rxs || dep.rxs.length<1){
-    console.log('none')
     callback(null,[]);
     return;
   }
   dep.rxs.forEach(rxs => {
   if(rxs._id){
       //update rxs
-      console.log("update")
       updateRxs({updatedFields:rxs},rxs._id,function(err,rxsUpdated){
         i++;
         if(err){
@@ -192,8 +189,6 @@ function getRxs(dep,callback){
         }
       });
     }else{
-      //create
-      console.log("create")
       createRxs(rxs,function(err,rxsCreated){
         i++;
         if(err){
@@ -307,7 +302,6 @@ function deleteDependentById(id, callback) {
 }
 
 function saveToDoc(bodyData, schemaModel, callback) {
-  console.log(bodyData);
   //Later maybe make this generic
   var newDoc = new schemaModel({
     name: {
@@ -331,7 +325,6 @@ function saveToDoc(bodyData, schemaModel, callback) {
           if (err) {
             callback(err);
           } else {
-            console.log(result);
             callback(null, result);
           }
         });

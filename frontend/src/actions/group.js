@@ -27,15 +27,9 @@ export const fetchGroups = (done) => (dispatch) =>{
   }
 
 
-export const addDependent = (groupID, newDependent, oldDependents) => (dispatch) => {
+export const addDependent = (groupID, newDependent) => (dispatch) => {
   dispatch(toggleLoading(true));
-  if (!oldDependents) {
-    oldDependents = [];
-  }
-  oldDependents.push(newDependent);
-  let updatedFields = {
-    dependents: oldDependents
-  }
+  let updatedFields = {dependent:newDependent}; 
   fetch(API_URI + "/groups/" + groupID + "/" + localStorage.getItem('JWT'), {
     method: 'PATCH',
     body: JSON.stringify({ updatedFields: updatedFields }),
@@ -52,15 +46,11 @@ export const addDependent = (groupID, newDependent, oldDependents) => (dispatch)
     });
 }
 
-export const deleteDependent = (groupID, newDependent, oldDependents) => (dispatch) => {
+export const removeDependent = (groupID, depToDel, dependents) => (dispatch) => {
   dispatch(toggleLoading(true));
-  if (!oldDependents) {
-    oldDependents = [];
-  }
-  oldDependents.splice(newDependent);
-  let updatedFields = {
-    dependents: oldDependents
-  }
+  dependents = removeByID(depToDel._id,dependents);
+  let updatedFields = {dependents:dependents}; 
+  alert(JSON.stringify(updatedFields));
   fetch(API_URI + "/groups/" + groupID + "/" + localStorage.getItem('JWT'), {
     method: 'PATCH',
     body: JSON.stringify({ updatedFields: updatedFields }),
@@ -77,6 +67,49 @@ export const deleteDependent = (groupID, newDependent, oldDependents) => (dispat
     });
 }
 
-function getIndexOfDep(groups){
-  
+export const switchDependent = (groupID, dep, dependents) => (dispatch) => {
+  dispatch(toggleLoading(true));
+  dependents = removeByID(dep._id,dependents);
+  let updatedFields = {dependents:dependents}; 
+  fetch(API_URI + "/groups/" + groupID + "/" + localStorage.getItem('JWT'), {
+    method: 'PATCH',
+    body: JSON.stringify({ updatedFields: updatedFields }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then(res => res.json())
+    .then(res => {
+      dispatch(toggleLoading(false));
+      if (res.error) {
+        dispatch(createMessage(res.error, 'danger'));
+      }else{
+        dispatch(toggleLoading(true));
+        let updatedFields = {dependent:dep}; 
+        fetch(API_URI + "/groups/" + groupID + "/" + localStorage.getItem('JWT'), {
+          method: 'PATCH',
+          body: JSON.stringify({ updatedFields: updatedFields }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+          .then(res => res.json())
+          .then(res => {
+            dispatch(toggleLoading(false));
+            if (res.error) {
+              dispatch(createMessage(res.error, 'danger'));
+            }
+          });
+        }
+    });
+}
+
+function removeByID(id,arr){
+  let newArr = [];
+  for(var i=0;i<arr.length;++i){
+    if(arr[i]._id != id){
+      newArr.push(arr[i]);
+    }
+  }
+  return newArr;
 }

@@ -24,8 +24,6 @@ function findAll(callback){
 }
 
 function patchUpdateById(body,id,callback){
-  console.log("================id==================\n\n")
-  console.log(id);
   if(!body.updatedFields){
     callback("body.updatedFields is not defined");
   }else{
@@ -37,8 +35,6 @@ function patchUpdateById(body,id,callback){
           if(err){
             callback(err);
           }else{
-            console.log("\n\n\nfound doc");
-            console.log(foundDoc);
             rxsModel.findByIdAndUpdate(id,obj,function(err,result){
               if(err){
                 callback(err);
@@ -85,9 +81,6 @@ function updateModifiedFields(oldDoc,updatedFields,callback){
     rxsNumber:rxsNumber,
     // rxsMedications:rxsMedications
   }
-  console.log("================obj=================\n\n")
-  console.log(obj);
-  console.log("\n\n")
 
   // if(updatedFields.rxsMedication){
   //   createRxsMedicationAndAttatch(obj,updatedFields.rxsMedication,function(err,obj){

@@ -1,2 +1,4 @@
 TODO:
-- fontend format works still need to add functionality to the backend.
+- need add update delete dep from group
+- need add switch dep from group
+- need to update the isUpdate in create dep after it updates(fetches)
