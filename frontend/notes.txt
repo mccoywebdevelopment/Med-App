@@ -2,3 +2,8 @@ TODO:
 - need add update delete dep from group
 - need add switch dep from group
 - need to update the isUpdate in create dep after it updates(fetches)
+- update and delete has no effect on dependent overview/details
+- update rxsMedication deletes the med
+
+NOTES:
+- Need to add groupID to isRemoved right now it's "" b/c the user deselected it (CreateDependent.js FORM)

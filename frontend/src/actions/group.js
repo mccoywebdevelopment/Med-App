@@ -50,7 +50,6 @@ export const removeDependent = (groupID, depToDel, dependents) => (dispatch) => 
   dispatch(toggleLoading(true));
   dependents = removeByID(depToDel._id,dependents);
   let updatedFields = {dependents:dependents}; 
-  alert(JSON.stringify(updatedFields));
   fetch(API_URI + "/groups/" + groupID + "/" + localStorage.getItem('JWT'), {
     method: 'PATCH',
     body: JSON.stringify({ updatedFields: updatedFields }),

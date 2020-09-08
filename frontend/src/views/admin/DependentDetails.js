@@ -56,6 +56,11 @@ class DependentDetails extends React.Component{
             this.setState(newState);
         }
     }
+    _updateDependent = (id) =>{
+        alert(id)
+        this._setDep(this._findDepByID(id));
+        console.log(this.state);
+    }
     _redirectURL = () =>{
         return (
             <Redirect push to={'/admin/dependents/'+this.state.isRedirect} />
@@ -126,7 +131,7 @@ class DependentDetails extends React.Component{
                 </div>
                 <div className="col-lg-6" style={{padding:'none'}} style={{paddingRight:'0px'}}>
                     <div className="card" style={{padding:"20px"}}>
-                        <CreateDependent isDepSelected={this.state.dependent} goHome={this._toggleHome} delete={this._deleteDependent}/>
+                        <CreateDependent updateDep={this._updateDependent} isDepSelected={this.state.dependent} goHome={this._toggleHome} delete={this._deleteDependent}/>
                     </div>
                 </div>
             </div>

@@ -14,7 +14,7 @@ import { FETCH_DEPENDENTS } from './types';
   } or null
 */
 
-export const fetchUpdateDependent = (id,depBody,groups,isGroupModified,oldDependents) => (dispatch) => {
+export const fetchUpdateDependent = (id,depBody,groups,isGroupModified,oldDependents,done) => (dispatch) => {
   depBody = {
     updatedFields:depBody
   }
@@ -34,19 +34,17 @@ export const fetchUpdateDependent = (id,depBody,groups,isGroupModified,oldDepend
       } else {
         if(isGroupModified){
           if(isGroupModified.isAdd){
-            alert("is Add");
-            alert(JSON.stringify(res));
             dispatch(addDependent(isGroupModified.groupID,res));
           }else if(isGroupModified.isRemoved){
-            alert("is Removed")
             dispatch(removeDependent(isGroupModified.groupID,res,oldDependents));
           }else{
-            alert("is Switch")
             dispatch(switchDependent(isGroupModified.groupID,res,oldDependents));
           }
         }
-        dispatch(createMessage(depBody.firstName + " was successfully updated.","success"));
-        dispatch(fetchPopulatedDependents());
+        dispatch(createMessage(res.name.firstName + " was successfully updated.","success"));
+        dispatch(fetchPopulatedDependents(()=>{
+          done(res);
+        }));
       }
     });
 };
@@ -75,7 +73,7 @@ export const fetchCreateDependent = (depBody,groupID,oldDependents) => (dispatch
     });
 };
 
-export const fetchDeleteDependent = (depID) => (dispatch) => {
+export const fetchDeleteDependent = (depID,done) => (dispatch) => {
   fetch(API_URI + "/dependents/"+depID.toString()+"/"+localStorage.getItem('JWT'), {
     method: 'DELETE',
     headers: {

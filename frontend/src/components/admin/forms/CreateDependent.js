@@ -495,7 +495,6 @@ class CreateDependent extends React.Component {
     }
 
     _formatRxs = (arr) => {
-        console.log(arr);
         let rxsArr = [];
         for (var i = 0; i < arr.length; ++i) {
             let rxs = {
@@ -527,7 +526,6 @@ class CreateDependent extends React.Component {
             rxs.rxsMedication = rxsMedication;
             rxsArr.push(rxs);
         }
-        console.log(rxsArr);
         return rxsArr;
     }
     _formatBody = () => {
@@ -538,6 +536,16 @@ class CreateDependent extends React.Component {
             rxs: this._formatRxs(this._groupRxs())
         }
         return body;
+    }
+    _getGroupID =(depID) =>{
+        for(var i=0;i<this.props.groupState.data.length;++i){
+            for(var ix=0;ix<this.props.groupState.data[i].dependents.length;++ix){
+                if(depID == this.props.groupState.data[i].dependents[ix]._id){
+                    return this.props.groupState.data[i]._id;
+                }
+            }
+        }
+        return null;
     }
     _isGroupModified = () => {
         let oldGroup = JSON.parse(this.state.oldData.overview).group;
@@ -566,7 +574,7 @@ class CreateDependent extends React.Component {
                 // was removed from group
                 // delete
                 return {
-                    groupID: group.value,
+                    groupID: this._getGroupID(this.props.isDepSelected._id),
                     isSwitched: false,
                     isRemoved: true,
                     isAdd: false
@@ -592,9 +600,9 @@ class CreateDependent extends React.Component {
             if (this.props.isDepSelected) {
                 //check if group is modified if so update group then call get populated dependents
                 this.props.fetchUpdateDependent(this.props.isDepSelected._id, this._formatBody(), this.props.groups,
-                    this._isGroupModified(),depsFromGroupSel);
-                this._formatSelDep(this.props.isDepSelected);
-                // this._formatBody()
+                    this._isGroupModified(),depsFromGroupSel,(res)=>{
+                        window.location.href = this.props.isDepSelected._id;
+                    });
             } else {
                 this.props.fetchCreateDependent(this._formatBody(), this.state.overview.values.group.value, depsFromGroupSel);
             }
