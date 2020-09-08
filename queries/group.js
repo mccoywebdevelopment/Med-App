@@ -34,7 +34,8 @@ function patchUpdateById(body,id,callback){
       }else if(!foundDoc){
         callback("Document not found."); 
       }else{
-        console.log(body.updatedFields);
+        console.log("=========================")
+        console.log(foundDoc);
         updateModifiedFields(foundDoc,body.updatedFields,function(err,newDoc){
           if(err){
             callback(err);

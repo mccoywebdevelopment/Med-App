@@ -99,7 +99,6 @@ function updateModifiedFields(oldDoc, updatedFields, callback) {
 
   // if (updatedFields.rxs) {
   //   createRxsAndAttatch(obj, updatedFields.rxs, function (err, obj) {
-  //     console.log('2.2')
   //     if (err) {
   //       callback(err);
   //     } else {
@@ -136,7 +135,6 @@ function updateModifiedFields(oldDoc, updatedFields, callback) {
 //     var i = 0;
 
 //     rxs.forEach(element => {
-//       console.log(JSON.stringify(element));
 //       createRxs(element, function (err, rxsCreated) {
 //         obj.rxs.push(rxsCreated);
 //         if (err) {

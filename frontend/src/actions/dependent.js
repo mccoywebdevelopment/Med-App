@@ -38,7 +38,7 @@ export const fetchUpdateDependent = (id,depBody,groups,isGroupModified,oldDepend
           }else if(isGroupModified.isRemoved){
             dispatch(removeDependent(isGroupModified.groupID,res,oldDependents));
           }else{
-            dispatch(switchDependent(isGroupModified.groupID,res,oldDependents));
+            dispatch(switchDependent(isGroupModified.groupID,isGroupModified.oldGroupID,res,oldDependents));
           }
         }
         dispatch(createMessage(res.name.firstName + " was successfully updated.","success"));

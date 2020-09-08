@@ -66,11 +66,11 @@ export const removeDependent = (groupID, depToDel, dependents) => (dispatch) => 
     });
 }
 
-export const switchDependent = (groupID, dep, dependents) => (dispatch) => {
+export const switchDependent = (newGroupID, oldGroupID, dep, dependents) => (dispatch) => {
   dispatch(toggleLoading(true));
   dependents = removeByID(dep._id,dependents);
   let updatedFields = {dependents:dependents}; 
-  fetch(API_URI + "/groups/" + groupID + "/" + localStorage.getItem('JWT'), {
+  fetch(API_URI + "/groups/" + oldGroupID + "/" + localStorage.getItem('JWT'), {
     method: 'PATCH',
     body: JSON.stringify({ updatedFields: updatedFields }),
     headers: {
@@ -85,7 +85,7 @@ export const switchDependent = (groupID, dep, dependents) => (dispatch) => {
       }else{
         dispatch(toggleLoading(true));
         let updatedFields = {dependent:dep}; 
-        fetch(API_URI + "/groups/" + groupID + "/" + localStorage.getItem('JWT'), {
+        fetch(API_URI + "/groups/" + newGroupID + "/" + localStorage.getItem('JWT'), {
           method: 'PATCH',
           body: JSON.stringify({ updatedFields: updatedFields }),
           headers: {
