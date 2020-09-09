@@ -40,9 +40,6 @@ router.route("/:id/:JWT")
 })
 .patch(verifyAdmin,function(req,res){
     var obj = req.body;
-    // console.log("============================PATCH===================================");
-    // console.log(JSON.stringify(obj));
-    // console.log("====================================================================");
     groupQ.patchUpdateById(obj,req.params.id,function(err,updatedObj){
         if(err){
             console.log(err);

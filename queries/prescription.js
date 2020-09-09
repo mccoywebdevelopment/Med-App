@@ -1,6 +1,7 @@
 const rxsModel = require('../models/rxs/Rxs');
 const val = require('./helpers/helper');
 const createRxsMedication = require('./rxsMedication').create;
+const updateRxsMedication = require('./rxsMedication').patchUpdateById;
 const RxsMedication = require('../models/rxsMedication/RxsMedication');
 const rxsMedDel = require('./rxsMedication').deleteById;
 
@@ -80,6 +81,18 @@ function updateModifiedFields(oldDoc,updatedFields,callback){
     },
     rxsNumber:rxsNumber,
     // rxsMedications:rxsMedications
+  }
+  if(updatedFields.rxsMedication){
+    getRxsMeds(updatedFields,function(err,res){
+      if(err){
+        callback(err)
+      }else{
+        obj.rxsMed = res;
+        callback(null,obj);
+      }
+    });
+  }else{
+    callback(null,obj);
   }
 
   // if(updatedFields.rxsMedication){
@@ -185,7 +198,6 @@ function saveToDoc(bodyData,schemaModel,callback){
     },
     rxsNumber:bodyData.rxsNumber,
   });
-
   if(typeof(bodyData.rxsMedication)!='undefined'){
     createRxsMedicationAndAttatch(newDoc,bodyData.rxsMedication,function(err,newDoc){
       if(err){
@@ -209,9 +221,46 @@ function saveToDoc(bodyData,schemaModel,callback){
       }
     });
   }
-
 }
+function getRxsMeds(rxs,callback){
+  let i = 0;
+  let rxsArr = [];
+  if(!rxs.rxsMedication || rxs.rxsMedication.length<1){
+    callback(null,[]);
+    return;
+  }
+  rxs.rxsMedication.forEach(med => {
+  if(med._id){
+      //update rxs
+      updateRxsMedication({updatedFields:med},med._id,function(err,rxsUpdated){
+        i++;
+        if(err){
+          console.log(err);
+        }else{
+          rxsArr.push(rxsUpdated);
+        }
+        if(i == rxs.rxsMedication.length){
+          callback(null,rxsArr);
+          return;
+        }
+      });
+    }else{
+      createRxsMedication(med,function(err,rxsCreated){
+        i++;
+        if(err){
+          console.log(err);
+        }else{
+          rxsArr.push(rxsCreated);
+        }
+        if(i == rxs.rxsMedication.length){
+          callback(null,rxsArr);
+          return;
+        }
+      });
+    }
 
+  });
+}
 function create(body,callback){
   val.validator(rxsModel,body,function(err,result){
     if(err){

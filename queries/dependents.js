@@ -164,6 +164,7 @@ function updateModifiedFields(oldDoc, updatedFields, callback) {
   we may need to also delete
 */
 /* delete not working*/
+
 function getRxs(dep,callback){
   let i = 0;
   let rxsArr = [];
