@@ -15,7 +15,7 @@ import MedList from './MedList';
 
 class CreateDependent extends React.Component {
     static propTypes = {
-        groupState: PropTypes.object.isRequired
+        groupState: PropTypes.object.isRequired,
     };
     constructor(props) {
         super(props);
@@ -28,45 +28,49 @@ class CreateDependent extends React.Component {
         this._toggleRxsMedAdd = this._toggleRxsMedAdd.bind(this);
         this._toggleEditRxsMed = this._toggleEditRxsMed.bind(this);
         this._toggleExpandRxsMed = this._toggleExpandRxsMed.bind(this);
+        this._initState();
 
         // this._test()
     }
-    state = {
-        oldData: {
-            overview: null,
-            rxsMedList: null
-        },
-        fetchedGroups: false,
-        overview: {
-            errors: {
-                name: "",
-                dateOfBirth: "",
-                group: "",
+    _initState = () =>{
+        this.state = {
+            oldData: {
+                overview: null,
+                rxsMedList: null
             },
-            values: {
-                name: "",
-                dateOfBirth: "",
-                group: {
-                    isYes: false,
-                    value: ""
-                }
+            fetchedGroups: false,
+            overview: {
+                errors: {
+                    name: "",
+                    dateOfBirth: "",
+                    group: "",
+                },
+                values: {
+                    name: "",
+                    dateOfBirth: "",
+                    group: {
+                        isYes: false,
+                        value: ""
+                    }
+                },
+                body: null,
+                isEdit: false,
             },
-            body: null,
-            isEdit: false,
-        },
-        rxsMedList: {
-            isAdd: false,
-            indexSelected: 0,
-            list: [],
-            body: null
-        },
-        otcMedList: {
-            isAdd: false,
-            list: []
-        },
-        notes: []
+            rxsMedList: {
+                isAdd: false,
+                indexSelected: 0,
+                list: [],
+                body: null
+            },
+            otcMedList: {
+                isAdd: false,
+                list: []
+            },
+            notes: []
+        }
     }
     _formatSelDep = (dep) => {
+        // alert(JSON.stringify(dep))
         let newState = this.state;
 
         newState.overview.values.name = dep.name.firstName + " " + dep.name.lastName;
@@ -144,19 +148,32 @@ class CreateDependent extends React.Component {
         return list;
     }
     _getGroupSelDep = (dep) => {
-        for (var i = 0; i < this.props.groupState.data.length; ++i) {
-            for (var ix = 0; ix < this.props.groupState.data[i].dependents.length; ++ix) {
-                if (dep._id == this.props.groupState.data[i].dependents[ix]._id) {
-                    return {
-                        isYes: true,
-                        value: this.props.groupState.data[i]._id
-                    }
-                }
+        // alert(JSON.stringify(this.props.groupState.data));
+        // for (var i = 0; i < this.props.groupState.data.length; ++i) {
+        //     for (var ix = 0; ix < this.props.groupState.data[i].dependents.length; ++ix) {
+        //         if (dep._id == this.props.groupState.data[i].dependents[ix]._id) {
+        //             return {
+        //                 isYes: true,
+        //                 value: this.props.groupState.data[i]._id
+        //             }
+        //         }
+        //     }
+        // }
+        // return {
+        //     isYes: false,
+        //     value: ""
+        // }
+        console.log(dep)
+        if(typeof(dep.group)!='undefined' && dep.group.length>0){
+            return {
+                isYes: true,
+                value: dep.group
             }
-        }
-        return {
-            isYes: false,
-            value: ""
+        }else{
+            return {
+                isYes: false,
+                value: ""
+            }
         }
     }
     _toggleExpandRxsMed = (index) => {
@@ -602,7 +619,9 @@ class CreateDependent extends React.Component {
                 //check if group is modified if so update group then call get populated dependents
                 this.props.fetchUpdateDependent(this.props.isDepSelected._id, this._formatBody(), this.props.groups,
                     this._isGroupModified(),depsFromGroupSel,(res)=>{
-                        window.location.href = this.props.isDepSelected._id;
+                        this._initState();
+                        this.props.updateDep(res._id);
+
                     });
             } else {
                 this.props.fetchCreateDependent(this._formatBody(), this.state.overview.values.group.value, depsFromGroupSel);

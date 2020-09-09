@@ -109,11 +109,11 @@ export const fetchPopulatedDependents = (done) => (dispatch) =>{
             fetch_Groups(dispatch,function(groups){
               var dependents = res;
               for(var i=0;i<dependents.length;++i){
-                dependents[i].groups = [];
+                dependents[i].group = "";
                 for(var ix=0;ix<groups.length;++ix){
                   for(var z=0;z<groups[ix].dependents.length;++z){
                     if(dependents[i]._id == groups[ix].dependents[z]._id){
-                      dependents[i].groups.push(groups[ix]);
+                      dependents[i].group = groups[ix]._id;
                     }
                   }
                 }

@@ -41,7 +41,7 @@ class DependentTable extends React.Component{
         }
         let trStyle = {
         }
-        if(dep.groups.length>0){
+        if(dep.group.length>0){
           group.text = "Yes";
           group.style.color = "#19d895";
         }

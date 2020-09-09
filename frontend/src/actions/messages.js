@@ -28,5 +28,5 @@ export const createMessage = (text,alertType) => (dispatch) =>{
         payload:"/auth/login"
       })
     }
-  },5000)
+  },2500)
 };

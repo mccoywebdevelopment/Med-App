@@ -57,9 +57,7 @@ class DependentDetails extends React.Component{
         }
     }
     _updateDependent = (id) =>{
-        alert(id)
         this._setDep(this._findDepByID(id));
-        console.log(this.state);
     }
     _redirectURL = () =>{
         return (
