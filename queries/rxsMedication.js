@@ -131,6 +131,7 @@ function deleteAllRxsMedEvents(rxsMeds,callback){
 }
 
 function saveToDoc(bodyData,schemaModel,callback){
+  console.log(bodyData);
   //Later maybe make this generic
   var newDoc = new schemaModel({
       name:bodyData.name,

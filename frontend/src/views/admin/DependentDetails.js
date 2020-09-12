@@ -82,7 +82,24 @@ class DependentDetails extends React.Component{
     }
     _deleteDependent = (dep) =>{
         if(window.confirm("Are you sure you want to delete "+dep.name.firstName+" profile and all their data?")){
+            let isRedirect = false;
+            let isHome = false;
+            if(this.props.dependentState.data.length<2){
+                isHome = true;
+            }else{
+                for(var i=0;i<this.props.dependentState.data.length;++i){
+                    if(this.props.dependentState.data[i]._id != dep._id){
+                        isRedirect = this.props.dependentState.data[i];
+                        break;
+                    }
+                }
+            }
             this.props.fetchDeleteDependent(dep._id);
+            if(isHome){
+                this._toggleHome();
+            }else{
+                this._toggleRedirect(isRedirect);
+            }
         }
     }
     componentDidUpdate = () =>{

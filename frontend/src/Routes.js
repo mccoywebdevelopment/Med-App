@@ -1,6 +1,7 @@
 import DependentView from "./views/admin/DependentsView";
 import DependentDetails from "./views/admin/DependentDetails";
 import GroupView from "./views/admin/GroupView";
+import UserView from "./views/admin/UserView";
 import Login from "./views/shared/Login";
 import React from 'react';
 
@@ -8,6 +9,10 @@ const adminRoutes = [
     {
         path: "/admin/groups",
         component: <GroupView/>,
+    },
+    {
+        path: "/admin/users",
+        component: <UserView/>,
     },
     {
         path: "/admin/dependents",

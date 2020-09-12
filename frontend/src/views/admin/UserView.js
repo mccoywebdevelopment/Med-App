@@ -7,10 +7,10 @@ import { fetchPopulatedDependents, fetchDeleteDependent } from "../../actions/de
 import { changeColor } from "../../actions/theme";
 
 import DependentTable from "../../components/admin/tables/DependentTable";
-import Overview from "../../components/admin/Overview/Overview";
+import OverviewUser from "../../components/admin/Overview/OverviewUser";
 import CreateDependent from "../../components/admin/forms/CreateDependent";
 
-class DependentView extends React.Component {
+class UserView extends React.Component {
     static propTypes = {
         auth: PropTypes.object.isRequired,
         dependentState: PropTypes.object.isRequired,
@@ -58,7 +58,7 @@ class DependentView extends React.Component {
         }
     }
     componentDidMount = () =>{
-        this.props.changeColor("#2196f3");
+        this.props.changeColor("#8862e0");
         this.props.fetchPopulatedDependents(()=>{});
     }
     render() {
@@ -68,16 +68,16 @@ class DependentView extends React.Component {
                     <div className="col-lg-12">
                             <div className="row">
                                 <div className="col-lg-12">
-                                    <h4 className="view-header">Dependents</h4>
+                                    <h4 className="view-header">Users</h4>
                                 </div>
                                 <div className="col-lg-12" style={{ marginBottom: "30px" }}>
-                                    <Overview dependentsLength={this._getTotalNumberOfDependents()} averageMed={this._getAverageMeds()} 
-                                        averageAge={this._getAverageAge()}/>
+                                    <OverviewUser dependentsLength={this._getTotalNumberOfDependents()}
+                                     averageMed={this._getAverageMeds()} averageAge={this._getAverageAge()}/>
                                 </div>
                                 <div className="col-lg-12" style={{ marginBottom: "30px" }}>
                                     <button type="button" 
                                     onClick={()=>{this.props.togglePopUp("Create Dependent",<CreateDependent/>,"90%")}} 
-                                    className="btn btn-primary btn-fw">Create</button>
+                                    className="btn btn-info btn-fw">Add</button>
                                 </div>
                             </div>
                         <div className="row">
@@ -94,7 +94,7 @@ class DependentView extends React.Component {
         );
     }
 }
-DependentView.propTypes = {
+UserView.propTypes = {
     fetchLogin: PropTypes.func.isRequired,
     fetchPopulatedDependents: PropTypes.func.isRequired,
     fetchDeleteDependent: PropTypes.func.isRequired,
@@ -107,5 +107,5 @@ const mapStateToProps = (state) => ({
     groupState: state.groupState
 });
 
-export default connect(mapStateToProps, { fetchLogin, changeColor, fetchDeleteDependent, togglePopUp, 
-    fetchPopulatedDependents})(DependentView);
+export default connect(mapStateToProps, { fetchLogin, changeColor, fetchDeleteDependent, 
+    togglePopUp, fetchPopulatedDependents})(UserView);

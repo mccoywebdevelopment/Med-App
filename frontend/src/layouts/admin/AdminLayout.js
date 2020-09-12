@@ -12,7 +12,8 @@ import { createMessage } from '../../actions/messages'
 class AdminLayout extends React.Component {
     static propTypes = {
         message: PropTypes.object.isRequired,
-        createMessage: PropTypes.func.isRequired
+        createMessage: PropTypes.func.isRequired,
+        theme: PropTypes.object.isRequired
     };
     constructor(props) {
         super(props);
@@ -28,29 +29,34 @@ class AdminLayout extends React.Component {
         return (
             <>
                 <div className="my-side-bar">
-                    <div className={"my-brand " + (this._isCurrentURL("/admin/home") ? "my-nav-selected" : "")}>
+                    <div className={"my-brand " + (this._isCurrentURL("/admin/home") ? "my-nav-selected" : "")} 
+                        style={{borderLeftColor:this.props.theme.pagePrimaryColor}}>
                         <a href="/admin/home" className="my-nav-item">
-                            <i title="Home" className="fas fa-notes-medical"></i>
+                            <i title="Home" className="fas fa-notes-medical" style={{color:this.props.theme.pagePrimaryColor}}></i>
                         </a>
                     </div>
-                    <div className={"" + (this._isCurrentURL("/admin/dependents") ? "my-nav-selected" : "")}>
+                    <div className={"" + (this._isCurrentURL("/admin/dependents") ? "my-nav-selected" : "")} 
+                        style={{borderLeftColor:this.props.theme.pagePrimaryColor}}>
                         <a href="/admin/dependents" className="my-nav-item">
-                            <i title="Medication(s)" className="fas fa-capsules"></i>
+                            <i title="Medication(s)" className="fas fa-capsules" style={{color:this.props.theme.pagePrimaryColor}}></i>
                         </a>
                     </div>
-                    <div className={"" + (this._isCurrentURL("/admin/groups") ? "my-nav-selected" : "")}>
+                    <div className={"" + (this._isCurrentURL("/admin/groups") ? "my-nav-selected" : "")} 
+                        style={{borderLeftColor:this.props.theme.pagePrimaryColor}}>
                         <a href="/admin/groups" className="my-nav-item">
-                            <i title="Group(s)" className="fas fa-users"></i>
+                            <i title="Group(s)" className="fas fa-users" style={{color:this.props.theme.pagePrimaryColor}}></i>
                         </a>
                     </div>
-                    <div className={"" + (this._isCurrentURL("/admin/users") ? "my-nav-selected" : "")}>
+                    <div className={"" + (this._isCurrentURL("/admin/users") ? "my-nav-selected" : "")} 
+                        style={{borderLeftColor:this.props.theme.pagePrimaryColor}}>
                         <a href="/admin/users" className="my-nav-item">
-                            <i title="User(s)" className="fas fa-user-shield"></i>
+                            <i title="User(s)" className="fas fa-user-shield" style={{color:this.props.theme.pagePrimaryColor}}></i>
                         </a>
                     </div>
-                    <div className={"" + (this._isCurrentURL("/admin/profile") ? "my-nav-selected" : "")}>
+                    <div className={"" + (this._isCurrentURL("/admin/profile") ? "my-nav-selected" : "")} 
+                        style={{borderLeftColor:this.props.theme.pagePrimaryColor}}>
                         <a href="/admin/profile" className="my-nav-item">
-                            <i title="My Profile" className="fas fa-user-md"></i>
+                            <i title="My Profile" className="fas fa-user-md" style={{color:this.props.theme.pagePrimaryColor}}></i>
                         </a>
                     </div>
                 </div>
@@ -86,6 +92,7 @@ footer
 }
 const mapStateToProps = (state) => ({
     message: state.message,
+    theme: state.theme
 });
 
 export default connect(mapStateToProps, { createMessage })(AdminLayout);

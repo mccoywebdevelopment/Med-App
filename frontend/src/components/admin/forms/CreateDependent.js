@@ -29,10 +29,8 @@ class CreateDependent extends React.Component {
         this._toggleEditRxsMed = this._toggleEditRxsMed.bind(this);
         this._toggleExpandRxsMed = this._toggleExpandRxsMed.bind(this);
         this._initState();
-
-        // this._test()
     }
-    _initState = () =>{
+    _initState = () => {
         this.state = {
             oldData: {
                 overview: null,
@@ -70,7 +68,6 @@ class CreateDependent extends React.Component {
         }
     }
     _formatSelDep = (dep) => {
-        // alert(JSON.stringify(dep))
         let newState = this.state;
 
         newState.overview.values.name = dep.name.firstName + " " + dep.name.lastName;
@@ -148,28 +145,12 @@ class CreateDependent extends React.Component {
         return list;
     }
     _getGroupSelDep = (dep) => {
-        // alert(JSON.stringify(this.props.groupState.data));
-        // for (var i = 0; i < this.props.groupState.data.length; ++i) {
-        //     for (var ix = 0; ix < this.props.groupState.data[i].dependents.length; ++ix) {
-        //         if (dep._id == this.props.groupState.data[i].dependents[ix]._id) {
-        //             return {
-        //                 isYes: true,
-        //                 value: this.props.groupState.data[i]._id
-        //             }
-        //         }
-        //     }
-        // }
-        // return {
-        //     isYes: false,
-        //     value: ""
-        // }
-        console.log(dep)
-        if(typeof(dep.group)!='undefined' && dep.group.length>0){
+        if (typeof (dep.group) != 'undefined' && dep.group.length > 0) {
             return {
                 isYes: true,
                 value: dep.group
             }
-        }else{
+        } else {
             return {
                 isYes: false,
                 value: ""
@@ -521,10 +502,10 @@ class CreateDependent extends React.Component {
                 phoneNumber: arr[i][0].values.doctorPhone,
             }
             /*
-                if isDepSelected && original _rxs & _rxsMed is valid, 
-                    meaning if updating then we will assign
+            if isDepSelected && original _rxs & _rxsMed is valid, 
+            meaning if updating then we will assign
             */
-            if(arr[i][0].values._rxsID){
+            if (arr[i][0].values._rxsID) {
                 rxs._id = arr[i][0].values._rxsID
             }
             let rxsMedication = [];
@@ -536,9 +517,20 @@ class CreateDependent extends React.Component {
                     reason: arr[i][ix].values.reason,
                     datePrescribed: arr[i][ix].values.datePrescribed
                 });
-                if(arr[i][ix].values._rxsMedID){
-                    rxsMedication[rxsMedication.length-1]._id = arr[i][ix].values._rxsMedID;
+                /* optional fiels for RxsMedication Model */
+                if (arr[i][ix].values._rxsMedID) {
+                    rxsMedication[rxsMedication.length - 1]._id = arr[i][ix].values._rxsMedID;
                 }
+                if (arr[i][ix].values.instructions) {
+                    rxsMedication[rxsMedication.length - 1].instructions = arr[i][ix].values.instructions;
+                }
+                if (arr[i][ix].values.endDate) {
+                    rxsMedication[rxsMedication.length - 1].endDate = arr[i][ix].values.endDate;
+                }
+                if (arr[i][ix].values.whenToTake) {
+                    rxsMedication[rxsMedication.length - 1].value = arr[i][ix].values.whenToTake;
+                }
+
             }
             rxs.rxsMedication = rxsMedication;
             rxsArr.push(rxs);
@@ -554,10 +546,10 @@ class CreateDependent extends React.Component {
         }
         return body;
     }
-    _getGroupID =(depID) =>{
-        for(var i=0;i<this.props.groupState.data.length;++i){
-            for(var ix=0;ix<this.props.groupState.data[i].dependents.length;++ix){
-                if(depID == this.props.groupState.data[i].dependents[ix]._id){
+    _getGroupID = (depID) => {
+        for (var i = 0; i < this.props.groupState.data.length; ++i) {
+            for (var ix = 0; ix < this.props.groupState.data[i].dependents.length; ++ix) {
+                if (depID == this.props.groupState.data[i].dependents[ix]._id) {
                     return this.props.groupState.data[i]._id;
                 }
             }
@@ -602,7 +594,7 @@ class CreateDependent extends React.Component {
             return null;
         }
     }
-    _getDepsFromGroupSel = () =>{
+    _getDepsFromGroupSel = () => {
         let oldDependents = [];
         for (var i = 0; i < this.props.groupState.data.length; ++i) {
             if (this.props.groupState.data[i]._id == this.state.overview.values.group.value) {
@@ -618,7 +610,7 @@ class CreateDependent extends React.Component {
             if (this.props.isDepSelected) {
                 //check if group is modified if so update group then call get populated dependents
                 this.props.fetchUpdateDependent(this.props.isDepSelected._id, this._formatBody(), this.props.groups,
-                    this._isGroupModified(),depsFromGroupSel,(res)=>{
+                    this._isGroupModified(), depsFromGroupSel, (res) => {
                         this._initState();
                         this.props.updateDep(res._id);
 
@@ -677,7 +669,7 @@ class CreateDependent extends React.Component {
                     <div className="col-lg-12">
                         <h4 style={{ display: 'inline' }}>RXS Medications <span style={{ fontSize: '17px' }}>
                             ({this.state.rxsMedList.list.length})
-                            </span></h4>
+</span></h4>
                         <i title="add" className="fas fa-plus" onClick={this._toggleRxsMedAdd}
                             style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
                         {this.state.rxsMedList.isAdd ?
@@ -692,21 +684,21 @@ class CreateDependent extends React.Component {
                         edit={this._toggleEditRxsMed} toggleExpandMed={this._toggleExpandRxsMed} />
                 </div>
                 {/* <div className="row" style={{marginTop:'30px'}}>
-                    <div className="col-lg-12">
-                        <h4 style={{display:'inline'}}>OTC Medications <span style={{fontSize:'17px'}}>({this.state.otcMedList.list.length})</span></h4>
-                        <i title="add" onClick={this._to} className="fas fa-plus" style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
-                    </div>
-                </div>
-                <div className="row" style={{marginTop:'30px'}}>
-                    <div className="col-lg-12">
-                        <h4 style={{display:'inline'}}>Notes <span style={{fontSize:'17px'}}>({this.state.notes.length})</span></h4>
-                        <i title="add" className="fas fa-plus" style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
-                    </div>
-                </div>
-                <div className="row" style={{marginTop:'10px'}}>
-                    <div className="col-lg-12">
-                    </div>
-                </div> */}
+<div className="col-lg-12">
+<h4 style={{display:'inline'}}>OTC Medications <span style={{fontSize:'17px'}}>({this.state.otcMedList.list.length})</span></h4>
+<i title="add" onClick={this._to} className="fas fa-plus" style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
+</div>
+</div>
+<div className="row" style={{marginTop:'30px'}}>
+<div className="col-lg-12">
+<h4 style={{display:'inline'}}>Notes <span style={{fontSize:'17px'}}>({this.state.notes.length})</span></h4>
+<i title="add" className="fas fa-plus" style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
+</div>
+</div>
+<div className="row" style={{marginTop:'10px'}}>
+<div className="col-lg-12">
+</div>
+</div> */}
                 <div className="row" style={{ marginTop: '30px', marginBottom: '30px' }}>
                     {!this.props.isDepSelected ?
                         <button className="btn btn-primary" onClick={() => { this._submit() }}>Submit</button>

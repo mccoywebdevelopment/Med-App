@@ -7,7 +7,8 @@ import Radium, {StyleRoot} from 'radium';
 
 class Loading extends React.Component{
     static propTypes = {
-        loading: PropTypes.bool.isRequired
+        loading: PropTypes.bool.isRequired,
+        theme: PropTypes.object.isRequired
     };
     constructor(props){
         super(props);
@@ -31,7 +32,7 @@ class Loading extends React.Component{
                     <div className={"card my-loader-card"} style={styles.bounce}>
                         <BounceLoader
                             size={100}
-                            color={"#2196f3"}
+                            color={this.props.theme.pagePrimaryColor}
                             css={override}
                         />
                         <h4 style={{marginTop:'30px'}}>Loading...</h4>
@@ -49,6 +50,7 @@ class Loading extends React.Component{
 }
 const mapStateToProps = (state) => ({
     loading: state.loading,
+    theme: state.theme
 });
 
 export default connect(mapStateToProps)(Loading);

@@ -115,9 +115,6 @@ a span{
 .my-med-table thead tr{
   background-color: transparent;
 } 
-.my-med-table tbody tr:nth-child(2n){
-  /* background-color: #f9f9f9; */
-} 
 .my-med-table{
   border-radius: 0px!important;
   box-shadow: none;
@@ -259,5 +256,8 @@ input,select,textarea{
 .my-search-box-selected>div>input::placeholder{
   font-weight: 500!important;
   color: black!important;
+}
+.table tbody td {
+  line-height: 25px;
 }
 /*#0056B3*/

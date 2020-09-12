@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchLogin } from "../../actions/auth";
 import { changeRedirectURL } from "../../actions/auth";
+import { resetRoot } from "../../actions/root";
 import { Redirect } from 'react-router-dom';
 import { emailValidator,passwordValidator } from '../../config/validators';
 
@@ -44,6 +45,10 @@ class Login extends React.Component{
   }
   componentWillUnmount =() =>{
     this.props.changeRedirectURL(null);
+  }
+  componentDidMount = () =>{
+    localStorage.clear();
+    this.props.resetRoot();
   }
   _renderForm =() =>{
     return (
@@ -111,10 +116,11 @@ class Login extends React.Component{
 }
 Login.propTypes = {
   fetchLogin: PropTypes.func.isRequired,
-  changeRedirectURL: PropTypes.func.isRequired
+  changeRedirectURL: PropTypes.func.isRequired,
+  resetRoot: PropTypes.func.isRequired
 };
 const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, {fetchLogin,changeRedirectURL})(Login);
+export default connect(mapStateToProps,{fetchLogin,changeRedirectURL,resetRoot})(Login);
