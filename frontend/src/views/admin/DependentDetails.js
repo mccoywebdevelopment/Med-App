@@ -7,7 +7,7 @@ import { Redirect } from 'react-router-dom';
 import { browserHistory } from 'react-router';
 
 import DependentTable from '../../components/admin/tables/DependentTable';
-import CreateDependent from '../../components/admin/forms/CreateDependent';
+import CreateDependent from '../../components/admin/forms/dependent/CreateDependent';
 
 class DependentDetails extends React.Component{
     state = {

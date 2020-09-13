@@ -19,3 +19,5 @@ export const SELECT_ITEM = "SELECT_ITEM";
 export const CHANGE_PAGE_PRIMARY_COLOR = "CHANGE_PAGE_PRIMARY_COLOR";
 //====================Root================
 export const RESET = "RESET";
+//====================User================
+export const FETCH_USERS = "FETCH_USERS";

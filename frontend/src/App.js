@@ -46,7 +46,7 @@ class App extends React.Component {
       this.props.changeRedirectURL(null);
       window.location = redirect;
     }
-  } 
+  }
   render() {
     this._redirect();
     return (

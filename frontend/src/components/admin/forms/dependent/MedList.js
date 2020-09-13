@@ -1,7 +1,7 @@
 import React from 'react';
 
 import RxsMedForm from "./RxsMedForm";
-import MedicationTable from '../tables/MedicationTable';
+import MedicationTable from '../../tables/MedicationTable';
 
 export default class MedList extends React.Component{
     state = {

@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchGroups } from '../../../actions/group';
-import { togglePopUp } from "../../../actions/popUp"
-import { fetchCreateDependent, fetchPopulatedDependents, fetchUpdateDependent } from '../../../actions/dependent';
+import { fetchGroups } from '../../../../actions/group';
+import { togglePopUp } from "../../../../actions/popUp"
+import { fetchCreateDependent, fetchPopulatedDependents, fetchUpdateDependent } from '../../../../actions/dependent';
 import {
     firstAndLastNameValidator, prevDateValidator, nameValidator,
     numberValidator, phoneNumberValidator
-} from '../../../config/validators';
+} from '../../../../config/validators';
 import BelongsToGroup from './BelongsToGroup';
 
 import DepOverview from './DepOverview';
@@ -669,7 +669,7 @@ class CreateDependent extends React.Component {
                     <div className="col-lg-12">
                         <h4 style={{ display: 'inline' }}>RXS Medications <span style={{ fontSize: '17px' }}>
                             ({this.state.rxsMedList.list.length})
-</span></h4>
+                            </span></h4>
                         <i title="add" className="fas fa-plus" onClick={this._toggleRxsMedAdd}
                             style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
                         {this.state.rxsMedList.isAdd ?

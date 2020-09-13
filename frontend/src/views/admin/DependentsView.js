@@ -8,7 +8,7 @@ import { changeColor } from "../../actions/theme";
 
 import DependentTable from "../../components/admin/tables/DependentTable";
 import Overview from "../../components/admin/Overview/Overview";
-import CreateDependent from "../../components/admin/forms/CreateDependent";
+import CreateDependent from "../../components/admin/forms/dependent/CreateDependent";
 
 class DependentView extends React.Component {
     static propTypes = {

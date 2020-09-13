@@ -8,6 +8,7 @@ import Radium, {StyleRoot} from 'radium';
 class PopUp extends React.Component{
     static propTypes = {
         popUp: PropTypes.object.isRequired,
+        theme: PropTypes.object.isRequired
     };
     constructor(props){
         super(props);
@@ -27,7 +28,8 @@ class PopUp extends React.Component{
                         <div className="row">
                             <div className="col-lg-12">
                                 <h2 style={{display:'inline'}}>{this.props.popUp.title}&nbsp;</h2>
-                                <i title="close" onClick={()=>{this.props.togglePopUp()}} style={{float:'right'}} className="fas fa-times"></i>
+                                <i title="close" onClick={()=>{this.props.togglePopUp()}} 
+                                    style={{float:'right',color:this.props.theme.pagePrimaryColor}} className="fas fa-times"></i>
                             </div>
                         </div>
                         <div className="row" style={{marginTop:'0px',paddingTop:'10px'}}>
@@ -50,6 +52,7 @@ PopUp.propTypes = {
 };
 const mapStateToProps = (state) => ({
   popUp: state.popUp,
+  theme: state.theme
 });
 
 export default connect(mapStateToProps, {togglePopUp})(PopUp);

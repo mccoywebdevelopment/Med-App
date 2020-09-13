@@ -1,5 +1,5 @@
 import React from 'react';
-import { getAge, formateDate} from '../../../config/helpers'
+import { getAge, formateDate} from '../../../../config/helpers'
 
 export default class DepOverview extends React.Component {
     constructor(props){
