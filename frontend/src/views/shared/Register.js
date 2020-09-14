@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchLogin } from "../../actions/auth";
-import { changeRedirectURL } from "../../actions/auth";
+import { changeRedirectURL, fetchRegister} from "../../actions/auth";
 import { resetRoot } from "../../actions/root";
 import { Redirect } from 'react-router-dom';
-import { passwordValidator, firstAndLastNameValidator } from '../../config/validators';
+import { passwordValidator, firstAndLastNameValidator,phoneNumberValidator } from '../../config/validators';
 import zxcvbn from 'zxcvbn';
 
 import PassStrength from "./PassStrength";
@@ -27,6 +27,8 @@ class Register extends React.Component{
         passwordErrMsg:"",
         name:"",
         nameErrMsg:"",
+        phoneNumber:"",
+        phoneNumberErrMsg:"",
 
         passwordScore:0,
     }
@@ -47,19 +49,22 @@ class Register extends React.Component{
     let newState = this.state;
     newState.passwordErrMsg = passwordValidator(this.state.password,true).errorMsg;
     newState.nameErrMsg = firstAndLastNameValidator(this.state.name,true).errorMsg;
+    newState.phoneNumberErrMsg = phoneNumberValidator(this.state.phoneNumber,true).errorMsg;
     this.setState(newState);
   }
   _submit = (e) =>{
     e.preventDefault();
     
     this._validation();
-    if(this.state.passwordErrMsg.length<1 && this.state.nameErrMsg.length<1){
-    //   let body = {
-    //     username:this.state.email,
-    //     password:this.state.password
-    //   }
-    //   this.props.fetchLogin(body);
-    alert('suc')
+    if(this.state.passwordErrMsg.length<1 && this.state.nameErrMsg.length<1 && this.state.phoneNumberErrMsg.length<1){
+      let name = this.state.name.split(' ');
+      let body = {
+        firstName:name[0],
+        lastName:name[1],
+        phoneNumber:this.state.phoneNumber,
+        password:this.state.password
+      }
+      this.props.fetchRegister(this.state.email,this.state.token,body);
     }
   }
   componentWillUnmount =() =>{
@@ -71,7 +76,7 @@ class Register extends React.Component{
   }
   _renderForm =() =>{
     return (
-      <div className="container-scroller" style={{ height: 'auto', minHeight: 'initial' }} style={{marginTop:'100px'}}>
+      <div className="container-scroller" style={{ height: 'auto', minHeight: 'initial' }} style={{marginTop:'50px'}}>
         <div className="container-fluid page-body-wrapper full-page-wrapper" style={{ height: 'auto', minHeight: 'initial' }}>
           <div className="content-wrapper d-flex align-items-center auth  theme-one" 
             style={{ background: 'transparent', height: 'auto', minHeight: 'initial' }}>
@@ -79,7 +84,7 @@ class Register extends React.Component{
               <div className="col-lg-4 mx-auto">
                 <div className="auto-form-wrapper">
                   <form action="#">
-                    <div className="form-group" style={{marginBottom:'10px'}}>
+                    <div className="form-group" style={{marginBottom:'30px'}}>
                       <label className="label">Email</label>
                       <div className="input-group">
                         <input type="text" className="form-control" name="email" placeholder="Email" value={this.state.email} disabled/>
@@ -97,6 +102,16 @@ class Register extends React.Component{
                           {this.state.nameErrMsg}
                         </div>
                       </div>
+                    </div>
+                    <div className="form-group" style={{marginBottom:'30px'}}>
+                        <label className="label">Phone Number</label>
+                        <div className="input-group">
+                            <input type="tel" className="form-control" name="phoneNumber" placeholder="000-000-0000" minLength="10" maxLength="10"
+                                value={this.state.phoneNumber} onChange={this._updateFormData} />
+                            <div className="invalid-feedback" style={{ display: 'block' }}>
+                                {this.state.phoneNumberErrMsg}&nbsp;
+                            </div>
+                        </div>
                     </div>
                     <div className="form-group" style={{marginBottom:'20px'}}>
                       <label className="label">Password
@@ -148,7 +163,7 @@ class Register extends React.Component{
   }
 }
 Register.propTypes = {
-  fetchLogin: PropTypes.func.isRequired,
+  fetchRegister: PropTypes.func.isRequired,
   changeRedirectURL: PropTypes.func.isRequired,
   resetRoot: PropTypes.func.isRequired
 };
@@ -156,4 +171,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps,{fetchLogin,changeRedirectURL,resetRoot})(Register);
+export default connect(mapStateToProps,{fetchRegister,changeRedirectURL,resetRoot})(Register);
