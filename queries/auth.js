@@ -31,22 +31,32 @@ function registerUser(body,token,email,callback){
                             if(userFound.isAdmin){
                                 redirect = "/admin/users";
                             }
+                            delete userFound['password'];
                             var obj = {
                                 JWT:token,
-                                redirectURL:redirect
+                                redirectURL:redirect,
+                                user:userFound
                             }
-                            if(!userSaved.isAdmin){
-                                body.user = userSaved._id.toString();
-                                createGuardian(body,function(err,guardianCreated){
-                                    if(err){
-                                        callback(err);
-                                    }else{
-                                        callback(null,obj);
-                                    }
-                                });
-                            }else{
-                                callback(null,obj);
-                            }
+                            body.user = userSaved._id.toString();
+                            createGuardian(body,function(err,guardianCreated){
+                                if(err){
+                                    callback(err);
+                                }else{
+                                    callback(null,obj);
+                                }
+                            });
+                            // if(!userSaved.isAdmin){
+                            //     body.user = userSaved._id.toString();
+                            //     createGuardian(body,function(err,guardianCreated){
+                            //         if(err){
+                            //             callback(err);
+                            //         }else{
+                            //             callback(null,obj);
+                            //         }
+                            //     });
+                            // }else{
+                            //     callback(null,obj);
+                            // }
                            
                         }
                     });
@@ -73,8 +83,9 @@ function signToken(callback){
     });
 }
 function logginUser(body,callback){
-    User.findOne({username:body.username},function(err,userFound){
+    User.findOne({username:body.username}).select('+password').exec((err,userFound)=>{
         if(err){
+            console.log('1')
             callback(err);
         }else if(!userFound){
             callback("User not found.");
@@ -83,10 +94,12 @@ function logginUser(body,callback){
         }else{
             userFound.comparePassword(body.password,function(err,isMatch){
                 if(err){
+                    console.log('12')
                     callback(err);
                 }else{
                     signToken(function(err,token){
                         if(err){
+                            console.log('123')
                             callback(err);
                         }else{
                             userFound = setExpireToken(userFound);
@@ -95,6 +108,7 @@ function logginUser(body,callback){
                             userFound.lastLoggon = new Date();
                             userFound.save(function(err,userSaved){
                                 if(err){
+                                    console.log('1234')
                                     callback(err);
                                 }else{
                                     var redirect = "/user/dashboard";
@@ -119,7 +133,7 @@ function resetUserPassword(body,callback){
     if(!body.email || !body.password){
         callback("Missing one of the following required fields: email, token, and password.")
     }else{
-        User.findOne({username:body.email},function(err,userFound){
+        User.findOne({username:body.email}).select('+password').exec((err,userFound)=>{
             if(err){
                 callback(err);
             }else if(!userFound){

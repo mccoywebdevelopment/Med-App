@@ -3,10 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchGroups } from '../../../../actions/group';
 import { togglePopUp } from "../../../../actions/popUp";
-import {
-    firstAndLastNameValidator, prevDateValidator, nameValidator,
-    numberValidator, phoneNumberValidator
-} from '../../../../config/validators';
+import { fetchCreateUser } from "../../../../actions/user";
+import {emailValidator} from '../../../../config/validators';
 
 import UserOverview from "./UserOverview";
 import BelongsToGroup from '../dependent/BelongsToGroup';
@@ -84,7 +82,6 @@ class CreateUser extends React.Component {
         this.setState(newState);
     }
     _update = (form, inputName, value) => {
-        alert(value)
         let newState = this.state;
         newState[form].values[inputName] = value;
         this.setState(newState);
@@ -112,8 +109,7 @@ class CreateUser extends React.Component {
     }
     _overviewValidation = () => {
         let newState = this.state;
-        newState.overview.errors.name = firstAndLastNameValidator(newState.overview.values.name, true).errorMsg;
-        newState.overview.errors.dateOfBirth = prevDateValidator(newState.overview.values.dateOfBirth, true).errorMsg;
+        newState.overview.errors.email = emailValidator(newState.overview.values.email, true).errorMsg;
         if (this.state.overview.values.group.isYes) {
             newState.overview.errors.group = this._groupValidation();
         }
@@ -153,10 +149,8 @@ class CreateUser extends React.Component {
     }
     _formatBody = () => {
         let body = {
-            firstName: this.state.overview.values.name.split(' ')[0],
-            lastName: this.state.overview.values.name.split(' ')[1],
-            dateOfBirth: this.state.overview.values.dateOfBirth,
-            rxs: this._formatRxs(this._groupRxs())
+            username: this.state.overview.values.email,
+            isAdmin: this.state.overview.values.isAdmin
         }
         return body;
     }
@@ -219,21 +213,26 @@ class CreateUser extends React.Component {
     }
     _submit = () => {
         this._validation();
-        if (!this._isOverviewErrors() && !this._isRxsMedErrors()) {
-            let usersFromGroupSel = this._getusersFromGroupSel();
-            if (this.props.isUserSelected) {
-                //check if group is modified if so update group then call get populated users
-                this.props.fetchUpdateuser(this.props.isUserSelected._id, this._formatBody(), this.props.groups,
-                    this._isGroupModified(), usersFromGroupSel, (res) => {
-                        this._initState();
-                        this.props.updateuser(res._id);
-
-                    });
-            } else {
-                this.props.fetchCreateuser(this._formatBody(), this.state.overview.values.group.value, usersFromGroupSel);
-            }
+        if(!this._isOverviewErrors()){
+            let body = this._formatBody();
+            this.props.fetchCreateUser(body,this.state.overview.values.group.value);
             this.props.togglePopUp();
         }
+        // if (!this._isOverviewErrors() && !this._isRxsMedErrors()) {
+        //     let usersFromGroupSel = this._getusersFromGroupSel();
+        //     if (this.props.isUserSelected) {
+        //         //check if group is modified if so update group then call get populated users
+        //         this.props.fetchUpdateuser(this.props.isUserSelected._id, this._formatBody(), this.props.groups,
+        //             this._isGroupModified(), usersFromGroupSel, (res) => {
+        //                 this._initState();
+        //                 this.props.updateuser(res._id);
+
+        //             });
+        //     } else {
+        //         this.props.fetchCreateuser(this._formatBody(), this.state.overview.values.group.value, usersFromGroupSel);
+        //     }
+        //     this.props.togglePopUp();
+        // }
     }
     componentDidMount = () => {
         this.props.fetchGroups(() => {
@@ -294,11 +293,12 @@ class CreateUser extends React.Component {
 
 CreateUser.propTypes = {
     togglePopUp: PropTypes.func.isRequired,
-    fetchGroups: PropTypes.func.isRequired
+    fetchGroups: PropTypes.func.isRequired,
+    fetchCreateUser: PropTypes.func.isRequired
 };
 const mapStateToProps = (state) => ({
     groupState: state.groupState,
     theme: state.theme
 });
 
-export default connect(mapStateToProps, {fetchGroups, togglePopUp})(CreateUser);
+export default connect(mapStateToProps, {fetchGroups, togglePopUp, fetchCreateUser})(CreateUser);

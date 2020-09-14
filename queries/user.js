@@ -189,8 +189,8 @@ function saveToDoc(bodyData,schemaModel,callback){
      }else{
        bodyData.isAdmin = false;
      }
-     newDoc.isAdmin = bodyData.isAdmin;
    }
+   newDoc.isAdmin = bodyData.isAdmin;
   }
   
   newDoc.save(function(err,result){

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { togglePopUp } from '../../actions/popUp';
-import { fetchUsers } from "../../actions/user";
+import { fetchUsers, fetchDeleteUser } from "../../actions/user";
 import { changeColor } from "../../actions/theme";
 
 import UserTable from "../../components/admin/tables/UserTable";
@@ -16,6 +16,12 @@ class UserView extends React.Component {
     };
     constructor(props) {
         super(props);
+        this._deleteUser = this._deleteUser.bind(this);
+    }
+    _deleteUser = (user) =>{
+        if(window.confirm("Are you sure you want to delete "+user.username+" profile and all their data?")){
+            this.props.fetchDeleteUser(user._id);
+        }
     }
     componentDidMount = () =>{
         this.props.changeColor("#8862e0");
@@ -43,7 +49,7 @@ class UserView extends React.Component {
                         <div className="row">
                             <div className="col-lg-12">
                                 {this.props.userState.data.length>0?
-                                <UserTable users={[1,2,3]}/>
+                                <UserTable users={this.props.userState.data} delete={this._deleteUser}/>
                                 :null}
                             </div>
                         </div>
@@ -56,6 +62,7 @@ class UserView extends React.Component {
 UserView.propTypes = {
     togglePopUp: PropTypes.func.isRequired,
     fetchUsers: PropTypes.func.isRequired,
+    fetchDeleteUser: PropTypes.func.isRequired,
     changeColor: PropTypes.func.isRequired
 };
 const mapStateToProps = (state) => ({
@@ -63,4 +70,4 @@ const mapStateToProps = (state) => ({
     groupState: state.groupState
 });
 
-export default connect(mapStateToProps, {changeColor, togglePopUp, fetchUsers})(UserView);
+export default connect(mapStateToProps, {changeColor, togglePopUp, fetchUsers, fetchDeleteUser})(UserView);

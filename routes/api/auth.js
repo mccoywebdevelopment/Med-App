@@ -19,6 +19,7 @@ router.route("/register/:email/:token")
 
 router.route("/login")
 .post(function(req,res){
+    console.log("login")
     authQ.logginUser(req.body,function(err,result){
         if(err){
             console.log(err);

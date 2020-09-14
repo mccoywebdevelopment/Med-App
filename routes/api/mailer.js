@@ -7,10 +7,8 @@ const configVars = require('../../config/configVars');
 const verifyAdmin = require('../../config/globalHelpers').verifyAdmin;
 const createUser = require('../../queries/user').create;
 
-
 router.route("/create-user/:JWT")
 .post(verifyAdmin,function(req,res){
-  console.log(req.body);
   createUser(req.body,function(err,userCreated){
     if(err){
       console.log(err);
@@ -20,6 +18,7 @@ router.route("/create-user/:JWT")
       mailQ.sendMail("Welcome","Welcome to Sunshine Acres rxs database! Please register by clicking the link below.","Click To Register",userCreated.username,true,
       path.join(__dirname, '../..', '/config/email/emailTemplate/welcomeEmail.html'),"api/auth/email/redirect",function(err,result){
         if(err){
+          console.log(err);
           res.status(errors.code.BAD_REQUEST).json({error:err});
         }else{
           res.send({result:result});

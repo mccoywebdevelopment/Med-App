@@ -55,7 +55,7 @@ router.route("/:id/:JWT")
             console.log(err);
             res.status(errors.code.BAD_REQUEST).json({error:err});
         }else{
-            res.send({deletedDoc:deletedDoc});
+            res.send(deletedDoc);
         }
     });
 });

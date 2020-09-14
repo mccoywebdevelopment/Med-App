@@ -46,6 +46,25 @@ export const addDependent = (groupID, newDependent) => (dispatch) => {
     });
 }
 
+export const addUser = (groupID, newDependent) => (dispatch) => {
+  dispatch(toggleLoading(true));
+  let updatedFields = {guardian:newDependent}; 
+  fetch(API_URI + "/groups/" + groupID + "/" + localStorage.getItem('JWT'), {
+    method: 'PATCH',
+    body: JSON.stringify({ updatedFields: updatedFields }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then(res => res.json())
+    .then(res => {
+      dispatch(toggleLoading(false));
+      if (res.error) {
+        dispatch(createMessage(res.error, 'danger'));
+      }
+    });
+}
+
 export const removeDependent = (groupID, depToDel, dependents) => (dispatch) => {
   dispatch(toggleLoading(true));
   dependents = removeByID(depToDel._id,dependents);

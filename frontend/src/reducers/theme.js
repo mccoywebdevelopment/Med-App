@@ -1,7 +1,7 @@
 import { CHANGE_PAGE_PRIMARY_COLOR } from '../actions/types';
 
 const initialState = {
-    pagePrimaryColor:"#8862e0"
+    pagePrimaryColor:"#2196f3"
 }
 
 export default function(state = initialState, action){
