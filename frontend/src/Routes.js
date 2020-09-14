@@ -37,7 +37,7 @@ const authRoutes = [
         component: <Login/>
     },
     {
-        path: "/auth/reset-password/:email/:token",
+        path: "/auth/register/:email/:token",
         component: <Register/>
     }
 ]

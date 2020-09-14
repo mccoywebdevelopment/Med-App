@@ -85,18 +85,18 @@ function readHTMLFile(path,email,redirectUrl,emailToken,callback) {
                 }
                 html = html.replace("MSG",messageText);
                 html = html.replace("BTN_TEXT",buttonText);
-                // if(redirectUrl == "api/auth/email/redirect"){
-                //   html = html.replace("URL",configVars.BASE_URL+"/"+redirectUrl+"/"+email+"/"+token);
-                //   html = html +"<h1>If button doesn't works please follow this link:"+ 
-                //   configVars.BASE_URL+"/"+redirectUrl+"/"+email+"/"+token + "</h1>";
-                // }else{
-                //   html = html.replace("URL",configVars.CLIENT_URL+"/auth/reset-password/"+email+"/"+token);
-                //   html = html +"<h1>If button doesn't works please follow this link:"+ 
-                //   configVars.CLIENT_URL+"/auth/reset-password/"+email+"/"+token + "</h1>";
-                // }
-                html = html.replace("URL",configVars.CLIENT_URL+"/auth/reset-password/"+email+"/"+token);
-                html = html +"<h1>If button doesn't works please follow this link:"+ 
-                configVars.CLIENT_URL+"/auth/reset-password/"+email+"/"+token + "</h1>";
+                if(redirectUrl == "api/auth/email/redirect"){
+                  html = html.replace("URL",configVars.BASE_URL+"/"+redirectUrl+"/"+email+"/"+token);
+                  html = html +"<h1>If button doesn't works please follow this link:"+ 
+                  configVars.BASE_URL+"/"+redirectUrl+"/"+email+"/"+token + "</h1>";
+                }else{
+                  html = html.replace("URL",configVars.CLIENT_URL+"/auth/reset-password/"+email+"/"+token);
+                  html = html +"<h1>If button doesn't works please follow this link:"+ 
+                  configVars.CLIENT_URL+"/auth/reset-password/"+email+"/"+token + "</h1>";
+                }
+                // html = html.replace("URL",configVars.CLIENT_URL+"/auth/reset-password/"+email+"/"+token);
+                // html = html +"<h1>If button doesn't works please follow this link:"+ 
+                // configVars.CLIENT_URL+"/auth/reset-password/"+email+"/"+token + "</h1>";
                 
                 sendNodeMail(html,email,subject,function(err,result){
                     if(err){
