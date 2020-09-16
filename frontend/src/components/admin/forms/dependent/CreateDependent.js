@@ -595,9 +595,13 @@ class CreateDependent extends React.Component {
         }
     }
     _getDepsFromGroupSel = () => {
+        let groupdID = this.state.overview.values.group.value;
+        if(this.state.overview.values.group.value<1){
+            groupdID = JSON.parse(this.state.oldData.overview).group.value
+        }
         let oldDependents = [];
         for (var i = 0; i < this.props.groupState.data.length; ++i) {
-            if (this.props.groupState.data[i]._id == this.state.overview.values.group.value) {
+            if (this.props.groupState.data[i]._id == groupdID) {
                 oldDependents = this.props.groupState.data[i].dependents;
             }
         }
@@ -613,7 +617,6 @@ class CreateDependent extends React.Component {
                     this._isGroupModified(), depsFromGroupSel, (res) => {
                         this._initState();
                         this.props.updateDep(res._id);
-
                     });
             } else {
                 this.props.fetchCreateDependent(this._formatBody(), this.state.overview.values.group.value, depsFromGroupSel);

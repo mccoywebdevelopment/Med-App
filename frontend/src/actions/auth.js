@@ -19,7 +19,6 @@ export const fetchLogin = postData => dispatch => {
         dispatch(createMessage(res.error, 'danger'));
       } else {
         localStorage.setItem("JWT",res.result.JWT);
-        alert(JSON.stringify(res));
         dispatch({
           type: FETCH_LOGIN,
           payload: res.result

@@ -1,7 +1,6 @@
 TODO:
-- update rxsMedication deletes the med
-- update rxsMed
-- when dependent is deleted in dependent overview it doesn't update still has the same one
+- when updating a dependent from grouped to not group and adding a rxsMedication all of the other
+    dependents grouped is changed to not grouped.
 
 NOTES:
 - Need to add groupID to isRemoved right now it's "" b/c the user deselected it (CreateDependent.js FORM)

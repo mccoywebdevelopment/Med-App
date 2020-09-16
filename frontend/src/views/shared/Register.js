@@ -32,7 +32,6 @@ class Register extends React.Component{
 
         passwordScore:0,
     }
-    console.log(this.state);
   }
   _updateFormData = (e) =>{
     if(e.target.name == 'password'){
