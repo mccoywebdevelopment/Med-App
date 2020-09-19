@@ -82,9 +82,9 @@ class AdminLayout extends React.Component {
                     <div>
                         {this.props.children}
                     </div>
-                    {/* <div className="footer">
-footer
-</div> */}
+                    <div className="footer">
+                    &nbsp;
+                    </div>
                 </div>
             </>
         );
