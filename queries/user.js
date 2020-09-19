@@ -175,7 +175,6 @@ function deleteById(id,callback){
   });
 }
 function saveToDoc(bodyData,schemaModel,callback){
-  console.log(bodyData);
   //Later maybe make this generic
   var newDoc = new schemaModel({
     username:bodyData.username,

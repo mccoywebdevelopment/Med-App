@@ -4,14 +4,14 @@ import { toggleLoading } from './loading';
 import { fetchCreateGuardian } from './guardian';
 import { API_URI } from '../config/variables';
 
-export const fetchGroups = (done) => (dispatch) =>{
-    dispatch(toggleLoading(true));
-    fetch(API_URI + "/groups/" + localStorage.getItem('JWT'), {
-      method: 'GET',
-      headers: {
-        'content-type': 'application/json'
-      }
-    })
+export const fetchGroups = (done) => (dispatch) => {
+  dispatch(toggleLoading(true));
+  fetch(API_URI + "/groups/" + localStorage.getItem('JWT'), {
+    method: 'GET',
+    headers: {
+      'content-type': 'application/json'
+    }
+  })
     .then(res => res.json())
     .then(res => {
       dispatch(toggleLoading(false));
@@ -22,15 +22,15 @@ export const fetchGroups = (done) => (dispatch) =>{
           type: FETCH_GROUPS,
           payload: res
         });
-        done(null,"done");
+        done(null, "done");
       }
     });
-  }
+}
 
 
 export const addDependent = (groupID, newDependent) => (dispatch) => {
   dispatch(toggleLoading(true));
-  let updatedFields = {dependent:newDependent}; 
+  let updatedFields = { dependent: newDependent };
   fetch(API_URI + "/groups/" + groupID + "/" + localStorage.getItem('JWT'), {
     method: 'PATCH',
     body: JSON.stringify({ updatedFields: updatedFields }),
@@ -48,10 +48,23 @@ export const addDependent = (groupID, newDependent) => (dispatch) => {
 }
 
 export const addUser = (groupID, user) => (dispatch) => {
-  alert(JSON.stringify(user));
-  dispatch(fetchCreateGuardian(user,(guardianCreated)=>{
-    alert("done");
-    console.log(guardianCreated);
+  dispatch(toggleLoading(true));
+  dispatch(fetchCreateGuardian(user, (guardianCreated) => {
+    let updatedFields = { guardian: guardianCreated };
+    fetch(API_URI + "/groups/" + groupID + "/" + localStorage.getItem('JWT'), {
+      method: 'PATCH',
+      body: JSON.stringify({ updatedFields: updatedFields }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(res => res.json())
+      .then(res => {
+        dispatch(toggleLoading(false));
+        if (res.error) {
+          dispatch(createMessage(res.error, 'danger'));
+        }
+      });
   }));
   // dispatch(toggleLoading(true));
   // let updatedFields = {guardian:newDependent}; 
@@ -73,8 +86,8 @@ export const addUser = (groupID, user) => (dispatch) => {
 
 export const removeDependent = (groupID, depToDel, dependents) => (dispatch) => {
   dispatch(toggleLoading(true));
-  dependents = removeByID(depToDel._id,dependents);
-  let updatedFields = {dependents:dependents}; 
+  dependents = removeByID(depToDel._id, dependents);
+  let updatedFields = { dependents: dependents };
   fetch(API_URI + "/groups/" + groupID + "/" + localStorage.getItem('JWT'), {
     method: 'PATCH',
     body: JSON.stringify({ updatedFields: updatedFields }),
@@ -93,8 +106,8 @@ export const removeDependent = (groupID, depToDel, dependents) => (dispatch) => 
 
 export const switchDependent = (newGroupID, oldGroupID, dep, dependents) => (dispatch) => {
   dispatch(toggleLoading(true));
-  dependents = removeByID(dep._id,dependents);
-  let updatedFields = {dependents:dependents}; 
+  dependents = removeByID(dep._id, dependents);
+  let updatedFields = { dependents: dependents };
   fetch(API_URI + "/groups/" + oldGroupID + "/" + localStorage.getItem('JWT'), {
     method: 'PATCH',
     body: JSON.stringify({ updatedFields: updatedFields }),
@@ -107,9 +120,9 @@ export const switchDependent = (newGroupID, oldGroupID, dep, dependents) => (dis
       dispatch(toggleLoading(false));
       if (res.error) {
         dispatch(createMessage(res.error, 'danger'));
-      }else{
+      } else {
         dispatch(toggleLoading(true));
-        let updatedFields = {dependent:dep}; 
+        let updatedFields = { dependent: dep };
         fetch(API_URI + "/groups/" + newGroupID + "/" + localStorage.getItem('JWT'), {
           method: 'PATCH',
           body: JSON.stringify({ updatedFields: updatedFields }),
@@ -124,14 +137,14 @@ export const switchDependent = (newGroupID, oldGroupID, dep, dependents) => (dis
               dispatch(createMessage(res.error, 'danger'));
             }
           });
-        }
+      }
     });
 }
 
-function removeByID(id,arr){
+function removeByID(id, arr) {
   let newArr = [];
-  for(var i=0;i<arr.length;++i){
-    if(arr[i]._id != id){
+  for (var i = 0; i < arr.length; ++i) {
+    if (arr[i]._id != id) {
       newArr.push(arr[i]);
     }
   }

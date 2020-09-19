@@ -42,7 +42,10 @@ export const fetchUsers = () => (dispatch) => {
           dispatch(createMessage(res.error, 'danger'));
         } else {
           if(groupID.length>0){
-            dispatch(addUser(groupID,res._id));
+            let guardianBody = {
+              user:res
+            }
+            dispatch(addUser(groupID,guardianBody));
           }
           dispatch(createMessage(userBody.username + " was sent an invitation via email.","info"));
           dispatch(fetchUsers());

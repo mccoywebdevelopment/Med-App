@@ -1,6 +1,24 @@
 TODO:
-- when updating a dependent from grouped to not group and adding a rxsMedication all of the other
-    dependents grouped is changed to not grouped.
+1. create user
+2. if groupID create guardian
+3. if groupID add guardian to group
+4. register user
+5. find guardian by userID 
+6. if found update guardian
+7. else create guardian
 
 NOTES:
 - Need to add groupID to isRemoved right now it's "" b/c the user deselected it (CreateDependent.js FORM)
+- Linux nodemon cmds:
+    lsof -i tcp:3000 
+    kill -9 44475
+    
+    echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+- Flow for adding user w/ group:
+    Create user
+    Create guardian
+    add to group
+
+    for user registering:
+        find guardian by userID if found update guardian else
+        create new guardian

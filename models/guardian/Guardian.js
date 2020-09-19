@@ -3,14 +3,13 @@ var mongoose = require("mongoose");
 var GuardianSchema = new mongoose.Schema({
     user:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required:true
+        ref: 'User'
     },
     name:{
-        firstName:{type:String,required:true},
-        lastName:{type:String,required:true}
+        firstName:String,
+        lastName:String
     },
-    phoneNumber:{type:Number,required:true},
+    phoneNumber:Number,
     pictureUrl:String
 });
 

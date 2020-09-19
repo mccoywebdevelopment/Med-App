@@ -35,6 +35,7 @@ function patchUpdateById(body,id,callback){
           if(err){
             callback(err);
           }else{
+            console.log(newDoc);
             foundDoc.update(newDoc,function(err,result){
               if(err){
                 callback(err);
@@ -71,7 +72,7 @@ function updateModifiedFields(oldDoc,updatedFields,callback){
   if(updatedFields.pictureUrl){
     pictureUrl = updatedFields.pictureUrl;
   }
-  var obj = new guardianModel({
+  let obj = {
     user:user,
     name:{
       firstName:firstName,
@@ -79,7 +80,7 @@ function updateModifiedFields(oldDoc,updatedFields,callback){
     },
     phoneNumber:phoneNumber,
     pictureUrl:pictureUrl
-  });
+  };
   if(updatedFields.user){
     userPatch(updatedFields.user,oldDoc.user._id.toString(),function(err,updatedUser){
       if(err){
@@ -123,9 +124,9 @@ function saveToDoc(bodyData,schemaModel,callback){
         callback(err);
       }else if(!userFound){
         callback("User not found")
-      }else if(userFound.auth.status.statusValue != "approved"){
+      }/*else if(userFound.auth.status.statusValue != "approved"){
         callback("User needs to be authenticated first their status is: "+userFound.auth.status.statusValue+".");
-      }else{
+      }*/else{
         newDoc.user = userFound;
         newDoc.save(function(err,result){
           if(err){

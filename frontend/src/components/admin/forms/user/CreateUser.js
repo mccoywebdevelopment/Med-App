@@ -214,6 +214,7 @@ class CreateUser extends React.Component {
         this._validation();
         if(!this._isOverviewErrors()){
             let body = this._formatBody();
+    
             this.props.fetchCreateUser(body,this.state.overview.values.group.value);
             this.props.togglePopUp();
         }

@@ -1,6 +1,8 @@
 const User = require('../models/user/User');
 const crypto = require('crypto');
 const createGuardian = require('./guardian').create;
+const guardianModel = require('../models/guardian/Guardian');
+const updateGuardian = require('./guardian').patchUpdateById;
 
 function registerUser(body,token,email,callback){
     User.findOne({username:email},function(err,userFound){
@@ -38,11 +40,37 @@ function registerUser(body,token,email,callback){
                                 user:userFound
                             }
                             body.user = userSaved._id.toString();
-                            createGuardian(body,function(err,guardianCreated){
+                            let guardianBody = {
+                                firstName:body.firstName,
+                                lastName:body.lastName,
+                                phoneNumber:body.phoneNumber
+                            }
+                            guardianModel.findOne({user:body.user},function(err,guardianFound){
                                 if(err){
                                     callback(err);
+                                }else if(!guardianFound){
+                                    console.log("create guard")
+                                    console.log(guardianBody)
+                                    createGuardian(guardianBody,function(err,guardianCreated){
+                                        if(err){
+                                            callback(err);
+                                        }else{
+                                            callback(null,obj);
+                                        }
+                                    });
                                 }else{
-                                    callback(null,obj);
+                                    console.log("update guard");
+                                    guardianBody = {
+                                        updatedFields:guardianBody
+                                    }
+                                    console.log(guardianBody)
+                                    updateGuardian(guardianBody,guardianFound._id,function(err,updatedGuardian){
+                                        if(err){
+                                            callback(err);
+                                        }else{
+                                            callback(null,obj);
+                                        }
+                                    });
                                 }
                             });
                             // if(!userSaved.isAdmin){
@@ -85,7 +113,6 @@ function signToken(callback){
 function logginUser(body,callback){
     User.findOne({username:body.username}).select('+password').exec((err,userFound)=>{
         if(err){
-            console.log('1')
             callback(err);
         }else if(!userFound){
             callback("User not found.");
@@ -94,12 +121,10 @@ function logginUser(body,callback){
         }else{
             userFound.comparePassword(body.password,function(err,isMatch){
                 if(err){
-                    console.log('12')
                     callback(err);
                 }else{
                     signToken(function(err,token){
                         if(err){
-                            console.log('123')
                             callback(err);
                         }else{
                             userFound = setExpireToken(userFound);
@@ -108,7 +133,6 @@ function logginUser(body,callback){
                             userFound.lastLoggon = new Date();
                             userFound.save(function(err,userSaved){
                                 if(err){
-                                    console.log('1234')
                                     callback(err);
                                 }else{
                                     var redirect = "/user/dashboard";
