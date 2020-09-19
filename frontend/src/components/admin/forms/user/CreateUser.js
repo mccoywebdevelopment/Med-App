@@ -85,7 +85,6 @@ class CreateUser extends React.Component {
         let newState = this.state;
         newState[form].values[inputName] = value;
         this.setState(newState);
-        console.log(this.state);
     }
     _toggleGroupBtn = () => {
         let newState = this.state;

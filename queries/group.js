@@ -95,7 +95,7 @@ function updateModifiedFields(oldDoc,updatedFields,callback){
           callback(err);
         }else{
           if(updatedFields.guardian){
-            addGuardianToGroup(newDoc,function(err,newDoc){
+            addGuardianToGroup(obj,updatedFields.guardian,function(err,newDoc){
               if(err){
                 callback(err);
               }else{
@@ -108,7 +108,7 @@ function updateModifiedFields(oldDoc,updatedFields,callback){
         }
       });
     }else if(updatedFields.guardian){
-      addGuardianToGroup(newDoc,function(err,newDoc){
+      addGuardianToGroup(obj,updatedFields.guardian,function(err,newDoc){
         if(err){
           callback(err);
         }else{

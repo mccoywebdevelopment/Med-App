@@ -22,3 +22,5 @@ export const CHANGE_PAGE_PRIMARY_COLOR = "CHANGE_PAGE_PRIMARY_COLOR";
 export const RESET = "RESET";
 //====================User================
 export const FETCH_USERS = "FETCH_USERS";
+//==================Guardian==============
+export const FETCH_GUARDIANS = "FETCH_GUARDIANS";

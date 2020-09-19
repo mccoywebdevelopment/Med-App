@@ -1,12 +1,12 @@
 import { createMessage } from './messages';
 import { toggleLoading } from './loading';
 import { API_URI } from '../config/variables';
-import { FETCH_USERS } from './types';
-import { addUser } from './group';
+import { FETCH_GUARDIANS } from './types';
+import { addGuardian } from './group';
 
-export const fetchUsers = () => (dispatch) => {
+export const fetchGuardians = () => (dispatch) => {
     dispatch(toggleLoading(true));
-    fetch(API_URI + "/users/"+localStorage.getItem('JWT'), {
+    fetch(API_URI + "/guardians/"+localStorage.getItem('JWT'), {
       method: 'GET',
       headers: {
         'content-type': 'application/json'
@@ -19,21 +19,21 @@ export const fetchUsers = () => (dispatch) => {
           dispatch(createMessage(res.error, 'danger'));
         } else {
             dispatch({
-                type: FETCH_USERS,
+                type: FETCH_GUARDIANS,
                 payload: res
             });
         }
       });
   };
 
-  export const fetchCreateUser = (userBody,groupID) => (dispatch) => {
+  export const fetchCreateGuardian = (guardianBody,done) => (dispatch) => {
     dispatch(toggleLoading(true));
-    fetch(API_URI + "/auth/email/create-user/"+localStorage.getItem('JWT'), {
+    fetch(API_URI + "/guardians/"+localStorage.getItem('JWT'), {
       method: 'POST',
       headers: {
         'content-type': 'application/json'
       },
-      body: JSON.stringify(userBody)
+      body: JSON.stringify(guardianBody)
     })
       .then(res => res.json())
       .then(res => {
@@ -41,17 +41,17 @@ export const fetchUsers = () => (dispatch) => {
         if (res.error) {
           dispatch(createMessage(res.error, 'danger'));
         } else {
-          if(groupID.length>0){
-            dispatch(addUser(groupID,res._id));
-          }
-          dispatch(createMessage(userBody.username + " was sent an invitation via email.","info"));
-          dispatch(fetchUsers());
+          dispatch(fetchGuardians());
+        }
+
+        if(done){
+          done(res);
         }
       });
   };
 
-  export const fetchDeleteUser = (depID,done) => (dispatch) => {
-    fetch(API_URI + "/users/"+depID.toString()+"/"+localStorage.getItem('JWT'), {
+  export const fetchDeleteGuardian = (guardianID,done) => (dispatch) => {
+    fetch(API_URI + "/guardians/"+guardianID.toString()+"/"+localStorage.getItem('JWT'), {
       method: 'DELETE',
       headers: {
         'content-type': 'application/json'
@@ -63,8 +63,8 @@ export const fetchUsers = () => (dispatch) => {
         if (res.error) {
           dispatch(createMessage(res.error, 'danger'));
         } else {
-          dispatch(createMessage(res.username + " was successfully deleted.","info"));
-          dispatch(fetchUsers());
+          dispatch(createMessage(res.guardianname + " was successfully deleted.","info"));
+          dispatch(fetchGuardians());
         }
       });
   };

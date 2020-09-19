@@ -21,12 +21,13 @@ router.route("/create-user/:JWT")
           console.log(err);
           res.status(errors.code.BAD_REQUEST).json({error:err});
         }else{
-          res.send({result:result});
+          res.send(userCreated);
         }
       });
     }
   });
 });
+
 
 
 router.route("/send-welcome/:email/:JWT")
