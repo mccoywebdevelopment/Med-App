@@ -90,6 +90,7 @@ class AdminLayout extends React.Component {
         );
     }
 }
+
 const mapStateToProps = (state) => ({
     message: state.message,
     theme: state.theme
