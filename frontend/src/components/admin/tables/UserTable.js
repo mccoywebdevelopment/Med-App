@@ -3,6 +3,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import {capitalizeFirstLetter,formateDate} from "../../../config/helpers";
 import { selectItem } from '../../../actions/table';
 
 
@@ -18,8 +19,9 @@ class UserTable extends React.Component{
       return this.props.users.map((user,index)=>{
 
         let name = "-"
-        if(user.name){
-          name = user.name.firstName + " " + user.name.lastName;
+        if(user.guardian){
+          console.log(true)
+          name = user.guardian.name.firstName + " " + user.guardian.name.lastName;
         }
         let isAdmin = "No";
         let isAdminStyles = {
@@ -29,15 +31,28 @@ class UserTable extends React.Component{
           isAdmin = "Yes";
           isAdminStyles.color = "#8862E0";
         }
+        let status = user.auth.status.statusValue;
+        let statusStyles = {
+          color:"#F0AD4E"
+        }
+        if(user.auth.status.statusValue != "pending"){
+          status = user.auth.status.statusValue;
+          statusStyles.color = "#56B98B";
+        }
+        let dateInvited = formateDate(user.dateCreated);
+        let dateAuthenticated = "-";
+        if(user.auth.dateAuthenticated){
+          dateAuthenticated = formateDate(user.auth.dateAuthenticated);
+        }
         return(
             <tr key={"userTable"+index}>
               <th scope="row">{index + 1}</th>
-        <td colSpan="2">{user.username}</td>
-        <td>{name}</td>
-        <td style={isAdminStyles}>{isAdmin}</td>
-              <td>2/12/2019</td>
-              <td>Yes</td>
-              <td>3/28/2019</td>
+              <td colSpan="2">{user.username}</td>
+              <td>{name}</td>
+              <td style={isAdminStyles}>{isAdmin}</td>
+              <td>{dateInvited}</td>
+              <td style={statusStyles}>{capitalizeFirstLetter(status)}</td>
+              <td>{dateAuthenticated}</td>
               <td>No</td>
               <td>
                 <i title="view" onClick={()=>{alert('1')}} className="fas fa-eye" 

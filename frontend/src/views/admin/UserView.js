@@ -3,16 +3,21 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { togglePopUp } from '../../actions/popUp';
 import { fetchUsers, fetchDeleteUser } from "../../actions/user";
+import { fetchGuardians } from "../../actions/guardian";
 import { changeColor } from "../../actions/theme";
 
 import UserTable from "../../components/admin/tables/UserTable";
 import OverviewUser from "../../components/admin/Overview/OverviewUser";
 import CreateUser from "../../components/admin/forms/user/CreateUser";
+/*
+    Need to update table/this.state after I add a new user like I did in dependents view.
+*/
 
 class UserView extends React.Component {
     static propTypes = {
         userState: PropTypes.object.isRequired,
-        groupState: PropTypes.object.isRequired
+        groupState: PropTypes.object.isRequired,
+        guardianState: PropTypes.object.isRequired
     };
     constructor(props) {
         super(props);
@@ -23,8 +28,25 @@ class UserView extends React.Component {
             this.props.fetchDeleteUser(user._id);
         }
     }
+    _cobmineGuardian = (users,guardians) =>{
+        if(!users){
+            return []
+        }else if(!guardians){
+            return users
+        }
+        let data = users;
+        for(var i=0;i<guardians.length;++i){
+            for(var ix=0;ix<users.length;++ix){
+                if(guardians[i].user == users[ix]._id){
+                    data[ix].guardian = guardians[i];
+                }
+            }
+        }
+        return data;
+    }
     componentDidMount = () =>{
         this.props.changeColor("#8862e0");
+        this.props.fetchGuardians();
         this.props.fetchUsers();
     }
     render() {
@@ -37,7 +59,7 @@ class UserView extends React.Component {
                                     <h4 className="view-header">Users</h4>
                                 </div>
                                 <div className="col-lg-12" style={{ marginBottom: "30px" }}>
-                                    <OverviewUser dependentsLength={2}
+                                    <OverviewUser dependentsLength={this.props.userState.data.length}
                                      averageMed={2} averageAge={2}/>
                                 </div>
                                 <div className="col-lg-12" style={{ marginBottom: "30px" }}>
@@ -48,8 +70,8 @@ class UserView extends React.Component {
                             </div>
                         <div className="row">
                             <div className="col-lg-12">
-                                {this.props.userState.data.length>0?
-                                <UserTable users={this.props.userState.data} delete={this._deleteUser}/>
+                                {this.props.guardianState.fetched && this.props.userState.data.length>0?
+                                <UserTable users={this._cobmineGuardian(this.props.userState.data,this.props.guardianState.data)} delete={this._deleteUser}/>
                                 :null}
                             </div>
                         </div>
@@ -63,11 +85,14 @@ UserView.propTypes = {
     togglePopUp: PropTypes.func.isRequired,
     fetchUsers: PropTypes.func.isRequired,
     fetchDeleteUser: PropTypes.func.isRequired,
-    changeColor: PropTypes.func.isRequired
+    changeColor: PropTypes.func.isRequired,
+    fetchGuardians: PropTypes.func.isRequired
 };
 const mapStateToProps = (state) => ({
     userState: state.userState,
-    groupState: state.groupState
+    groupState: state.groupState,
+    guardianState: state.guardianState
 });
 
-export default connect(mapStateToProps, {changeColor, togglePopUp, fetchUsers, fetchDeleteUser})(UserView);
+export default connect(mapStateToProps, {changeColor, togglePopUp,
+         fetchUsers, fetchDeleteUser, fetchGuardians})(UserView);

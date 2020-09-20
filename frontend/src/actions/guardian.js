@@ -4,7 +4,7 @@ import { API_URI } from '../config/variables';
 import { FETCH_GUARDIANS } from './types';
 import { addGuardian } from './group';
 
-export const fetchGuardians = () => (dispatch) => {
+export const fetchGuardians = (done) => (dispatch) => {
     dispatch(toggleLoading(true));
     fetch(API_URI + "/guardians/"+localStorage.getItem('JWT'), {
       method: 'GET',
@@ -22,6 +22,9 @@ export const fetchGuardians = () => (dispatch) => {
                 type: FETCH_GUARDIANS,
                 payload: res
             });
+            if(done){
+              done(res);
+            }
         }
       });
   };

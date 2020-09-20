@@ -6,18 +6,21 @@ var UserSchema = new mongoose.Schema({
     username:{type:String,required:true},
     password:{type:String,min:8,select: false},
     isAdmin:{type:Boolean,default:false},
+    dateCreated:Date,
     lastLoggon:Date,
     auth:{
         status:{
             statusValue:{type:String,default:"pending"}
         },
         isVerified:{type:Boolean,default:false},
+        dateAuthenticated:Date,
         token:String,
         expiresIn:Date
     }
 });
 
 UserSchema.pre('save',function(next){
+    this.dateCreated = new Date();
     if(this.auth.status.statusValue != "pending" && this.auth.status.statusValue != "approved" && this.auth.status.statusValue != "rejected"){
         var err = "Didn't recieve a valid entry for status valid values are: pending, approved, and rejected.";
         next(err);
@@ -37,6 +40,7 @@ UserSchema.pre('save', function(next) {
         next();
     }else{
         // generate a salt
+        user.auth.dateAuthenticated = new Date();
         user.auth.status.statusValue = "approved";
         bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
             if (err){

@@ -4,7 +4,7 @@ import { API_URI } from '../config/variables';
 import { FETCH_USERS } from './types';
 import { addUser } from './group';
 
-export const fetchUsers = () => (dispatch) => {
+export const fetchUsers = (done) => (dispatch) => {
     dispatch(toggleLoading(true));
     fetch(API_URI + "/users/"+localStorage.getItem('JWT'), {
       method: 'GET',
@@ -22,6 +22,9 @@ export const fetchUsers = () => (dispatch) => {
                 type: FETCH_USERS,
                 payload: res
             });
+            if(done){
+              done(res);
+            }
         }
       });
   };
@@ -68,6 +71,9 @@ export const fetchUsers = () => (dispatch) => {
         } else {
           dispatch(createMessage(res.username + " was successfully deleted.","info"));
           dispatch(fetchUsers());
+        }
+        if(done){
+          done(res);
         }
       });
   };

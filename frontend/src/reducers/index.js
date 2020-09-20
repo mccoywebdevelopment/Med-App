@@ -5,6 +5,7 @@ import loading from './loading';
 import popUp from './popUp';
 import groups from './groups';
 import dependents from './dependents';
+import guardians from './guardians';
 import users from './users';
 import table from './table';
 import theme from './theme';
@@ -18,6 +19,7 @@ const appReducer = combineReducers({
   groupState:groups,
   dependentState:dependents,
   userState:users,
+  guardianState:guardians,
   table,
   theme
 });
