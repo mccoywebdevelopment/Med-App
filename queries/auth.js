@@ -49,8 +49,7 @@ function registerUser(body,token,email,callback){
                                 if(err){
                                     callback(err);
                                 }else if(!guardianFound){
-                                    console.log("create guard")
-                                    console.log(guardianBody)
+                                    guardianBody.user = userFound._id;
                                     createGuardian(guardianBody,function(err,guardianCreated){
                                         if(err){
                                             callback(err);
