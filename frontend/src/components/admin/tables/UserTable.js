@@ -15,11 +15,12 @@ class UserTable extends React.Component{
     super(props);
   }
   render(){
-    const list=() =>{
-      return this.props.users.map((user,index)=>{
+    const list=(users) =>{
+      return users.map((user,index)=>{
+        console.log(user)
 
         let name = "-"
-        if(user.guardian){
+        if(user.guardian && user.guardian.name){
           console.log(true)
           name = user.guardian.name.firstName + " " + user.guardian.name.lastName;
         }
@@ -44,6 +45,19 @@ class UserTable extends React.Component{
         if(user.auth.dateAuthenticated){
           dateAuthenticated = formateDate(user.auth.dateAuthenticated);
         }
+        let grouped = "No";
+        let groupedStyles = {
+          color:'inherit'
+        }
+        if(user.guardian && user.guardian.group.length>0){
+          grouped = "Yes";
+          if(!user.isAdmin){
+            groupedStyles.color = "#56B98B";
+          }
+        }else if(!user.isAdmin){
+          groupedStyles.color = "red";
+        }
+        console.log(grouped);
         return(
             <tr key={"userTable"+index}>
               <th scope="row">{index + 1}</th>
@@ -53,7 +67,7 @@ class UserTable extends React.Component{
               <td>{dateInvited}</td>
               <td style={statusStyles}>{capitalizeFirstLetter(status)}</td>
               <td>{dateAuthenticated}</td>
-              <td>No</td>
+              <td style={groupedStyles}>{grouped}</td>
               <td>
                 <i title="view" onClick={()=>{alert('1')}} className="fas fa-eye" 
                     style={{paddingRight: '20px',color:this.props.theme.pagePrimaryColor}}></i>
@@ -81,7 +95,7 @@ class UserTable extends React.Component{
           </tr>
         </thead>
         <tbody>
-            {list()}
+            {list(this.props.users)}
         </tbody>
       </table>
     );

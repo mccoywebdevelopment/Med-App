@@ -3,8 +3,9 @@ import { toggleLoading } from './loading';
 import { API_URI } from '../config/variables';
 import { FETCH_USERS } from './types';
 import { addUser } from './group';
+import { fetchGuardians } from './guardian';
 
-export const fetchUsers = (done) => (dispatch) => {
+export const fetchUsers = (isAdditionalData,done) => (dispatch) => {
     dispatch(toggleLoading(true));
     fetch(API_URI + "/users/"+localStorage.getItem('JWT'), {
       method: 'GET',
@@ -14,21 +15,61 @@ export const fetchUsers = (done) => (dispatch) => {
     })
       .then(res => res.json())
       .then(res => {
-        dispatch(toggleLoading(false));
-        if (res.error) {
-          dispatch(createMessage(res.error, 'danger'));
-        } else {
-            dispatch({
+          dispatch(toggleLoading(false));
+          if(res.error){
+            dispatch(createMessage(res.error, 'danger'));
+          }else if(isAdditionalData){
+            dispatch(fetchGuardians((guardians)=>{
+              res = combineGuardian(res,guardians);
+              dispatch({
                 type: FETCH_USERS,
                 payload: res
+              });
+              if(done){
+                done(res);
+              }
+            }));
+          }else{
+            dispatch({
+              type: FETCH_USERS,
+              payload: res
             });
             if(done){
               done(res);
             }
-        }
+          }
+        // dispatch(toggleLoading(false));
+        // if (res.error) {
+        //   dispatch(createMessage(res.error, 'danger'));
+        // } else {
+        //   dispatch(fetchGuardians((guardians)=>{
+
+          // return data;
+          //   dispatch({
+          //     type: FETCH_USERS,
+          //     payload: res
+          //   });
+          //   if(done){
+          //     done(res);
+          //   }
+        //   }));
+        // }
       });
   };
+  function combineGuardian(users,guardians){
+    console.log(users);
+    console.log(guardians);
+    let data = users;
 
+    for(var i=0;i<guardians.length;++i){
+      for(var ix=0;ix<users.length;++ix){
+          if(guardians[i].user == users[ix]._id){
+              data[ix].guardian = guardians[i];
+          }
+      }
+    }
+    return data;
+  }
   export const fetchCreateUser = (userBody,groupID) => (dispatch) => {
     dispatch(toggleLoading(true));
     fetch(API_URI + "/auth/email/create-user/"+localStorage.getItem('JWT'), {
@@ -48,10 +89,11 @@ export const fetchUsers = (done) => (dispatch) => {
             let guardianBody = {
               user:res
             }
-            dispatch(addUser(groupID,guardianBody));
+            dispatch(addUser(groupID,guardianBody,(group)=>{
+              dispatch(createMessage(userBody.username + " was sent an invitation via email.","info"));
+              dispatch(fetchUsers(true));
+            }));
           }
-          dispatch(createMessage(userBody.username + " was sent an invitation via email.","info"));
-          dispatch(fetchUsers());
         }
       });
   };

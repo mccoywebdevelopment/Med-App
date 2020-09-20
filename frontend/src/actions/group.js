@@ -22,7 +22,9 @@ export const fetchGroups = (done) => (dispatch) => {
           type: FETCH_GROUPS,
           payload: res
         });
-        done(null, "done");
+        if(done){
+          done(null, "done");
+        }
       }
     });
 }
@@ -47,7 +49,7 @@ export const addDependent = (groupID, newDependent) => (dispatch) => {
     });
 }
 
-export const addUser = (groupID, user) => (dispatch) => {
+export const addUser = (groupID, user, done) => (dispatch) => {
   dispatch(toggleLoading(true));
   dispatch(fetchCreateGuardian(user, (guardianCreated) => {
     let updatedFields = { guardian: guardianCreated };
@@ -63,25 +65,13 @@ export const addUser = (groupID, user) => (dispatch) => {
         dispatch(toggleLoading(false));
         if (res.error) {
           dispatch(createMessage(res.error, 'danger'));
+        }else{
+          if(done){
+            done(res);
+          }
         }
       });
   }));
-  // dispatch(toggleLoading(true));
-  // let updatedFields = {guardian:newDependent}; 
-  // fetch(API_URI + "/groups/" + groupID + "/" + localStorage.getItem('JWT'), {
-  //   method: 'PATCH',
-  //   body: JSON.stringify({ updatedFields: updatedFields }),
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //   },
-  // })
-  //   .then(res => res.json())
-  //   .then(res => {
-  //     dispatch(toggleLoading(false));
-  //     if (res.error) {
-  //       dispatch(createMessage(res.error, 'danger'));
-  //     }
-  //   });
 }
 
 export const removeDependent = (groupID, depToDel, dependents) => (dispatch) => {

@@ -18,13 +18,26 @@ export const fetchGuardians = (done) => (dispatch) => {
         if (res.error) {
           dispatch(createMessage(res.error, 'danger'));
         } else {
+          fetch_Groups(dispatch,function(groups){
+            var guardians = res;
+            for(var i=0;i<guardians.length;++i){
+              guardians[i].group = "";
+              for(var ix=0;ix<groups.length;++ix){
+                for(var z=0;z<groups[ix].guardians.length;++z){
+                  if(guardians[i]._id == groups[ix].guardians[z]._id){
+                    guardians[i].group = groups[ix]._id;
+                  }
+                }
+              }
+            }
             dispatch({
-                type: FETCH_GUARDIANS,
-                payload: res
+              type: FETCH_GUARDIANS,
+              payload: guardians
             });
             if(done){
-              done(res);
+              done(guardians);
             }
+          });
         }
       });
   };
@@ -71,3 +84,20 @@ export const fetchGuardians = (done) => (dispatch) => {
         }
       });
   };
+
+  function fetch_Groups(dispatch,callback){
+    fetch(API_URI + "/groups/"+localStorage.getItem('JWT'), {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json'
+      }
+    })
+      .then(res => res.json())
+      .then(res => {
+        if (res.error) {
+          dispatch(createMessage(res.error, 'danger'));
+        } else {
+          callback(res);
+        }
+      });
+    } 

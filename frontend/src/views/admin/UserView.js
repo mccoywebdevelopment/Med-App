@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { togglePopUp } from '../../actions/popUp';
 import { fetchUsers, fetchDeleteUser } from "../../actions/user";
+import { fetchGroups } from "../../actions/group";
 import { fetchGuardians } from "../../actions/guardian";
 import { changeColor } from "../../actions/theme";
 
@@ -28,26 +29,25 @@ class UserView extends React.Component {
             this.props.fetchDeleteUser(user._id);
         }
     }
-    _cobmineGuardian = (users,guardians) =>{
-        if(!users){
-            return []
-        }else if(!guardians){
-            return users
-        }
-        let data = users;
-        for(var i=0;i<guardians.length;++i){
-            for(var ix=0;ix<users.length;++ix){
-                if(guardians[i].user == users[ix]._id){
-                    data[ix].guardian = guardians[i];
-                }
-            }
-        }
-        return data;
-    }
+    // _cobmineGuardian = (users,guardians) =>{
+    //     if(!users){
+    //         return []
+    //     }else if(!guardians){
+    //         return users
+    //     }
+    //     let data = users;
+    //     for(var i=0;i<guardians.length;++i){
+    //         for(var ix=0;ix<users.length;++ix){
+    //             if(guardians[i].user == users[ix]._id){
+    //                 data[ix].guardian = guardians[i];
+    //             }
+    //         }
+    //     }
+    //     return data;
+    // }
     componentDidMount = () =>{
         this.props.changeColor("#8862e0");
-        this.props.fetchGuardians();
-        this.props.fetchUsers();
+        this.props.fetchUsers(true);
     }
     render() {
         return (
@@ -70,9 +70,10 @@ class UserView extends React.Component {
                             </div>
                         <div className="row">
                             <div className="col-lg-12">
-                                {this.props.guardianState.fetched && this.props.userState.data.length>0?
-                                <UserTable users={this._cobmineGuardian(this.props.userState.data,this.props.guardianState.data)} delete={this._deleteUser}/>
-                                :null}
+                                {this.props.userState.data.length>0?
+                                <UserTable users={this.props.userState.data}
+                                 delete={this._deleteUser}/>
+                                 :null}
                             </div>
                         </div>
                     </div>
@@ -85,6 +86,7 @@ UserView.propTypes = {
     togglePopUp: PropTypes.func.isRequired,
     fetchUsers: PropTypes.func.isRequired,
     fetchDeleteUser: PropTypes.func.isRequired,
+    fetchGroups: PropTypes.func.isRequired,
     changeColor: PropTypes.func.isRequired,
     fetchGuardians: PropTypes.func.isRequired
 };
@@ -95,4 +97,4 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {changeColor, togglePopUp,
-         fetchUsers, fetchDeleteUser, fetchGuardians})(UserView);
+         fetchUsers, fetchDeleteUser, fetchGuardians, fetchGroups})(UserView);
