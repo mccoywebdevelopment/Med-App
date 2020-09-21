@@ -38,6 +38,20 @@ class UserView extends React.Component {
         }
         return num;
     }
+    _toggleRedirect = (dep) =>{
+        let newState = this.state;
+        window.location = "/admin/users/" + dep._id
+        this.setState(newState);
+    }
+    _getNumberUnAuthUsers = () =>{
+        let num = 0;
+        for(var i=0;i<this.props.userState.data.length;++i){
+            if(!this.props.userState.data[i].auth.isVerified){
+                num++;
+            }
+        }
+        return num;
+    }
     componentDidMount = () =>{
         this.props.changeColor("#8862e0");
         this.props.fetchUsers(true);
@@ -53,7 +67,7 @@ class UserView extends React.Component {
                                 </div>
                                 <div className="col-lg-12" style={{ marginBottom: "30px" }}>
                                     <OverviewUser dependentsLength={this.props.userState.data.length}
-                                     admins={this._getNumberOfAdmins()} averageAge={2}/>
+                                     admins={this._getNumberOfAdmins()} pendingUsers={this._getNumberUnAuthUsers()}/>
                                 </div>
                                 <div className="col-lg-12" style={{ marginBottom: "30px" }}>
                                     <button type="button" 
@@ -65,7 +79,7 @@ class UserView extends React.Component {
                             <div className="col-lg-12">
                                 {this.props.userState.data.length>0?
                                 <UserTable users={this.props.userState.data}
-                                 delete={this._deleteUser}/>
+                                 delete={this._deleteUser} changeUserSel={this._toggleRedirect}/>
                                  :null}
                             </div>
                         </div>

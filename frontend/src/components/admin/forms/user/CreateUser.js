@@ -237,7 +237,7 @@ class CreateUser extends React.Component {
     componentDidMount = () => {
         this.props.fetchGroups(() => {
             if (this.props.isUserSelected) {
-                this._formatSeluser(this.props.isUserSelected);
+                this._formatSelUser(this.props.isUserSelected);
             }
         });
     }
@@ -251,7 +251,7 @@ class CreateUser extends React.Component {
     }
     componentWillReceiveProps = (newProps) => {
         if (newProps.isUserSelected) {
-            this._formatSeluser(newProps.isUserSelected);
+            this._formatSelUser(newProps.isUserSelected);
         }
     }
     render(){
@@ -260,12 +260,12 @@ class CreateUser extends React.Component {
             <div className="row">
                     {this.props.isUserSelected ?
                         <div className="col-lg-12" style={{ marginBottom: '10px' }}>
-                            <h4 style={{ display: 'inline' }}>user Overview</h4>
+                            <h4 style={{ display: 'inline' }}>User Overview</h4>
                             <i title="edit" onClick={() => { this._toggleIsEditOverview() }} className="fas fa-edit"
-                                style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
+                                style={{ paddingLeft: '20px', color: '#8862e0' }}></i>
                             <i title="delete" onClick={() => { this.props.delete(this.props.isUserSelected) }} className="fas fa-trash"
-                                style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
-                            <i title="close" onClick={() => { this.props.goHome() }} style={{ float: 'right' }} className="fas fa-times"></i>
+                                style={{ paddingLeft: '20px', color: '#8862e0' }}></i>
+                            <i title="close" onClick={() => { this.props.goHome() }} style={{ float: 'right',color:"#8862e0"}} className="fas fa-times"></i>
                         </div>
                         : null
                     }

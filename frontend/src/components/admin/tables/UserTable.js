@@ -14,6 +14,9 @@ class UserTable extends React.Component{
   constructor(props){
     super(props);
   }
+  _selectItem = (user) =>{
+    this.props.changeUserSel(user)
+  }
   render(){
     const list=(users) =>{
       return users.map((user,index)=>{
@@ -61,20 +64,22 @@ class UserTable extends React.Component{
         return(
             <tr key={"userTable"+index}>
               <th scope="row">{index + 1}</th>
-              <td colSpan="2">{user.username}</td>
-              <td>{name}</td>
-              <td style={isAdminStyles}>{isAdmin}</td>
-              <td>{dateInvited}</td>
-              <td style={statusStyles}>{capitalizeFirstLetter(status)}</td>
-              <td>{dateAuthenticated}</td>
-              <td style={groupedStyles}>{grouped}</td>
+              <td onClick={()=>this._selectItem(user)} colSpan="2">{user.username}</td>
+              {!this.props.isSmall?<td onClick={()=>this._selectItem(user)}>{name}</td>:null}
+              <td onClick={()=>this._selectItem(user)} style={isAdminStyles}>{isAdmin}</td>
+              {!this.props.isSmall?<td onClick={()=>this._selectItem(user)}>{dateInvited}</td>:null}
+              <td onClick={()=>this._selectItem(user)} style={statusStyles}>{capitalizeFirstLetter(status)}</td>
+              {/* <td>{dateAuthenticated}</td> */}
+              <td onClick={()=>this._selectItem(user)} style={groupedStyles}>{grouped}</td>
+              {!this.props.isSmall?
               <td>
-                <i title="view" onClick={()=>{alert('1')}} className="fas fa-eye" 
+                <i title="view" onClick={()=>this._selectItem(user)} className="fas fa-eye" 
                     style={{paddingRight: '20px',color:this.props.theme.pagePrimaryColor}}></i>
                 {/* <i title="edit" className="fas fa-edit" style={{ paddingRight: '20px', color: '#2196F3' }}></i> */}
                 <i title="Delete" onClick={()=>{this.props.delete(user)}} className="fas fa-trash" 
                     style={{color:this.props.theme.pagePrimaryColor }}></i>
               </td>
+              :null}
             </tr>
         );
       });
@@ -85,13 +90,13 @@ class UserTable extends React.Component{
           <tr>
             <th scope="col">#</th>
             <th scope="col" colSpan="2">Email</th>
-            <th scope="col">Name</th>
+            {!this.props.isSmall?<th scope="col">Name</th>:null}
             <th scope="col">Is Admin</th>
-            <th scope="col">Date Invited</th>
+            {!this.props.isSmall?<th scope="col">Date Invited</th>:null}
             <th scope="col">Authenticated</th>
-            <th scope="col">Date Authenticated</th>
+            {/* <th scope="col">Date Authenticated</th> */}
             <th scope="col">Grouped</th>
-            <th scope="col">Actions</th>
+            {!this.props.isSmall?<th scope="col">Actions</th>:null}
           </tr>
         </thead>
         <tbody>

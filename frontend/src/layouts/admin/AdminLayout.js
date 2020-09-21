@@ -56,7 +56,7 @@ class AdminLayout extends React.Component {
                     <div className={"" + (this._isCurrentURL("/admin/profile") ? "my-nav-selected" : "")} 
                         style={{borderLeftColor:this.props.theme.pagePrimaryColor}}>
                         <a href="/admin/profile" className="my-nav-item">
-                            <i title="My Profile" className="fas fa-user-md" style={{color:this.props.theme.pagePrimaryColor}}></i>
+                            <i title="My Profile" className="fas fa-cog" style={{color:this.props.theme.pagePrimaryColor}}></i>
                         </a>
                     </div>
                 </div>

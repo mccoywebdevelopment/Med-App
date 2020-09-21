@@ -21,7 +21,7 @@ export default function OverviewUser(props) {
         <div className="card-body row">
           <div className="col-lg-6">
             <h2 className="font-weight-semibold mb-0">{props.pendingUsers}</h2>
-            <h5 className="font-weight-semibold mb-0">Pending Users</h5>
+            <h5 className="font-weight-semibold mb-0">Locked Accounts</h5>
           </div>
           <div className="col-lg-6" style={{textAlign:'center'}}>
             <i className="fas fa-lock" style={{fontSize:'70px',color:'#8862E0',float:'right'}}></i>
