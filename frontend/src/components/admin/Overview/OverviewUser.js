@@ -20,11 +20,11 @@ export default function OverviewUser(props) {
       <div className="card" style={{minHeight:'140px'}}>
         <div className="card-body row">
           <div className="col-lg-6">
-            <h2 className="font-weight-semibold mb-0">{props.averageMed.toFixed(2)}</h2>
-            <h5 className="font-weight-semibold mb-0">Avg # of Meds Per Dependent</h5>
+            <h2 className="font-weight-semibold mb-0">{props.pendingUsers}</h2>
+            <h5 className="font-weight-semibold mb-0">Pending Users</h5>
           </div>
           <div className="col-lg-6" style={{textAlign:'center'}}>
-            <i className="fas fa-prescription-bottle" style={{fontSize:'70px',color:'#8862E0',float:'right'}}></i>
+            <i className="fas fa-lock" style={{fontSize:'70px',color:'#8862E0',float:'right'}}></i>
           </div>
         </div>
       </div>
@@ -33,11 +33,11 @@ export default function OverviewUser(props) {
       <div className="card" style={{minHeight:'140px'}}>
         <div className="card-body row">
           <div className="col-lg-6">
-            <h2 className="font-weight-semibold mb-0">{props.averageAge.toFixed(2)}</h2>
-            <h5 className="font-weight-semibold mb-0">Average Age of Dependent</h5>
+            <h2 className="font-weight-semibold mb-0">{props.admins}</h2>
+            <h5 className="font-weight-semibold mb-0">Admins</h5>
           </div>
           <div className="col-lg-6" style={{textAlign:'center'}}>
-            <i className="fas fa-child" style={{fontSize:'70px',color:'#8862E0',float:'right'}}></i>
+            <i className="fas fa-user-md" style={{fontSize:'70px',color:'#8862E0',float:'right'}}></i>
           </div>
         </div>
       </div>

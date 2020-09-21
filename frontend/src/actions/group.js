@@ -49,8 +49,10 @@ export const addDependent = (groupID, newDependent) => (dispatch) => {
     });
 }
 
-export const addUser = (groupID, user, done) => (dispatch) => {
-  dispatch(toggleLoading(true));
+export const addUser = (groupID, user, done, rmLoading) => (dispatch) => {
+  if(!rmLoading){
+    dispatch(toggleLoading(true));
+  }
   dispatch(fetchCreateGuardian(user, (guardianCreated) => {
     let updatedFields = { guardian: guardianCreated };
     fetch(API_URI + "/groups/" + groupID + "/" + localStorage.getItem('JWT'), {
@@ -62,7 +64,9 @@ export const addUser = (groupID, user, done) => (dispatch) => {
     })
       .then(res => res.json())
       .then(res => {
-        dispatch(toggleLoading(false));
+        if(!rmLoading){
+          dispatch(toggleLoading(false));
+        }
         if (res.error) {
           dispatch(createMessage(res.error, 'danger'));
         }else{
@@ -71,7 +75,7 @@ export const addUser = (groupID, user, done) => (dispatch) => {
           }
         }
       });
-  }));
+  },rmLoading));
 }
 
 export const removeDependent = (groupID, depToDel, dependents) => (dispatch) => {

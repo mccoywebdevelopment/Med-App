@@ -29,22 +29,15 @@ class UserView extends React.Component {
             this.props.fetchDeleteUser(user._id);
         }
     }
-    // _cobmineGuardian = (users,guardians) =>{
-    //     if(!users){
-    //         return []
-    //     }else if(!guardians){
-    //         return users
-    //     }
-    //     let data = users;
-    //     for(var i=0;i<guardians.length;++i){
-    //         for(var ix=0;ix<users.length;++ix){
-    //             if(guardians[i].user == users[ix]._id){
-    //                 data[ix].guardian = guardians[i];
-    //             }
-    //         }
-    //     }
-    //     return data;
-    // }
+    _getNumberOfAdmins = () =>{
+        let num = 0;
+        for(var i=0;i<this.props.userState.data.length;++i){
+            if(this.props.userState.data[i].isAdmin){
+                num++;
+            }
+        }
+        return num;
+    }
     componentDidMount = () =>{
         this.props.changeColor("#8862e0");
         this.props.fetchUsers(true);
@@ -60,7 +53,7 @@ class UserView extends React.Component {
                                 </div>
                                 <div className="col-lg-12" style={{ marginBottom: "30px" }}>
                                     <OverviewUser dependentsLength={this.props.userState.data.length}
-                                     averageMed={2} averageAge={2}/>
+                                     admins={this._getNumberOfAdmins()} averageAge={2}/>
                                 </div>
                                 <div className="col-lg-12" style={{ marginBottom: "30px" }}>
                                     <button type="button" 

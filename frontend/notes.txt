@@ -1,11 +1,5 @@
 TODO:
-1. create user
-2. if groupID create guardian
-3. if groupID add guardian to group
-4. register user
-5. find guardian by userID 
-6. if found update guardian
-7. else create guardian
+1. fix create user without group.
 
 NOTES:
 - Need to add groupID to isRemoved right now it's "" b/c the user deselected it (CreateDependent.js FORM)
