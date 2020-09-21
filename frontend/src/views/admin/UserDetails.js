@@ -81,7 +81,7 @@ class UserDetails extends React.Component{
         this.setState(newState);
     }
     _deleteUser = (user) =>{
-        if(window.confirm("Are you sure you want to delete "+user.name.firstName+" profile and all their data?")){
+        if(window.confirm("Are you sure you want to delete "+user.username+" profile and all their data?")){
             let isRedirect = false;
             let isHome = false;
             if(this.props.userState.data.length<2){
