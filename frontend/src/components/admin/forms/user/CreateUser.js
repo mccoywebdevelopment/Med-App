@@ -38,7 +38,8 @@ class CreateUser extends React.Component {
                         value: ""
                     }
                 },
-                body: null
+                body: null,
+                isEdit:false
             }
         }
     }
@@ -270,7 +271,7 @@ class CreateUser extends React.Component {
                         : null
                     }
                     <UserOverview data={this.state.overview} update={this._update} updateError={this._updateError}
-                        isUserSelected={this.props.isUserSelected} groups={this.props.groupState.data}>
+                        isUserSelected={this.props.isUserSelected} groups={this.props.groupState.data} isEdit={this.state.overview.isEdit}>
                         {!this.props.isUserSelected || this.state.overview.isEdit ?
                             <BelongsToGroup toggle={this._toggleGroupBtn} update={this._updateGroupValue} form={"overview"}
                                 groups={this.props.groupState.data} data={this.state.overview.values.group}

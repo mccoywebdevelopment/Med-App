@@ -15,18 +15,24 @@ export default class UserOverview extends React.Component {
         return null;
     }
     render() {
+        console.log(this.props);
         let group = this._getGroup(this.props.data.values.group.value);
         return (
             <>
-                {!this.props.isDepSelected || this.props.data.isEdit ?
+                {!this.props.isUserSelected || this.props.isEdit?
                     <>
                         <div className="col-lg-4">
                             <div className="form-group">
                                 <label className="label">Email</label>
                                 <div className="input-group">
+                                    {this.props?
                                     <input type="text" className="form-control" name="nameT" placeholder="Email"
-                                        value={this.props.data.values.name}
+                                        value={this.props.data.values.email} disabled
                                         onChange={(e) => { this.props.update("overview", "email", e.target.value) }} />
+                                        :
+                                        <input type="text" className="form-control" name="nameT" placeholder="Email"
+                                        value={this.props.data.values.email} 
+                                        onChange={(e) => { this.props.update("overview", "email", e.target.value) }} />}
                                     <div className="invalid-feedback" style={{ display: 'block' }}>
                                         {this.props.data.errors.email}&nbsp;
                                     </div>
