@@ -35,7 +35,6 @@ function patchUpdateById(body,id,callback){
           if(err){
             callback(err);
           }else{
-            console.log(newDoc);
             foundDoc.update(newDoc,function(err,result){
               if(err){
                 callback(err);

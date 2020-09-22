@@ -58,11 +58,9 @@ function registerUser(body,token,email,callback){
                                         }
                                     });
                                 }else{
-                                    console.log("update guard");
                                     guardianBody = {
                                         updatedFields:guardianBody
                                     }
-                                    console.log(guardianBody)
                                     updateGuardian(guardianBody,guardianFound._id,function(err,updatedGuardian){
                                         if(err){
                                             callback(err);
