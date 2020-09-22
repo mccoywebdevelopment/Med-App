@@ -19,7 +19,7 @@ export default class DepOverview extends React.Component {
             <>
                 {!this.props.isDepSelected || this.props.data.isEdit?
                 <>
-                    <div className="col-lg-4">
+                    <div className="col-lg-5">
                         <div className="form-group">
                             <label className="label">Name</label>
                             <div className="input-group">
@@ -32,7 +32,7 @@ export default class DepOverview extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <div className="col-lg-4">
+                    <div className="col-lg-4 offset-lg-3">
                         <div className="form-group">
                             <label className="label">Date of Bith</label>
                             <div className="input-group">

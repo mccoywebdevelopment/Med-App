@@ -57,9 +57,9 @@ export default class BelongsToGroup extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className={"col-lg-4 my-search-box " + 
+                <div className={"col-lg-4 my-search-box offset-lg-2 " + 
                     (!this.props.data.isYes? 'my-hidden ' : '') +
-                    (this.props.data.value.length>0? 'my-search-box-selected ' : '') + (this.props.isOffset?("offset-lg-"+this.props.isOffset):'') }>
+                    (this.props.data.value.length>0? 'my-search-box-selected ' : '')}>
                     <div className="form-group" style={{ marginBottom: '0px' }}>
                         <label className="label">Group Name</label>
                     </div>
