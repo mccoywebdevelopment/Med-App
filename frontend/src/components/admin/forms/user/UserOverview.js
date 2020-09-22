@@ -16,7 +16,32 @@ export default class UserOverview extends React.Component {
     }
     render() {
         let group = this._getGroup(this.props.data.values.group.value);
-        console.log(this.props);
+
+        let isAdmin = "No";
+        let isAdminStyles = {
+          color: "inherit",
+          paddingLeft: "10px"
+        };
+        if (this.props.data.values.isAdmin) {
+          isAdmin = "Yes";
+          isAdminStyles.color = "#8862E0";
+        }
+
+        let grouped = "No";
+        let groupedStyles = {
+          color: 'inherit',
+          paddingLeft:'10px'
+        }
+        if (this.props.isUserSelected && this.props.isUserSelected.guardian && 
+            this.props.isUserSelected.guardian.group.length > 0) {
+          grouped = "Yes";
+          if (this.props.isUserSelected && !this.props.isUserSelected.isAdmin) {
+            groupedStyles.color = "#56B98B";
+          }
+        } else if (this.props.isUserSelected && !this.props.isUserSelected.isAdmin) {
+          groupedStyles.color = "red";
+        }
+
         return (
             <>
                 {!this.props.isUserSelected || this.props.isEdit?
@@ -25,7 +50,7 @@ export default class UserOverview extends React.Component {
                             <div className="form-group">
                                 <label className="label">Email</label>
                                 <div className="input-group">
-                                    {this.props?
+                                    {this.props.isUserSelected?
                                     <input type="text" className="form-control" name="nameT" placeholder="Email"
                                         value={this.props.data.values.email} disabled
                                         onChange={(e) => { this.props.update("overview", "email", e.target.value) }} />
@@ -76,12 +101,12 @@ export default class UserOverview extends React.Component {
                             <span>Email</span><span style={{ paddingLeft: '10px' }}>{this.props.data.values.email}</span>
                         </div>
                         <div className="col-lg-4">
-                            <span>Is Admin:</span><span style={{ paddingLeft: '10px' }}>{this.props.data.values.isAdmin.toString()}</span>
+                            <span>Is Admin:</span><span style={isAdminStyles}>{isAdmin}</span>
                         </div>
                         {this.props.data.values.group.value.length > 0 && group ?
                             <>
                                 <div className="col-lg-6" style={{marginTop:'10px'}}>
-                                    <span>Belongs to Group:</span><span style={{ paddingLeft: '10px', color: '#19d895' }}>Yes</span>
+                                    <span>Belongs to Group:</span><span style={groupedStyles}>Yes</span>
                                 </div>
                                 <div className="col-lg-6" style={{ paddingLeft: '0px', marginTop: '10px' }}>
                                     <span>Group Name:</span><span style={{ paddingLeft: '10px' }}>{group.name}</span>
@@ -92,15 +117,10 @@ export default class UserOverview extends React.Component {
                                 </div>
                             </>
                             :
-                            <div className="col-lg-6" style={{marginTop:'10px',paddingLeft:'0px'}}>
-                                <span>Belongs to Group:</span><span style={{ paddingLeft: '10px', color: 'red' }}>No</span>
+                            <div className="col-lg-12" style={{marginTop:'10px',paddingLeft:'0px'}}>
+                                <span>Belongs to Group:</span><span style={groupedStyles}>No</span>
                             </div>
                         }
-                        {/* <div className="col-lg-12" style={{ marginTop: '10px' }}>
-                            <span>Date Created:</span><span style={{ paddingLeft: '10px' }}>
-                                {formateDate(this.props.isDepSelected.dateCreated)}
-                            </span>
-                        </div> */}
                     </>
                 }
                 {this.props.children}

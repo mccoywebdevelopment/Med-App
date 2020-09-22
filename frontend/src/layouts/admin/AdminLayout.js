@@ -82,7 +82,7 @@ class AdminLayout extends React.Component {
                     <div>
                         {this.props.children}
                     </div>
-                    <div className="footer">
+                    <div className="footer" style={{marginTop:'30px'}}>
                     &nbsp;
                     </div>
                 </div>

@@ -23,7 +23,7 @@ export const fetchGroups = (done) => (dispatch) => {
           payload: res
         });
         if(done){
-          done(null, "done");
+          done(res);
         }
       }
     });

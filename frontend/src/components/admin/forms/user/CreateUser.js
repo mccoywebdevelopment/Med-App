@@ -4,20 +4,27 @@ import PropTypes from 'prop-types';
 import { fetchGroups } from '../../../../actions/group';
 import { togglePopUp } from "../../../../actions/popUp";
 import { fetchCreateUser } from "../../../../actions/user";
-import {emailValidator} from '../../../../config/validators';
+import { emailValidator } from '../../../../config/validators';
 
 import UserOverview from "./UserOverview";
 import BelongsToGroup from '../dependent/BelongsToGroup';
+import UserOverviewReadOnly from "./UserOverviewReadOnly";
 
 class CreateUser extends React.Component {
     static propTypes = {
         userState: PropTypes.object.isRequired,
+        groupState: PropTypes.object.isRequired,
         theme: PropTypes.object.isRequired
     };
     constructor(props) {
         super(props);
         this._initState();
         this._toggleGroupBtn = this._toggleGroupBtn.bind(this);
+        this._update = this._update.bind(this);
+        this._updateError = this._updateError.bind(this);
+        this._updateGroupValue = this._updateGroupValue.bind(this);
+        this._toggleGroupBtn = this._toggleGroupBtn.bind(this);
+        console.log(this.props);
     }
     _initState = () => {
         this.state = {
@@ -39,7 +46,7 @@ class CreateUser extends React.Component {
                     }
                 },
                 body: null,
-                isEdit:false
+                isEdit: false
             }
         }
     }
@@ -53,6 +60,7 @@ class CreateUser extends React.Component {
         newState.oldData = {
             overview: JSON.stringify(newState.overview.values)
         }
+        alert(JSON.stringify(newState))
         this.setState(newState);
     }
     _isUpdated = () => {
@@ -64,11 +72,28 @@ class CreateUser extends React.Component {
         }
         return false;
     }
+    _getGroupIDByUserID = (id) => {
+        console.log(this.props)
+        if (this.props.groupState.data) {
+            let groups = this.props.groupState.data;
+
+            for (var i = 0; i < groups.length; ++i) {
+                for (var ix = 0; ix < groups[i].guardians.length; ++ix) {
+                    if (id == groups[i].guardians[ix].user) {
+                        return groups[i]._id
+                    }
+                }
+            }
+        }
+
+        return "";
+    }
     _getGroupSeluser = (user) => {
-        if (typeof (user.group) != 'undefined' && user.group.length > 0) {
+        let group = this._getGroupIDByUserID(user._id);
+        if (group.length > 0) {
             return {
                 isYes: true,
-                value: user.group
+                value: group
             }
         } else {
             return {
@@ -143,7 +168,7 @@ class CreateUser extends React.Component {
     }
     _validation = () => {
         this._overviewValidation();
-        if (this._isOverviewErrors()){
+        if (this._isOverviewErrors()) {
             alert("Please fix the errors below:");
         }
     }
@@ -213,10 +238,10 @@ class CreateUser extends React.Component {
     }
     _submit = () => {
         this._validation();
-        if(!this._isOverviewErrors()){
+        if (!this._isOverviewErrors()) {
             let body = this._formatBody();
-    
-            this.props.fetchCreateUser(body,this.state.overview.values.group.value);
+
+            this.props.fetchCreateUser(body, this.state.overview.values.group.value);
             this.props.togglePopUp();
         }
         // if (!this._isOverviewErrors() && !this._isRxsMedErrors()) {
@@ -236,7 +261,7 @@ class CreateUser extends React.Component {
         // }
     }
     componentDidMount = () => {
-        this.props.fetchGroups(() => {
+        this.props.fetchGroups((groups) => {
             if (this.props.isUserSelected) {
                 this._formatSelUser(this.props.isUserSelected);
             }
@@ -255,10 +280,10 @@ class CreateUser extends React.Component {
             this._formatSelUser(newProps.isUserSelected);
         }
     }
-    render(){
-        return(
+    render() {
+        return (
             <>
-            <div className="row">
+                <div className="row">
                     {this.props.isUserSelected ?
                         <div className="col-lg-12" style={{ marginBottom: '10px' }}>
                             <h4 style={{ display: 'inline' }}>User Overview</h4>
@@ -266,7 +291,7 @@ class CreateUser extends React.Component {
                                 style={{ paddingLeft: '20px', color: '#8862e0' }}></i>
                             <i title="delete" onClick={() => { this.props.delete(this.props.isUserSelected) }} className="fas fa-trash"
                                 style={{ paddingLeft: '20px', color: '#8862e0' }}></i>
-                            <i title="close" onClick={() => { this.props.goHome() }} style={{ float: 'right',color:"#8862e0"}} className="fas fa-times"></i>
+                            <i title="close" onClick={() => { this.props.goHome() }} style={{ float: 'right', color: "#8862e0" }} className="fas fa-times"></i>
                         </div>
                         : null
                     }
@@ -277,6 +302,7 @@ class CreateUser extends React.Component {
                                 groups={this.props.groupState.data} data={this.state.overview.values.group}
                                 error={this.state.overview.errors.group} isOffset={2} />
                             : null}
+                        <UserOverviewReadOnly user={this.props.isUserSelected} isEdit={this.state.overview.isEdit} />
                     </UserOverview>
                 </div>
                 <div className="row" style={{ marginTop: '30px', marginBottom: '30px' }}>
@@ -298,8 +324,9 @@ CreateUser.propTypes = {
     fetchCreateUser: PropTypes.func.isRequired
 };
 const mapStateToProps = (state) => ({
+    userState: state.userState,
     groupState: state.groupState,
     theme: state.theme
 });
 
-export default connect(mapStateToProps, {fetchGroups, togglePopUp, fetchCreateUser})(CreateUser);
+export default connect(mapStateToProps, { fetchGroups, togglePopUp, fetchCreateUser })(CreateUser);
