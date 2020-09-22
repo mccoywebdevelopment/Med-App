@@ -275,7 +275,7 @@ class CreateUser extends React.Component {
                         {!this.props.isUserSelected || this.state.overview.isEdit ?
                             <BelongsToGroup toggle={this._toggleGroupBtn} update={this._updateGroupValue} form={"overview"}
                                 groups={this.props.groupState.data} data={this.state.overview.values.group}
-                                error={this.state.overview.errors.group} />
+                                error={this.state.overview.errors.group} isOffset={2} />
                             : null}
                     </UserOverview>
                 </div>
