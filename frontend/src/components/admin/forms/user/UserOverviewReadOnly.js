@@ -31,13 +31,16 @@ export default class UserOverviewReadOnly extends React.Component {
                             <span>Date Created:</span><span style={{ paddingLeft: '10px' }}>{formateDate(this.props.user.dateCreated)}</span>
                         </div>
                         <>
-                            {this.props.user.guardian.name?
+                            {this.props.user.guardian && this.props.user.guardian.name?
                                 <>
                                     <div className="col-lg-8" style={{ paddingLeft: '0px', marginTop: '10px' }}>
-                                        <span>Name</span><span style={this._getValidationStatusObj().statusStyles}>{capitalizeFirstLetter(this._getValidationStatusObj().status)}</span>
+                                        <span>Name</span><span style={{paddingLeft:'10px'}}>{this.props.user.guardian.name.firstName + " " + this.props.user.guardian.name.lastName}</span>
                                     </div>
                                     <div className="col-lg-4" style={{ marginTop: '10px' }}>
                                         <span>Date Created:</span><span style={{ paddingLeft: '10px' }}>{formateDate(this.props.user.dateCreated)}</span>
+                                    </div>
+                                    <div className="col-lg-8" style={{ paddingLeft: '0px', marginTop: '10px' }}>
+                                        <span>Phone Number:</span><span style={{paddingLeft:'10px'}}>{this.props.user.guardian.phoneNumber}</span>
                                     </div>
                                 </>
                                 :null

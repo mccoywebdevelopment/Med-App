@@ -1,5 +1,5 @@
 TODO:
-1. fix create user without group.
+1. dateCreated/date invited is not accurate
 
 NOTES:
 - Need to add groupID to isRemoved right now it's "" b/c the user deselected it (CreateDependent.js FORM)
