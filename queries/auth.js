@@ -69,20 +69,7 @@ function registerUser(body,token,email,callback){
                                         }
                                     });
                                 }
-                            });
-                            // if(!userSaved.isAdmin){
-                            //     body.user = userSaved._id.toString();
-                            //     createGuardian(body,function(err,guardianCreated){
-                            //         if(err){
-                            //             callback(err);
-                            //         }else{
-                            //             callback(null,obj);
-                            //         }
-                            //     });
-                            // }else{
-                            //     callback(null,obj);
-                            // }
-                           
+                            });                          
                         }
                     });
                 }

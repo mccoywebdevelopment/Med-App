@@ -190,3 +190,23 @@ function updateGroupData(dispatch,isGroupModified,guardian,guardians,callback){
     dispatch(switchGuardian(isGroupModified.groupID,isGroupModified.oldGroupID,guardian,guardians,()=>callback()));
   }
 }
+
+export const sendTokenViaEmail = (email) => (dispatch) => {
+  dispatch(toggleLoading(true));
+  fetch(API_URI + "/auth/email/send-welcome/" + email + "/" + localStorage.getItem('JWT'), {
+    method: 'GET',
+    headers: {
+      'content-type': 'application/json'
+    },
+  })
+    .then(res => res.json())
+    .then(res => {
+      dispatch(toggleLoading(false));
+      if (res.error) {
+        dispatch(createMessage(res.error, 'danger'));
+      } else {      
+        dispatch(createMessage(email + " was sent another invitation via email.", "info"));
+      }
+    });
+};
+

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchGroups } from '../../../../actions/group';
 import { togglePopUp } from "../../../../actions/popUp";
-import { fetchCreateUser, fetchUpdateUser } from "../../../../actions/user";
+import { fetchCreateUser, fetchUpdateUser, sendTokenViaEmail} from "../../../../actions/user";
 import { emailValidator } from '../../../../config/validators';
 
 import UserOverview from "./UserOverview";
@@ -288,6 +288,10 @@ class CreateUser extends React.Component {
                             <h4 style={{ display: 'inline' }}>User Overview</h4>
                             <i title="edit" onClick={() => { this._toggleIsEditOverview() }} className="fas fa-edit"
                                 style={{ paddingLeft: '20px', color: '#8862e0' }}></i>
+                                {!this.props.isUserSelected.auth.isVerified?
+                            <i title="Send Invite" onClick={() => { this.props.sendTokenViaEmail(this.props.isUserSelected.username) }} className="fas fa-envelope"
+                                style={{ paddingLeft: '20px', color: '#8862e0' }}></i>
+                                :null}
                             <i title="delete" onClick={() => { this.props.delete(this.props.isUserSelected) }} className="fas fa-trash"
                                 style={{ paddingLeft: '20px', color: '#8862e0' }}></i>
                             <i title="close" onClick={() => { this.props.goHome() }} style={{ float: 'right', color: "#8862e0" }} className="fas fa-times"></i>
@@ -321,7 +325,8 @@ CreateUser.propTypes = {
     togglePopUp: PropTypes.func.isRequired,
     fetchGroups: PropTypes.func.isRequired,
     fetchCreateUser: PropTypes.func.isRequired,
-    fetchUpdateUser: PropTypes.func.isRequired
+    fetchUpdateUser: PropTypes.func.isRequired,
+    sendTokenViaEmail: PropTypes.func.isRequired
 };
 const mapStateToProps = (state) => ({
     userState: state.userState,
@@ -330,4 +335,4 @@ const mapStateToProps = (state) => ({
     theme: state.theme
 });
 
-export default connect(mapStateToProps, { fetchGroups, togglePopUp, fetchCreateUser, fetchUpdateUser })(CreateUser);
+export default connect(mapStateToProps, { fetchGroups, togglePopUp, fetchCreateUser, fetchUpdateUser, sendTokenViaEmail })(CreateUser);

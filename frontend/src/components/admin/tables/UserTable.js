@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { capitalizeFirstLetter, formateDate } from "../../../config/helpers";
-import { selectItem } from '../../../actions/table';
+import { sendTokenViaEmail } from "../../../actions/user"
 
 
 class UserTable extends React.Component {
@@ -18,7 +18,6 @@ class UserTable extends React.Component {
     this.props.changeUserSel(user)
   }
   render() {
-    console.log(this.props.users)
     const list = (users) => {
       return users.map((user, index) => {
         let name = "-"
@@ -78,7 +77,7 @@ class UserTable extends React.Component {
                 <i title="view" onClick={() => this._selectItem(user)} className="fas fa-eye"
                   style={{ paddingRight: '20px', color: this.props.theme.pagePrimaryColor }}></i>
                   {!user.auth.isVerified?
-                    <i title="Send Invite" onClick={() => { this.props.delete(user) }} className="fas fa-envelope"
+                    <i title="Send Invite" onClick={() => { this.props.sendTokenViaEmail(user.username) }} className="fas fa-envelope"
                       style={{ paddingRight: '20px',color: this.props.theme.pagePrimaryColor }}></i>
                   :null}
                 {/* <i title="edit" className="fas fa-edit" style={{ paddingRight: '20px', color: '#2196F3' }}></i> */}
@@ -113,11 +112,11 @@ class UserTable extends React.Component {
   }
 }
 
-// UserTable.propTypes = {
-//   selectItem: PropTypes.func.isRequired
-// };
+UserTable.propTypes = {
+  sendTokenViaEmail: PropTypes.func.isRequired
+};
 const mapStateToProps = (state) => ({
   theme: state.theme
 });
 
-export default connect(mapStateToProps, {})(UserTable);
+export default connect(mapStateToProps, { sendTokenViaEmail })(UserTable);

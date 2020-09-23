@@ -28,8 +28,6 @@ router.route("/create-user/:JWT")
   });
 });
 
-
-
 router.route("/send-welcome/:email/:JWT")
 .get(verifyAdmin,function(req,res){
     mailQ.sendMail("Welcome","Welcome to Sunshine Acres rxs database! Please register by clicking the link below.","Click To Register",req.params.email,true,
