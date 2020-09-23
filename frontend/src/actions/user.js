@@ -2,7 +2,7 @@ import { createMessage } from './messages';
 import { toggleLoading } from './loading';
 import { API_URI } from '../config/variables';
 import { FETCH_USERS } from './types';
-import { addUser } from './group';
+import { addUser, addGuardian, removeGuardian, switchGuardian } from './group';
 import { fetchGuardians } from './guardian';
 
 export const fetchUsers = (isAdditionalData, done, rmLoading) => (dispatch) => {
@@ -105,6 +105,43 @@ export const fetchDeleteUser = (depID, done) => (dispatch) => {
       }
       if (done) {
         done(res);
+      }
+    });
+};
+
+export const fetchUpdateUser = (id,userBody,isGroupModified,guardians,done) => (dispatch) => {
+  userBody = {
+    updatedFields:userBody
+  }
+  dispatch(toggleLoading(true));
+  fetch(API_URI + "/users/"+id+"/"+localStorage.getItem('JWT'), {
+    method: 'PATCH',
+    headers: {
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify(userBody)
+  })
+    .then(res => res.json())
+    .then(res => {
+      dispatch(toggleLoading(false));
+      if (res.error) {
+        dispatch(createMessage(res.error, 'danger'));
+      } else {
+        if(isGroupModified){
+          if(isGroupModified.isAdd){
+            dispatch(addGuardian(isGroupModified.groupID,res));
+          }else if(isGroupModified.isRemoved){
+            dispatch(removeGuardian(isGroupModified.groupID,res,guardians));
+          }else{
+            dispatch(switchGuardian(isGroupModified.groupID,isGroupModified.oldGroupID,res,guardians));
+          }
+        }
+        dispatch(createMessage(res.username + " was successfully updated.","success"));
+        dispatch(fetchUsers(true,(users)=>{
+          if(done){
+            done(res)
+          }
+        }));
       }
     });
 };

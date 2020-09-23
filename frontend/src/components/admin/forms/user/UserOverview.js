@@ -64,7 +64,7 @@ export default class UserOverview extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-lg-4 offset-lg-2">
+                        <div className="col-lg-6">
                             <div className="form-group" style={{ marginBottom: '0px' }}>
                                 <label className="label">Is Admin</label>
                             </div>
@@ -97,27 +97,27 @@ export default class UserOverview extends React.Component {
                     </>
                     :
                     <>
-                        <div className="col-lg-8" style={{paddingLeft:'0px'}}>
-                            <span>Email</span><span style={{ paddingLeft: '10px' }}>{this.props.data.values.email}</span>
+                        <div className="col-lg-6">
+                            <span>Email:</span><span style={{ paddingLeft: '5px' }}>{this.props.data.values.email}</span>
                         </div>
-                        <div className="col-lg-4">
+                        <div className="col-lg-6">
                             <span>Is Admin:</span><span style={isAdminStyles}>{isAdmin}</span>
                         </div>
                         {this.props.data.values.group.value.length > 0 && group ?
                             <>
-                                <div className="col-lg-8" style={{marginTop:'10px',paddingLeft:'0px'}}>
+                                <div className="col-lg-6" style={{marginTop:'10px'}}>
                                     <span>Belongs to Group:</span><span style={groupedStyles}>Yes</span>
                                 </div>
-                                <div className="col-lg-4" style={{marginTop: '10px' }}>
+                                <div className="col-lg-6" style={{marginTop: '10px' }}>
                                     <span>Group Name:</span><span style={{ paddingLeft: '10px' }}>{group.name}</span>
                                 </div>
-                                <div className="col-lg-8" style={{marginTop:'10px',paddingLeft:'0px'}}>
+                                <div className="col-lg-12" style={{marginTop:'10px',paddingLeft:'12.5px'}}>
                                     <span>Group ID:</span><a target="_blank" href={"/admin/groups/" + group._id}>
                                         <span style={{ paddingLeft: '10px' }}>{group._id}</span></a>
                                 </div>
                             </>
                             :
-                            <div className="col-lg-8" style={{marginTop:'10px',paddingLeft:'0px'}}>
+                            <div className="col-lg-6" style={{marginTop:'10px'}}>
                                 <span>Belongs to Group:</span><span style={groupedStyles}>No</span>
                             </div>
                         }

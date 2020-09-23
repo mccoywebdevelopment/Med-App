@@ -96,74 +96,7 @@ function updateModifiedFields(oldDoc, updatedFields, callback) {
   }else{
     callback(null,obj);
   }
-
-  // if (updatedFields.rxs) {
-  //   createRxsAndAttatch(obj, updatedFields.rxs, function (err, obj) {
-  //     if (err) {
-  //       callback(err);
-  //     } else {
-  //       if (updatedFields.medication) {
-  //         createMedicationAndAttactch(obj, updatedFields.medication, function (err, obj) {
-  //           if (err) {
-  //             callback(err);
-  //           } else {
-  //             callback(null, obj);
-  //           }
-  //         });
-  //       } else {
-  //         callback(null, obj);
-  //       }
-  //     }
-  //   });
-  // } else if (updatedFields.medication) {
-  //   createMedicationAndAttactch(obj, updatedFields.medication, function (err, obj) {
-  //     if (err) {
-  //       callback(err);
-  //     } else {
-  //       callback(null, obj);
-  //     }
-  //   });
-  // } else {
-  //   callback(null, obj);
-  // }
 }
-// function createRxsAndAttatch(obj, rxs, callback) {
-//   if (rxs.length < 1) {
-//     callback(null, obj);
-//   }
-//   if (Array.isArray(rxs)) {
-//     var i = 0;
-
-//     rxs.forEach(element => {
-//       createRxs(element, function (err, rxsCreated) {
-//         obj.rxs.push(rxsCreated);
-//         if (err) {
-//           callback(err);
-//           return;
-//         } else if (i == rxs.length - 1) {
-//           callback(null, obj);
-//           return;
-//         }
-//         i++;
-//       });
-//     });
-//   } else {
-//     createRxs(rxs, function (err, rxsCreated) {
-//       if (err) {
-//         callback(err);
-//       } else {
-//         obj.rxs.push(rxsCreated);
-//         callback(null, obj);
-//       }
-//     });
-//   }
-// }
-
-/*
-  if update rxs also need to check for rxsMed _id to see if we need to create or update
-  we may need to also delete
-*/
-/* delete not working*/
 
 function getRxs(dep,callback){
   let i = 0;

@@ -39,7 +39,7 @@ function patchUpdateById(body,id,callback){
               if(err){
                 callback(err);
               }else{
-                callback(null,result);
+                callback(null,newDoc);
               }
             });
           }

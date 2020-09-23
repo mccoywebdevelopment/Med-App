@@ -43,6 +43,7 @@ router.route("/:id/:JWT")
             console.log(err);
             res.status(errors.code.BAD_REQUEST).json({error:err});
         }else{
+            updatedObj._id = req.params.id;
             res.send(updatedObj);
         }
     });

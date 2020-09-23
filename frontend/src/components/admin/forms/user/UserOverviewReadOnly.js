@@ -24,22 +24,19 @@ export default class UserOverviewReadOnly extends React.Component {
             <>
                 {this.props.user && !this.props.isEdit ?
                     <>
-                        <div className="col-lg-4" style={{ marginTop: '10px' }}>
-                            <span>Validated:</span><span style={this._getValidationStatusObj().statusStyles}>{capitalizeFirstLetter(this._getValidationStatusObj().status)}</span>
-                        </div>
-                        <div className="col-lg-8" style={{ marginTop: '10px',paddingLeft:'0px' }}>
+                        <div className="col-lg-6" style={{ marginTop: '10px'}}>
                             <span>Date Created:</span><span style={{ paddingLeft: '10px' }}>{formateDate(this.props.user.dateCreated)}</span>
                         </div>
                         <>
                             {this.props.user.guardian && this.props.user.guardian.name?
                                 <>
-                                    <div className="col-lg-8" style={{ paddingLeft: '0px', marginTop: '10px' }}>
+                                     <div className="col-lg-6" style={{marginTop: '10px' }}>
+                                        <span>Date Verified:</span><span style={{ paddingLeft: '10px' }}>{formateDate(this.props.user.auth.dateAuthenticated)}</span>
+                                    </div>
+                                    <div className="col-lg-6" style={{marginTop: '10px' }}>
                                         <span>Name</span><span style={{paddingLeft:'10px'}}>{this.props.user.guardian.name.firstName + " " + this.props.user.guardian.name.lastName}</span>
                                     </div>
-                                    <div className="col-lg-4" style={{ marginTop: '10px' }}>
-                                        <span>Date Created:</span><span style={{ paddingLeft: '10px' }}>{formateDate(this.props.user.dateCreated)}</span>
-                                    </div>
-                                    <div className="col-lg-8" style={{ paddingLeft: '0px', marginTop: '10px' }}>
+                                    <div className="col-lg-6" style={{marginTop: '10px' }}>
                                         <span>Phone Number:</span><span style={{paddingLeft:'10px'}}>{this.props.user.guardian.phoneNumber}</span>
                                     </div>
                                 </>
@@ -47,6 +44,9 @@ export default class UserOverviewReadOnly extends React.Component {
                             }
                                 
                         </>
+                        <div className="col-lg-6" style={{ marginTop: '10px' }}>
+                            <span>Validated:</span><span style={this._getValidationStatusObj().statusStyles}>{capitalizeFirstLetter(this._getValidationStatusObj().status)}</span>
+                        </div>
                     </>
                     : null
                 }

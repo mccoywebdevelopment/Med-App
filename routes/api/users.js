@@ -40,11 +40,13 @@ router.route("/:id/:JWT")
 })
 .patch(verifyAdmin,function(req,res){
     var obj = req.body;
+    console.log(obj)
     userQ.patchUpdateById(obj,req.params.id,function(err,updatedObj){
         if(err){
             console.log(err);
             res.status(errors.code.BAD_REQUEST).json({error:err});
         }else{
+            updatedObj._id = req.params.id;
             res.send(updatedObj);
         }
     });

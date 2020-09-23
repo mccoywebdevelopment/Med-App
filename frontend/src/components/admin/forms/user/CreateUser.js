@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchGroups } from '../../../../actions/group';
 import { togglePopUp } from "../../../../actions/popUp";
-import { fetchCreateUser } from "../../../../actions/user";
+import { fetchCreateUser, fetchUpdateUser } from "../../../../actions/user";
 import { emailValidator } from '../../../../config/validators';
 
 import UserOverview from "./UserOverview";
@@ -226,38 +226,29 @@ class CreateUser extends React.Component {
             return null;
         }
     }
-    _getusersFromGroupSel = () => {
-        let oldusers = [];
+    _getGuardiansFromGroupSel = () => {
+        let oldGuardians = [];
         for (var i = 0; i < this.props.groupState.data.length; ++i) {
             if (this.props.groupState.data[i]._id == this.state.overview.values.group.value) {
-                oldusers = this.props.groupState.data[i].users;
+                return(this.props.groupState.data[i].guardians);
             }
         }
-        return oldusers;
+        return oldGuardians;
     }
     _submit = () => {
         this._validation();
         if (!this._isOverviewErrors()) {
             let body = this._formatBody();
-
-            this.props.fetchCreateUser(body, this.state.overview.values.group.value);
+            if(this.props.isUserSelected){
+               this.props.fetchUpdateUser(this.props.isUserSelected._id,body,this._isGroupModified(),this._getGuardiansFromGroupSel(),(res)=>{
+                    this._initState();
+                    this.props.updateUser(res._id);
+               });
+            }else{
+                this.props.fetchCreateUser(body, this.state.overview.values.group.value);
+            }
             this.props.togglePopUp();
         }
-        // if (!this._isOverviewErrors() && !this._isRxsMedErrors()) {
-        //     let usersFromGroupSel = this._getusersFromGroupSel();
-        //     if (this.props.isUserSelected) {
-        //         //check if group is modified if so update group then call get populated users
-        //         this.props.fetchUpdateuser(this.props.isUserSelected._id, this._formatBody(), this.props.groups,
-        //             this._isGroupModified(), usersFromGroupSel, (res) => {
-        //                 this._initState();
-        //                 this.props.updateuser(res._id);
-
-        //             });
-        //     } else {
-        //         this.props.fetchCreateuser(this._formatBody(), this.state.overview.values.group.value, usersFromGroupSel);
-        //     }
-        //     this.props.togglePopUp();
-        // }
     }
     componentDidMount = () => {
         this.props.fetchGroups((groups) => {
@@ -320,7 +311,8 @@ class CreateUser extends React.Component {
 CreateUser.propTypes = {
     togglePopUp: PropTypes.func.isRequired,
     fetchGroups: PropTypes.func.isRequired,
-    fetchCreateUser: PropTypes.func.isRequired
+    fetchCreateUser: PropTypes.func.isRequired,
+    fetchUpdateUser: PropTypes.func.isRequired
 };
 const mapStateToProps = (state) => ({
     userState: state.userState,
@@ -328,4 +320,4 @@ const mapStateToProps = (state) => ({
     theme: state.theme
 });
 
-export default connect(mapStateToProps, { fetchGroups, togglePopUp, fetchCreateUser })(CreateUser);
+export default connect(mapStateToProps, { fetchGroups, togglePopUp, fetchCreateUser, fetchUpdateUser })(CreateUser);

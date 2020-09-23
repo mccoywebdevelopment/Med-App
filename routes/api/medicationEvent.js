@@ -23,6 +23,7 @@ router.route("/:JWT/med-event/:eventId")
             console.log(err);
             res.status(errors.code.BAD_REQUEST).json({error:err});
         }else{
+            result._id = req.params.id;
             res.send(result);
         }
     });

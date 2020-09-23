@@ -22,7 +22,7 @@ export const fetchGroups = (done) => (dispatch) => {
           type: FETCH_GROUPS,
           payload: res
         });
-        if(done){
+        if (done) {
           done(res);
         }
       }
@@ -50,7 +50,7 @@ export const addDependent = (groupID, newDependent) => (dispatch) => {
 }
 
 export const addUser = (groupID, user, done, rmLoading) => (dispatch) => {
-  if(!rmLoading){
+  if (!rmLoading) {
     dispatch(toggleLoading(true));
   }
   dispatch(fetchCreateGuardian(user, (guardianCreated) => {
@@ -64,18 +64,45 @@ export const addUser = (groupID, user, done, rmLoading) => (dispatch) => {
     })
       .then(res => res.json())
       .then(res => {
-        if(!rmLoading){
+        if (!rmLoading) {
           dispatch(toggleLoading(false));
         }
         if (res.error) {
           dispatch(createMessage(res.error, 'danger'));
-        }else{
-          if(done){
+        } else {
+          if (done) {
             done(res);
           }
         }
       });
-  },rmLoading));
+  }, rmLoading));
+}
+
+export const addGuardian = (groupID, guardian, done, rmLoading) => (dispatch) => {
+  if (!rmLoading) {
+    dispatch(toggleLoading(true));
+  }
+  let updatedFields = { guardian: guardian };
+  fetch(API_URI + "/groups/" + groupID + "/" + localStorage.getItem('JWT'), {
+    method: 'PATCH',
+    body: JSON.stringify({ updatedFields: updatedFields }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then(res => res.json())
+    .then(res => {
+      if (!rmLoading) {
+        dispatch(toggleLoading(false));
+      }
+      if (res.error) {
+        dispatch(createMessage(res.error, 'danger'));
+      } else {
+        if (done) {
+          done(res);
+        }
+      }
+    });
 }
 
 export const removeDependent = (groupID, depToDel, dependents) => (dispatch) => {
@@ -131,6 +158,63 @@ export const switchDependent = (newGroupID, oldGroupID, dep, dependents) => (dis
               dispatch(createMessage(res.error, 'danger'));
             }
           });
+      }
+    });
+}
+
+export const switchGuardian = (newGroupID, oldGroupID, guardian, guardians) => (dispatch) => {
+  dispatch(toggleLoading(true));
+  guardians = removeByID(guardian._id, guardians);
+  let updatedFields = { guardians: guardians };
+  fetch(API_URI + "/groups/" + oldGroupID + "/" + localStorage.getItem('JWT'), {
+    method: 'PATCH',
+    body: JSON.stringify({ updatedFields: updatedFields }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then(res => res.json())
+    .then(res => {
+      dispatch(toggleLoading(false));
+      if (res.error) {
+        dispatch(createMessage(res.error, 'danger'));
+      } else {
+        dispatch(toggleLoading(true));
+        let updatedFields = { guardian: guardian };
+        fetch(API_URI + "/groups/" + newGroupID + "/" + localStorage.getItem('JWT'), {
+          method: 'PATCH',
+          body: JSON.stringify({ updatedFields: updatedFields }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+          .then(res => res.json())
+          .then(res => {
+            dispatch(toggleLoading(false));
+            if (res.error) {
+              dispatch(createMessage(res.error, 'danger'));
+            }
+          });
+      }
+    });
+}
+
+export const removeGuardian = (groupID, guardianToDel, guardians) => (dispatch) => {
+  dispatch(toggleLoading(true));
+  guardians = removeByID(guardianToDel._id, guardians);
+  let updatedFields = { guadians: guardians };
+  fetch(API_URI + "/groups/" + groupID + "/" + localStorage.getItem('JWT'), {
+    method: 'PATCH',
+    body: JSON.stringify({ updatedFields: updatedFields }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then(res => res.json())
+    .then(res => {
+      dispatch(toggleLoading(false));
+      if (res.error) {
+        dispatch(createMessage(res.error, 'danger'));
       }
     });
 }

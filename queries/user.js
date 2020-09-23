@@ -131,7 +131,7 @@ function patchUpdateById(body,id,callback){
           if(err){
             callback(err);
           }else{
-            callback(null,result);
+            callback(null,obj);
           }
         });
       }
@@ -147,7 +147,7 @@ function updateModifiedFields(oldDoc,updatedFields){
   if(updatedFields.userName){
     username = updatedFields.username;
   }
-  if(updatedFields.isAdmin){
+  if(typeof(updatedFields.isAdmin)!=undefined){
     isAdmin = updatedFields.isAdmin;
   }
   var obj = {
