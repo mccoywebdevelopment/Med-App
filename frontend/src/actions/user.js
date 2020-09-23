@@ -132,31 +132,61 @@ export const fetchUpdateUser = (id,userBody,isGroupModified,guardians,guardian,d
         if(isGroupModified){
           if(!guardian){
             dispatch(fetchCreateGuardian({user:id},(guardian)=>{
-              updateGroupData(dispatch,isGroupModified,guardian,guardians);
+              updateGroupData(dispatch,isGroupModified,guardian,guardians,()=>{
+                sendback(dispatch,res,id,(user)=>{
+                  done(user);
+                });
+              });
             },true));
           }else{
-            updateGroupData(dispatch,isGroupModified,guardian,guardians);
+            updateGroupData(dispatch,isGroupModified,guardian,guardians,()=>{
+              sendback(dispatch,res,id,(user)=>{
+                done(user);
+              });
+            });
           }
         }
-        dispatch(createMessage(res.username + " was successfully updated.","success"));
-        dispatch(fetchUsers(true,(users)=>{
-          if(done){
-            done(res)
-          }
-        }));
-      }
+          dispatch(createMessage(res.username + " was successfully updated.","success"));
+          dispatch(fetchUsers(true,(users)=>{
+            let user = null;
+            if(done){
+              for(var i=0;i<users.length;++i){
+                if(users[i]._id == id){
+                  user = users[i];
+                }
+              }
+              if(!user){
+                alert("Error 3234299077424 Couldn't find user.")
+              }
+              done(user)
+            }
+          }));
+        }
     });
 };
 
-function updateGroupData(dispatch,isGroupModified,guardian,guardians){
+function sendback(dispatch,res,id,callback){
+  dispatch(createMessage(res.username + " was successfully updated.","success"));
+  dispatch(fetchUsers(true,(users)=>{
+    let user = null;
+      for(var i=0;i<users.length;++i){
+        if(users[i]._id == id){
+          user = users[i];
+        }
+      }
+      if(!user){
+        alert("Error 3234299077424 Couldn't find user.")
+      }
+      callback(user)
+    }));
+}
+
+function updateGroupData(dispatch,isGroupModified,guardian,guardians,callback){
   if(isGroupModified.isAdd){
-    alert('add')
-    dispatch(addGuardian(isGroupModified.groupID,guardian));
+    dispatch(addGuardian(isGroupModified.groupID,guardian,true,()=>callback()));
   }else if(isGroupModified.isRemoved){
-    alert('remove')
-    dispatch(removeGuardian(isGroupModified.groupID,guardian,guardians));
+    dispatch(removeGuardian(isGroupModified.groupID,guardian,guardians,()=>callback()));
   }else{
-    alert('switch')
-    dispatch(switchGuardian(isGroupModified.groupID,isGroupModified.oldGroupID,guardian,guardians));
+    dispatch(switchGuardian(isGroupModified.groupID,isGroupModified.oldGroupID,guardian,guardians,()=>callback()));
   }
 }

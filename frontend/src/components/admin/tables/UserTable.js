@@ -18,6 +18,7 @@ class UserTable extends React.Component {
     this.props.changeUserSel(user)
   }
   render() {
+    console.log(this.props.users)
     const list = (users) => {
       return users.map((user, index) => {
         let name = "-"

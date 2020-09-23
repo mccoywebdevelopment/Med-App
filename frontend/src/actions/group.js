@@ -78,7 +78,7 @@ export const addUser = (groupID, user, done, rmLoading) => (dispatch) => {
   }, rmLoading));
 }
 
-export const addGuardian = (groupID, guardian, done, rmLoading) => (dispatch) => {
+export const addGuardian = (groupID, guardian, rmLoading,done) => (dispatch) => {
   if (!rmLoading) {
     dispatch(toggleLoading(true));
   }
@@ -125,7 +125,7 @@ export const removeDependent = (groupID, depToDel, dependents) => (dispatch) => 
     });
 }
 
-export const switchDependent = (newGroupID, oldGroupID, dep, dependents) => (dispatch) => {
+export const switchDependent = (newGroupID, oldGroupID, dep, dependents,done) => (dispatch) => {
   dispatch(toggleLoading(true));
   dependents = removeByID(dep._id, dependents);
   let updatedFields = { dependents: dependents };
@@ -156,13 +156,17 @@ export const switchDependent = (newGroupID, oldGroupID, dep, dependents) => (dis
             dispatch(toggleLoading(false));
             if (res.error) {
               dispatch(createMessage(res.error, 'danger'));
+            }else{
+              if(done){
+                done(res);
+              }
             }
           });
       }
     });
 }
 
-export const switchGuardian = (newGroupID, oldGroupID, guardian, guardians) => (dispatch) => {
+export const switchGuardian = (newGroupID, oldGroupID, guardian, guardians, done) => (dispatch) => {
   dispatch(toggleLoading(true));
   guardians = removeByID(guardian._id, guardians);
   let updatedFields = { guardians: guardians };
@@ -193,17 +197,20 @@ export const switchGuardian = (newGroupID, oldGroupID, guardian, guardians) => (
             dispatch(toggleLoading(false));
             if (res.error) {
               dispatch(createMessage(res.error, 'danger'));
+            }else{
+              if(done){
+                done(res);
+              }
             }
           });
       }
     });
 }
 
-export const removeGuardian = (groupID, guardianToDel, guardians) => (dispatch) => {
+export const removeGuardian = (groupID, guardianToDel, guardians,done) => (dispatch) => {
   dispatch(toggleLoading(true));
   guardians = removeByID(guardianToDel._id, guardians);
   let updatedFields = { guardians: guardians };
-  alert(JSON.stringify(guardians))
   fetch(API_URI + "/groups/" + groupID + "/" + localStorage.getItem('JWT'), {
     method: 'PATCH',
     body: JSON.stringify({ updatedFields: updatedFields }),
@@ -216,6 +223,10 @@ export const removeGuardian = (groupID, guardianToDel, guardians) => (dispatch) 
       dispatch(toggleLoading(false));
       if (res.error) {
         dispatch(createMessage(res.error, 'danger'));
+      }else{
+        if(done){
+          done(res);
+        }
       }
     });
 }

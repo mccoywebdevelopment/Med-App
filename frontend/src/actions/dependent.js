@@ -43,7 +43,6 @@ export const fetchUpdateDependent = (id,depBody,groups,isGroupModified,oldDepend
         }
         dispatch(createMessage(res.name.firstName + " was successfully updated.","success"));
         dispatch(fetchPopulatedDependents(()=>{
-          alert(JSON.stringify(res))
           done(res);
         }));
       }

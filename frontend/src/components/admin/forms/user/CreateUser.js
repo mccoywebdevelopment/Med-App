@@ -61,7 +61,6 @@ class CreateUser extends React.Component {
             overview: JSON.stringify(newState.overview.values)
         }
         this.setState(newState);
-        console.log(user)
     }
     _isUpdated = () => {
         let oldDataOverview = this.state.oldData.overview;

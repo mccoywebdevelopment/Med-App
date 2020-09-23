@@ -1,5 +1,8 @@
 TODO:
+FetchGroups in guardian actions is not setting the groupID
 
+FetchGroups in guardian action is being executed twice the first time is the wrong one the second
+is the right one. But redux is only showing the wrong one.
 
 NOTES:
 - Need to add groupID to isRemoved right now it's "" b/c the user deselected it (CreateDependent.js FORM)

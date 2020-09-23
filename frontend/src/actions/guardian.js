@@ -23,6 +23,8 @@ export const fetchGuardians = (done, rmLoading) => (dispatch) => {
         dispatch(createMessage(res.error, 'danger'));
       } else {
         dispatch(fetchGroups((groups)=>{
+          console.log(groups);
+          console.log(res);
           var guardians = res;
           for (var i = 0; i < guardians.length; ++i) {
             guardians[i].group = "";
@@ -47,7 +49,6 @@ export const fetchGuardians = (done, rmLoading) => (dispatch) => {
 };
 
 export const fetchCreateGuardian = (guardianBody, done, rmLoading) => (dispatch) => {
-  alert(JSON.stringify(guardianBody));
   if (!rmLoading) {
     dispatch(toggleLoading(true));
   }
@@ -66,12 +67,13 @@ export const fetchCreateGuardian = (guardianBody, done, rmLoading) => (dispatch)
       if (res.error) {
         dispatch(createMessage(res.error, 'danger'));
       } else {
-        dispatch(fetchGuardians(null,rmLoading));
+        dispatch(fetchGuardians((guardians)=>{
+          if (done) {
+            done(res);
+          }
+        },rmLoading));
       }
 
-      if (done) {
-        done(res);
-      }
     });
 };
 
