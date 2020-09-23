@@ -27,6 +27,26 @@ export const fetchLogin = postData => dispatch => {
     });
 };
 
+export const fetchResetPassword = postData => dispatch => {
+  dispatch(toggleLoading(true));
+  fetch(API_URI + "/auth/reset-password", {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify(postData)
+  })
+    .then(res => res.json())
+    .then(res => {
+      dispatch(toggleLoading(false));
+      if (res.error) {
+        dispatch(createMessage(res.error, 'danger'));
+      } else {
+        dispatch(createMessage("Please check your email for further instructions.",'info'));
+      }
+    });
+};
+
 export const fetchRegister = (email,token,bodyData) => (dispatch) => {
   dispatch(toggleLoading(true));
   fetch(API_URI + "/auth/register/"+email+"/"+token, {

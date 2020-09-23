@@ -138,8 +138,8 @@ function logginUser(body,callback){
     });
 }
 function resetUserPassword(body,callback){
-    if(!body.email || !body.password){
-        callback("Missing one of the following required fields: email, token, and password.")
+    if(!body.email){
+        callback("Missing Email field.")
     }else{
         User.findOne({username:body.email}).select('+password').exec((err,userFound)=>{
             if(err){

@@ -81,12 +81,12 @@ class Login extends React.Component{
                       <button className="btn btn-primary submit-btn btn-block" onClick={this._submit}>Login</button>
                     </div>
                     <div className="form-group d-flex justify-content-between">
-                      <a href="#" className="text-small forgot-password text-black">Forgot Password</a>
+                      <a href="/auth/forgot-password" className="text-small forgot-password text-black">Forgot Password</a>
                     </div>
-                    <div className="text-block text-center my-3">
+                    {/* <div className="text-block text-center my-3">
                       <p style={{marginBottom:'0px'}} className="text-small font-weight-semibold">Not a member?</p>
                       <a href="register.html" className="text-black text-small">Create new account</a>
-                    </div>
+                    </div> */}
                   </form>
                 </div>
               </div>
