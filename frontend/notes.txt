@@ -1,5 +1,5 @@
 TODO:
-1. dateCreated/date invited is not accurate
+
 
 NOTES:
 - Need to add groupID to isRemoved right now it's "" b/c the user deselected it (CreateDependent.js FORM)
@@ -16,3 +16,7 @@ NOTES:
     for user registering:
         find guardian by userID if found update guardian else
         create new guardian
+
+OPTIMIZATIONS:
+-check if user fields is modified when fetchUpdateUser
+-pages

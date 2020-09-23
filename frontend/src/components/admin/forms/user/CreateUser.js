@@ -14,6 +14,7 @@ class CreateUser extends React.Component {
     static propTypes = {
         userState: PropTypes.object.isRequired,
         groupState: PropTypes.object.isRequired,
+        guardianState: PropTypes.object.isRequired,
         theme: PropTypes.object.isRequired
     };
     constructor(props) {
@@ -24,7 +25,6 @@ class CreateUser extends React.Component {
         this._updateError = this._updateError.bind(this);
         this._updateGroupValue = this._updateGroupValue.bind(this);
         this._toggleGroupBtn = this._toggleGroupBtn.bind(this);
-        console.log(this.props);
     }
     _initState = () => {
         this.state = {
@@ -61,6 +61,7 @@ class CreateUser extends React.Component {
             overview: JSON.stringify(newState.overview.values)
         }
         this.setState(newState);
+        console.log(user)
     }
     _isUpdated = () => {
         let oldDataOverview = this.state.oldData.overview;
@@ -72,7 +73,6 @@ class CreateUser extends React.Component {
         return false;
     }
     _getGroupIDByUserID = (id) => {
-        console.log(this.props)
         if (this.props.groupState.data) {
             let groups = this.props.groupState.data;
 
@@ -180,8 +180,8 @@ class CreateUser extends React.Component {
     }
     _getGroupID = (userID) => {
         for (var i = 0; i < this.props.groupState.data.length; ++i) {
-            for (var ix = 0; ix < this.props.groupState.data[i].users.length; ++ix) {
-                if (userID == this.props.groupState.data[i].users[ix]._id) {
+            for (var ix = 0; ix < this.props.groupState.data[i].guardians.length; ++ix) {
+                if (userID == this.props.groupState.data[i].guardians[ix].user) {
                     return this.props.groupState.data[i]._id;
                 }
             }
@@ -226,6 +226,14 @@ class CreateUser extends React.Component {
             return null;
         }
     }
+    _getGuardianByUserID = (userID) =>{
+        for(var i=0;i<this.props.guardianState.data.length;++i){
+            if(this.props.guardianState.data[i].user == userID){
+                return this.props.guardianState.data[i];
+            }
+        }
+        return null;
+    }
     _getGuardiansFromGroupSel = () => {
         let oldGuardians = [];
         for (var i = 0; i < this.props.groupState.data.length; ++i) {
@@ -240,7 +248,9 @@ class CreateUser extends React.Component {
         if (!this._isOverviewErrors()) {
             let body = this._formatBody();
             if(this.props.isUserSelected){
-               this.props.fetchUpdateUser(this.props.isUserSelected._id,body,this._isGroupModified(),this._getGuardiansFromGroupSel(),(res)=>{
+               this.props.fetchUpdateUser(this.props.isUserSelected._id,body,this._isGroupModified(),
+                    this._getGuardiansFromGroupSel(),this._getGuardianByUserID(this.props.isUserSelected._id),(res)=>{
+
                     this._initState();
                     this.props.updateUser(res._id);
                });
@@ -317,6 +327,7 @@ CreateUser.propTypes = {
 const mapStateToProps = (state) => ({
     userState: state.userState,
     groupState: state.groupState,
+    guardianState: state.guardianState,
     theme: state.theme
 });
 

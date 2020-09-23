@@ -105,28 +105,34 @@ function deleteById(id,callback){
     }
   });
 }
-function saveToDoc(bodyData,schemaModel,callback){
+function saveToDoc(bodyData,callback){
+  console.log('===========body data===========');
+  console.log(bodyData);
   //Later maybe make this generic
-  var newDoc = new schemaModel({
-    name:{
-      firstName:bodyData.firstName,
-      lastName:bodyData.lastName
-    },
-    phoneNumber:bodyData.phoneNumber
-  });
+  let newDoc = new guardianModel();
+  if(bodyData.firstName){
+    newDoc.name.firstName = bodyData.firstName;
+  }
+  if(bodyData.lastName){
+    newDoc.name.lastName = bodyData.lastName;
+  }
+  if(bodyData.phoneNumber){
+    newDoc.phoneNumber = bodyData.phoneNumber;
+  }
   if(typeof(bodyData.pictureUrl)!='undefined'){
     newDoc.pictureUrl = bodyData.pictureUrl;
   }
-  if(typeof(bodyData.user)!='undefined'){
+  console.log('============newDoc=============')
+  console.log(newDoc)
+
     userModel.findById(bodyData.user,function(err,userFound){
       if(err){
         callback(err);
       }else if(!userFound){
         callback("User not found")
-      }/*else if(userFound.auth.status.statusValue != "approved"){
-        callback("User needs to be authenticated first their status is: "+userFound.auth.status.statusValue+".");
-      }*/else{
+      }else{
         newDoc.user = userFound;
+    
         newDoc.save(function(err,result){
           if(err){
             callback(err);
@@ -136,9 +142,7 @@ function saveToDoc(bodyData,schemaModel,callback){
         });
       }
     });
-  }else{
-    callback("User is required");
-  }
+  
   
 }
 
@@ -147,7 +151,7 @@ function create(body,callback){
     if(err){
       callback(err);
     }else{
-      saveToDoc(body,guardianModel,function(err,result){
+      saveToDoc(body,function(err,result){
         if(err){
           callback(err);
         }else{

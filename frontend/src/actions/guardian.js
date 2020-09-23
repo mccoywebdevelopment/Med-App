@@ -2,7 +2,7 @@ import { createMessage } from './messages';
 import { toggleLoading } from './loading';
 import { API_URI } from '../config/variables';
 import { FETCH_GUARDIANS } from './types';
-import { addGuardian } from './group';
+import { fetchGroups } from './group';
 
 export const fetchGuardians = (done, rmLoading) => (dispatch) => {
   if (!rmLoading) {
@@ -22,7 +22,7 @@ export const fetchGuardians = (done, rmLoading) => (dispatch) => {
       if (res.error) {
         dispatch(createMessage(res.error, 'danger'));
       } else {
-        fetch_Groups(dispatch, function (groups) {
+        dispatch(fetchGroups((groups)=>{
           var guardians = res;
           for (var i = 0; i < guardians.length; ++i) {
             guardians[i].group = "";
@@ -41,12 +41,13 @@ export const fetchGuardians = (done, rmLoading) => (dispatch) => {
           if (done) {
             done(guardians);
           }
-        });
+        }));
       }
     });
 };
 
 export const fetchCreateGuardian = (guardianBody, done, rmLoading) => (dispatch) => {
+  alert(JSON.stringify(guardianBody));
   if (!rmLoading) {
     dispatch(toggleLoading(true));
   }

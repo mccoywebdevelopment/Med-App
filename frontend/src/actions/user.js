@@ -3,7 +3,7 @@ import { toggleLoading } from './loading';
 import { API_URI } from '../config/variables';
 import { FETCH_USERS } from './types';
 import { addUser, addGuardian, removeGuardian, switchGuardian } from './group';
-import { fetchGuardians } from './guardian';
+import { fetchGuardians, fetchCreateGuardian } from './guardian';
 
 export const fetchUsers = (isAdditionalData, done, rmLoading) => (dispatch) => {
   if (!rmLoading) {
@@ -108,9 +108,10 @@ export const fetchDeleteUser = (depID, done) => (dispatch) => {
       }
     });
 };
+/*need to check if user is modified and then check if group isModified.*/
+export const fetchUpdateUser = (id,userBody,isGroupModified,guardians,guardian,done) => (dispatch) => {
 
-export const fetchUpdateUser = (id,userBody,isGroupModified,guardians,done) => (dispatch) => {
-  userBody = {
+  let updateBody = {
     updatedFields:userBody
   }
   dispatch(toggleLoading(true));
@@ -119,7 +120,7 @@ export const fetchUpdateUser = (id,userBody,isGroupModified,guardians,done) => (
     headers: {
       'content-type': 'application/json'
     },
-    body: JSON.stringify(userBody)
+    body: JSON.stringify(updateBody)
   })
     .then(res => res.json())
     .then(res => {
@@ -127,13 +128,14 @@ export const fetchUpdateUser = (id,userBody,isGroupModified,guardians,done) => (
       if (res.error) {
         dispatch(createMessage(res.error, 'danger'));
       } else {
+        /* Need */
         if(isGroupModified){
-          if(isGroupModified.isAdd){
-            dispatch(addGuardian(isGroupModified.groupID,res));
-          }else if(isGroupModified.isRemoved){
-            dispatch(removeGuardian(isGroupModified.groupID,res,guardians));
+          if(!guardian){
+            dispatch(fetchCreateGuardian({user:id},(guardian)=>{
+              updateGroupData(dispatch,isGroupModified,guardian,guardians);
+            },true));
           }else{
-            dispatch(switchGuardian(isGroupModified.groupID,isGroupModified.oldGroupID,res,guardians));
+            updateGroupData(dispatch,isGroupModified,guardian,guardians);
           }
         }
         dispatch(createMessage(res.username + " was successfully updated.","success"));
@@ -145,3 +147,16 @@ export const fetchUpdateUser = (id,userBody,isGroupModified,guardians,done) => (
       }
     });
 };
+
+function updateGroupData(dispatch,isGroupModified,guardian,guardians){
+  if(isGroupModified.isAdd){
+    alert('add')
+    dispatch(addGuardian(isGroupModified.groupID,guardian));
+  }else if(isGroupModified.isRemoved){
+    alert('remove')
+    dispatch(removeGuardian(isGroupModified.groupID,guardian,guardians));
+  }else{
+    alert('switch')
+    dispatch(switchGuardian(isGroupModified.groupID,isGroupModified.oldGroupID,guardian,guardians));
+  }
+}

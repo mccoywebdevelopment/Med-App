@@ -82,7 +82,7 @@ export const addGuardian = (groupID, guardian, done, rmLoading) => (dispatch) =>
   if (!rmLoading) {
     dispatch(toggleLoading(true));
   }
-  let updatedFields = { guardian: guardian };
+  let updatedFields = { guardian: guardian._id };
   fetch(API_URI + "/groups/" + groupID + "/" + localStorage.getItem('JWT'), {
     method: 'PATCH',
     body: JSON.stringify({ updatedFields: updatedFields }),
@@ -202,7 +202,8 @@ export const switchGuardian = (newGroupID, oldGroupID, guardian, guardians) => (
 export const removeGuardian = (groupID, guardianToDel, guardians) => (dispatch) => {
   dispatch(toggleLoading(true));
   guardians = removeByID(guardianToDel._id, guardians);
-  let updatedFields = { guadians: guardians };
+  let updatedFields = { guardians: guardians };
+  alert(JSON.stringify(guardians))
   fetch(API_URI + "/groups/" + groupID + "/" + localStorage.getItem('JWT'), {
     method: 'PATCH',
     body: JSON.stringify({ updatedFields: updatedFields }),
