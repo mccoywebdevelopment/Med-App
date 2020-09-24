@@ -78,12 +78,12 @@ export const fetchCreateUser = (userBody, groupID) => (dispatch) => {
             user: res
           }
           dispatch(addUser(groupID, guardianBody, (group) => {
-            dispatch(createMessage(userBody.username + " was sent an invitation via email.", "info"));
             dispatch(fetchUsers(true, null,true));
           },true));
         }else{
           dispatch(fetchUsers(true, null,true));
         }
+        dispatch(createMessage(userBody.username + " was sent an invitation via email.", "info"));
       }
     });
 };

@@ -3,7 +3,7 @@ import { togglePopUp } from './popUp';
 
 
 // CREATE MESSAGE
-export const createMessage = (text,alertType) => (dispatch) =>{
+export const createMessage = (text,alertType,time) => (dispatch) =>{
   if(typeof(text)=='object'){
     text = JSON.stringify(text);
   }
@@ -13,7 +13,11 @@ export const createMessage = (text,alertType) => (dispatch) =>{
   dispatch({
     type: CREATE_MESSAGE,
     payload: {text, alertType},
-  })
+  });
+  let timeout = 4000;
+  if(time){
+    timeout = time;
+  }
   setTimeout(()=>{
     dispatch({
       type: CREATE_MESSAGE,
@@ -28,5 +32,5 @@ export const createMessage = (text,alertType) => (dispatch) =>{
         payload:"/auth/login"
       })
     }
-  },4000)
+  },timeout)
 };

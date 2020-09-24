@@ -29,8 +29,8 @@ router.route("/login")
     });
 });
 
-router.route("/reset-password")
-.post(function(req,res){
+router.route("/reset-password/:JWT")
+.post(verifyUser,function(req,res){
     authQ.resetUserPassword(req.body,function(err,result){
         if(err){
             console.log(err);

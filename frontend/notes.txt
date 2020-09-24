@@ -22,4 +22,5 @@ NOTES:
 
 OPTIMIZATIONS:
 -check if user fields is modified when fetchUpdateUser
--pages
+-pages (redo models/algorithms)
+-send reset password even when user is not yet authenticated.

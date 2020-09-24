@@ -4,6 +4,7 @@ import GroupView from "./views/admin/GroupView";
 import UserView from "./views/admin/UserView";
 import UserDetails from "./views/admin/UserDetails";
 import ForgotPassword from "./views/shared/ForgotPassword";
+import ResetPassword from "./views/shared/ResetPassword";
 import Login from "./views/shared/Login";
 import Register from './views/shared/Register';
 import React from 'react';
@@ -45,6 +46,10 @@ const authRoutes = [
     {
         path: "/auth/forgot-password",
         component: <ForgotPassword/>
+    },
+    {
+        path: "/auth/reset-password/:email/:token",
+        component: <ResetPassword/>
     },
     {
         path: "/auth/register/:email/:token",

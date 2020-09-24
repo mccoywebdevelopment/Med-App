@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchForgotPassword } from "../../actions/auth";
+import { fetchResetPassword } from "../../actions/auth";
 import { changeRedirectURL } from "../../actions/auth";
 import { resetRoot } from "../../actions/root";
 import { Redirect } from 'react-router-dom';
-import { emailValidator } from '../../config/validators';
+import { getPath } from '../../config/helpers'
+import { passwordValidator } from '../../config/validators';
 
-class ForgotPassword extends React.Component{
+class ResetPassword extends React.Component{
   static propTypes = {
       auth: PropTypes.object.isRequired,
   };
@@ -15,28 +16,34 @@ class ForgotPassword extends React.Component{
     super(props);
     this._updateFormData = this._updateFormData.bind(this);
     this._submit = this._submit.bind(this);
+    let paths = getPath(window);
+    this.state = {
+      email:paths[3],
+      token:paths[4],
+      password:"",
+      passwordErrMsg:""
+    }
+    console.log(this.state)
   }
-  state = {
-    email:"",
-    emailErrMsg:""
-  }
+
   _updateFormData = (e) =>{
     this.setState({ [e.target.name]: e.target.value });
   }
   _validation = () =>{
     let newState = this.state;
-    newState.emailErrMsg = emailValidator(this.state.email,true).errorMsg;
+    newState.passwordErrMsg = passwordValidator(this.state.password,true).errorMsg;
     this.setState(newState);
   }
   _submit = (e) =>{
     e.preventDefault();
     
     this._validation();
-    if(this.state.emailErrMsg.length<1){
+    if(this.state.passwordErrMsg.length<1){
       let body = {
-        email:this.state.email,
+        username:this.state.email,
+        password:this.state.password
       }
-      this.props.fetchForgotPassword(body);
+      this.props.fetchResetPassword(body);
     }
   }
   componentWillUnmount =() =>{
@@ -58,14 +65,23 @@ class ForgotPassword extends React.Component{
                     <div className="form-group" style={{marginBottom:'30px'}}>
                       <label className="label">Email</label>
                       <div className="input-group">
-                        <input type="text" className="form-control" name="email" placeholder="Email" value={this.state.email} onChange={this._updateFormData} />
+                        <input type="text" className="form-control" name="email" placeholder="Email" value={this.state.email} onChange={this._updateFormData} disabled/>
                         <div className="invalid-feedback" style={{display:'block'}}>
                           {this.state.emailErrMsg}
                         </div>
                       </div>
                     </div>
+                    <div className="form-group" style={{marginBottom:'60px'}}>
+                      <label className="label">New Password</label>
+                      <div className="input-group">
+                        <input type="password" className="form-control" placeholder="*********" name="password" value={this.state.password} onChange={this._updateFormData} />
+                        <div className="invalid-feedback" style={{display:'block'}}>
+                          {this.state.passwordErrMsg}
+                        </div>
+                      </div>
+                    </div>
                     <div className="form-group">
-                      <button className="btn btn-primary submit-btn btn-block" onClick={this._submit}>Send Email</button>
+                      <button className="btn btn-primary submit-btn btn-block" onClick={this._submit}>Reset Password</button>
                     </div>
                     <div className="form-group d-flex justify-content-between">
                       <a href="/auth/login" className="text-small forgot-password text-black">Remember password? Login</a>
@@ -101,8 +117,8 @@ class ForgotPassword extends React.Component{
     );
   }
 }
-ForgotPassword.propTypes = {
-  fetchForgotPassword: PropTypes.func.isRequired,
+ResetPassword.propTypes = {
+  fetchResetPassword: PropTypes.func.isRequired,
   changeRedirectURL: PropTypes.func.isRequired,
   resetRoot: PropTypes.func.isRequired
 };
@@ -110,4 +126,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps,{fetchForgotPassword,changeRedirectURL,resetRoot})(ForgotPassword);
+export default connect(mapStateToProps,{fetchResetPassword,changeRedirectURL,resetRoot})(ResetPassword);

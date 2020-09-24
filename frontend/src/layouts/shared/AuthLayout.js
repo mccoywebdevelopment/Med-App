@@ -12,22 +12,19 @@ class AuthLayout extends React.Component {
     constructor(props) {
         super(props);
     }
-    _setMsgEmpty =() =>{
-        if(this.props.message.text.length>0){
-            setTimeout(()=>{
-                this.props.createMessage("","");
-            },5000)
-        }
-    }
     render() {
-        this._setMsgEmpty();
         return (
             <div className="auth auth-bg-1" style={{ padding: '20px' }}>
                 <div className="alert-container">
-                    <div className={"alert alert-"+this.props.message.alertType} role="alert">
-                        {this.props.message.text}&nbsp;
+                        <div className={"alert alert-dismissible alert-" + this.props.message.alertType} role="alert">
+                            {this.props.message.text}
+                            {this.props.message.text.length>0?
+                            <button type="button" onClick={()=>{this.props.createMessage("",null)}} class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            :null}
+                        </div>
                     </div>
-                </div>
                 <div>
                     {this.props.children}
                 </div>
