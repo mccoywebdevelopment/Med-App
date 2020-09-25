@@ -27,13 +27,13 @@ export default class MedicationTable extends React.Component{
           background:'inherit'
         }
         if(index % 2 == 0){
-          style.background = "#ededed";
+          // style.background = "#ededed";
         }
         return(
           <React.Fragment key={"slk3(((asdf"+index}>
               <tr index={"medTable^&*&^"+index} style={style}>
                 <th scope="row" style={{paddingBottom:'0',paddingTop:'0'}}>
-                  <p style={{marginBottom:'0px',paddingTop:'28px'}}>{index + 1}</p>
+                  <p style={{marginBottom:'0px',paddingTop:'10px'}}>{index + 1}</p>
                   <p onClick={()=>{this.props.expandItem(element.index)}} title="view rest of med" 
                     style={{color:'#2196F3',paddingTop:"5px",marginBottom:'10px',cursor:"pointer"}}>
                       {!element.isExpand?"More":""}&nbsp;

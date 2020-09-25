@@ -250,14 +250,20 @@ input,select,textarea{
   position: fixed;
   width: 88.59%;
 }
-.dependentTable > tbody> tr:nth-child(2n){
+/* .dependentTable > tbody> tr:nth-child(2n){
   background-color:#F0F1F1;
-}
+} */
 .my-search-box-selected>div>input::placeholder{
   font-weight: 500!important;
   color: black!important;
 }
+.my-med-table{
+  line-height: min-content;
+}
 .table tbody td {
-  line-height: 25px;
+  font-size: 13px;
+}
+.table thead th{
+  font-size: 13px;
 }
 /*#0056B3*/
