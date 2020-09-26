@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { togglePopUp } from '../../actions/popUp';
-import { fetchUsers, fetchDeleteUser } from "../../actions/user";
 import { fetchGroups } from "../../actions/group";
 import { fetchGuardians } from "../../actions/guardian";
 import { changeColor } from "../../actions/theme";
 
-import CardData from "../../components/shared/CardData/CardData";
+// import CardData from "../../components/shared/CardData/CardData";
 import OverviewGroup from "../../components/admin/Overview/OverviewGroup";
 import CreateUser from "../../components/admin/forms/user/CreateUser";
+import CardData from '../../components/shared/CardData/CardData';
 /*
     Need to update table/this.state after I add a new user like I did in dependents view.
 */
@@ -54,9 +54,22 @@ class UserView extends React.Component {
     }
     componentDidMount = () =>{
         this.props.changeColor("#ffaf00");
-        this.props.fetchUsers(true);
+        this.props.fetchGroups();
     }
     render() {
+        const list = () =>{
+            return this.props.groupState.data.map((item,key)=>{
+                return(
+                        <div key={"item"+key} className="col-lg-4" style={{marginTop:"20px"}}>
+                            <CardData index={key} labels={["Dependents","Users","Admins"]}
+                                data={[item.dependents.length,item.guardians.length,0]}
+                                colors={['#2196f3','#FCB031',"#8862E0"]}
+                                title={item.name} href="test"
+                                details={item.dependents.length + " Dependents, "+item.guardians.length+" Guardians, 0 Admins"}/>
+                        </div>
+                )
+            });
+        }
         return (
             <>
                 <div className="row">
@@ -80,7 +93,8 @@ class UserView extends React.Component {
                                 {this.props.userState.data.length>0?
                                 <>
                                 <div className="row" style={{marginBottom:'30px'}}>
-                                     <div className="col-lg-4" style={{paddingLeft:'0px'}}>
+                                    {list()}
+                                     {/* <div className="col-lg-4" style={{paddingLeft:'0px'}}>
                                         <CardData/>
                                     </div>
                                     <div className="col-lg-4" style={{paddingLeft:'0px'}}>
@@ -88,15 +102,15 @@ class UserView extends React.Component {
                                     </div>
                                     <div className="col-lg-4" style={{paddingLeft:'0px'}}>
                                         <CardData/>
-                                    </div>
+                                    </div> */}
                                 </div>
                                 <div className="row" style={{marginBottom:'30px'}}>
-                                     <div className="col-lg-4" style={{paddingLeft:'0px'}}>
+                                     {/* <div className="col-lg-4" style={{paddingLeft:'0px'}}>
                                         <CardData/>
                                     </div>
                                     <div className="col-lg-4" style={{paddingLeft:'0px'}}>
                                         <CardData/>
-                                    </div>
+                                    </div> */}
                                 </div>
                                 </>
                                  :null}
@@ -110,8 +124,6 @@ class UserView extends React.Component {
 }
 UserView.propTypes = {
     togglePopUp: PropTypes.func.isRequired,
-    fetchUsers: PropTypes.func.isRequired,
-    fetchDeleteUser: PropTypes.func.isRequired,
     fetchGroups: PropTypes.func.isRequired,
     changeColor: PropTypes.func.isRequired,
     fetchGuardians: PropTypes.func.isRequired
@@ -123,4 +135,4 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {changeColor, togglePopUp,
-         fetchUsers, fetchDeleteUser, fetchGuardians, fetchGroups})(UserView);
+         fetchGroups, fetchGuardians, fetchGroups})(UserView);
