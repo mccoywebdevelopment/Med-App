@@ -144,9 +144,10 @@ class DependentDetails extends React.Component{
                         dependents={this.props.dependentState.data} isSmall={true}/>
                     :null}
                 </div>
-                <div className="col-lg-6" style={{padding:'none'}} style={{paddingRight:'0px'}}>
+                <div className="col-lg-6 my-overview" style={{padding:'none'}} style={{paddingRight:'0px'}}>
                     <div className="card" style={{padding:"20px"}}>
-                        <CreateDependent updateDep={this._updateDependent} isDepSelected={this.state.dependent} goHome={this._toggleHome} delete={this._deleteDependent}/>
+                        <CreateDependent updateDep={this._updateDependent} isDepSelected={this.state.dependent} goHome={this._toggleHome}
+                             delete={this._deleteDependent}/>
                     </div>
                 </div>
             </div>

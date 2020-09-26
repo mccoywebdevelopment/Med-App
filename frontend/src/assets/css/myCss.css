@@ -266,4 +266,8 @@ input,select,textarea{
 .table thead th{
   font-size: 13px;
 }
+.my-overview * > span{
+  /* background-color: blue; */
+  font-size: 14px;
+}
 /*#0056B3*/

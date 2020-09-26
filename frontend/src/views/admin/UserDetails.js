@@ -144,7 +144,7 @@ class UserDetails extends React.Component{
                         users={this.props.userState.data} isSmall={true}/>
                     :null}
                 </div>
-                <div className="col-lg-6" style={{padding:'none'}} style={{paddingRight:'0px'}}>
+                <div className="col-lg-6 my-overview" style={{padding:'none'}} style={{paddingRight:'0px'}}>
                     <div className="card" style={{padding:"20px"}}>
                         <CreateUser updateUser={this._updateUser} isUserSelected={this.state.user} 
                             goHome={this._toggleHome} delete={this._deleteUser}/>

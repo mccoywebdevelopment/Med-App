@@ -1,7 +1,6 @@
 import React from 'react';
-import { FETCH_DEPENDENTS } from '../../../actions/types';
 
-export default function Overview(props) {
+export default function OverviewUser(props) {
   return (
     <div className="row">
     <div className="col-md-4" style={{paddingLeft:'0px'}}>
@@ -9,10 +8,10 @@ export default function Overview(props) {
         <div className="card-body row">
           <div className="col-lg-6">
             <h4 className="font-weight-semibold mb-0">{props.dependentsLength}</h4>
-            <h5 className="font-weight-semibold mb-0">Dependents</h5>
+            <h5 className="font-weight-semibold mb-0">Users</h5>
           </div>
           <div className="col-lg-6" style={{textAlign:'center'}}>
-            <i className="fas fa-user-friends" style={{fontSize:'40px',color:'#2196f3;',float:'right'}}></i>
+            <i className="fas fa-user-friends" style={{fontSize:'40px',color:'#ffaf00',float:'right'}}></i>
           </div>
         </div>
       </div>
@@ -21,11 +20,11 @@ export default function Overview(props) {
       <div className="card" style={{minHeight:'128px'}}>
         <div className="card-body row">
           <div className="col-lg-6">
-            <h4 className="font-weight-semibold mb-0">{props.averageMed.toFixed(2)}</h4>
-            <h5 className="font-weight-semibold mb-0">Avg # of Meds Per Dependent</h5>
+            <h4 className="font-weight-semibold mb-0">{props.pendingUsers}</h4>
+            <h5 className="font-weight-semibold mb-0">Locked Accounts</h5>
           </div>
           <div className="col-lg-6" style={{textAlign:'center'}}>
-            <i className="fas fa-prescription-bottle" style={{fontSize:'40px',color:'#2196f3',float:'right'}}></i>
+            <i className="fas fa-lock" style={{fontSize:'40px',color:'#ffaf00',float:'right'}}></i>
           </div>
         </div>
       </div>
@@ -34,11 +33,11 @@ export default function Overview(props) {
       <div className="card" style={{minHeight:'128px'}}>
         <div className="card-body row">
           <div className="col-lg-6">
-            <h4 className="font-weight-semibold mb-0">{props.averageAge.toFixed(2)}</h4>
-            <h5 className="font-weight-semibold mb-0">Average Age of Dependent</h5>
+            <h4 className="font-weight-semibold mb-0">{props.admins}</h4>
+            <h5 className="font-weight-semibold mb-0">Admins</h5>
           </div>
           <div className="col-lg-6" style={{textAlign:'center'}}>
-            <i className="fas fa-child" style={{fontSize:'40px',color:'#2196f3',float:'right'}}></i>
+            <i className="fas fa-user-md" style={{fontSize:'40px',color:'#ffaf00',float:'right'}}></i>
           </div>
         </div>
       </div>
