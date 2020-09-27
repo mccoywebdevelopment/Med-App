@@ -3,8 +3,9 @@ import { createMessage } from './messages';
 import { toggleLoading } from './loading';
 import { fetchCreateGuardian } from './guardian';
 import { API_URI } from '../config/variables';
+import { FETCH } from '../config/helpers';
 
-export const fetchGroups = (done) => (dispatch) => {
+export const fetchGroups = (isLoading,done) => (dispatch) => {
   dispatch(toggleLoading(true));
   fetch(API_URI + "/groups/" + localStorage.getItem('JWT'), {
     method: 'GET',
@@ -29,24 +30,15 @@ export const fetchGroups = (done) => (dispatch) => {
     });
 }
 
-
-export const addDependent = (groupID, newDependent) => (dispatch) => {
-  dispatch(toggleLoading(true));
-  let updatedFields = { dependent: newDependent };
-  fetch(API_URI + "/groups/" + groupID + "/" + localStorage.getItem('JWT'), {
-    method: 'PATCH',
-    body: JSON.stringify({ updatedFields: updatedFields }),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-    .then(res => res.json())
-    .then(res => {
-      dispatch(toggleLoading(false));
-      if (res.error) {
-        dispatch(createMessage(res.error, 'danger'));
-      }
-    });
+export const addDependent = (groupID, newDependent, isLoading) => (dispatch) => {
+  let postData = {
+    dependent:newDependent
+  }
+  FETCH('PATCH', '/groups/' + groupID + '/',postData, localStorage.getItem('JWT'), dispatch, isLoading, (err, res) => {
+    if (err) {
+      dispatch(createMessage(err, 'danger'));
+    }
+  });
 }
 
 export const addUser = (groupID, user, done, rmLoading) => (dispatch) => {
@@ -105,25 +97,36 @@ export const addGuardian = (groupID, guardian, rmLoading,done) => (dispatch) => 
     });
 }
 
-export const removeDependent = (groupID, depToDel, dependents) => (dispatch) => {
-  dispatch(toggleLoading(true));
-  dependents = removeByID(depToDel._id, dependents);
-  let updatedFields = { dependents: dependents };
-  fetch(API_URI + "/groups/" + groupID + "/" + localStorage.getItem('JWT'), {
-    method: 'PATCH',
-    body: JSON.stringify({ updatedFields: updatedFields }),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-    .then(res => res.json())
-    .then(res => {
-      dispatch(toggleLoading(false));
-      if (res.error) {
-        dispatch(createMessage(res.error, 'danger'));
-      }
-    });
+export const removeDependent = (groupID, dependent, isLoading) => (dispatch) => {
+  let postData = {
+    removeDependent:dependent
+  }
+  FETCH('PATCH', '/groups/' + groupID + '/',postData, localStorage.getItem('JWT'), dispatch, isLoading, (err, res) => {
+    if (err) {
+      dispatch(createMessage(err, 'danger'));
+    }
+  });
 }
+
+// export const removeDependent = (groupID, depToDel, dependents) => (dispatch) => {
+//   dispatch(toggleLoading(true));
+//   dependents = removeByID(depToDel._id, dependents);
+//   let updatedFields = { dependents: dependents };
+//   fetch(API_URI + "/groups/" + groupID + "/" + localStorage.getItem('JWT'), {
+//     method: 'PATCH',
+//     body: JSON.stringify({ updatedFields: updatedFields }),
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//   })
+//     .then(res => res.json())
+//     .then(res => {
+//       dispatch(toggleLoading(false));
+//       if (res.error) {
+//         dispatch(createMessage(res.error, 'danger'));
+//       }
+//     });
+// }
 
 export const switchDependent = (newGroupID, oldGroupID, dep, dependents,done) => (dispatch) => {
   dispatch(toggleLoading(true));

@@ -1,7 +1,6 @@
 const express = require('express');
 const errors = require('../errors');
 const groupQ = require('../../queries/group');
-const verifyUser = require('../../config/globalHelpers').verifyUser;
 const verifyAdmin = require('../../config/globalHelpers').verifyAdmin;
 
 const router = express.Router();
@@ -18,6 +17,7 @@ router.route("/:JWT")
     })
 })
 .post(verifyAdmin,function(req,res){
+    console.log('create')
     groupQ.create(req.body,function(error,result){
         if(error){
             console.log(error);
@@ -28,7 +28,7 @@ router.route("/:JWT")
     });
 });
 router.route("/:id/:JWT")
-.get(verifyUser,function(req,res){
+.get(verifyAdmin,function(req,res){
     groupQ.findById(req.params.id,function(error,medFound){
         if(error){
             console.log(error);
