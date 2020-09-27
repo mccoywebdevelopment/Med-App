@@ -32,14 +32,21 @@ export const fetchUpdateDependent = (id,depBody,groups,isGroupModified,oldDepend
       if (res.error) {
         dispatch(createMessage(res.error, 'danger'));
       } else {
+        JSON.stringify(oldDependents);
+        console.log(isGroupModified)
         if(isGroupModified){
           if(isGroupModified.isAdd){
+            console.log("add");
             dispatch(addDependent(isGroupModified.groupID,res));
           }else if(isGroupModified.isRemoved){
+            console.log("remove");
             dispatch(removeDependent(isGroupModified.groupID,res,oldDependents));
           }else{
+            console.log("switch");
             dispatch(switchDependent(isGroupModified.groupID,isGroupModified.oldGroupID,res,oldDependents));
           }
+        }else{
+          console.log("not modified")
         }
         dispatch(createMessage(res.name.firstName + " was successfully updated.","success"));
         dispatch(fetchPopulatedDependents(()=>{

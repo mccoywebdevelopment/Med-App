@@ -40,18 +40,18 @@ class ResetPassword extends React.Component{
     this._validation();
     if(this.state.passwordErrMsg.length<1){
       let body = {
-        username:this.state.email,
+        email:this.state.email,
         password:this.state.password
       }
-      this.props.fetchResetPassword(body);
+      this.props.fetchResetPassword(body,this.state.token);
     }
-  }
-  componentWillUnmount =() =>{
-    this.props.changeRedirectURL(null);
   }
   componentDidMount = () =>{
     localStorage.clear();
     this.props.resetRoot();
+  }
+  componentWillUnmount =() =>{
+    this.props.changeRedirectURL(null);
   }
   _renderForm =() =>{
     return (

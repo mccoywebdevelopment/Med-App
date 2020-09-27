@@ -62,6 +62,10 @@ function updateWithList(oldDoc,updatedFields,callback){
 
 }
 function updateModifiedFields(oldDoc,updatedFields,callback){
+  console.log("==========================START==================================");
+  console.log(updatedFields)
+  console.log(oldDoc.name);
+  console.log("===========================END===================================")
   var groupname = oldDoc.name;
   var dependents = oldDoc.dependents;
   var guardians = oldDoc.guardians;

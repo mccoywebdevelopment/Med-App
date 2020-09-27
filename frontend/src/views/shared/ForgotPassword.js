@@ -42,10 +42,6 @@ class ForgotPassword extends React.Component{
   componentWillUnmount =() =>{
     this.props.changeRedirectURL(null);
   }
-  componentDidMount = () =>{
-    localStorage.clear();
-    this.props.resetRoot();
-  }
   _renderForm =() =>{
     return (
       <div className="container-scroller" style={{ height: 'auto', minHeight: 'initial' }} style={{marginTop:'100px'}}>

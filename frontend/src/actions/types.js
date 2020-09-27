@@ -2,6 +2,7 @@
 export const FETCH_LOGIN = 'FETCH_LOGIN';
 export const CHANGE_REDIRECT_URL = "CHANGE_REDIRECT_URL";
 export const FETCH_REGISTER = 'FETCH_REGISTER';
+export const FETCH_RESET_PASSWORD = 'FETCH_RESET_PASSWORD';
 //====================Msg=================
 export const CREATE_MESSAGE = "CREATE_MESSAGE";
 export const GET_ERRORS = "GET_ERRORS";
