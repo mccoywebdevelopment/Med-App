@@ -19,7 +19,6 @@ function findAll(callback) {
     if (err) {
       callback(err);
     } else {
-      console.log(res);
       callback(null, res);
     }
   });
@@ -85,6 +84,7 @@ function updateModifiedFields(oldDoc, body, callback) {
 
 }
 function saveAndUpdateDoc(newDoc, body, callback) {
+  console.log(body)
   let count = 0;
   let index = 0;
 
@@ -100,17 +100,21 @@ function saveAndUpdateDoc(newDoc, body, callback) {
   if (body.guardianID) {
     count++;
   }
+  console.log(count);
+  console.log(index)
 
   if (body.removeDependentID) {
-    body.dependents = removeDependent(body.removeDependentID, dependents);
+    newDoc.dependents = removeDependent(body.removeDependentID, newDoc.dependents);
     index++;
     if (index == count) {
       callback(null, newDoc);
     }
   }
   if (body.dependentID) {
-    addDependentToGroup(obj, body.dependentID, function (err, newDoc) {
+    addDependentToGroup(newDoc, body.dependentID, function (err, newDoc) {
       index++;
+      console.log(index);
+      console.log(count)
       if (err && index == count) {
         callback(err);
       } else if (index == count) {
@@ -119,7 +123,7 @@ function saveAndUpdateDoc(newDoc, body, callback) {
     });
   }
   if (body.guardianID) {
-    addGuardianToGroup(obj, body.guardianID, function (err, newDoc) {
+    addGuardianToGroup(newDoc, body.guardianID, function (err, newDoc) {
       index++;
       if (err && index == count) {
         callback(err);
@@ -131,6 +135,8 @@ function saveAndUpdateDoc(newDoc, body, callback) {
   // if(body.removeGuardianID){
   //   count++;
   // }
+  console.log(count);
+  console.log(index)
   if (count == 0) {
     callback(null, newDoc);
   }
@@ -186,6 +192,7 @@ function saveToDoc(body, callback) {
     if (err) {
       callback(err)
     } else {
+      console.log(newDoc);
       newDoc.save(function (err, savedDoc) {
         if (err) {
           callback(err);

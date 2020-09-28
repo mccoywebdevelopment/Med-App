@@ -17,7 +17,6 @@ router.route("/:JWT")
     })
 })
 .post(verifyAdmin,function(req,res){
-    console.log('create')
     groupQ.create(req.body,function(error,result){
         if(error){
             console.log(error);
@@ -40,6 +39,7 @@ router.route("/:id/:JWT")
 })
 .patch(verifyAdmin,function(req,res){
     var obj = req.body;
+    console.log(obj)
     groupQ.patchUpdateById(obj,req.params.id,function(err,updatedObj){
         if(err){
             console.log(err);

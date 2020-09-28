@@ -22,14 +22,11 @@ function findAll(callback){
 }
 
 function patchUpdateById(body,id,callback){
-  if(!body.updatedFields){
-    callback("body.updatedFields is not defined");
-  }else{
     eventModel.findById(id,function(err,foundDoc){
       if(err){
         callback(err);
       }else{
-        var obj = updateModifiedFields(foundDoc,body.updatedFields);
+        var obj = updateModifiedFields(foundDoc,body);
         foundDoc.update(obj,function(err,result){
           if(err){
             callback(err);
@@ -40,7 +37,7 @@ function patchUpdateById(body,id,callback){
       }
     });
   }
-}
+
 function updateModifiedFields(oldDoc,updatedFields){
   var name = oldDoc.name;
   var message = oldDoc.message;

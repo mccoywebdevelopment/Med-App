@@ -40,6 +40,8 @@ router.route("/:id/:JWT")
 })
 .patch(verifyAdmin,function(req,res){
     var obj = req.body;
+    console.log(obj)
+    console.log('patch')
     dependentQ.patchUpdateDependentById(obj,req.params.id,function(err,updatedObj){
         if(err){
             console.log(err);

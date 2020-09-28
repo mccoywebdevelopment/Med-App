@@ -37,26 +37,20 @@ export function FETCH(type, url, body, jwt, dispatch, isLoading, done) {
             'content-type': 'application/json'
         }
     }
-    if (type == "POST") {
+    if (type == "POST" || type=="PATCH") {
         fetchObj.body = JSON.stringify(body);
-    } else if (type == "PATCH") {
-        fetchObj.body = {
-            updatedFields: JSON.stringify(body)
-        }
     }
     let uri = API_URI + url;
     if(jwt){
         uri = uri + jwt;
     }
-    console.log(jwt)
-    console.log(uri)
     fetch(uri, fetchObj)
         .then(res => res.json())
         .then(res => {
             if (isLoading) {
                 dispatch(toggleLoading(false));
             }
-            if (res.error) {
+            if (done && res.error) {
                 done(res.error);
             } else if (done) {
                 done(null, res);

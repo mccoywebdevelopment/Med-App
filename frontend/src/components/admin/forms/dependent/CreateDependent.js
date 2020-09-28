@@ -613,10 +613,12 @@ class CreateDependent extends React.Component {
             let depsFromGroupSel = this._getDepsFromGroupSel();
             if (this.props.isDepSelected) {
                 //check if group is modified if so update group then call get populated dependents
-                this.props.fetchUpdateDependent(this.props.isDepSelected._id, this._formatBody(), this.props.groups,
-                    this._isGroupModified(), depsFromGroupSel, (res) => {
+                this.props.fetchUpdateDependent(this.props.isDepSelected.name.firstName + " " + this.props.isDepSelected.name.lastName,this.props.isDepSelected._id,
+                    this._formatBody(),this._isGroupModified(),(res) => {
+                        // this._initState();
                         this._initState();
                         this.props.updateDep(res._id);
+                        // this.props.isDepSelected = res;
                     });
             } else {
                 this.props.fetchCreateDependent(this._formatBody(), this.state.overview.values.group.value, depsFromGroupSel);

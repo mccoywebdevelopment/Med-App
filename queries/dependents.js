@@ -29,14 +29,11 @@ function findDependents(callback) {
   });
 }
 function patchUpdateDependentById(body, id, callback) {
-  if (!body.updatedFields) {
-    callback("body.updatedFields is not defined");
-  } else {
     dependentModel.findById(id, function (err, foundDoc) {
       if (err) {
         callback(err);
       } else {
-        updateModifiedFields(foundDoc, body.updatedFields, function (err, obj) {
+        updateModifiedFields(foundDoc, body, function (err, obj) {
           if (err) {
             callback(err);
           } else {
@@ -52,7 +49,7 @@ function patchUpdateDependentById(body, id, callback) {
       }
     });
   }
-}
+
 
 function updateModifiedFields(oldDoc, updatedFields, callback) {
   var firstName = oldDoc.name.firstName;

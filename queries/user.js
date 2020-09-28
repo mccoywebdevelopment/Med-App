@@ -95,38 +95,12 @@ function findExceptMe(jwt,callback){
   });
 }
 
-function putUpdateById(body,id,callback){
-  val.validator(userModel,body,function(err,result){
-    if(err){
-      callback(err)
-    }else{
-      var updatedDoc = {
-        name:{
-          firstName:body.firstName,
-          lastName:body.lastName
-        },
-        dateOfBirth:body.dateOfBirth
-      }
-      userModel.update({_id:id},{$set:updatedDoc},function(err, doc){
-        if(err){
-          callback(err);
-        }else{
-          callback(null,doc);
-        }
-      });
-    }
-  });
-}
-
 function patchUpdateById(body,id,callback){
-  if(!body.updatedFields){
-    callback("body.updatedFields is not defined");
-  }else{
     userModel.findById(id,function(err,foundDoc){
       if(err){
         callback(err);
       }else{
-        var obj = updateModifiedFields(foundDoc,body.updatedFields);
+        var obj = updateModifiedFields(foundDoc,body);
         foundDoc.update(obj,function(err,result){
           if(err){
             callback(err);
@@ -136,7 +110,7 @@ function patchUpdateById(body,id,callback){
         });
       }
     });
-  }
+  
 }
 
 function updateModifiedFields(oldDoc,updatedFields){

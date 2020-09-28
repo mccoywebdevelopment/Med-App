@@ -28,16 +28,13 @@ function findAll(callback){
 }
 
 function patchUpdateById(body,id,callback){
-  if(!body.updatedFields){
-    callback("body.updatedFields is not defined");
-  }else{
     medicationEventModel.findById(id,function(err,foundDoc){
       if(err){
         callback(err);
       }else if(!foundDoc){
         callback("Doc not found");
       }else{
-        updateModifiedFields(foundDoc,body.updatedFields,function(err,obj){
+        updateModifiedFields(foundDoc,body,function(err,obj){
           foundDoc.update(obj,function(err,result){
             if(err){
               callback(err);
@@ -48,7 +45,7 @@ function patchUpdateById(body,id,callback){
         });
       }
     });
-  }
+  
 }
 function findGuardianByJWT(jwt,callback){
   userModel.findOne({'auth.token':jwt},function(err,userFound){

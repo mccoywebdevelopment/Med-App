@@ -24,9 +24,6 @@ function findAll(callback){
 }
 
 function patchUpdateById(body,id,callback){
-  if(!body.updatedFields){
-    callback("body.updatedFields is not defined");
-  }else{
     guardianModel.findById(id,function(err,foundDoc){
       if(err){
         callback(err);
@@ -46,7 +43,7 @@ function patchUpdateById(body,id,callback){
         });
       }
     });
-  }
+  
 }
 
 function updateModifiedFields(oldDoc,updatedFields,callback){
@@ -106,8 +103,6 @@ function deleteById(id,callback){
   });
 }
 function saveToDoc(bodyData,callback){
-  console.log('===========body data===========');
-  console.log(bodyData);
   //Later maybe make this generic
   let newDoc = new guardianModel();
   if(bodyData.firstName){
@@ -122,8 +117,6 @@ function saveToDoc(bodyData,callback){
   if(typeof(bodyData.pictureUrl)!='undefined'){
     newDoc.pictureUrl = bodyData.pictureUrl;
   }
-  console.log('============newDoc=============')
-  console.log(newDoc)
 
     userModel.findById(bodyData.user,function(err,userFound){
       if(err){
