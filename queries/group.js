@@ -54,6 +54,14 @@ function removeDependent(dependent, oldDependents) {
 
   return removeByID(id, oldDependents);
 }
+function removeGuardian(guardian, oldGuardians) {
+  let id = guardian;
+  if (typeof (guardian) == 'object') {
+    id = dependent._id;
+  }
+
+  return removeByID(id, oldGuardians);
+}
 function updateModifiedFields(oldDoc, body, callback) {
   var groupname = oldDoc.name;
   var dependents = oldDoc.dependents;
@@ -94,9 +102,9 @@ function saveAndUpdateDoc(newDoc, body, callback) {
   if (body.dependentID) {
     count++;
   }
-  // if(body.removeGuardianID){
-  //   count++;
-  // }
+  if(body.removeGuardianID){
+    count++;
+  }
   if (body.guardianID) {
     count++;
   }
@@ -132,9 +140,13 @@ function saveAndUpdateDoc(newDoc, body, callback) {
       }
     });
   }
-  // if(body.removeGuardianID){
-  //   count++;
-  // }
+  if(body.removeGuardianID){
+    newDoc.guardians = removeGuardian(body.removeGuardianID, newDoc.guardians);
+    index++;
+    if (index == count) {
+      callback(null, newDoc);
+    }
+  }
   console.log(count);
   console.log(index)
   if (count == 0) {

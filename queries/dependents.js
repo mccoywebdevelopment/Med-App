@@ -105,7 +105,7 @@ function getRxs(dep,callback){
   dep.rxs.forEach(rxs => {
   if(rxs._id){
       //update rxs
-      updateRxs({updatedFields:rxs},rxs._id,function(err,rxsUpdated){
+      updateRxs(rxs,rxs._id,function(err,rxsUpdated){
         i++;
         if(err){
           console.log(err);

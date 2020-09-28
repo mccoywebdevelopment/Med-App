@@ -229,7 +229,7 @@ function getRxsMeds(rxs,callback){
   rxs.rxsMedication.forEach(med => {
   if(med._id){
       //update rxs
-      updateRxsMedication({updatedFields:med},med._id,function(err,rxsUpdated){
+      updateRxsMedication(med,med._id,function(err,rxsUpdated){
         i++;
         if(err){
           console.log(err);

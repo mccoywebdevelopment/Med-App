@@ -1,6 +1,5 @@
 import { createMessage } from './messages';
 import { toggleLoading } from './loading';
-import { API_URI } from '../config/variables';
 import { addDependent, fetchGroups, removeDependent } from './group';
 import { FETCH_DEPENDENTS } from './types';
 import { FETCH } from '../config/helpers';
@@ -61,30 +60,21 @@ function createDependentAfter(dispatch,postData){
   dispatch(createMessage(postData.firstName +" " +postData.lastName + " was successfully created.", "success"));
   dispatch(toggleLoading(false));
 }
-export const fetchDeleteDependent = (depID, done) => (dispatch) => {
-  fetch(API_URI + "/dependents/" + depID.toString() + "/" + localStorage.getItem('JWT'), {
-    method: 'DELETE',
-    headers: {
-      'content-type': 'application/json'
-    }
-  })
-    .then(res => res.json())
-    .then(res => {
-      // dispatch(toggleLoading());
-      if (res.error) {
-        dispatch(createMessage(res.error, 'danger'));
-      } else {
-        dispatch(createMessage(res.deletedDoc.name.firstName + " was successfully deleted.", "info"));
-        dispatch(fetchPopulatedDependents());
-      }
-    });
-};
 
-export const fetchPopulatedDependents = (isLoading, done) => (dispatch) => {
-  dispatch(fetchGroups(false, (err, groups) => {
+export const fetchDeleteDependent = (dependentID) => (dispatch) => {
+  dispatch(toggleLoading(true));
+  FETCH('DELETE', '/dependents/' + dependentID + '/', null, localStorage.getItem('JWT'), dispatch, false, (err, res) => {
     if (err) {
       dispatch(createMessage(err, 'danger'));
-    } else {
+    } else{
+      dispatch(createMessage(res.deletedDoc.name.firstName + " was successfully deleted.", "info"));
+      dispatch(fetchPopulatedDependents());
+    }
+  });
+}
+
+export const fetchPopulatedDependents = (isLoading, done) => (dispatch) => {
+  dispatch(fetchGroups(false, (groups) => {
       FETCH('GET', '/dependents/dependents-medication/medication/', null, localStorage.getItem('JWT'), dispatch, isLoading, (err, dependents) => {
         if (err) {
           dispatch(createMessage(err, 'danger'));
@@ -99,7 +89,6 @@ export const fetchPopulatedDependents = (isLoading, done) => (dispatch) => {
           }
         }
       });
-    }
   }));
 }
 
