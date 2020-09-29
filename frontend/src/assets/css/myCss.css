@@ -270,4 +270,20 @@ input,select,textarea{
   /* background-color: blue; */
   font-size: 14px;
 }
+.search-box::placeholder{
+  font-family: "roboto", sans-serif;
+  font-size: 0.75rem!important;
+  color: #2a2a2a;
+  font-weight: bold!important;
+}
+.search-box{
+  font-family: "roboto", sans-serif;
+  font-size: 0.75rem;
+  color: #212529;
+  line-height: 14px;
+  font-weight: 300;
+}
+.search-box-header-selected{
+  border-bottom-style: solid;
+}
 /*#0056B3*/

@@ -1,3 +1,5 @@
+import React from 'react';
+
 import DependentView from "./views/admin/DependentsView";
 import DependentDetails from "./views/admin/DependentDetails";
 import GroupView from "./views/admin/GroupView";
@@ -7,7 +9,8 @@ import ForgotPassword from "./views/shared/ForgotPassword";
 import ResetPassword from "./views/shared/ResetPassword";
 import Login from "./views/shared/Login";
 import Register from './views/shared/Register';
-import React from 'react';
+
+import Test from './views/test/Test';
 
 const adminRoutes = [
     {
@@ -29,6 +32,10 @@ const adminRoutes = [
     {
         path: "/admin/dependents/:id",
         component: <DependentDetails/>
+    },
+    {
+        path: "/test",
+        component: <Test/>
     }
 ];
 

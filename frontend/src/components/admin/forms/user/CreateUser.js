@@ -8,6 +8,7 @@ import { emailValidator } from '../../../../config/validators';
 
 import UserOverview from "./UserOverview";
 import BelongsToGroup from '../dependent/BelongsToGroup';
+import Search from '../../../../components/shared/Search/Search';
 import UserOverviewReadOnly from "./UserOverviewReadOnly";
 
 class CreateUser extends React.Component {
@@ -300,9 +301,12 @@ class CreateUser extends React.Component {
                     <UserOverview data={this.state.overview} update={this._update} updateError={this._updateError}
                         isUserSelected={this.props.isUserSelected} groups={this.props.groupState.data} isEdit={this.state.overview.isEdit}>
                         {!this.props.isUserSelected || this.state.overview.isEdit ?
-                            <BelongsToGroup toggle={this._toggleGroupBtn} update={this._updateGroupValue} form={"overview"}
-                                groups={this.props.groupState.data} data={this.state.overview.values.group}
-                                error={this.state.overview.errors.group} isOffset={2} />
+                            // <BelongsToGroup toggle={this._toggleGroupBtn} update={this._updateGroupValue} form={"overview"}
+                            //     groups={this.props.groupState.data} data={this.state.overview.values.group}
+                            //     error={this.state.overview.errors.group} isOffset={2} />
+                            <div className="col-lg-6">
+                                <Search placeholder="Search & select group(s)"/>
+                            </div>
                             : null}
                         <UserOverviewReadOnly user={this.props.isUserSelected} isEdit={this.state.overview.isEdit} />
                     </UserOverview>
