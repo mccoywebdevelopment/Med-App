@@ -94,23 +94,6 @@ class UserView extends React.Component {
                                 <>
                                 <div className="row" style={{marginBottom:'30px'}}>
                                     {list()}
-                                     {/* <div className="col-lg-4" style={{paddingLeft:'0px'}}>
-                                        <CardData/>
-                                    </div>
-                                    <div className="col-lg-4" style={{paddingLeft:'0px'}}>
-                                        <CardData/>
-                                    </div>
-                                    <div className="col-lg-4" style={{paddingLeft:'0px'}}>
-                                        <CardData/>
-                                    </div> */}
-                                </div>
-                                <div className="row" style={{marginBottom:'30px'}}>
-                                     {/* <div className="col-lg-4" style={{paddingLeft:'0px'}}>
-                                        <CardData/>
-                                    </div>
-                                    <div className="col-lg-4" style={{paddingLeft:'0px'}}>
-                                        <CardData/>
-                                    </div> */}
                                 </div>
                                 </>
                                  :null}

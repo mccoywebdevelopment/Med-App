@@ -48,24 +48,23 @@ export const fetchCreateUser = (body, groupID, done) => (dispatch) => {
         user: res
       }
       dispatch(addUser(groupID, guardianBody, false, (groups) => {
-        dispatch(fetchUsers(false, (users) => {
-          dispatch(createMessage(body.username + " was sent an invitation via email.", "info"));
-          dispatch(toggleLoading(false));
-          if (done) {
-            done(res);
-          }
-        }));
+        createUserAfter(body.username,dispatch,done);
       }));
     } else {
-      dispatch(fetchUsers(false, (users) => {
-        dispatch(createMessage(body.username + " was sent an invitation via email.", "info"));
-        dispatch(toggleLoading(false));
-        if (done) {
-          done(res);
-        }
-      }));
+      createUserAfter(body.username,dispatch,done);
     }
   });
+}
+
+function createUserAfter(email, dispatch, done) {
+  dispatch(toggleLoading(false));
+  dispatch(fetchUsers(false, (users) => {
+    dispatch(sendTokenViaEmail(email, (res) => {
+      if (done) {
+        done(res);
+      }
+    }));
+  }))
 }
 
 export const fetchDeleteUser = (userID, done) => (dispatch) => {
@@ -75,7 +74,7 @@ export const fetchDeleteUser = (userID, done) => (dispatch) => {
       dispatch(createMessage(err, 'danger'));
     } else {
       dispatch(fetchUsers(false, (users) => {
-        dispatch(createMessage(res.username + " was sent an invitation via email.", "info"));
+        dispatch(createMessage(res.username + " was successfully deleted.", "info"));
         dispatch(toggleLoading(false));
         if (done) {
           done(res);
@@ -85,22 +84,11 @@ export const fetchDeleteUser = (userID, done) => (dispatch) => {
   });
 }
 
-
-function updateUserAfter(dispatch, done, res) {
-  dispatch(fetchUsers(false, (users) => {
-    dispatch(createMessage(res.username + " was successfully updated.", "success"));
-    dispatch(toggleLoading(false));
-    if (done) {
-      done(res)
-    }
-  }));
-}
-
 export const fetchUpdateUser = (userID, body, isGroupModified, guardianID, done) => (dispatch) => {
   FETCH('PATCH', '/users/' + userID + '/', body, localStorage.getItem('JWT'), dispatch, false, (err, res) => {
     if (err) {
       dispatch(createMessage(err, 'danger'));
-    } else {
+    } else if(isGroupModified){
       if (isGroupModified.isAdd) {
         dispatch(addGuardian(isGroupModified.groupID, guardianID, false, (guardianAdded) => {
           updateUserAfter(dispatch, done, res);
@@ -116,19 +104,30 @@ export const fetchUpdateUser = (userID, body, isGroupModified, guardianID, done)
           }));
         }));
       }
+    }else{
+      updateUserAfter(dispatch, done, res);
     }
   });
 }
 
+function updateUserAfter(dispatch, done, res) {
+  dispatch(fetchUsers(false, (users) => {
+    dispatch(createMessage(res.username + " was successfully updated.", "success"));
+    dispatch(toggleLoading(false));
+    if (done) {
+      done(res)
+    }
+  }));
+}
+
+
 export const sendTokenViaEmail = (email, done) => (dispatch) => {
-  dispatch(toggleLoading(true));
   FETCH('GET', "/auth/email/send-welcome/" + email + "/", null, localStorage.getItem('JWT'), dispatch, false, (err, res) => {
     if (err) {
       dispatch(createMessage(err, 'danger'));
     } else if (done) {
       done(res);
     }
-    dispatch(toggleLoading(false));
     dispatch(createMessage(email + " was sent another invitation via email.", "info"));
   });
 }
