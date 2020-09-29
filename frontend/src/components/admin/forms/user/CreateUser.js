@@ -247,14 +247,13 @@ class CreateUser extends React.Component {
         if (!this._isOverviewErrors()) {
             let body = this._formatBody();
             if(this.props.isUserSelected){
-               this.props.fetchUpdateUser(this.props.isUserSelected._id,body,this._isGroupModified(),
-                    this._getGuardiansFromGroupSel(),this._getGuardianByUserID(this.props.isUserSelected._id),(res)=>{
-
-                    this._initState();
-                    this.props.updateUser(res._id);
-               });
+                this.props.fetchUpdateUser(this.props.isUserSelected._id,body,this._isGroupModified(),
+                    this._getGuardianByUserID(this.props.isUserSelected._id)._id,(res)=>{
+                        this._initState();
+                        this.props.updateUser(res._id);
+                    });
             }else{
-                this.props.fetchCreateUser(body, this.state.overview.values.group.value);
+                this.props.fetchCreateUser(body,this.state.overview.values.group.value);
             }
             this.props.togglePopUp();
         }

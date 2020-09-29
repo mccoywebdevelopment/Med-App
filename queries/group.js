@@ -57,7 +57,7 @@ function removeDependent(dependent, oldDependents) {
 function removeGuardian(guardian, oldGuardians) {
   let id = guardian;
   if (typeof (guardian) == 'object') {
-    id = dependent._id;
+    id = guardian._id;
   }
 
   return removeByID(id, oldGuardians);
@@ -92,7 +92,6 @@ function updateModifiedFields(oldDoc, body, callback) {
 
 }
 function saveAndUpdateDoc(newDoc, body, callback) {
-  console.log(body)
   let count = 0;
   let index = 0;
 
@@ -108,8 +107,6 @@ function saveAndUpdateDoc(newDoc, body, callback) {
   if (body.guardianID) {
     count++;
   }
-  console.log(count);
-  console.log(index)
 
   if (body.removeDependentID) {
     newDoc.dependents = removeDependent(body.removeDependentID, newDoc.dependents);
@@ -121,8 +118,6 @@ function saveAndUpdateDoc(newDoc, body, callback) {
   if (body.dependentID) {
     addDependentToGroup(newDoc, body.dependentID, function (err, newDoc) {
       index++;
-      console.log(index);
-      console.log(count)
       if (err && index == count) {
         callback(err);
       } else if (index == count) {
@@ -147,8 +142,6 @@ function saveAndUpdateDoc(newDoc, body, callback) {
       callback(null, newDoc);
     }
   }
-  console.log(count);
-  console.log(index)
   if (count == 0) {
     callback(null, newDoc);
   }
@@ -204,7 +197,6 @@ function saveToDoc(body, callback) {
     if (err) {
       callback(err)
     } else {
-      console.log(newDoc);
       newDoc.save(function (err, savedDoc) {
         if (err) {
           callback(err);
