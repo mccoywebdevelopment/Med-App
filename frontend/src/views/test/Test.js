@@ -5,28 +5,28 @@ import Search from '../../components/shared/Search/Search';
 export default class Test extends React.Component{
     
     render(){
-        let userTableHeader = ["Group Name", "# of Dependents", "# of Users", "# of Admins"];
-        let userTableBody = ["Test",2,3,0];
+        let userTableHeader = [{value:"Name",colSpan:2},{value:"#Dependents",colSpan:1},{value:"#Users",colSpan:1},{value:"#Admins",colSpan:1}];
+        let userTableBody = ["Test",2,3,0,1,2,3,4];
 
-        let userItem = {
-            value:"909334234234",
+        let userItems = {
+            values:["909334234234","8098092"],
             tableData:[userTableHeader,userTableBody]
         }
         let Item1 = {
             name: "User(s)",
-            data: userItem
+            data: userItems
         }
 
-        let dependentTableHeader = ["Name", "# of Meds", "is Grouped"];
+        let dependentTableHeader = [{value:"Name",colSpan:2},{value:"#Meds",colSpan:1},{value:"is Grouped",colSpan:1}];
         let dependentTableBody = ["Chris McCoy",2,"No"];
 
-        let dependentItem = {
-            value:"0000023322",
+        let dependentItems = {
+            values:["909334234234","8098092"],
             tableData:[dependentTableHeader,dependentTableBody]
         }
         let Item2 = {
             name: "Dependent(s)",
-            data: dependentItem
+            data: dependentItems
         }
 
         let items = [Item1,Item2];
@@ -35,7 +35,7 @@ export default class Test extends React.Component{
             <div className="container">
                 <div className="row">
                     <div className="col-lg-6">
-                    <Search placeholder="Search & Select Item(s)" items={items} label="Items:"/>
+                        <Search color={"#8862e0"} placeholder="Search & Select Item(s)" items={items} label="Items:"/>
                     </div>
                 </div>
             </div>

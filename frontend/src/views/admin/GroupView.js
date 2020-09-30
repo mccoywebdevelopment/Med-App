@@ -90,7 +90,7 @@ class UserView extends React.Component {
                             </div>
                         <div className="row">
                             <div className="col-lg-12">
-                                {this.props.userState.data.length>0?
+                                {this.props.groupState.data.length>0?
                                 <>
                                 <div className="row" style={{marginBottom:'30px'}}>
                                     {list()}
