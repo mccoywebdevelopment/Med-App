@@ -10,7 +10,7 @@ export const fetchUsers = (isLoading, done) => (dispatch) => {
     if (err) {
       dispatch(createMessage(err, 'danger'));
     } else {
-      dispatch(fetchGuardians(isLoading, (guardians) => {
+      dispatch(fetchGuardians(false, (guardians) => {
         res = combineGuardian(res, guardians);
         dispatch({
           type: FETCH_USERS,

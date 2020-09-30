@@ -54,7 +54,7 @@ class UserView extends React.Component {
     }
     componentDidMount = () =>{
         this.props.changeColor("#ffaf00");
-        this.props.fetchGroups();
+        this.props.fetchGroups(true);
     }
     render() {
         const list = () =>{
