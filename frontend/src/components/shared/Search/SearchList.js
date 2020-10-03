@@ -5,14 +5,10 @@ export default class SearchList extends React.Component {
     constructor(props) {
         super(props);
     }
-    // componentWillReceiveProps = (newProps) => {
-    //     if (newProps != this.props) {
-    //         this.props = newProps;
-    //         console.log(this.props);
-    //         this.forceUpdate();
-    //     }
-    // }
     render() {
+        console.log(this.props.itemObj.selectedValues);
+        console.log(this.props.itemObj.values.length - this.props.itemObj.hiddenValues.length);
+        console.log(this.props);
         let checkBoxStyle = {
             color:this.props.color,
             marginLeft:'0px',
@@ -25,7 +21,6 @@ export default class SearchList extends React.Component {
                 )
             });
         }
-
         let body = (list) => {
             return list.map((item, key) => {
                 return (
@@ -44,20 +39,14 @@ export default class SearchList extends React.Component {
              start: 4*row
              end:   start + colLen-1
             */
-
             for (var i = 0; i < rowLen; ++i) {
                 let list = JSON.parse(JSON.stringify(this.props.itemObj.tableData[1]));
 
                 let itemLen = this.props.itemObj.tableData[0].length;
                 let start = i * itemLen;
                 let end = itemLen; 
-                // let end = start + itemLen;
                 let key = this.props.itemObj.values[i];
-                console.log(list)
                 list = list.splice(start, end);
-                console.log(start);
-                console.log(end)
-                console.log(list)
                 
                 if(!this.props.itemObj.hiddenValues.includes(key)){
                     rows.push(
@@ -83,7 +72,7 @@ export default class SearchList extends React.Component {
                         <thead>
                             <tr>
                                 <th>
-                                    {this.props.itemObj.selectedValues.length == this.props.itemObj.values.length?
+                                    {this.props.itemObj.selectedValues.length == (this.props.itemObj.values.length - this.props.itemObj.hiddenValues.length)?
                                         <i style={checkBoxStyle} class="fas fa-check-square" onClick={()=>this.props.toggleAll()}></i>
                                         :
                                         <i style={checkBoxStyle} class="far fa-square" onClick={()=>this.props.toggleAll()}></i>
@@ -94,7 +83,6 @@ export default class SearchList extends React.Component {
                         </thead>
                         <tbody>
                             {rows()}
-                            {/* {list(this.props.users)} */}
                         </tbody>
                     </table>
                     : null}

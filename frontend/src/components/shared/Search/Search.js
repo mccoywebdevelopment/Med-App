@@ -28,7 +28,6 @@ export default class Search extends React.Component {
     }
     _updateList = () =>{
         let newState = this.state;
-        // newState.items = JSON.parse(JSON.stringify(newState.items));
         for(var i=0;i<newState.items.length;++i){
             let tableDataBody = newState.items[i].data.tableData[1];
             let hiddenValues = newState.items[i].data.hiddenValues;
@@ -39,30 +38,23 @@ export default class Search extends React.Component {
 
             for(var ix=0;ix<tableDataBody.length;++ix){
                 let rowNum = ~~(ix/colLen);
-                // console.log(tableDataBody[ix].toString().toLowerCase())
-                // console.log(this.state.searchValue.toLowerCase())
-                // console.log(tableDataBody[ix].toString().toLowerCase().includes(this.state.searchValue.toLowerCase()))
-                // console.log(rowNum)
-                // console.log(lastRowNum);
-                // console.log("====================================================")
                 if( this.state.searchValue=="" || 
                     tableDataBody[ix].toString().toLowerCase().includes(this.state.searchValue.toLowerCase())){
                     if(hiddenValues.includes(values[rowNum])){
                         hiddenValues.splice(hiddenValues.indexOf(values[rowNum]));
                     }
                     lastRowNum = rowNum;
-                    // alert(true)
                 }else if(lastRowNum != rowNum && !hiddenValues.includes(values[rowNum]) && !selectedValues.includes(values[rowNum])){
                     hiddenValues.push(values[rowNum]);
                 }
             }
         }
-        console.log(newState)
         this.setState(newState);
     }
     _toggleAll = (e) => {
         let newState = this.state;
-        let values = JSON.parse(JSON.stringify(newState.items[this.state.headerSelected].data.values));
+        let values = newState.items[this.state.headerSelected].data.values;
+        let hiddenValues = newState.items[this.state.headerSelected].data.hiddenValues;
         if(e){
             let index = e.target.id;
             let item = values[index]
@@ -78,7 +70,12 @@ export default class Search extends React.Component {
         else if(newState.items[this.state.headerSelected].data.selectedValues.length>0){
             newState.items[this.state.headerSelected].data.selectedValues = []
         }else{
-            newState.items[this.state.headerSelected].data.selectedValues = values;
+            newState.items[this.state.headerSelected].data.selectedValues = [];
+            for(var i=0;i<values.length;++i){
+                if(!hiddenValues.includes(values[i])){
+                    newState.items[this.state.headerSelected].data.selectedValues.push(values[i]);
+                }
+            }
         }
         this.setState(newState);
     }
