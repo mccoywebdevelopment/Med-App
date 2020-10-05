@@ -6,9 +6,6 @@ export default class SearchList extends React.Component {
         super(props);
     }
     render() {
-        console.log(this.props.itemObj.selectedValues);
-        console.log(this.props.itemObj.values.length - this.props.itemObj.hiddenValues.length);
-        console.log(this.props);
         let checkBoxStyle = {
             color:this.props.color,
             marginLeft:'0px',

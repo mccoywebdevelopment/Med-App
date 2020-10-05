@@ -78,8 +78,12 @@ export default class Search extends React.Component {
             }
         }
         this.setState(newState);
+        this.props.updateParentState(this.state.items[this.props.dataSel].data.selectedValues);
     }
     render() {
+        // if(this.props.getSelectedValues && this.props.dataSel){
+        //     this.props.getSelectedValues(this.state.items[this.props.dataSel].data.selectedValues);
+        // }
         let headerStyle = {
             borderColor:this.props.color,
             marginRight:'20px',

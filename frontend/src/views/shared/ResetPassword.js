@@ -23,7 +23,6 @@ class ResetPassword extends React.Component{
       password:"",
       passwordErrMsg:""
     }
-    console.log(this.state)
   }
 
   _updateFormData = (e) =>{

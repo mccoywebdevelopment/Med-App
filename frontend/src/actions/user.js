@@ -38,18 +38,28 @@ function combineGuardian(users, guardians) {
   return data;
 }
 
-export const fetchCreateUser = (body, groupID, done) => (dispatch) => {
+export const fetchCreateUser = (body, groupIDs, done) => (dispatch) => {
   dispatch(toggleLoading(true));
   FETCH('POST', '/users/', body, localStorage.getItem('JWT'), dispatch, false, (err, res) => {
     if (err) {
       dispatch(createMessage(err, 'danger'));
-    } else if (groupID.length > 0) {
+    } else if (groupIDs.length > 0) {
       let guardianBody = {
         user: res
       }
-      dispatch(addUser(groupID, guardianBody, false, (groups) => {
-        createUserAfter(body.username,dispatch,done);
-      }));
+      let i = 0;
+      groupIDs.forEach(groupID =>{
+        dispatch(addUser(groupID,guardianBody,false,(groups)=>{
+          if(err){
+            dispatch(createMessage(err, 'danger'));
+            return;
+          }else if(i==groupIDs.length-1){
+            createUserAfter(body.username,dispatch,done);
+            return;
+          }
+          i++;
+        }));
+      });
     } else {
       createUserAfter(body.username,dispatch,done);
     }
@@ -128,7 +138,7 @@ export const sendTokenViaEmail = (email, done) => (dispatch) => {
     } else if (done) {
       done(res);
     }
-    dispatch(createMessage(email + " was sent another invitation via email.", "info"));
+    dispatch(createMessage(email + " was sent an invitation via email.", "info"));
   });
 }
 
