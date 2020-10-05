@@ -7,7 +7,6 @@ import { fetchCreateUser, fetchUpdateUser, sendTokenViaEmail} from "../../../../
 import { emailValidator } from '../../../../config/validators';
 
 import UserOverview from "./UserOverview";
-import BelongsToGroup from '../dependent/BelongsToGroup';
 import Search from '../../../../components/shared/Search/Search';
 import UserOverviewReadOnly from "./UserOverviewReadOnly";
 
@@ -21,11 +20,11 @@ class CreateUser extends React.Component {
     constructor(props) {
         super(props);
         this._initState();
-        this._toggleGroupBtn = this._toggleGroupBtn.bind(this);
+        // this._toggleGroupBtn = this._toggleGroupBtn.bind(this);
         this._update = this._update.bind(this);
         this._updateError = this._updateError.bind(this);
         this._updateGroupValue = this._updateGroupValue.bind(this);
-        this._toggleGroupBtn = this._toggleGroupBtn.bind(this);
+        // this._toggleGroupBtn = this._toggleGroupBtn.bind(this);
     }
     _initState = () => {
         this.state = {
@@ -36,14 +35,13 @@ class CreateUser extends React.Component {
                 errors: {
                     email: "",
                     isAdmin: "",
-                    group: "",
+                    groups: "",
                 },
                 values: {
                     email: "",
                     isAdmin: false,
-                    group: {
-                        isYes: false,
-                        value: ""
+                    groups: {
+                        values: []
                     }
                 },
                 body: null,
@@ -56,7 +54,7 @@ class CreateUser extends React.Component {
 
         newState.overview.values.email = user.username;
         newState.overview.values.isAdmin = user.isAdmin;
-        newState.overview.values.group = this._getGroupSeluser(user);
+        newState.overview.values.groups = this._getGroupSeluser(user);
 
         newState.oldData = {
             overview: JSON.stringify(newState.overview.values)
@@ -87,6 +85,24 @@ class CreateUser extends React.Component {
 
         return "";
     }
+    _getUserByGuardianID = (guardianID) =>{
+        let guardians = this.props.guardianState.data;
+        for(var i=0;i<guardians.length;++i){
+            if(guardians[i]._id == guardianID){
+                return this._getUserByID(guardians[i].user);
+            }
+        }
+        return null;
+    }
+    _getUserByID = (userID) =>{
+        let users = this.props.userState.data;
+        for(var i=0;i<users.length;++i){
+            if(userID == users[i]._id){
+                return users[i];
+            }
+        }
+        return null;
+    }
     _getGroupSeluser = (user) => {
         let group = this._getGroupIDByUserID(user._id);
         if (group.length > 0) {
@@ -111,21 +127,21 @@ class CreateUser extends React.Component {
         newState[form].values[inputName] = value;
         this.setState(newState);
     }
-    _toggleGroupBtn = () => {
-        let newState = this.state;
-        if (!newState.overview.values.group.isYes && this.props.groupState.data.length < 1) {
-            alert("No groups");
-        } else {
-            newState.overview.values.group.isYes = !newState.overview.values.group.isYes;
-            if (!newState.overview.values.group.isYes) {
-                newState.overview.errors.group = "";
-            }
-        }
-        if (!newState.overview.values.group.isYes) {
-            newState.overview.values.group.value = "";
-        }
-        this.setState(newState);
-    }
+    // _toggleGroupBtn = () => {
+    //     let newState = this.state;
+    //     if (!newState.overview.values.group.isYes && this.props.groupState.data.length < 1) {
+    //         alert("No groups");
+    //     } else {
+    //         newState.overview.values.group.isYes = !newState.overview.values.group.isYes;
+    //         if (!newState.overview.values.group.isYes) {
+    //             newState.overview.errors.group = "";
+    //         }
+    //     }
+    //     if (!newState.overview.values.group.isYes) {
+    //         newState.overview.values.group.value = "";
+    //     }
+    //     this.setState(newState);
+    // }
     _updateError = (form, inputName, value) => {
         let newState = this.state;
         newState[form].errors[inputName] = value;
@@ -134,9 +150,8 @@ class CreateUser extends React.Component {
     _overviewValidation = () => {
         let newState = this.state;
         newState.overview.errors.email = emailValidator(newState.overview.values.email, true).errorMsg;
-        if (this.state.overview.values.group.isYes) {
-            newState.overview.errors.group = this._groupValidation();
-        }
+        // if (this.state.overview.values.group.isYes) {
+        newState.overview.errors.groups = this._groupValidation();
         this.setState(newState);
     }
     _toggleIsEditOverview = () => {
@@ -147,14 +162,14 @@ class CreateUser extends React.Component {
     _groupValidation = () => {
         var error = "";
         var found = false;
-        for (var i = 0; i < this.props.groupState.data.length; ++i) {
-            if (this.props.groupState.data[i]._id == this.state.overview.values.group.value) {
-                found = true;
-            }
-        }
-        if (!found) {
-            error = "This field is required";
-        }
+        // for (var i = 0; i < this.props.groupState.data.length; ++i) {
+        //     if (this.props.groupState.data[i]._id == this.state.overview.values.group.value) {
+        //         found = true;
+        //     }
+        // }
+        // if (!found) {
+        //     error = "This field is required";
+        // }
         return error;
     }
     _isOverviewErrors = () => {
@@ -188,6 +203,9 @@ class CreateUser extends React.Component {
         }
         return null;
     }
+    /*
+        Make this a for loop....
+    */
     _isGroupModified = () => {
         let oldGroup = JSON.parse(this.state.oldData.overview).group;
         let group = this.state.overview.values.group;
@@ -235,6 +253,7 @@ class CreateUser extends React.Component {
         return null;
     }
     _getGuardiansFromGroupSel = () => {
+        /* make this a for loop.*/
         let oldGuardians = [];
         for (var i = 0; i < this.props.groupState.data.length; ++i) {
             if (this.props.groupState.data[i]._id == this.state.overview.values.group.value) {
@@ -254,7 +273,7 @@ class CreateUser extends React.Component {
                         this.props.updateUser(res._id);
                     });
             }else{
-                this.props.fetchCreateUser(body,this.state.overview.values.group.value);
+                this.props.fetchCreateUser(body,this.state.overview.values.groups.values);
             }
             this.props.togglePopUp();
         }
@@ -274,12 +293,94 @@ class CreateUser extends React.Component {
             done();
         });
     }
+    _getNumOfAdmins=(guardians)=>{
+        let users = [];
+        for(var i=0;i<guardians.length;++i){
+            let user = this._getUserByID(guardians[i].user);
+            if(user){
+                users.push(user);
+            }
+        }
+        let admins = 0;
+        for(var i=0;i<users.length;++i){
+            if(users[i].isAdmin){
+                admins++;
+            }
+        }
+        return admins;
+    }
+    _formatGroupInputs = () =>{
+        // let userTableHeader = [{value:"Name",colSpan:2},{value:"#Dependents",colSpan:1},{value:"#Users",colSpan:1},{value:"#Admins",colSpan:1}];
+        // let userTableBody = [
+        //                 "Test",2,3,0,
+        //                 "McCoy House",1,1,1,
+        //                 "Bob House",1,1,1,
+        //                 "Dan House",1,1,1
+        //             ];
+
+        // let userItems = {
+        //     values:["909334234234","8098092","32","kljl"],
+        //     selectedValues:[],
+        //     hiddenValues:[],
+        //     tableData:[userTableHeader,userTableBody]
+        // }
+        // let Item1 = {
+        //     name: "Groups",
+        //     data: userItems
+        // }
+
+        // let items = [Item1];
+        let tableHeader = [{value:"Name",colSpan:2},{value:"#Dependents",colSpan:1},{value:"#Users",colSpan:1},{value:"#Admins",colSpan:1}];
+        let values = [];
+        let tableBody = [];
+        let selectedValues = [];
+        let hiddenValues = [];
+    
+        for(var i=0;i<this.props.groupState.data.length;++i){
+            values.push(this.props.groupState.data[i]._id);
+            tableBody.push(this.props.groupState.data[i].name);
+            tableBody.push(this.props.groupState.data[i].dependents.length);
+            let admins = this._getNumOfAdmins(this.props.groupState.data[i].guardians);
+            
+            tableBody.push(this.props.groupState.data[i].guardians.length - admins);
+            tableBody.push(admins);
+        }
+        return {
+            name:"Groups",
+            data:{
+                values:values,
+                selectedValues:selectedValues,
+                hiddenValues:hiddenValues,
+                tableData:[tableHeader,tableBody]
+            }
+        }
+    }
     componentWillReceiveProps = (newProps) => {
         if (newProps.isUserSelected) {
             this._formatSelUser(newProps.isUserSelected);
         }
     }
     render() {
+        // let userTableHeader = [{value:"Name",colSpan:2},{value:"#Dependents",colSpan:1},{value:"#Users",colSpan:1},{value:"#Admins",colSpan:1}];
+        // let userTableBody = [
+        //                 "Test",2,3,0,
+        //                 "McCoy House",1,1,1,
+        //                 "Bob House",1,1,1,
+        //                 "Dan House",1,1,1
+        //             ];
+
+        // let userItems = {
+        //     values:["909334234234","8098092","32","kljl"],
+        //     selectedValues:[],
+        //     hiddenValues:[],
+        //     tableData:[userTableHeader,userTableBody]
+        // }
+        // let Item1 = {
+        //     name: "Groups",
+        //     data: userItems
+        // }
+
+        let items = [this._formatGroupInputs()];
         return (
             <>
                 <div className="row">
@@ -304,8 +405,8 @@ class CreateUser extends React.Component {
                             // <BelongsToGroup toggle={this._toggleGroupBtn} update={this._updateGroupValue} form={"overview"}
                             //     groups={this.props.groupState.data} data={this.state.overview.values.group}
                             //     error={this.state.overview.errors.group} isOffset={2} />
-                            <div className="col-lg-6">
-                                <Search placeholder="Search & select group(s)"/>
+                            <div className="col-lg-12" style={{paddingLeft:'12.5px',paddingRight:'12.5px'}}>
+                                <Search color={"#8862e0"} placeholder="Search & Select Group(s)" items={items} label="Groups"/>
                             </div>
                             : null}
                         <UserOverviewReadOnly user={this.props.isUserSelected} isEdit={this.state.overview.isEdit} />

@@ -92,7 +92,7 @@ export default class Search extends React.Component {
                 return(
                     <>  
                         <span className={(key==this.state.headerSelected?'search-box-header-selected':null)} 
-                            style={headerStyle} onClick={()=>{this._toggleHeader(key)}}>{item.name}</span>
+                            style={headerStyle} onClick={()=>{this._toggleHeader(key)}}>{item.name + " ("+this.state.items[key].data.selectedValues.length+")"}</span>
                     </>
                 )
             });

@@ -15,7 +15,7 @@ export default class UserOverview extends React.Component {
         return null;
     }
     render() {
-        let group = this._getGroup(this.props.data.values.group.value);
+        // let group = this._getGroup(this.props.data.values.groups.values);
 
         let isAdmin = "No";
         let isAdminStyles = {
@@ -103,7 +103,7 @@ export default class UserOverview extends React.Component {
                         <div className="col-lg-6">
                             <span>Is Admin:</span><span style={isAdminStyles}>{isAdmin}</span>
                         </div>
-                        {this.props.data.values.group.value.length > 0 && group ?
+                        {/* {this.props.data.values.group.value.length > 0 && group ?
                             <>
                                 <div className="col-lg-6" style={{marginTop:'10px'}}>
                                     <span>Belongs to Group:</span><span style={groupedStyles}>Yes</span>
@@ -120,7 +120,7 @@ export default class UserOverview extends React.Component {
                             <div className="col-lg-6" style={{marginTop:'10px'}}>
                                 <span>Belongs to Group:</span><span style={groupedStyles}>No</span>
                             </div>
-                        }
+                        } */}
                     </>
                 }
                 {this.props.children}

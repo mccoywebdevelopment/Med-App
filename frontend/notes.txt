@@ -10,7 +10,7 @@ Allow user to be grouped to multiple groups
 NOTES:
 - Need to add groupID to isRemoved right now it's "" b/c the user deselected it (CreateDependent.js FORM)
 - Linux nodemon cmds:
-    lsof -i tcp:3000 
+    lsof -i tcp:4000 
     kill -9 44475
     
     echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
