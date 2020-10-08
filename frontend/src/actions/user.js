@@ -48,20 +48,20 @@ export const fetchCreateUser = (body, groupIDs, done) => (dispatch) => {
         user: res
       }
       let i = 0;
-      groupIDs.forEach(groupID =>{
-        dispatch(addUser(groupID,guardianBody,false,(groups)=>{
-          if(err){
+      groupIDs.forEach(groupID => {
+        dispatch(addUser(groupID, guardianBody, false, (groups) => {
+          if (err) {
             dispatch(createMessage(err, 'danger'));
             return;
-          }else if(i==groupIDs.length-1){
-            createUserAfter(body.username,dispatch,done);
+          } else if (i == groupIDs.length - 1) {
+            createUserAfter(body.username, dispatch, done);
             return;
           }
           i++;
         }));
       });
     } else {
-      createUserAfter(body.username,dispatch,done);
+      createUserAfter(body.username, dispatch, done);
     }
   });
 }
@@ -98,23 +98,36 @@ export const fetchUpdateUser = (userID, body, isGroupModified, guardianID, done)
   FETCH('PATCH', '/users/' + userID + '/', body, localStorage.getItem('JWT'), dispatch, false, (err, res) => {
     if (err) {
       dispatch(createMessage(err, 'danger'));
-    } else if(isGroupModified){
-      if (isGroupModified.isAdd) {
-        dispatch(addGuardian(isGroupModified.groupID, guardianID, false, (guardianAdded) => {
-          updateUserAfter(dispatch, done, res);
-        }));
-      } else if (isGroupModified.isRemoved) {
-        dispatch(removeGuardian(isGroupModified.groupID, guardianID, false, (guardianAdded) => {
-          updateUserAfter(dispatch, done, res);
-        }));
-      } else {
-        dispatch(removeGuardian(isGroupModified.oldGroupID, guardianID, false, (depAdded) => {
-          dispatch(addGuardian(isGroupModified.groupID, guardianID, false, (depRemoved) => {
+    } else if (isGroupModified) {
+      let totalLen = isGroupModified.groups.length + isGroupModified.oldGroups.length;
+      let i = 0;
+
+      isGroupModified.groups.forEach(groupID =>{
+        dispatch(addGuardian(groupID, guardianID, false, (guardianAdded) => {
+          if (err) {
+            dispatch(createMessage(err, 'danger'));
+            return;
+          } else if (i == totalLen - 1) {
             updateUserAfter(dispatch, done, res);
-          }));
+            return;
+          }
+          i++;
         }));
-      }
-    }else{
+      });
+
+      isGroupModified.oldGroups.forEach(groupID =>{
+        dispatch(removeGuardian(groupID, guardianID, false, (guardianAdded) => {
+          if (err) {
+            dispatch(createMessage(err, 'danger'));
+            return;
+          } else if (i == totalLen - 1) {
+            updateUserAfter(dispatch, done, res);
+            return;
+          }
+          i++;
+        }));
+      });
+    } else {
       updateUserAfter(dispatch, done, res);
     }
   });

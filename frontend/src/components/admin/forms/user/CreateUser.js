@@ -164,38 +164,12 @@ class CreateUser extends React.Component {
         Make this a for loop....
     */
     _isGroupModified = () => {
-        let oldGroup = JSON.parse(this.state.oldData.overview).groups;
-        let group = this.state.overview.values.groups;
-        if (JSON.stringify(oldGroup) != JSON.stringify(group)) {
-
-            if (oldGroup.value.length > 0 && group.value.length > 0) {
-                //Changed Group
-                //delete and add
-                return {
-                    groupID: group.value,
-                    oldGroupID: oldGroup.value,
-                    isSwitched: true,
-                    isRemoved: false,
-                    isAdd: false
-                }
-            } else if (oldGroup.value.length < 1 && group.value.length > 0) {
-                //add to group(new)
-                //add
-                return {
-                    groupID: group.value,
-                    isSwitched: false,
-                    isRemoved: false,
-                    isAdd: true
-                }
-            } else {
-                // was removed from group
-                // delete
-                return {
-                    groupID: this._getGroupID(this.props.isUserSelected._id),
-                    isSwitched: false,
-                    isRemoved: true,
-                    isAdd: false
-                }
+        let oldGroups = JSON.parse(this.state.oldData.overview).groups;
+        let groups = this.state.overview.values.groups;
+        if (JSON.stringify(oldGroups) != JSON.stringify(groups)) {
+            return {
+                oldGroups,
+                groups
             }
         } else {
             return null;
@@ -223,12 +197,17 @@ class CreateUser extends React.Component {
         this._validation();
         if (!this._isOverviewErrors()) {
             let body = this._formatBody();
+            let guardianID = this._getGuardianByUserID(this.props.isUserSelected._id)._id;
             if(this.props.isUserSelected){
-                this.props.fetchUpdateUser(this.props.isUserSelected._id,body,this._isGroupModified(),
-                    this._getGuardianByUserID(this.props.isUserSelected._id)._id,(res)=>{
-                        this._initState();
-                        this.props.updateUser(res._id);
-                    });
+                this.props.fetchUpdateUser(this.props.isUserSelected._id,body,this._isGroupModified(),guardianID,(res)=>{
+                    this._initState();
+                    this.props.updateUser(res._id);
+                });
+                // this.props.fetchUpdateUser(this.props.isUserSelected._id,body,this._isGroupModified(),
+                //     this._getGuardianByUserID(this.props.isUserSelected._id)._id,(res)=>{
+                        // this._initState();
+                        // this.props.updateUser(res._id);
+                //     });
             }else{
                 this.props.fetchCreateUser(body,this.state.overview.values.groups);
             }
