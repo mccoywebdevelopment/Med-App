@@ -25,12 +25,6 @@ class UserDetails extends React.Component{
         this._toggleRedirect = this._toggleRedirect.bind(this);
         this._toggleHome = this._toggleHome.bind(this);
         this._deleteUser = this._deleteUser.bind(this);
-
-        let id = getPath(window,"end");
-        if(!this.props.userState.fetched){
-            this.props.fetchUsers(()=>{});
-        }
-        this._setUser(this._findDepByID(id));
     }
     _findDepByID = (id) =>{
         for(var i=0;i<this.props.userState.data.length;++i){

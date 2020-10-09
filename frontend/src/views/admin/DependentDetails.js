@@ -25,12 +25,6 @@ class DependentDetails extends React.Component{
         this._toggleRedirect = this._toggleRedirect.bind(this);
         this._toggleHome = this._toggleHome.bind(this);
         this._deleteDependent = this._deleteDependent.bind(this);
-
-        let id = getPath(window,"end");
-        if(!this.props.dependentState.fetched){
-            this.props.fetchPopulatedDependents(()=>{});
-        }
-        this._setDep(this._findDepByID(id));
     }
     _findDepByID = (id) =>{
         for(var i=0;i<this.props.dependentState.data.length;++i){

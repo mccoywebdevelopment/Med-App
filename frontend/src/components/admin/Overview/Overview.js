@@ -12,7 +12,7 @@ export default function Overview(props) {
             <h5 className="font-weight-semibold mb-0">Dependents</h5>
           </div>
           <div className="col-lg-6" style={{textAlign:'center'}}>
-            <i className="fas fa-user-friends" style={{fontSize:'40px',color:'#2196f3;',float:'right'}}></i>
+            <i className="fas fa-user-friends" style={{fontSize:'40px',color:'#2196f3',float:'right'}}></i>
           </div>
         </div>
       </div>

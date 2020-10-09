@@ -136,7 +136,7 @@ export default class RxsMedForm extends React.Component {
                             {/* <input type="date" className="form-control" name="name" placeholder="mm/dd/yyyy"
 value={this.props.data.values.endDate} onChange={(e) => { this.props.update(this.props.index, "endDate", e.target.value) }} /> */}
                             <select className="form-control" id="exampleFormControlSelect2" onChange={(e) => { this.props.update(this.props.index, "whenToTake", e.target.value) }}>
-                                <option selected value="">---------Select Any---------</option>
+                                <option defaultValue="">----Select Any----</option>
                                 <option value="morning">Morning</option>
                                 <option value="afternoon">Afternoon</option>
                                 <option value="evening">Evening</option>

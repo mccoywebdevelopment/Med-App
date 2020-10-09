@@ -102,6 +102,7 @@ export const fetchUpdateUser = (userID, body, isGroupModified, guardianID, done)
       let totalLen = isGroupModified.groups.length + isGroupModified.oldGroups.length;
       let i = 0;
 
+      alert(JSON.stringify(isGroupModified.oldGroups))
       isGroupModified.groups.forEach(groupID =>{
         dispatch(addGuardian(groupID, guardianID, false, (guardianAdded) => {
           if (err) {

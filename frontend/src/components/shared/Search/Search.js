@@ -94,26 +94,25 @@ export default class Search extends React.Component {
         const itemHeaders = () =>{
             return this.props.items.map((item,key)=>{
                 return(
-                    <>  
-                        <span className={(key==this.state.headerSelected?'search-box-header-selected':null)} 
-                            style={headerStyle} onClick={()=>{this._toggleHeader(key)}}>{item.name + " ("+this.state.items[key].data.selectedValues.length+")"}</span>
-                    </>
+                        <span key={'header8329'+key} className={(key==this.state.headerSelected?'search-box-header-selected':null)} 
+                            style={headerStyle} 
+                            onClick={()=>{this._toggleHeader(key)}}>{item.name + " ("+this.state.items[key].data.selectedValues.length+")"}</span>
                 )
             });
         }
         return (
             <>
-            <div class="form-group" style={{marginBottom:'0px'}}>
-                <label class="label">{this.props.label}</label>
-                <div class="input-group">
+            <div className="form-group" style={{marginBottom:'0px'}}>
+                {this.props.label?<label className="label">{this.props.label}</label>:null}
+                <div className="input-group">
                     <input onChange={this._updateSearchValue} value={this.state.searchValue} 
-                        type="text" class="form-control" name="groups32" placeholder={this.props.placeholder}/>
-                    <div class="invalid-feedback" style={{display: 'block'}}>&nbsp;</div>
+                        type="text" className="form-control" name="groups32" placeholder={this.props.placeholder}/>
+                    <div className="invalid-feedback" style={{display: 'block'}}>&nbsp;</div>
                 </div>
             </div>
             {itemHeaders()}
             {this.state.items[this.state.headerSelected]?
-            <SearchList color={this.props.color} itemObj={this.state.items[this.state.headerSelected].data}
+            <SearchList isReadOnly={this.props.isReadOnly} color={this.props.color} itemObj={this.state.items[this.state.headerSelected].data}
                 toggleAll={this._toggleAll}/>
             :null}
             </>

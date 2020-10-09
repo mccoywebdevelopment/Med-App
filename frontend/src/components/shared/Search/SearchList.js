@@ -21,7 +21,7 @@ export default class SearchList extends React.Component {
         let body = (list) => {
             return list.map((item, key) => {
                 return (
-                    <td colSpan={this.props.itemObj.tableData[0][key].colSpan}>{item}</td>
+                    <td key={"jksl33"+item+key} colSpan={this.props.itemObj.tableData[0][key].colSpan}>{item}</td>
                 )
             });
         }
@@ -48,10 +48,11 @@ export default class SearchList extends React.Component {
                 if(!this.props.itemObj.hiddenValues.includes(key)){
                     rows.push(
                         <tr key={"row" + i}>
-                            <td>{this.props.itemObj.selectedValues.includes(key)?
-                                <i id={i} style={checkBoxStyle} class="fas fa-check-square" onClick={this.props.toggleAll}></i>
-                                :
-                                <i id={i} style={checkBoxStyle} class="far fa-square" onClick={this.props.toggleAll}></i> 
+                            <td>{this.props.itemObj.selectedValues.includes(key) && !this.props.isReadOnly?
+                                <i id={i} style={checkBoxStyle} className="fas fa-check-square" onClick={this.props.toggleAll}></i>
+                                :!this.props.isReadOnly?
+                                <i id={i} style={checkBoxStyle} className="far fa-square" onClick={this.props.toggleAll}></i> 
+                                :null
                                 }
                             </td>
                             {body(list)}
@@ -65,15 +66,20 @@ export default class SearchList extends React.Component {
         return (
             <>
                 {this.props.itemObj.tableData[1].length > 0 ?
-                    <table className="table dependentTable my-search-table" style={{ marginTop: '10px' }}>
+                    <table className="table dependentTable my-search-table my-med-table" style={{ marginTop: '10px' }}>
                         <thead>
                             <tr>
                                 <th>
-                                    {this.props.itemObj.selectedValues.length == (this.props.itemObj.values.length - this.props.itemObj.hiddenValues.length)?
-                                        <i style={checkBoxStyle} class="fas fa-check-square" onClick={()=>this.props.toggleAll()}></i>
-                                        :
-                                        <i style={checkBoxStyle} class="far fa-square" onClick={()=>this.props.toggleAll()}></i>
-                                    }
+                                    {!this.props.isReadOnly?
+                                        <>
+                                            {this.props.itemObj.selectedValues.length == 
+                                                (this.props.itemObj.values.length - this.props.itemObj.hiddenValues.length) && this.props.itemObj.selectedValues.length >0 ?
+                                                <i style={checkBoxStyle} className="fas fa-check-square" onClick={()=>this.props.toggleAll()}></i>
+                                                :
+                                                <i style={checkBoxStyle} className="far fa-square" onClick={()=>this.props.toggleAll()}></i>
+                                            }
+                                        </>
+                                    :null}
                                 </th>
                                 {header()}
                             </tr>

@@ -3,12 +3,13 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchGroups } from '../../../../actions/group';
 import { togglePopUp } from "../../../../actions/popUp";
-import { fetchCreateUser, fetchUpdateUser, sendTokenViaEmail} from "../../../../actions/user";
+import { fetchCreateUser, fetchUpdateUser, sendTokenViaEmail } from "../../../../actions/user";
 import { emailValidator } from '../../../../config/validators';
 
 import UserOverview from "./UserOverview";
 import Search from '../../../../components/shared/Search/Search';
 import UserOverviewReadOnly from "./UserOverviewReadOnly";
+import GroupTableSm from "../../tables/GroupTableSm";
 
 class CreateUser extends React.Component {
     static propTypes = {
@@ -23,6 +24,7 @@ class CreateUser extends React.Component {
         this._update = this._update.bind(this);
         this._updateError = this._updateError.bind(this);
         this._updateGroupValue = this._updateGroupValue.bind(this);
+        this._formatGroupInputs = this._formatGroupInputs.bind(this);
     }
     _initState = () => {
         this.state = {
@@ -57,7 +59,7 @@ class CreateUser extends React.Component {
         }
         this.setState(newState);
     }
-    _getSelValuesFromGroupInput = (selected) =>{
+    _getSelValuesFromGroupInput = (selected) => {
         return selected;
     }
     _isUpdated = () => {
@@ -85,19 +87,19 @@ class CreateUser extends React.Component {
 
         return arr;
     }
-    _getUserByGuardianID = (guardianID) =>{
+    _getUserByGuardianID = (guardianID) => {
         let guardians = this.props.guardianState.data;
-        for(var i=0;i<guardians.length;++i){
-            if(guardians[i]._id == guardianID){
+        for (var i = 0; i < guardians.length; ++i) {
+            if (guardians[i]._id == guardianID) {
                 return this._getUserByID(guardians[i].user);
             }
         }
         return null;
     }
-    _getUserByID = (userID) =>{
+    _getUserByID = (userID) => {
         let users = this.props.userState.data;
-        for(var i=0;i<users.length;++i){
-            if(userID == users[i]._id){
+        for (var i = 0; i < users.length; ++i) {
+            if (userID == users[i]._id) {
                 return users[i];
             }
         }
@@ -161,7 +163,7 @@ class CreateUser extends React.Component {
         return null;
     }
     /*
-        Make this a for loop....
+    Make this a for loop....
     */
     _isGroupModified = () => {
         let oldGroups = JSON.parse(this.state.oldData.overview).groups;
@@ -175,9 +177,9 @@ class CreateUser extends React.Component {
             return null;
         }
     }
-    _getGuardianByUserID = (userID) =>{
-        for(var i=0;i<this.props.guardianState.data.length;++i){
-            if(this.props.guardianState.data[i].user == userID){
+    _getGuardianByUserID = (userID) => {
+        for (var i = 0; i < this.props.guardianState.data.length; ++i) {
+            if (this.props.guardianState.data[i].user == userID) {
                 return this.props.guardianState.data[i];
             }
         }
@@ -188,7 +190,7 @@ class CreateUser extends React.Component {
         let oldGuardians = [];
         for (var i = 0; i < this.props.groupState.data.length; ++i) {
             if (this.props.groupState.data[i]._id == this.state.overview.values.group.value) {
-                return(this.props.groupState.data[i].guardians);
+                return (this.props.groupState.data[i].guardians);
             }
         }
         return oldGuardians;
@@ -198,18 +200,18 @@ class CreateUser extends React.Component {
         if (!this._isOverviewErrors()) {
             let body = this._formatBody();
             let guardianID = this._getGuardianByUserID(this.props.isUserSelected._id)._id;
-            if(this.props.isUserSelected){
-                this.props.fetchUpdateUser(this.props.isUserSelected._id,body,this._isGroupModified(),guardianID,(res)=>{
+            if (this.props.isUserSelected) {
+                this.props.fetchUpdateUser(this.props.isUserSelected._id, body, this._isGroupModified(), guardianID, (res) => {
                     this._initState();
                     this.props.updateUser(res._id);
                 });
                 // this.props.fetchUpdateUser(this.props.isUserSelected._id,body,this._isGroupModified(),
                 //     this._getGuardianByUserID(this.props.isUserSelected._id)._id,(res)=>{
-                        // this._initState();
-                        // this.props.updateUser(res._id);
+                // this._initState();
+                // this.props.updateUser(res._id);
                 //     });
-            }else{
-                this.props.fetchCreateUser(body,this.state.overview.values.groups);
+            } else {
+                this.props.fetchCreateUser(body, this.state.overview.values.groups);
             }
             this.props.togglePopUp();
         }
@@ -229,46 +231,62 @@ class CreateUser extends React.Component {
             done();
         });
     }
-    _getNumOfAdmins=(guardians)=>{
+    _getNumOfAdmins = (guardians) => {
         let users = [];
-        for(var i=0;i<guardians.length;++i){
+        for (var i = 0; i < guardians.length; ++i) {
             let user = this._getUserByID(guardians[i].user);
-            if(user){
+            if (user) {
                 users.push(user);
             }
         }
         let admins = 0;
-        for(var i=0;i<users.length;++i){
-            if(users[i].isAdmin){
+        for (var i = 0; i < users.length; ++i) {
+            if (users[i].isAdmin) {
                 admins++;
             }
         }
         return admins;
     }
-    _formatGroupInputs = () =>{
-        let tableHeader = [{value:"Name",colSpan:2},{value:"#Dependents",colSpan:1},{value:"#Users",colSpan:1},{value:"#Admins",colSpan:1}];
+    _formatGroupInputs = () => {
+        let tableHeader = [{ value: "Name", colSpan: 2 }, { value: "#Dependents", colSpan: 1 }, { value: "#Users", colSpan: 1 }, { value: "#Admins", colSpan: 1 }];
         let values = [];
         let tableBody = [];
         let selectedValues = this.state.overview.values.groups;
         let hiddenValues = [];
-    
-        for(var i=0;i<this.props.groupState.data.length;++i){
+
+        for (var i = 0; i < this.props.groupState.data.length; ++i) {
             values.push(this.props.groupState.data[i]._id);
             tableBody.push(this.props.groupState.data[i].name);
             tableBody.push(this.props.groupState.data[i].dependents.length);
             let admins = this._getNumOfAdmins(this.props.groupState.data[i].guardians);
-            
+
             tableBody.push(this.props.groupState.data[i].guardians.length - admins);
             tableBody.push(admins);
         }
         return {
-            name:"Groups",
-            data:{
-                values:values,
-                selectedValues:selectedValues,
-                hiddenValues:hiddenValues,
-                tableData:[tableHeader,tableBody]
+            name: "Groups",
+            data: {
+                values: values,
+                selectedValues: selectedValues,
+                hiddenValues: hiddenValues,
+                tableData: [tableHeader, tableBody]
             }
+        }
+    }
+    _getGroupsByIDs = (ids) =>{
+        let groups = [];
+        for(var i=0;i<ids.length;++i){
+            for(var ix=0;ix<this.props.groupState.data.length;++ix){
+                if(ids[i] == this.props.groupState.data[ix]._id){
+                    groups.push(this.props.groupState.data[ix]);
+                }
+            }
+        }
+        return groups;
+    }
+    _sendTokenViaEmail = () => {
+        if (window.confirm('Are you sure you want to send user another email?')) {
+            this.props.sendTokenViaEmail(this.props.isUserSelected.username);
         }
     }
     componentWillReceiveProps = (newProps) => {
@@ -277,7 +295,12 @@ class CreateUser extends React.Component {
         }
     }
     render() {
-        let items = [this._formatGroupInputs()];
+        let items =  [this._formatGroupInputs()];
+        let groupsLabel = null;
+        console.log(this.state.overview.values.groups)
+        if(!this.props.isUserSelected){
+            groupsLabel = "Groups";
+        }
         return (
             <>
                 <div className="row">
@@ -286,10 +309,10 @@ class CreateUser extends React.Component {
                             <h4 style={{ display: 'inline' }}>User Overview</h4>
                             <i title="edit" onClick={() => { this._toggleIsEditOverview() }} className="fas fa-edit"
                                 style={{ paddingLeft: '20px', color: '#8862e0' }}></i>
-                                {!this.props.isUserSelected.auth.isVerified?
-                            <i title="Send Invite" onClick={() => { this.props.sendTokenViaEmail(this.props.isUserSelected.username) }} className="fas fa-envelope"
-                                style={{ paddingLeft: '20px', color: '#8862e0' }}></i>
-                                :null}
+                            {!this.props.isUserSelected.auth.isVerified ?
+                                <i title="Send Invite" onClick={() => { this._sendTokenViaEmail() }} className="fas fa-envelope"
+                                    style={{ paddingLeft: '20px', color: '#8862e0' }}></i>
+                                : null}
                             <i title="delete" onClick={() => { this.props.delete(this.props.isUserSelected) }} className="fas fa-trash"
                                 style={{ paddingLeft: '20px', color: '#8862e0' }}></i>
                             <i title="close" onClick={() => { this.props.goHome() }} style={{ float: 'right', color: "#8862e0" }} className="fas fa-times"></i>
@@ -298,13 +321,27 @@ class CreateUser extends React.Component {
                     }
                     <UserOverview data={this.state.overview} update={this._update} updateError={this._updateError}
                         isUserSelected={this.props.isUserSelected} groups={this.props.groupState.data} isEdit={this.state.overview.isEdit}>
-                        {!this.props.isUserSelected || this.state.overview.isEdit ?
-                            <div className="col-lg-12" style={{paddingLeft:'12.5px',paddingRight:'12.5px'}}>
-                                <Search color={"#8862e0"} placeholder="Search & Select Group(s)" items={items} label="Groups"
-                                    updateParentState={this._updateGroupValue} dataSel={0}/>
+                            <UserOverviewReadOnly user={this.props.isUserSelected} isEdit={this.state.overview.isEdit} />
+                            {this.props.isUserSelected?
+                                <div className="row" style={{ marginTop: '10px',marginBottom:'10px' }}>
+                                    <div className="col-lg-12">
+                                        <h4 style={{ display: 'inline' }}>Groups
+                                            <span style={{ fontSize: '17px' }}>
+                                                ({this.state.overview.values.groups.length})
+                                            </span>
+                                        </h4>
+                                    </div>
+                                    </div>
+                            :null}
+                            <div className="col-lg-12" style={{ paddingLeft: '12.5px', paddingRight: '12.5px' }}>
+                                    {!this.props.isUserSelected || this.state.overview.isEdit?
+                                        <Search isReadOnly={false} color={"#8862e0"} placeholder="Search & Select Group(s)" items={items}
+                                            updateParentState={this._updateGroupValue} dataSel={0} label={groupsLabel}/>
+                                        :
+                                        <GroupTableSm users={this.props.userState.data} groups={this._getGroupsByIDs(this.state.overview.values.groups)}/>
+                                    }
                             </div>
-                            : null}
-                        <UserOverviewReadOnly user={this.props.isUserSelected} isEdit={this.state.overview.isEdit} />
+
                     </UserOverview>
                 </div>
                 <div className="row" style={{ marginTop: '30px', marginBottom: '30px' }}>

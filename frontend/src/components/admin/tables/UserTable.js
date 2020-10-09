@@ -17,6 +17,11 @@ class UserTable extends React.Component {
   _selectItem = (user) => {
     this.props.changeUserSel(user)
   }
+  _sendTokenViaEmail = (user) =>{
+    if(window.confirm('Are you sure you want to send user another email?')){
+      this.props.sendTokenViaEmail(user.username);
+    }
+  }
   render() {
     const list = (users) => {
       return users.map((user, index) => {
@@ -77,7 +82,7 @@ class UserTable extends React.Component {
                 <i title="view" onClick={() => this._selectItem(user)} className="fas fa-eye"
                   style={{ paddingRight: '20px', color: this.props.theme.pagePrimaryColor }}></i>
                   {!user.auth.isVerified?
-                    <i title="Send Invite" onClick={() => { this.props.sendTokenViaEmail(user.username) }} className="fas fa-envelope"
+                    <i title="Send Invite" onClick={() => { this._sendTokenViaEmail(user) }} className="fas fa-envelope"
                       style={{ paddingRight: '20px',color: this.props.theme.pagePrimaryColor }}></i>
                   :null}
                 {/* <i title="edit" className="fas fa-edit" style={{ paddingRight: '20px', color: '#2196F3' }}></i> */}
