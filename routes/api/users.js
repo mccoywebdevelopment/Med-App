@@ -3,6 +3,7 @@ const errors = require('../errors');
 const userQ = require('../../queries/user');
 const verifyAdmin = require('../../config/globalHelpers').verifyAdmin;
 const verifyUser = require('../../config/globalHelpers').verifyUser;
+const createGuardian = require('../../queries/guardian').create;
 const router = express.Router();
 
 router.route("/:JWT")
@@ -22,7 +23,14 @@ router.route("/:JWT")
             console.log(error);
             res.status(errors.code.BAD_REQUEST).json({error:error});
         }else{
-            res.send(result);
+            createGuardian({user:result._id},function(err,guardianCreated){
+                if(err){
+                    console.log(err);
+                    res.status(errors.code.BAD_REQUEST).json({error:error});
+                }else{
+                    res.send(result);
+                }
+            })
         }
     });
 });

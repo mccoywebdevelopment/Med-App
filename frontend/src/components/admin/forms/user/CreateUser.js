@@ -162,16 +162,39 @@ class CreateUser extends React.Component {
         }
         return null;
     }
-    /*
-    Make this a for loop....
-    */
     _isGroupModified = () => {
         let oldGroups = JSON.parse(this.state.oldData.overview).groups;
         let groups = this.state.overview.values.groups;
         if (JSON.stringify(oldGroups) != JSON.stringify(groups)) {
+            let toRemove = [];
+            let toAdd = [];
+            for(var i=0;i<oldGroups.length;++i){
+                var found = false;
+                for(var ix=0;ix<groups.length;++ix){
+                   if(groups[ix] == oldGroups[i]){
+                       found = true;
+                   }
+                }
+                if(!found){
+                    toRemove.push(oldGroups[i]);
+                }
+            }
+
+            for(var i=0;i<groups.length;++i){
+                let found = false;
+                for(var ix=0;ix<oldGroups.length;++ix){
+                    if(groups[i] == oldGroups[ix]){
+                        found = true;
+                    }
+                }
+                if(!found){
+                    toAdd.push(groups[i]);
+                }
+            }
+            
             return {
-                oldGroups,
-                groups
+                toRemove,
+                toAdd
             }
         } else {
             return null;
@@ -199,17 +222,12 @@ class CreateUser extends React.Component {
         this._validation();
         if (!this._isOverviewErrors()) {
             let body = this._formatBody();
-            let guardianID = this._getGuardianByUserID(this.props.isUserSelected._id)._id;
             if (this.props.isUserSelected) {
+                let guardianID = this._getGuardianByUserID(this.props.isUserSelected._id)._id;
                 this.props.fetchUpdateUser(this.props.isUserSelected._id, body, this._isGroupModified(), guardianID, (res) => {
                     this._initState();
                     this.props.updateUser(res._id);
                 });
-                // this.props.fetchUpdateUser(this.props.isUserSelected._id,body,this._isGroupModified(),
-                //     this._getGuardianByUserID(this.props.isUserSelected._id)._id,(res)=>{
-                // this._initState();
-                // this.props.updateUser(res._id);
-                //     });
             } else {
                 this.props.fetchCreateUser(body, this.state.overview.values.groups);
             }
@@ -297,9 +315,15 @@ class CreateUser extends React.Component {
     render() {
         let items =  [this._formatGroupInputs()];
         let groupsLabel = null;
-        console.log(this.state.overview.values.groups)
+        let groupTableSm = [];
+
         if(!this.props.isUserSelected){
             groupsLabel = "Groups";
+        }
+        if(this.state.oldData.overview){
+            groupTableSm = this._getGroupsByIDs(JSON.parse(this.state.oldData.overview).groups);
+        }else{
+            groupTableSm = this._getGroupsByIDs(this.state.overview.values.groups);
         }
         return (
             <>
@@ -325,8 +349,7 @@ class CreateUser extends React.Component {
                             {this.props.isUserSelected?
                                 <div className="row" style={{ marginTop: '10px',marginBottom:'10px' }}>
                                     <div className="col-lg-12">
-                                        <h4 style={{ display: 'inline' }}>Groups
-                                            <span style={{ fontSize: '17px' }}>
+                                        <h4 style={{ display: 'inline' }}>Groups <span style={{ fontSize: '17px' }}>
                                                 ({this.state.overview.values.groups.length})
                                             </span>
                                         </h4>
@@ -338,7 +361,7 @@ class CreateUser extends React.Component {
                                         <Search isReadOnly={false} color={"#8862e0"} placeholder="Search & Select Group(s)" items={items}
                                             updateParentState={this._updateGroupValue} dataSel={0} label={groupsLabel}/>
                                         :
-                                        <GroupTableSm users={this.props.userState.data} groups={this._getGroupsByIDs(this.state.overview.values.groups)}/>
+                                        <GroupTableSm users={this.props.userState.data} groups={groupTableSm}/>
                                     }
                             </div>
 

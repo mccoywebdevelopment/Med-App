@@ -95,15 +95,15 @@ export const fetchDeleteUser = (userID, done) => (dispatch) => {
 }
 
 export const fetchUpdateUser = (userID, body, isGroupModified, guardianID, done) => (dispatch) => {
+  dispatch(toggleLoading(true));
   FETCH('PATCH', '/users/' + userID + '/', body, localStorage.getItem('JWT'), dispatch, false, (err, res) => {
     if (err) {
       dispatch(createMessage(err, 'danger'));
     } else if (isGroupModified) {
-      let totalLen = isGroupModified.groups.length + isGroupModified.oldGroups.length;
+      let totalLen = isGroupModified.toRemove.length + isGroupModified.toAdd.length;
       let i = 0;
-
-      alert(JSON.stringify(isGroupModified.oldGroups))
-      isGroupModified.groups.forEach(groupID =>{
+      
+      isGroupModified.toAdd.forEach(groupID =>{
         dispatch(addGuardian(groupID, guardianID, false, (guardianAdded) => {
           if (err) {
             dispatch(createMessage(err, 'danger'));
@@ -116,7 +116,7 @@ export const fetchUpdateUser = (userID, body, isGroupModified, guardianID, done)
         }));
       });
 
-      isGroupModified.oldGroups.forEach(groupID =>{
+      isGroupModified.toRemove.forEach(groupID =>{
         dispatch(removeGuardian(groupID, guardianID, false, (guardianAdded) => {
           if (err) {
             dispatch(createMessage(err, 'danger'));
