@@ -44,8 +44,8 @@ class GroupTableSm extends React.Component {
             <th scope="row">{index + 1}</th>
             <td colSpan="2">{group.name}</td>
             <td>{group.dependents.length}</td>
-            <td>{group.guardians.length}</td>
             <td>{group.guardians.length - this._getNumOfAdmins(group.guardians)}</td>
+            <td>{this._getNumOfAdmins(group.guardians)}</td>
           </tr>
         );
       });
@@ -53,13 +53,13 @@ class GroupTableSm extends React.Component {
     return (
       <>
       {this.props.groups.length>0?
-      <table className="table dependentTable my-search-table my-med-table">
+      <table className="table my-search-table my-med-table">
         <thead>
           <tr>
             <th scope="col">#</th>
             <th scope="col" colSpan="2">Name</th>
             <th scope="col">#Dependents</th>
-            <th scope="col">#Users</th>
+            <th scope="col">#Guardians</th>
             <th scope="col">#Admins</th>
           </tr>
         </thead>

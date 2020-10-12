@@ -26,6 +26,13 @@ export function getPath(window, index) {
 export function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
+export function reduceFraction(numerator,denominator){
+    var gcd = function gcd(a,b){
+      return b ? gcd(b, a%b) : a;
+    };
+    gcd = gcd(numerator,denominator);
+    return [numerator/gcd, denominator/gcd];
+}
 
 export function FETCH(type, url, body, jwt, dispatch, isLoading, done) {
     if (isLoading) {
