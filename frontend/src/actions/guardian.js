@@ -10,11 +10,11 @@ export const fetchGuardians = (isLoading, done) => (dispatch) => {
     }
     dispatch(fetchGroups(isLoading, (groups) => {
       for (var i = 0; i < guardians.length; ++i) {
-        guardians[i].group = "";
+        guardians[i].groups = [];
         for (var ix = 0; ix < groups.length; ++ix) {
           for (var z = 0; z < groups[ix].guardians.length; ++z) {
             if (guardians[i]._id == groups[ix].guardians[z]._id) {
-              guardians[i].group = groups[ix]._id;
+              guardians[i].groups.push(groups[ix]._id);
             }
           }
         }

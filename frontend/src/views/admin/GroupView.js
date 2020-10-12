@@ -9,7 +9,7 @@ import { reduceFraction } from "../../config/helpers";
 
 // import CardData from "../../components/shared/CardData/CardData";
 import OverviewGroup from "../../components/admin/Overview/OverviewGroup";
-// import CreateGroup from "../../components/admin/forms/group/CreateGroup";
+import CreateGroup from "../../components/admin/forms/group/CreateGroup";
 import CardData from '../../components/shared/CardData/CardData';
 /*
     Need to update table/this.state after I add a new user like I did in dependents view.
@@ -84,7 +84,7 @@ class UserView extends React.Component {
                     paddingRight = '0px';
                 }
                 return(
-                        <div key={"item"+key} className="col-lg-3" style={{marginTop:"20px",paddingLeft:'0px',paddingRight:paddingRight}}>
+                        <div key={"item"+key} className="col-lg-3" style={{marginBottom:"20px",paddingLeft:'0px',paddingRight:paddingRight}}>
                             <CardData index={key} labels={["Dependents","Users","Admins"]}
                                 data={[item.dependents.length,guardianLength,adminLen]}
                                 colors={['#2196f3','#FCB031',"#8862E0"]}

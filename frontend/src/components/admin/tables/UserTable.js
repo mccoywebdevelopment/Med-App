@@ -54,7 +54,7 @@ class UserTable extends React.Component {
         let groupedStyles = {
           color: 'inherit'
         }
-        if (user.guardian && user.guardian.group.length > 0) {
+        if (user.guardian && user.guardian.groups.length > 0) {
           grouped = "Yes";
           if (!user.isAdmin) {
             groupedStyles.color = "#56B98B";

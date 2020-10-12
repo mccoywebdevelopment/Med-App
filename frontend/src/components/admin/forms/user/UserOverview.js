@@ -33,7 +33,7 @@ export default class UserOverview extends React.Component {
           paddingLeft:'10px'
         }
         if (this.props.isUserSelected && this.props.isUserSelected.guardian && 
-            this.props.isUserSelected.guardian.group.length > 0) {
+            this.props.isUserSelected.guardian.groups.length > 0) {
           grouped = "Yes";
           if (this.props.isUserSelected && !this.props.isUserSelected.isAdmin) {
             groupedStyles.color = "#56B98B";

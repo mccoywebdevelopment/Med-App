@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Search from '../../components/shared/Search/Search';
+import CreateGroup from '../../components/admin/forms/group/CreateGroup';
 
 export default class Test extends React.Component{
     
@@ -44,7 +45,8 @@ export default class Test extends React.Component{
             <div className="container">
                 <div className="row">
                     <div className="col-lg-6">
-                        <Search color={"#8862e0"} placeholder="Search & Select Item(s)" items={items} label="Items:"/>
+                        {/* <Search color={"#8862e0"} placeholder="Search & Select Item(s)" items={items} label="Items:"/> */}
+                        <CreateGroup/>
                     </div>
                 </div>
             </div>

@@ -14,7 +14,7 @@ export const createMessage = (text,alertType,time) => (dispatch) =>{
     type: CREATE_MESSAGE,
     payload: {text, alertType},
   });
-  let timeout = 4000;
+  let timeout = 3000;
   if(time){
     timeout = time;
   }

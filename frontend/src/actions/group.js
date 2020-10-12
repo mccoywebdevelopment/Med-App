@@ -2,6 +2,7 @@ import { FETCH_GROUPS } from './types';
 import { createMessage } from './messages';
 import { fetchCreateGuardian, fetchGuardians } from './guardian';
 import { FETCH } from '../config/helpers';
+import { toggleLoading } from './loading';
 
 export const fetchGroups = (isLoading, done) => (dispatch) => {
   FETCH('GET','/groups/',null,localStorage.getItem('JWT'),dispatch,isLoading,(err,res)=>{
@@ -65,6 +66,7 @@ export const removeDependent = (groupID, dependentID, isLoading,done) => (dispat
     }
   });
 }
+
 export const addDependent = (groupID, dependentID, isLoading,done) => (dispatch) => {
   let postData = {
     dependentID:dependentID
@@ -74,6 +76,23 @@ export const addDependent = (groupID, dependentID, isLoading,done) => (dispatch)
       dispatch(createMessage(err, 'danger'));
     }else if(done){
       done(res);
+    }
+  });
+}
+
+export const fetchCreateGroup = (body,done) =>  (dispatch) => {
+  dispatch(toggleLoading(true));
+  FETCH('POST', '/groups/', body, localStorage.getItem('JWT'), dispatch, false, (err, res) => {
+    if (err) {
+      dispatch(createMessage(err, 'danger'));
+    }else{
+      dispatch(toggleLoading(false));
+      dispatch(createMessage(res.name + " was successfully created.", "warning"));
+      dispatch(fetchGroups(false,(groups)=>{
+        if (done) {
+          done(res);
+        }
+      }));
     }
   });
 }

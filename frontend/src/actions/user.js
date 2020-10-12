@@ -149,10 +149,12 @@ export const sendTokenViaEmail = (email, done) => (dispatch) => {
   FETCH('GET', "/auth/email/send-welcome/" + email + "/", null, localStorage.getItem('JWT'), dispatch, false, (err, res) => {
     if (err) {
       dispatch(createMessage(err, 'danger'));
-    } else if (done) {
-      done(res);
+    } else{
+      dispatch(createMessage(email + " was sent an invitation via email.", "info"));
+      if(done){
+        done(res);
+      }
     }
-    dispatch(createMessage(email + " was sent an invitation via email.", "info"));
   });
 }
 
