@@ -5,7 +5,7 @@ import { fetchGuardians } from '../../../../actions/guardian';
 import { fetchPopulatedDependents } from "../../../../actions/dependent";
 import { togglePopUp } from "../../../../actions/popUp";
 import { fetchCreateGroup } from "../../../../actions/group";
-import { emailValidator } from '../../../../config/validators';
+import { nameValidator } from '../../../../config/validators';
 import { capitalizeFirstLetter, formateDate, getAge} from "../../../../config/helpers"
 
 import GroupOverview from "./GroupOveriew";
@@ -23,8 +23,8 @@ class CreateGroup extends React.Component {
         this._toggleGroupBtn = this._toggleGroupBtn.bind(this);
         this._update = this._update.bind(this);
         this._updateError = this._updateError.bind(this);
-        this._updateGroupValue = this._updateGroupValue.bind(this);
         this._toggleGroupBtn = this._toggleGroupBtn.bind(this);
+        this._formatItems = this._formatItems.bind(this);
     }
     _initState = () => {
         this.state = {
@@ -41,8 +41,9 @@ class CreateGroup extends React.Component {
                 body: null,
                 isEdit: false
             },
+            dependents:[],
             guardians:[],
-            dependents:[]
+            itemList:[]
         }
     }
     _formatSelGroup = (group) => {
@@ -81,11 +82,6 @@ class CreateGroup extends React.Component {
 
         return "";
     }
-    _updateGroupValue = (form, name, value) => {
-        // let newState = this.state;
-        // newState[form].values['group'][name] = value;
-        // this.setState(newState);
-    }
     _update = (form, inputName, value) => {
         let newState = this.state;
         newState[form].values[inputName] = value;
@@ -113,10 +109,7 @@ class CreateGroup extends React.Component {
     }
     _overviewValidation = () => {
         let newState = this.state;
-        newState.overview.errors.email = emailValidator(newState.overview.values.email, true).errorMsg;
-        if (this.state.overview.values.group.isYes) {
-            newState.overview.errors.group = this._groupValidation();
-        }
+        newState.overview.errors.name = nameValidator(newState.overview.values.name, true).errorMsg;
         this.setState(newState);
     }
     _toggleIsEditOverview = () => {
@@ -153,8 +146,9 @@ class CreateGroup extends React.Component {
     }
     _formatBody = () => {
         let body = {
-            groupname: this.state.overview.values.email,
-            isAdmin: this.state.overview.values.isAdmin
+            name:this.state.overview.values.name,
+            guardians:this.state.guardians,
+            dependents:this.state.dependents
         }
         return body;
     }
@@ -227,6 +221,7 @@ class CreateGroup extends React.Component {
         this._validation();
         if (!this._isOverviewErrors()) {
             let body = this._formatBody();
+            alert(JSON.stringify(body))
             if (this.props.isGroupSelected) {
                 // this.props.fetchUpdateGroup(this.props.isGroupSelected._id,body,this._isGroupModified(),
                 //     this._getGuardianByGroupID(this.props.isGroupSelected._id)._id,(res)=>{
@@ -234,7 +229,7 @@ class CreateGroup extends React.Component {
                 //         this.props.updateGroup(res._id);
                 //     });
             } else {
-                this.props.fetchCreateGroup(body, this.state.overview.values.group.value);
+                // this.props.fetchCreateGroup(body, this.state.overview.values.group.value);
             }
             this.props.togglePopUp();
         }
@@ -245,6 +240,7 @@ class CreateGroup extends React.Component {
                 if(this.props.isGroupSelected){
                     this._formatSelGroup(this.props.isGroupSelected);
                 }
+                this._formatItems();
             });
         })
     }
@@ -255,6 +251,17 @@ class CreateGroup extends React.Component {
             this.setState(newState);
             done();
         });
+    }
+    _formatItems = () =>{
+        let newState = this.state;
+        newState.itemList = [this._formatGroupInputsGuardian(),this._formatGroupInputsDependent()];
+        this.setState(newState);
+    }
+    _getSelectedValues = (values) =>{
+        let newState = this.state;
+        newState.dependents = values[1];
+        newState.guardians = values[0];
+        this.setState(newState);
     }
     _formatGroupInputsGuardian = () => {
         let tableHeader = [{ value: "Name", colSpan: 2 }, { value: "# of Groups", colSpan: 1 },{ value: "is Admin", colSpan: 1 },{ value: "Validation", colSpan: 1 }];
@@ -332,10 +339,10 @@ class CreateGroup extends React.Component {
         return null;
     }
     render() {
-        let items = [this._formatGroupInputsGuardian(),this._formatGroupInputsDependent()];
         // let items = [];
         let groupsLabel = "Items";
         let groupTableSm = [];
+        console.log(this.props);
 
         return (
             <>
@@ -369,9 +376,9 @@ class CreateGroup extends React.Component {
                             </div>
                             : null}
                         <div className="col-lg-12" style={{ paddingLeft: '12.5px', paddingRight: '12.5px' }}>
-                            {!this.props.isGroupSelected || this.state.overview.isEdit ?
-                                <Search isReadOnly={false} color={"#8862e0"} placeholder="Search & Select Items" items={items}
-                                    updateParentState={this._updateGroupValue} dataSel={0} label={groupsLabel} />
+                            {this.state.itemList.length>0 && !this.props.isGroupSelected || this.state.overview.isEdit?
+                                <Search isReadOnly={false} color={"#ffaf00"} placeholder="Search & Select Items" items={this.state.itemList}
+                                    updateParentStateAll={this._getSelectedValues} dataSel={0} label={groupsLabel} />
                                 :
                                 // <GroupTableSm users={this.props.userState.data} groups={groupTableSm} />
                                 null
@@ -383,9 +390,9 @@ class CreateGroup extends React.Component {
                 </div>
                 <div className="row" style={{ marginTop: '30px', marginBottom: '30px' }}>
                     {!this.props.isGroupSelected ?
-                        <button className="btn btn-info btn-fw" onClick={() => { this._submit() }}>Submit</button>
+                        <button className="btn btn-warning btn-fw" onClick={() => { this._submit() }}>Submit</button>
                         : this.props.isGroupSelected && this._isUpdated() ?
-                            <button className="btn btn-info btn-fw" onClick={() => { this._submit() }}>Update</button>
+                            <button className="btn btn-warning btn-fw" onClick={() => { this._submit() }}>Update</button>
                             : <button className="btn btn-primary" style={{ visibility: 'hidden' }}>&nbsp;</button>
                     }
                 </div>

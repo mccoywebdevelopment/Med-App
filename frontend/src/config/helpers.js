@@ -27,6 +27,9 @@ export function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 export function reduceFraction(numerator,denominator){
+    if(denominator == 0){
+        return[numerator,0];
+    }
     var gcd = function gcd(a,b){
       return b ? gcd(b, a%b) : a;
     };
