@@ -1,14 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchGroups } from '../../../../actions/group';
+import { fetchGuardians } from '../../../../actions/guardian';
+import { fetchPopulatedDependents } from "../../../../actions/dependent";
 import { togglePopUp } from "../../../../actions/popUp";
 import { fetchCreateGroup } from "../../../../actions/group";
 import { emailValidator } from '../../../../config/validators';
+import { capitalizeFirstLetter, formateDate, getAge} from "../../../../config/helpers"
 
 import GroupOverview from "./GroupOveriew";
 import Search from "../../../shared/Search/Search";
-import { takeWhile } from 'lodash';
 
 class CreateGroup extends React.Component {
     static propTypes = {
@@ -81,9 +82,9 @@ class CreateGroup extends React.Component {
         return "";
     }
     _updateGroupValue = (form, name, value) => {
-        let newState = this.state;
-        newState[form].values['group'][name] = value;
-        this.setState(newState);
+        // let newState = this.state;
+        // newState[form].values['group'][name] = value;
+        // this.setState(newState);
     }
     _update = (form, inputName, value) => {
         let newState = this.state;
@@ -239,11 +240,13 @@ class CreateGroup extends React.Component {
         }
     }
     componentDidMount = () => {
-        this.props.fetchGroups((groups) => {
-            if (this.props.isGroupSelected) {
-                this._formatSelGroup(this.props.isGroupSelected);
-            }
-        });
+        this.props.fetchGuardians(true,(guards)=>{
+            this.props.fetchPopulatedDependents(false,(deps)=>{
+                if(this.props.isGroupSelected){
+                    this._formatSelGroup(this.props.isGroupSelected);
+                }
+            });
+        })
     }
     _fetchGroups = (done) => {
         let newState = this.state;
@@ -254,24 +257,33 @@ class CreateGroup extends React.Component {
         });
     }
     _formatGroupInputsGuardian = () => {
-        let tableHeader = [{ value: "Name", colSpan: 2 }, { value: "# of Groups", colSpan: 1 }, { value: "validation", colSpan: 1 }];
+        let tableHeader = [{ value: "Name", colSpan: 2 }, { value: "# of Groups", colSpan: 1 },{ value: "is Admin", colSpan: 1 },{ value: "Validation", colSpan: 1 }];
         let values = [];
         let tableBody = [];
-        let selectedValues = this.state.overview.guardians;
+        let selectedValues = this.state.guardians;
         let hiddenValues = [];
 
         for (var i = 0; i < this.props.guardianState.data.length; ++i) {
             values.push(this.props.guardianState.data[i]._id);
             let name = "-"
             if(this.props.guardianState.data[i].name.firstName.length>0){
-                name = this.props.guardianState.data[i].name.firstName + " " + this.props.guardianState.data[i].name.firstName;
+                name = this.props.guardianState.data[i].name.firstName + " " + this.props.guardianState.data[i].name.lastName;
             }
-            tableBody.push(this.props.guardianState.data[i].name);
+            tableBody.push(name);
             tableBody.push(this.props.guardianState.data[i].groups.length);
+            let user = this._getUserByID(this.props.guardianState.data[i].user);
+            let isAdmin = "false";
+            let status = "Pending";
+            if(user){
+                status = capitalizeFirstLetter(user.auth.status.statusValue);
+                isAdmin = user.isAdmin.toString();
+            }
+            tableBody.push(isAdmin);
+            tableBody.push(status);
             
         }
         return {
-            name: "Groups",
+            name: "Guardians",
             data: {
                 values: values,
                 selectedValues: selectedValues,
@@ -281,23 +293,23 @@ class CreateGroup extends React.Component {
         }
     }
     _formatGroupInputsDependent = () => {
-        let tableHeader = [{ value: "Name", colSpan: 2 }, { value: "#Dependents", colSpan: 1 }, { value: "#Users", colSpan: 1 }, { value: "#Admins", colSpan: 1 }];
+        let tableHeader = [{ value: "Name", colSpan: 2 },{ value: "DOB", colSpan: 1 },{ value: "Age", colSpan: 1 }];
         let values = [];
         let tableBody = [];
-        let selectedValues = this.state.overview.values.groups;
+        let selectedValues = this.state.dependents;
         let hiddenValues = [];
 
-        for (var i = 0; i < this.props.groupState.data.length; ++i) {
-            values.push(this.props.groupState.data[i]._id);
-            tableBody.push(this.props.groupState.data[i].name);
-            tableBody.push(this.props.groupState.data[i].dependents.length);
-            let admins = this._getNumOfAdmins(this.props.groupState.data[i].guardians);
-
-            tableBody.push(this.props.groupState.data[i].guardians.length - admins);
-            tableBody.push(admins);
+        for(var i=0;i<this.props.dependentState.data.length;++i){
+            if(this.props.dependentState.data[i].group.length<1){
+                values.push(this.props.dependentState.data[i]._id);
+                tableBody.push(this.props.dependentState.data[i].name.firstName + " " + this.props.dependentState.data[i].name.lastName);
+                tableBody.push(formateDate(this.props.dependentState.data[i].dateOfBirth));
+                tableBody.push(getAge(this.props.dependentState.data[i].dateOfBirth));
+            }
         }
+        
         return {
-            name: "Groups",
+            name: "Dependents",
             data: {
                 values: values,
                 selectedValues: selectedValues,
@@ -320,13 +332,11 @@ class CreateGroup extends React.Component {
         return null;
     }
     render() {
-        let items = [];
-        let groupsLabel = null;
+        let items = [this._formatGroupInputsGuardian(),this._formatGroupInputsDependent()];
+        // let items = [];
+        let groupsLabel = "Items";
         let groupTableSm = [];
 
-        if (!this.props.isUserSelected) {
-            groupsLabel = "Groups";
-        }
         return (
             <>
                 <div className="row">
@@ -351,7 +361,7 @@ class CreateGroup extends React.Component {
                         {this.props.isGroupSelected ?
                             <div className="row" style={{ marginTop: '10px', marginBottom: '10px' }}>
                                 <div className="col-lg-12">
-                                    <h4 style={{ display: 'inline' }}>Groups <span style={{ fontSize: '17px' }}>
+                                    <h4 style={{ display: 'inline' }}>Groupsjjh <span style={{ fontSize: '17px' }}>
                                         ({this.state.overview.values.groups.length})
                                         </span>
                                     </h4>
@@ -360,7 +370,7 @@ class CreateGroup extends React.Component {
                             : null}
                         <div className="col-lg-12" style={{ paddingLeft: '12.5px', paddingRight: '12.5px' }}>
                             {!this.props.isGroupSelected || this.state.overview.isEdit ?
-                                <Search isReadOnly={false} color={"#8862e0"} placeholder="Search & Select Group(s)" items={items}
+                                <Search isReadOnly={false} color={"#8862e0"} placeholder="Search & Select Items" items={items}
                                     updateParentState={this._updateGroupValue} dataSel={0} label={groupsLabel} />
                                 :
                                 // <GroupTableSm users={this.props.userState.data} groups={groupTableSm} />
@@ -386,16 +396,17 @@ class CreateGroup extends React.Component {
 
 CreateGroup.propTypes = {
     togglePopUp: PropTypes.func.isRequired,
-    fetchGroups: PropTypes.func.isRequired,
+    fetchGuardians: PropTypes.func.isRequired,
+    fetchPopulatedDependents: PropTypes.func.isRequired,
     fetchCreateGroup: PropTypes.func.isRequired,
     // fetchUpdateGroup: PropTypes.func.isRequired,
-    sendTokenViaEmail: PropTypes.func.isRequired
 };
 const mapStateToProps = (state) => ({
     groupState: state.groupState,
-    groupState: state.groupState,
+    userState: state.userState,
+    dependentState: state.dependentState,
     guardianState: state.guardianState,
     theme: state.theme
 });
 
-export default connect(mapStateToProps, { fetchGroups, togglePopUp, fetchCreateGroup, /*fetchUpdateGroup*/ })(CreateGroup);
+export default connect(mapStateToProps, { fetchGuardians, fetchPopulatedDependents, togglePopUp, fetchCreateGroup, /*fetchUpdateGroup*/ })(CreateGroup);

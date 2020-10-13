@@ -108,7 +108,7 @@ class UserView extends React.Component {
                                 </div>
                                 <div className="col-lg-12" style={{ marginBottom: "30px"}}>
                                     <button type="button"
-                                    onClick={()=>{this.props.togglePopUp("Add Group",<></>,"90%")}} 
+                                    onClick={()=>{this.props.togglePopUp("Add Group",<CreateGroup/>,"90%")}} 
                                     className="btn btn-warning btn-fw">Add</button>
                                 </div>
                             </div>

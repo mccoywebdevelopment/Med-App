@@ -594,23 +594,22 @@ class CreateDependent extends React.Component {
             return null;
         }
     }
-    _getDepsFromGroupSel = () => {
-        let groupdID = this.state.overview.values.group.value;
-        if(this.state.overview.values.group.value<1){
-            groupdID = JSON.parse(this.state.oldData.overview).group.value
-        }
-        let oldDependents = [];
-        for (var i = 0; i < this.props.groupState.data.length; ++i) {
-            if (this.props.groupState.data[i]._id == groupdID) {
-                oldDependents = this.props.groupState.data[i].dependents;
-            }
-        }
-        return oldDependents;
-    }
+    // _getDepsFromGroupSel = () => {
+    //     let groupdID = this.state.overview.values.group.value;
+    //     if(this.state.overview.values.group.value<1){
+    //         groupdID = JSON.parse(this.state.oldData.overview).group.value
+    //     }
+    //     let oldDependents = [];
+    //     for (var i = 0; i < this.props.groupState.data.length; ++i) {
+    //         if (this.props.groupState.data[i]._id == groupdID) {
+    //             oldDependents = this.props.groupState.data[i].dependents;
+    //         }
+    //     }
+    //     return oldDependents;
+    // }
     _submit = () => {
         this._validation();
         if (!this._isOverviewErrors() && !this._isRxsMedErrors()) {
-            let depsFromGroupSel = this._getDepsFromGroupSel();
             if (this.props.isDepSelected) {
                 //check if group is modified if so update group then call get populated dependents
                 this.props.fetchUpdateDependent(this.props.isDepSelected.name.firstName + " " + this.props.isDepSelected.name.lastName,this.props.isDepSelected._id,
@@ -621,7 +620,7 @@ class CreateDependent extends React.Component {
                         // this.props.isDepSelected = res;
                     });
             } else {
-                this.props.fetchCreateDependent(this._formatBody(), this.state.overview.values.group.value, depsFromGroupSel);
+                this.props.fetchCreateDependent(this._formatBody(), this.state.overview.values.group.value);
             }
             this.props.togglePopUp();
         }
