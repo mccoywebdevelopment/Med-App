@@ -147,8 +147,6 @@ class CreateGroup extends React.Component {
     _formatBody = () => {
         let body = {
             name:this.state.overview.values.name,
-            guardians:this.state.guardians,
-            dependents:this.state.dependents
         }
         return body;
     }
@@ -229,6 +227,7 @@ class CreateGroup extends React.Component {
                 //         this.props.updateGroup(res._id);
                 //     });
             } else {
+                this.props.fetchCreateGroup(body,this.state.dependents,this.state.guardians);
                 // this.props.fetchCreateGroup(body, this.state.overview.values.group.value);
             }
             this.props.togglePopUp();
