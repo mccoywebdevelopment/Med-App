@@ -229,7 +229,7 @@ class CreateUser extends React.Component {
                     this.props.updateUser(res._id);
                 });
             } else {
-                this.props.fetchCreateUser(body, this.state.overview.values.groups);
+                this.props.fetchCreateUser(body,this.state.overview.values.groups);
             }
             this.props.togglePopUp();
         }

@@ -219,7 +219,6 @@ class CreateGroup extends React.Component {
         this._validation();
         if (!this._isOverviewErrors()) {
             let body = this._formatBody();
-            alert(JSON.stringify(body))
             if (this.props.isGroupSelected) {
                 // this.props.fetchUpdateGroup(this.props.isGroupSelected._id,body,this._isGroupModified(),
                 //     this._getGuardianByGroupID(this.props.isGroupSelected._id)._id,(res)=>{
@@ -270,6 +269,7 @@ class CreateGroup extends React.Component {
         let hiddenValues = [];
 
         for (var i = 0; i < this.props.guardianState.data.length; ++i) {
+            let user = this._getUserByID(this.props.guardianState.data[i].user);
             values.push(this.props.guardianState.data[i]._id);
             let name = "-"
             if(this.props.guardianState.data[i].name.firstName.length>0){
@@ -277,12 +277,16 @@ class CreateGroup extends React.Component {
             }
             tableBody.push(name);
             tableBody.push(this.props.guardianState.data[i].groups.length);
-            let user = this._getUserByID(this.props.guardianState.data[i].user);
             let isAdmin = "false";
             let status = "Pending";
             if(user){
                 status = capitalizeFirstLetter(user.auth.status.statusValue);
                 isAdmin = user.isAdmin.toString();
+            }else{
+                /*master admin*/
+                status = "Approved";
+                isAdmin = "true"
+
             }
             tableBody.push(isAdmin);
             tableBody.push(status);

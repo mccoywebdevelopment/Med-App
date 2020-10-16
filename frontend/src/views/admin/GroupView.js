@@ -28,12 +28,17 @@ class UserView extends React.Component {
     _getNumberOfAdmins = (guardians) =>{
         let num = 0;
         for(var i=0;i<guardians.length;++i){
-            let userID = guardians[i].user
+            let userID = guardians[i].user;
+            let found = false;
             for(var ix=0;ix<this.props.userState.data.length;++ix){
-                if(this.props.userState.data[i]._id == userID 
-                    && this.props.userState.data[i].isAdmin){
+                if(this.props.userState.data[ix]._id == userID 
+                    && this.props.userState.data[ix].isAdmin){
                         num++;
+                        found = true;
                 }
+            }
+            if(!found){
+                num++;
             }
         }
         return num;

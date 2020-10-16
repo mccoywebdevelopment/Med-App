@@ -25,7 +25,7 @@ class CardData extends React.Component {
             <div className="card" style={{ height: '100%', width: '100%' }}>
                 <div className="card-body">
                     <div className="d-flex justify-content-between pb-3">
-                        <h4 className="card-title mb-0">{this.props.title}</h4>
+                        <h4 style={{paddingRight:'30px'}} className="card-title mb-0">{this.props.title}</h4>
                         <p className="mb-0 text-muted" style={{fontSize:'12px'}}>{this.props.details}</p>
                     </div>
                     <canvas id={"myChartGroup" + this.props.index}></canvas>

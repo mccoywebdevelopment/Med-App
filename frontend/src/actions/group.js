@@ -67,7 +67,7 @@ export const removeDependent = (groupID, dependentID, isLoading, done) => (dispa
   });
 }
 
-export const addDependent = async(groupID, dependentID, isLoading, done) => (dispatch) => {
+export const addDependent = (groupID, dependentID, isLoading, done) => (dispatch) => {
   let postData = {
     dependentID: dependentID
   }
@@ -80,82 +80,19 @@ export const addDependent = async(groupID, dependentID, isLoading, done) => (dis
   });
 }
 
-// export const fetchCreateGroup = (body, depAdd, guardAdd, depDel, guardDel, done) => (dispatch) => {
-//   dispatch(toggleLoading(true));
-//   FETCH('POST', '/groups/', body, localStorage.getItem('JWT'), dispatch, false, (err, res) => {
-//     if (err) {
-//       dispatch(createMessage(err, 'danger'));
-//     } else {
-//       let totalLen = depAdd.length + depDel.length + guardAdd.length + guardDel.length;
-//       let i = 0;
-
-//       if (totalLen < 1) {
-//         createGroupAfter(dispatch, done, res);
-//       } else {
-
-//         depAdd.forEach(id => {
-//           dispatch(addDependent(res._id, id, false, (depAdded) => {
-//             if (err) {
-//               dispatch(createMessage(err, 'danger'));
-//               return;
-//             } else if (i == totalLen - 1) {
-//               createGroupAfter(dispatch, done, res);
-//               return;
-//             }
-//             i++;
-//           }));
-//         });
-
-//       }
-//     }
-//   });
-// }
-
-function synAddDependent(ids,callback){
-
-}
 export const fetchCreateGroup = (body, depAdd, guardAdd, done) => (dispatch) => {
   dispatch(toggleLoading(true));
-  body.dependentIDs = depAdd;
+  if(depAdd.length>0){
+    body.dependentIDs = depAdd;
+  }
+  if(guardAdd.length>0){
+    body.guardianIDs = guardAdd;
+  }
   FETCH('POST', '/groups/', body, localStorage.getItem('JWT'), dispatch, false, (err, res) => {
     if (err) {
       dispatch(createMessage(err, 'danger'));
     } else {
-      // let totalLen = depAdd.length + guardAdd.length;
-      // let i = 0;
-
-      // if (totalLen < 1) {
-      //   createGroupAfter(dispatch, done, res);
-      // } else {
         createGroupAfter(dispatch, done, res);
-
-        
-
-        // depAdd.forEach(id => {
-        //   await addDependent(res._id, id, false, (depAdded) => {
-        //     if (err) {
-        //       dispatch(createMessage(err, 'danger'));
-        //       return;
-        //     } else if (i == totalLen - 1) {
-        //       createGroupAfter(dispatch, done, res);
-        //       return;
-        //     }
-        //     i++;
-        //   });
-        // });
-
-        // guardAdd.forEach(id => {
-        //   dispatch(addGuardian(res._id, id, false, (guardAdded) => {
-        //     if (err) {
-        //       dispatch(createMessage(err, 'danger'));
-        //       return;
-        //     } else if (i == totalLen - 1) {
-        //       createGroupAfter(dispatch, done, res);
-        //       return;
-        //     }
-        //     i++;
-        //   }));
-        // });
     }
   });
 }

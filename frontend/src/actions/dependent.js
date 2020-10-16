@@ -41,24 +41,27 @@ function updateDependentAfter(dispatch,name,done,res){
   }));
 }
 
-export const fetchCreateDependent = (postData, groupID) => (dispatch) => {
+export const fetchCreateDependent = (postData, groupID, done) => (dispatch) => {
   dispatch(toggleLoading(true));
   FETCH('POST', '/dependents/', postData, localStorage.getItem('JWT'), dispatch, false, (err, res) => {
     if (err) {
       dispatch(createMessage(err, 'danger'));
     } else if (groupID.length > 0) {
       dispatch(addDependent(groupID,res._id,false,(depAdded)=>{
-        createDependentAfter(dispatch,postData);
+        createDependentAfter(res,dispatch,postData,done);
       }));
     }else{
-      createDependentAfter(dispatch,postData);
+      createDependentAfter(res,dispatch,postData,done);
     }
   });
 }
-function createDependentAfter(dispatch,postData){
+function createDependentAfter(res,dispatch,postData,done){
   dispatch(fetchPopulatedDependents(false));
   dispatch(createMessage(postData.firstName +" " +postData.lastName + " was successfully created.", "success"));
   dispatch(toggleLoading(false));
+  if(done){
+    done(res)
+  }
 }
 
 export const fetchDeleteDependent = (dependentID) => (dispatch) => {
@@ -68,7 +71,10 @@ export const fetchDeleteDependent = (dependentID) => (dispatch) => {
       dispatch(createMessage(err, 'danger'));
     } else{
       dispatch(createMessage(res.deletedDoc.name.firstName + " was successfully deleted.", "info"));
-      dispatch(fetchPopulatedDependents());
+      dispatch(fetchPopulatedDependents(false,(res)=>{
+        dispatch(toggleLoading(false));
+      }));
+
     }
   });
 }

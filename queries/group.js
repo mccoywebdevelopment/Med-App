@@ -151,6 +151,19 @@ function saveAndUpdateDoc(newDoc, body, callback) {
       }
     });
   }
+  if (body.guardianIDs) {
+    addGuardiansToGroup(newDoc, body.guardianIDs, function (err, newDoc) {
+      index++;
+      console.log(index)
+      console.log(count)
+      if (err && index == count) {
+        callback(err);
+      } else if (index == count) {
+        console.log('done');
+        callback(null, newDoc)
+      }
+    });
+  }
   if (body.guardianID) {
     addGuardianToGroup(newDoc, body.guardianID, function (err, newDoc) {
       index++;
@@ -197,6 +210,25 @@ function addDependentsToGroup(newDoc, dependentIDs, callback) {
       }
       newDoc.dependents.push(result);
       if(i==dependentIDs.length-1){
+        callback(null, newDoc);
+      }
+      i++;
+    });
+  });
+}
+function addGuardiansToGroup(newDoc, guardianIDs, callback) {
+  let i = 0;
+  forEach(guardianIDs,id =>{
+    guardianModel.findById(id, function (err, result) {
+      if (err) {
+        callback(err);
+        return;
+      } else if (!result) {
+        callback("Guardian not found.");
+        return;
+      }
+      newDoc.guardians.push(result);
+      if(i==guardianIDs.length-1){
         callback(null, newDoc);
       }
       i++;
