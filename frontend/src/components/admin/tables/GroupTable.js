@@ -18,17 +18,17 @@ class GroupTable extends React.Component {
       this.props.sendTokenViaEmail(user.username);
     }
   }
-  _getNumberOfAdmins = (guardians,users) =>{
+  _getNumberOfAdmins = (guardians) =>{
     let num = 0;
     for(var i=0;i<guardians.length;++i){
         let userID = guardians[i].user;
         let found = false;
-        for(var ix=0;ix<users.length;++ix){
-            if(users[ix]._id == userID){
+        for(var ix=0;ix<this.props.users.length;++ix){
+            if(this.props.users[ix]._id == userID){
               found = true;
             }
-            if(users[ix]._id == userID 
-                && users[ix].isAdmin){
+            if(this.props.users[ix]._id == userID 
+                && this.props.users[ix].isAdmin){
                     num++;
             }
         }
@@ -43,7 +43,7 @@ class GroupTable extends React.Component {
       return groups.map((group, index) => {
         let name = group.name;
         let numOfDep = group.dependents.length;
-        let numOfAdmins = this._getNumberOfAdmins(group.guardians,this.props.users);
+        let numOfAdmins = this._getNumberOfAdmins(group.guardians);
         let guardianLength = group.guardians.length - numOfAdmins;
         let trStyle = {
         }

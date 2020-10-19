@@ -29,6 +29,8 @@ class CreateDependent extends React.Component {
         this._toggleEditRxsMed = this._toggleEditRxsMed.bind(this);
         this._toggleExpandRxsMed = this._toggleExpandRxsMed.bind(this);
         this._initState();
+
+        // this._test();
     }
     _initState = () => {
         this.state = {
@@ -594,30 +596,16 @@ class CreateDependent extends React.Component {
             return null;
         }
     }
-    // _getDepsFromGroupSel = () => {
-    //     let groupdID = this.state.overview.values.group.value;
-    //     if(this.state.overview.values.group.value<1){
-    //         groupdID = JSON.parse(this.state.oldData.overview).group.value
-    //     }
-    //     let oldDependents = [];
-    //     for (var i = 0; i < this.props.groupState.data.length; ++i) {
-    //         if (this.props.groupState.data[i]._id == groupdID) {
-    //             oldDependents = this.props.groupState.data[i].dependents;
-    //         }
-    //     }
-    //     return oldDependents;
-    // }
     _submit = () => {
         this._validation();
         if (!this._isOverviewErrors() && !this._isRxsMedErrors()) {
             if (this.props.isDepSelected) {
                 //check if group is modified if so update group then call get populated dependents
+                // alert(JSON.stringify(this._formatBody()))
                 this.props.fetchUpdateDependent(this.props.isDepSelected.name.firstName + " " + this.props.isDepSelected.name.lastName,this.props.isDepSelected._id,
                     this._formatBody(),this._isGroupModified(),(res) => {
-                        // this._initState();
                         this._initState();
                         this.props.updateDep(res._id);
-                        // this.props.isDepSelected = res;
                     });
             } else {
                 this.props.fetchCreateDependent(this._formatBody(), this.state.overview.values.group.value);
@@ -626,22 +614,13 @@ class CreateDependent extends React.Component {
         }
     }
     componentDidMount = () => {
-        this.props.fetchGroups(() => {
-            if (this.props.isDepSelected) {
-                this._formatSelDep(this.props.isDepSelected);
-            }
-        });
-    }
-    _fetchGroups = (done) => {
-        let newState = this.state;
-        this.props.fetchGroups(() => {
-            newState.fetchedGroups = true;
-            this.setState(newState);
-            done();
-        });
+        if(this.props.isDepSelected){
+            this._formatSelDep(this.props.isDepSelected);
+        }
     }
     componentWillReceiveProps = (newProps) => {
-        if (newProps.isDepSelected) {
+        if (newProps.isDepSelected != this.props.isDepSelected) {
+            this._initState();
             this._formatSelDep(newProps.isDepSelected);
         }
     }

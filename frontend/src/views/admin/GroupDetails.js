@@ -135,7 +135,7 @@ class GroupDetails extends React.Component{
                 <div className="col-lg-6" style={{paddingLeft:'0px'}}>
                     {this.props.groupState.data?
                     <GroupTable selected={this._getID()} changeGroupSel={this._toggleRedirect} 
-                        groups={this.props.groupState.data} isSmall={true}/>
+                        groups={this.props.groupState.data} isSmall={true} users={this.props.userState.data}/>
                     :null}
                 </div>
                 <div className="col-lg-6 my-overview" style={{padding:'none'}} style={{paddingRight:'0px'}}>

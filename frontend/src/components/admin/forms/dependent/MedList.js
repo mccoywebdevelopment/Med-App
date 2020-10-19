@@ -25,6 +25,7 @@ export default class MedList extends React.Component{
                 rxsList.push(this.props.data.list[i]);
             }
         }
+        console.log(this.props)
         return(
             <>
                 {this.props.data.isAdd && this.props.data.list.length>0?

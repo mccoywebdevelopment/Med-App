@@ -45,6 +45,16 @@ function firstAndLastNameValidator(name,isRequired){
         feedback.isValid = false;
     }
 
+    if(nameList[0].length<3){
+        feedback.errorMsg = "First name must be at least 3 characters.";
+        feedback.isValid = false;
+    }
+
+    if(nameList[1].length<3){
+        feedback.errorMsg = "Last name must be at least 3 characters.";
+        feedback.isValid = false;
+    }
+
     return feedback;
 }
 function phoneNumberValidator(phoneNumber,isRequired){

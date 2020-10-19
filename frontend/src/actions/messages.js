@@ -1,20 +1,24 @@
 import { CREATE_MESSAGE, CHANGE_REDIRECT_URL } from './types';
 import { togglePopUp } from './popUp';
+import { toggleLoading } from './loading';
 
 
 // CREATE MESSAGE
 export const createMessage = (text,alertType,time) => (dispatch) =>{
+  let timeout = 3000;
+
   if(typeof(text)=='object'){
     text = JSON.stringify(text);
   }
   if(alertType=='danger'){
+    dispatch(toggleLoading(false));
     dispatch(togglePopUp());
+    timeout = 3000000;
   }
   dispatch({
     type: CREATE_MESSAGE,
     payload: {text, alertType},
   });
-  let timeout = 3000;
   if(time){
     timeout = time;
   }

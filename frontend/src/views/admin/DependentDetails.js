@@ -51,7 +51,6 @@ class DependentDetails extends React.Component{
         }
     }
     _updateDependent = (id) =>{
-
         this._setDep(this._findDepByID(id));
         // alert(JSON.stringify(this.props.dependentState.data[1]))
         // alert(JSON.stringify(this.state))
