@@ -2,18 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { togglePopUp } from '../../actions/popUp';
-import { fetchGroups } from "../../actions/group";
+import { fetchGroups, fetchDeleteGroup } from "../../actions/group";
 import { fetchGuardians } from "../../actions/guardian";
 import { changeColor } from "../../actions/theme";
 import { reduceFraction } from "../../config/helpers";
 
-// import CardData from "../../components/shared/CardData/CardData";
 import OverviewGroup from "../../components/admin/Overview/OverviewGroup";
 import CreateGroup from "../../components/admin/forms/group/CreateGroup";
-import CardData from '../../components/shared/CardData/CardData';
-/*
-    Need to update table/this.state after I add a new user like I did in dependents view.
-*/
+import GroupTable from "../../components/admin/tables/GroupTable";
 
 class UserView extends React.Component {
     static propTypes = {
@@ -23,7 +19,7 @@ class UserView extends React.Component {
     };
     constructor(props) {
         super(props);
-        this._deleteUser = this._deleteUser.bind(this);
+        this._deleteGroup = this._deleteGroup.bind(this);
     }
     _getNumberOfAdmins = (guardians) =>{
         let num = 0;
@@ -43,9 +39,9 @@ class UserView extends React.Component {
         }
         return num;
     }
-    _deleteUser = (user) =>{
-        if(window.confirm("Are you sure you want to delete "+user.username+" profile and all their data?")){
-            this.props.fetchDeleteUser(user._id);
+    _deleteGroup = (group) =>{
+        if(window.confirm("Are you sure you want to delete "+group.name+" ?")){
+            this.props.fetchDeleteGroup(group._id);
         }
     }
     _getGroupsWithoutGuardians = () =>{
@@ -80,25 +76,25 @@ class UserView extends React.Component {
         this.props.fetchGroups(true);
     }
     render() {
-        const list = () =>{
-            return this.props.groupState.data.map((item,key)=>{
-                let adminLen = this._getNumberOfAdmins(item.guardians)
-                let guardianLength = item.guardians.length - adminLen;
-                let paddingRight = "";
-                if((key + 1) % 4 == 0){
-                    paddingRight = '0px';
-                }
-                return(
-                        <div key={"item"+key} className="col-lg-3" style={{marginBottom:"20px",paddingLeft:'0px',paddingRight:paddingRight}}>
-                            <CardData index={key} labels={["Dependents","Users","Admins"]}
-                                data={[item.dependents.length,guardianLength,adminLen]}
-                                colors={['#2196f3','#FCB031',"#8862E0"]}
-                                title={item.name} href="test"
-                                details={item.dependents.length + " Dependents, \n"+guardianLength+" Guardians, "+adminLen+" Admins"}/>
-                        </div>
-                )
-            });
-        }
+        // const list = () =>{
+        //     return this.props.groupState.data.map((item,key)=>{
+        //         let adminLen = this._getNumberOfAdmins(item.guardians)
+        //         let guardianLength = item.guardians.length - adminLen;
+        //         let paddingRight = "";
+        //         if((key + 1) % 4 == 0){
+        //             paddingRight = '0px';
+        //         }
+        //         return(
+        //                 <div key={"item"+key} className="col-lg-3" style={{marginBottom:"20px",paddingLeft:'0px',paddingRight:paddingRight}}>
+        //                     <CardData index={key} labels={["Dependents","Users","Admins"]}
+        //                         data={[item.dependents.length,guardianLength,adminLen]}
+        //                         colors={['#2196f3','#FCB031',"#8862E0"]}
+        //                         title={item.name} href="test"
+        //                         details={item.dependents.length + " Dependents, \n"+guardianLength+" Guardians, "+adminLen+" Admins"}/>
+        //                 </div>
+        //         )
+        //     });
+        // }
         return (
             <>
                 <div className="row">
@@ -120,11 +116,8 @@ class UserView extends React.Component {
                         <div className="row">
                             <div className="col-lg-12">
                                 {this.props.groupState.data.length>0?
-                                <>
-                                <div className="row" style={{marginBottom:'30px'}}>
-                                    {list()}
-                                </div>
-                                </>
+                                    <GroupTable users={this.props.userState.data} groups={this.props.groupState.data}
+                                    delete={this._deleteGroup} changeUserSel={this._toggleRedirect}/>
                                  :null}
                             </div>
                         </div>
@@ -138,7 +131,8 @@ UserView.propTypes = {
     togglePopUp: PropTypes.func.isRequired,
     fetchGroups: PropTypes.func.isRequired,
     changeColor: PropTypes.func.isRequired,
-    fetchGuardians: PropTypes.func.isRequired
+    fetchGuardians: PropTypes.func.isRequired,
+    fetchDeleteGroup: PropTypes.func.isRequired
 };
 const mapStateToProps = (state) => ({
     userState: state.userState,
@@ -147,4 +141,4 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {changeColor, togglePopUp,
-         fetchGroups, fetchGuardians, fetchGroups})(UserView);
+         fetchGroups, fetchGuardians, fetchGroups, fetchDeleteGroup})(UserView);

@@ -97,6 +97,23 @@ export const fetchCreateGroup = (body, depAdd, guardAdd, done) => (dispatch) => 
   });
 }
 
+export const fetchDeleteGroup = (userID, done) => (dispatch) => {
+  dispatch(toggleLoading(false));
+  FETCH('DELETE', '/groups/' + userID + '/', null, localStorage.getItem('JWT'), dispatch, false, (err, res) => {
+    if (err) {
+      dispatch(createMessage(err, 'danger'));
+    } else {
+      dispatch(fetchGroups(false, (groups) => {
+        dispatch(createMessage(res.name + " was successfully deleted.", "warning"));
+        dispatch(toggleLoading(false));
+        if (done) {
+          done(res);
+        }
+      }));
+    }
+  });
+}
+
 function createGroupAfter(dispatch, done, res) {
   dispatch(toggleLoading(false));
   dispatch(createMessage(res.name + " was successfully created.", "warning"));
