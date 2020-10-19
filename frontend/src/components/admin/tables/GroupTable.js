@@ -10,8 +10,8 @@ class GroupTable extends React.Component {
   constructor(props) {
     super(props);
   }
-  _selectItem = (user) => {
-    this.props.changeUserSel(user)
+  _selectItem = (group) => {
+    this.props.changeGroupSel(group)
   }
   _sendTokenViaEmail = (user) =>{
     if(window.confirm('Are you sure you want to send user another email?')){
@@ -45,10 +45,15 @@ class GroupTable extends React.Component {
         let numOfDep = group.dependents.length;
         let numOfAdmins = this._getNumberOfAdmins(group.guardians,this.props.users);
         let guardianLength = group.guardians.length - numOfAdmins;
+        let trStyle = {
+        }
 
+        if(this.props.selected == group._id && this.props.isSmall){
+          trStyle.background = '#feefd5';
+        }
         
         return (
-          <tr key={"userTable" + index}>
+          <tr style={trStyle} key={"userTable" + index}>
             <th scope="row">{index + 1}</th>
             <td colSpan="2" onClick={() => this._selectItem(group)}>{name}</td>
             <td onClick={() => this._selectItem(group)}>{numOfDep}</td>

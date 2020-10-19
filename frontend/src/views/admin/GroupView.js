@@ -66,9 +66,9 @@ class UserView extends React.Component {
 
         return (fract[0].toFixed(1) + " : " + fract[1].toFixed(1));
     }
-    _toggleRedirect = (dep) =>{
+    _toggleRedirect = (groups) =>{
         let newState = this.state;
-        window.location = "/admin/users/" + dep._id
+        window.location = "/admin/groups/" + groups._id
         this.setState(newState);
     }
     componentDidMount = () =>{
@@ -117,7 +117,7 @@ class UserView extends React.Component {
                             <div className="col-lg-12">
                                 {this.props.groupState.data.length>0?
                                     <GroupTable users={this.props.userState.data} groups={this.props.groupState.data}
-                                    delete={this._deleteGroup} changeUserSel={this._toggleRedirect}/>
+                                    delete={this._deleteGroup} changeGroupSel={this._toggleRedirect}/>
                                  :null}
                             </div>
                         </div>

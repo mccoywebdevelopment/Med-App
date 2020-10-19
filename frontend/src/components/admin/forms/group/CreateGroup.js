@@ -49,20 +49,27 @@ class CreateGroup extends React.Component {
     _formatSelGroup = (group) => {
         let newState = this.state;
 
-        newState.overview.values.email = group.groupname;
-        newState.overview.values.isAdmin = group.isAdmin;
-        newState.overview.values.group = this._getGroupSelgroup(group);
+        newState.overview.values.name = group.name;
+
 
         newState.oldData = {
-            overview: JSON.stringify(newState.overview.values)
+            overview: newState.overview.values,
+            dependents:group.dependents,
+            guardians:group.guardians
         }
+
+        JSON.stringify(newState.oldData);
         this.setState(newState);
     }
     _isUpdated = () => {
         let oldDataOverview = this.state.oldData.overview;
         let overview = JSON.stringify(this.state.overview.values);
+        let oldDependents = this.state.oldData.dependents;
+        let dependents = JSON.stringify(this.state.dependents);
+        let oldGuardians = this.state.oldData.guardians;
+        let guardians = JSON.stringify(this.state.guardians);
 
-        if (oldDataOverview != overview) {
+        if (oldDataOverview != overview || oldDependents != dependents || oldGuardians!=guardians) {
             return true;
         }
         return false;
@@ -355,10 +362,6 @@ class CreateGroup extends React.Component {
                             <h4 style={{ display: 'inline' }}>Group Overview</h4>
                             <i title="edit" onClick={() => { this._toggleIsEditOverview() }} className="fas fa-edit"
                                 style={{ paddingLeft: '20px', color: '#8862e0' }}></i>
-                            {!this.props.isGroupSelected.auth.isVerified ?
-                                <i title="Send Invite" onClick={() => { this._sendTokenViaEmail() }} className="fas fa-envelope"
-                                    style={{ paddingLeft: '20px', color: '#8862e0' }}></i>
-                                : null}
                             <i title="delete" onClick={() => { this.props.delete(this.props.isGroupSelected) }} className="fas fa-trash"
                                 style={{ paddingLeft: '20px', color: '#8862e0' }}></i>
                             <i title="close" onClick={() => { this.props.goHome() }} style={{ float: 'right', color: "#8862e0" }} className="fas fa-times"></i>
@@ -368,7 +371,7 @@ class CreateGroup extends React.Component {
                     }
                     <GroupOverview data={this.state.overview} update={this._update} updateError={this._updateError}
                         isUserSelected={this.props.isGroupSelected} groups={this.props.groupState.data} isEdit={this.state.overview.isEdit}>
-                        {this.props.isGroupSelected ?
+                        {/* {this.props.isGroupSelected ?
                             <div className="row" style={{ marginTop: '10px', marginBottom: '10px' }}>
                                 <div className="col-lg-12">
                                     <h4 style={{ display: 'inline' }}>Groupsjjh <span style={{ fontSize: '17px' }}>
@@ -377,7 +380,7 @@ class CreateGroup extends React.Component {
                                     </h4>
                                 </div>
                             </div>
-                            : null}
+                            : null} */}
                         <div className="col-lg-12" style={{ paddingLeft: '12.5px', paddingRight: '12.5px' }}>
                             {this.state.itemList.length>0 && !this.props.isGroupSelected || this.state.overview.isEdit?
                                 <Search isReadOnly={false} color={"#ffaf00"} placeholder="Search & Select Items" items={this.state.itemList}
