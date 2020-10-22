@@ -97,6 +97,18 @@ export const fetchCreateGroup = (body, depAdd, guardAdd, done) => (dispatch) => 
   });
 }
 
+export const fetchUpdateGroup = (groupID, body, done) => (dispatch) => {
+  alert(JSON.stringify(body));
+  dispatch(toggleLoading(true));
+  FETCH('PATCH', '/groups/' + groupID + '/', body, localStorage.getItem('JWT'), dispatch, false, (err, res) => {
+    if (err) {
+      dispatch(createMessage(err, 'danger'));
+    } else{
+      updateGroupAfter(dispatch,done,res);
+    }
+  });
+}
+
 export const fetchDeleteGroup = (userID, done) => (dispatch) => {
   dispatch(toggleLoading(false));
   FETCH('DELETE', '/groups/' + userID + '/', null, localStorage.getItem('JWT'), dispatch, false, (err, res) => {
@@ -117,6 +129,16 @@ export const fetchDeleteGroup = (userID, done) => (dispatch) => {
 function createGroupAfter(dispatch, done, res) {
   dispatch(toggleLoading(false));
   dispatch(createMessage(res.name + " was successfully created.", "warning"));
+  dispatch(fetchGroups(false, (groups) => {
+    if (done) {
+      done(res);
+    }
+  }));
+}
+
+function updateGroupAfter(dispatch, done, res) {
+  dispatch(toggleLoading(false));
+  dispatch(createMessage(res.name + " was successfully updated.", "warning"));
   dispatch(fetchGroups(false, (groups) => {
     if (done) {
       done(res);

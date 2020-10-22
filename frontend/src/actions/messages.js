@@ -13,7 +13,7 @@ export const createMessage = (text,alertType,time) => (dispatch) =>{
   if(alertType=='danger'){
     dispatch(toggleLoading(false));
     dispatch(togglePopUp());
-    timeout = 3000000;
+    timeout = 15000;
   }
   dispatch({
     type: CREATE_MESSAGE,

@@ -128,7 +128,15 @@ class CreateUser extends React.Component {
     }
     _toggleIsEditOverview = () => {
         let newState = this.state;
-        newState.overview.isEdit = !newState.overview.isEdit;
+
+        if(newState.overview.isEdit == true){
+            if(window.confirm("Are you sure you want to proceed without saving changes?")){
+                this._formatSelUser(this.props.isUserSelected);
+                newState.overview.isEdit = !newState.overview.isEdit;
+            }
+        }else{
+            newState.overview.isEdit = !newState.overview.isEdit;
+        }
         this.setState(newState);
     }
     _isOverviewErrors = () => {

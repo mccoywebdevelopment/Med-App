@@ -101,7 +101,6 @@ export default class Search extends React.Component {
             fontSize: '0.875rem',
             padding: '3px'
         }
-        console.log(this.props.items);
         const itemHeaders = () => {
             return this.props.items.map((item, key) => {
                 return (

@@ -123,6 +123,12 @@ function saveAndUpdateDoc(newDoc, body, callback) {
   if (body.guardianIDs) {
     count++;
   }
+  if(body.removeGuardianIDs){
+    count++;
+  }
+  if(body.removeDependentIDs){
+    count++;
+  }
 
   if (body.removeDependentID) {
     newDoc.dependents = removeDependent(body.removeDependentID, newDoc.dependents);
@@ -154,12 +160,9 @@ function saveAndUpdateDoc(newDoc, body, callback) {
   if (body.guardianIDs) {
     addGuardiansToGroup(newDoc, body.guardianIDs, function (err, newDoc) {
       index++;
-      console.log(index)
-      console.log(count)
       if (err && index == count) {
         callback(err);
       } else if (index == count) {
-        console.log('done');
         callback(null, newDoc)
       }
     });
@@ -180,6 +183,26 @@ function saveAndUpdateDoc(newDoc, body, callback) {
     if (index == count) {
       callback(null, newDoc);
     }
+  }
+  if (body.removeGuardianIDs) {
+    removeGuardiansFromGroup(newDoc, body.removeGuardianIDs, function (err, newDoc) {
+      index++;
+      if (err && index == count) {
+        callback(err);
+      } else if (index == count) {
+        callback(null, newDoc)
+      }
+    });
+  }
+  if (body.removeDependentIDs) {
+    removeDependentsFromGroup(newDoc, body.removeDependentIDs, function (err, newDoc) {
+      index++;
+      if (err && index == count) {
+        callback(err);
+      } else if (index == count) {
+        callback(null, newDoc)
+      }
+    });
   }
   if (count == 0) {
     callback(null, newDoc);
@@ -228,7 +251,46 @@ function addGuardiansToGroup(newDoc, guardianIDs, callback) {
         return;
       }
       newDoc.guardians.push(result);
+
       if(i==guardianIDs.length-1){
+        callback(null, newDoc);
+      }
+      i++;
+    });
+  });
+}
+function removeGuardiansFromGroup(newDoc, guardianIDs, callback) {
+  let i = 0;
+  forEach(guardianIDs,id =>{
+    guardianModel.findById(id, function (err, result) {
+      if (err) {
+        callback(err);
+        return;
+      } else if (!result) {
+        callback("Guardian not found.");
+        return;
+      }
+      newDoc.guardians = removeByID(result._id,newDoc.guardians);
+      if(i==guardianIDs.length-1){
+        callback(null, newDoc);
+      }
+      i++;
+    });
+  });
+}
+function removeDependentsFromGroup(newDoc, dependentIDs, callback) {
+  let i = 0;
+  forEach(dependentIDs,id =>{
+    dependentModel.findById(id, function (err, result) {
+      if (err) {
+        callback(err);
+        return;
+      } else if (!result) {
+        callback("Dependent not found.");
+        return;
+      }
+      newDoc.dependents = removeByID(result._id,newDoc.dependents);
+      if(i==dependentIDs.length-1){
         callback(null, newDoc);
       }
       i++;

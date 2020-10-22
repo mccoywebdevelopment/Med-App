@@ -296,7 +296,15 @@ class CreateDependent extends React.Component {
     }
     _toggleIsEditOverview = () => {
         let newState = this.state;
-        newState.overview.isEdit = !newState.overview.isEdit;
+
+        if(newState.overview.isEdit == true){
+            if(window.confirm("Are you sure you want to proceed without saving changes?")){
+                this._formatSelDep(this.props.isDepSelected);
+                newState.overview.isEdit = !newState.overview.isEdit;
+            }
+        }else{
+            newState.overview.isEdit = !newState.overview.isEdit;
+        }
         this.setState(newState);
     }
     _test = () => {
