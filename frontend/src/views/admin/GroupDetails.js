@@ -140,7 +140,7 @@ class GroupDetails extends React.Component{
                 </div>
                 <div className="col-lg-6 my-overview" style={{padding:'none'}} style={{paddingRight:'0px'}}>
                     <div className="card" style={{padding:"20px"}}>
-                        <CreateGroup updateGroup={this._updateGroup} isGroupSelected={this.state.group} 
+                        <CreateGroup users={this.props.userState.data} updateGroup={this._updateGroup} groups={this.props.groupState.data} isGroupSelected={this.state.group} 
                             goHome={this._toggleHome} delete={this._deleteGroup}/>
                     </div>
                 </div>
@@ -155,7 +155,7 @@ GroupDetails.propTypes = {
     fetchDeleteGroup: PropTypes.func.isRequired
 }
 const mapStateToProps = (state) => ({
-    userState: state.groupState,
+    userState: state.userState,
     groupState: state.groupState
 });
 export default connect(mapStateToProps,{fetchGroups,fetchDeleteGroup})(GroupDetails);

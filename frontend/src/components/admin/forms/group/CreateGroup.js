@@ -64,24 +64,12 @@ class CreateGroup extends React.Component {
         this.setState(newState);
     }
     _isUpdated = () => {
-        // let oldDataOverview = this.state.oldData.overview;
-        // let overview = JSON.stringify(this.state.overview.values);
-        // let oldDependents = this.state.oldData.dependents;
-        // let dependents = JSON.stringify(this.state.dependents);
-        // let oldGuardians = this.state.oldData.guardians;
-        // let guardians = JSON.stringify(this.state.guardians);
-
-        // if (oldDataOverview != overview || oldDependents != dependents || oldGuardians != guardians) {
-        //     return true;
-        // }
         let oldData = this.state.oldData;
         let newData = JSON.stringify({
             overview:this.state.overview.values,
             dependents:this.state.dependents,
             guardians:this.state.guardians
         });
-        console.log(oldData);
-        console.log(newData);
         if(oldData != newData){
             return true;
         }
@@ -168,13 +156,26 @@ class CreateGroup extends React.Component {
         return false;
     }
     _validation = () => {
-        this._overviewValidation();
-        if (this._isOverviewErrors()) {
+        let isErrors = this._isOverviewErrors();
+
+        if(isErrors){
             alert("Please fix the errors below:");
         }
+        return !isErrors;
     }
     _formatBody = () => {
-        let body = this._isGroupModified();
+        let body = {
+        }
+        if(this.props.isGroupSelected){
+            body = this._isGroupModified();
+        }else{
+            if(this.state.dependents.length>0){
+                body.dependentIDs = this.state.dependents;
+            }
+            if(this.state.guardians.length>0){
+                body.guardianIDs = this.state.guardians;
+            }
+        }
         body.name = this.state.overview.values.name;
         return body;
     }
@@ -225,7 +226,7 @@ class CreateGroup extends React.Component {
                     }
                 }
                 if(!found){
-                    dependentIDs.push(oldGroup.dependents[i]._id);
+                    dependentIDs.push(newDependents[i]._id);
                 }
             }
 
@@ -233,6 +234,8 @@ class CreateGroup extends React.Component {
         if (JSON.stringify(oldGuardians) != JSON.stringify(newGuardians)) {
             removeGuardianIDs = [];
             guardianIDs = [];
+            alert(JSON.stringify(oldGroup.guardians));
+            alert(JSON.stringify(newGuardians));
 
             for(var i=0;i<oldGroup.guardians.length;++i){
                 let found = false;
@@ -255,7 +258,7 @@ class CreateGroup extends React.Component {
                     }
                 }
                 if(!found){
-                    guardianIDs.push(oldGroup.guardians[i]._id);
+                    guardianIDs.push(newGuardians[i]);
                 }
             }
 
@@ -295,7 +298,6 @@ class CreateGroup extends React.Component {
     }
     _getDependentsFromGroupSel = () => {
         let oldGuardians = [];
-        console.log(this.state)
         for (var i = 0; i < this.props.groupState.data.length; ++i) {
             if (this.props.groupState.data[i]._id == this.props.isGroupSelected._id) {
                 return (this.props.groupState.data[i].dependents);
@@ -304,8 +306,7 @@ class CreateGroup extends React.Component {
         return oldGuardians;
     }
     _submit = () => {
-        this._validation();
-        if (!this._isOverviewErrors()) {
+        if (this._validation()) {
             let body = this._formatBody();
             if (this.props.isGroupSelected) {
                 this.props.fetchUpdateGroup(this.props.isGroupSelected._id,this._formatBody(),(result)=>{
@@ -357,7 +358,7 @@ class CreateGroup extends React.Component {
             let user = this._getUserByID(this.props.guardianState.data[i].user);
             values.push(this.props.guardianState.data[i]._id);
             let name = "-"
-            if (this.props.guardianState.data[i].name.firstName.length > 0) {
+            if (this.props.guardianState.data[i].name) {
                 name = this.props.guardianState.data[i].name.firstName + " " + this.props.guardianState.data[i].name.lastName;
             }
             tableBody.push(name);
@@ -436,10 +437,7 @@ class CreateGroup extends React.Component {
         return null;
     }
     render() {
-        // let items = [];
         let groupsLabel = "Items";
-        let groupTableSm = [];
-        // console.log(this.state);
 
         return (
             <>

@@ -24,12 +24,11 @@ class GroupTable extends React.Component {
         let userID = guardians[i].user;
         let found = false;
         for(var ix=0;ix<this.props.users.length;++ix){
-            if(this.props.users[ix]._id == userID){
-              found = true;
-            }
             if(this.props.users[ix]._id == userID 
                 && this.props.users[ix].isAdmin){
                     num++;
+            }else if(this.props.users[ix]._id == userID){
+              found = true;
             }
         }
         if(!found){

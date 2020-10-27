@@ -76,25 +76,6 @@ class UserView extends React.Component {
         this.props.fetchGroups(true);
     }
     render() {
-        // const list = () =>{
-        //     return this.props.groupState.data.map((item,key)=>{
-        //         let adminLen = this._getNumberOfAdmins(item.guardians)
-        //         let guardianLength = item.guardians.length - adminLen;
-        //         let paddingRight = "";
-        //         if((key + 1) % 4 == 0){
-        //             paddingRight = '0px';
-        //         }
-        //         return(
-        //                 <div key={"item"+key} className="col-lg-3" style={{marginBottom:"20px",paddingLeft:'0px',paddingRight:paddingRight}}>
-        //                     <CardData index={key} labels={["Dependents","Users","Admins"]}
-        //                         data={[item.dependents.length,guardianLength,adminLen]}
-        //                         colors={['#2196f3','#FCB031',"#8862E0"]}
-        //                         title={item.name} href="test"
-        //                         details={item.dependents.length + " Dependents, \n"+guardianLength+" Guardians, "+adminLen+" Admins"}/>
-        //                 </div>
-        //         )
-        //     });
-        // }
         return (
             <>
                 <div className="row">
