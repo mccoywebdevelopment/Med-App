@@ -119,7 +119,7 @@ function readHTMLFile(path,email,redirectUrl,emailToken,callback) {
         }
   
         const transporter = nodemailer.createTransport({
-          service: "Gmail",
+          service: "AOL",
           auth: {
             user: configVars.EMAIL,
             pass: configVars.EMAIL_PASSWORD
