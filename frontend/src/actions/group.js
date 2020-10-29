@@ -98,7 +98,6 @@ export const fetchCreateGroup = (body, depAdd, guardAdd, done) => (dispatch) => 
 }
 
 export const fetchUpdateGroup = (groupID, body, done) => (dispatch) => {
-  alert(JSON.stringify(body));
   dispatch(toggleLoading(true));
   FETCH('PATCH', '/groups/' + groupID + '/', body, localStorage.getItem('JWT'), dispatch, false, (err, res) => {
     if (err) {

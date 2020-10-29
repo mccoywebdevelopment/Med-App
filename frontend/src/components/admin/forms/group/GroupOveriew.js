@@ -15,7 +15,7 @@ export default class GroupOverview extends React.Component {
                                 <label className="label">Name</label>
                                 <div className="input-group">
                                     <input type="text" className="form-control" name="nameT" placeholder="Name"
-                                        value={this.props.data.values.email} onChange={(e) => { this.props.update("overview", "name", e.target.value) }} />
+                                        value={this.props.data.values.name} onChange={(e) => { this.props.update("overview", "name", e.target.value) }} />
                                     <div className="invalid-feedback" style={{ display: 'block' }}>
                                         {this.props.data.errors.name}&nbsp;
                                     </div>

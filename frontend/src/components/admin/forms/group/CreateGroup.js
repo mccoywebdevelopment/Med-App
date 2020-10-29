@@ -194,39 +194,49 @@ class CreateGroup extends React.Component {
         let oldGuardians = JSON.parse(this.state.oldData).guardians;
         let newDependents = this.state.dependents;
         let newGuardians = this.state.guardians;
-        let oldGroup = this.props.isGroupSelected;
 
         let removeDependentIDs = [];
         let dependentIDs = [];
         let removeGuardianIDs =[];
         let guardianIDs =[];
 
+        /* how remove works:
+            loop through old
+                if not found in cur arr
+            remove that element
+
+            how add works:
+            loop through new
+                if not found in old arr
+            add that element
+        */
+
         if (JSON.stringify(oldDependents) != JSON.stringify(newDependents)) {
             removeDependentIDs = [];
             dependentIDs = [];
 
-            for(var i=0;i<oldGroup.dependents.length;++i){
+            for(var i=0;i<oldDependents.length;++i){
                 let found = false;
-                for(var ix=0;ix<newDependents;++ix){
-                    if(oldGroup.dependents[i]._id == newDependents[ix]._id){
+                for(var ix=0;ix<newDependents.length;++ix){
+                    if(oldDependents[i].toString() == newDependents[ix].toString()){
                         found = true;
                         break;
                     }
                 }
                 if(!found){
-                    removeDependentIDs.push(oldGroup.dependents[i]._id);
+                    removeDependentIDs.push(oldDependents[i]);
                 }
             }
             for(var i=0;i<newDependents.length;++i){
                 let found = false;
-                for(var ix=0;ix<oldGroup.dependents;++ix){
-                    if(oldGroup.dependents[ix]._id == newDependents[i]._id){
+                for(var ix=0;ix<oldDependents.length;++ix){
+                    if(oldDependents[ix].toString() == newDependents[i].toString()){
                         found = true;
                         break;
                     }
                 }
                 if(!found){
-                    dependentIDs.push(newDependents[i]._id);
+                    dependentIDs.push(newDependents[i]);
                 }
             }
 
@@ -234,27 +244,24 @@ class CreateGroup extends React.Component {
         if (JSON.stringify(oldGuardians) != JSON.stringify(newGuardians)) {
             removeGuardianIDs = [];
             guardianIDs = [];
-            alert(JSON.stringify(oldGroup.guardians));
-            alert(JSON.stringify(newGuardians));
 
-            for(var i=0;i<oldGroup.guardians.length;++i){
+            for(var i=0;i<oldGuardians.length;++i){
                 let found = false;
-                for(var ix=0;ix<newGuardians;++ix){
-                    if(oldGroup.guardians[i]._id == newGuardians[ix]._id){
+                for(var ix=0;ix<newGuardians.length;++ix){
+                    if(oldGuardians[i] == newGuardians[ix]){
                         found = true;
                         break;
                     }
                 }
                 if(!found){
-                    removeGuardianIDs.push(oldGroup.guardians[i]._id);
+                    removeGuardianIDs.push(oldGuardians[i]);
                 }
             }
             for(var i=0;i<newGuardians.length;++i){
                 let found = false;
-                for(var ix=0;ix<oldGroup.guardians;++ix){
-                    if(oldGroup.guardians[ix]._id == newGuardians[i]._id){
+                for(var ix=0;ix<oldGuardians.length;++ix){
+                    if(oldGuardians[ix].toString() == newGuardians[i].toString()){
                         found = true;
-                        break;
                     }
                 }
                 if(!found){
@@ -309,8 +316,10 @@ class CreateGroup extends React.Component {
         if (this._validation()) {
             let body = this._formatBody();
             if (this.props.isGroupSelected) {
-                this.props.fetchUpdateGroup(this.props.isGroupSelected._id,this._formatBody(),(result)=>{
-
+                this.props.fetchUpdateGroup(this.props.isGroupSelected._id,this._formatBody(),(res)=>{
+                    this._initState();
+                    this.props.updateGroup(res._id);
+                    this._formatItems();
                 });
             } else {
                 this.props.fetchCreateGroup(body, this.state.dependents, this.state.guardians);
@@ -340,6 +349,7 @@ class CreateGroup extends React.Component {
         let newState = this.state;
         newState.itemList = [this._formatGroupInputsGuardian(), this._formatGroupInputsDependent()];
         this.setState(newState);
+        console.log(this.state);
     }
     _getSelectedValues = (values) => {
         let newState = this.state;
@@ -348,7 +358,8 @@ class CreateGroup extends React.Component {
         this.setState(newState);
     }
     _formatGroupInputsGuardian = () => {
-        let tableHeader = [{ value: "Name", colSpan: 2 }, { value: "# of Groups", colSpan: 1 }, { value: "is Admin", colSpan: 1 }, { value: "Validation", colSpan: 1 }];
+        let tableHeader = [{ value: "Name", colSpan: 2 }, { value: "# of Groups", colSpan: 1 }, 
+            { value: "is Admin", colSpan: 1 }, { value: "Validation", colSpan: 1 }];
         let values = [];
         let tableBody = [];
         let selectedValues = this.state.guardians;
@@ -359,7 +370,8 @@ class CreateGroup extends React.Component {
             values.push(this.props.guardianState.data[i]._id);
             let name = "-"
             if (this.props.guardianState.data[i].name) {
-                name = this.props.guardianState.data[i].name.firstName + " " + this.props.guardianState.data[i].name.lastName;
+                name = this.props.guardianState.data[i].name.firstName + " " 
+                    + this.props.guardianState.data[i].name.lastName;
             }
             tableBody.push(name);
             tableBody.push(this.props.guardianState.data[i].groups.length);
@@ -396,9 +408,11 @@ class CreateGroup extends React.Component {
         let hiddenValues = [];
 
         for (var i = 0; i < this.props.dependentState.data.length; ++i) {
-            if (this.props.dependentState.data[i].group.length < 1) {
+            if ((this.props.isGroupSelected && this.props.dependentState.data[i].group.toString() == this.props.isGroupSelected._id.toString()) ||
+                     (this.props.dependentState.data[i].group.length < 1)) {
                 values.push(this.props.dependentState.data[i]._id);
-                tableBody.push(this.props.dependentState.data[i].name.firstName + " " + this.props.dependentState.data[i].name.lastName);
+                tableBody.push(this.props.dependentState.data[i].name.firstName + " " +
+                 this.props.dependentState.data[i].name.lastName);
                 tableBody.push(formateDate(this.props.dependentState.data[i].dateOfBirth));
                 tableBody.push(getAge(this.props.dependentState.data[i].dateOfBirth));
             }

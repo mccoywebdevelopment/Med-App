@@ -31,23 +31,16 @@ function patchUpdateById(body, id, callback) {
     } else if (!foundDoc) {
       callback("Document not found.");
     } else {
-      console.log("\n\n\n\nFound Doc");
-      console.log(foundDoc);
-      console.log("\n\n\n\n\n")
       updateModifiedFields(foundDoc, body, function (err, newDoc) {
         if (err) {
           callback(err);
         } else {
-          console.log("\n\n\n\nNew Doc");
+          console.log("\n\n\n\n\n\n\n\n\n\n");
           console.log(newDoc);
-          console.log("\n\n\n\n\n")
           foundDoc.update(newDoc, function (err, result) {
             if (err) {
               callback(err);
             } else {
-              console.log("\n\n\n\nResult");
-              console.log(result);
-              console.log("\n\n\n\n\n")
               callback(null, newDoc);
             }
           });
@@ -185,6 +178,7 @@ function saveAndUpdateDoc(newDoc, body, callback) {
     }
   }
   if (body.removeGuardianIDs) {
+    console.log(true);
     removeGuardiansFromGroup(newDoc, body.removeGuardianIDs, function (err, newDoc) {
       index++;
       if (err && index == count) {
@@ -310,12 +304,15 @@ function addGuardianToGroup(newDoc, guardianId, callback) {
   });
 }
 function removeByID(id, arr) {
+  console.log(id);
+  console.log(arr);
   let newArr = [];
   for (var i = 0; i < arr.length; ++i) {
-    if (arr[i]._id != id) {
+    if (arr[i]._id.toString() != id.toString() || arr[i].toString() != id.toString()) {
       newArr.push(arr[i]);
     }
   }
+  console.log(newArr);
   return newArr;
 }
 function deleteById(id, callback) {
@@ -336,7 +333,6 @@ function saveToDoc(body, callback) {
     if (err) {
       callback(err)
     } else {
-      console.log(newDoc);
       newDoc.save(function (err, savedDoc) {
         if (err) {
           callback(err);
@@ -349,7 +345,6 @@ function saveToDoc(body, callback) {
 
 }
 function create(body, callback) {
-  console.log(body);
   val.validator(groupModel, body, function (err, result) {
     if (err) {
       callback(err);

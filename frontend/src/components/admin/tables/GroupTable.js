@@ -26,8 +26,10 @@ class GroupTable extends React.Component {
         for(var ix=0;ix<this.props.users.length;++ix){
             if(this.props.users[ix]._id == userID 
                 && this.props.users[ix].isAdmin){
+                    found = true;
                     num++;
-            }else if(this.props.users[ix]._id == userID){
+            }
+            if(this.props.users[ix]._id == userID){
               found = true;
             }
         }
@@ -43,6 +45,7 @@ class GroupTable extends React.Component {
         let name = group.name;
         let numOfDep = group.dependents.length;
         let numOfAdmins = this._getNumberOfAdmins(group.guardians);
+        // alert(numOfAdmins)
         let guardianLength = group.guardians.length - numOfAdmins;
         let trStyle = {
         }
