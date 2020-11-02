@@ -16,76 +16,135 @@ class DependentView extends React.Component {
         dependentState: PropTypes.object.isRequired,
         groupState: PropTypes.object.isRequired
     };
+    state = {
+        filterBy:{
+            all:true,
+            grouped:false,
+            notGrouped:false
+        }
+    }
     constructor(props) {
         super(props);
         this._deleteDependent = this._deleteDependent.bind(this);
         this._toggleRedirect = this._toggleRedirect.bind(this);
     }
-    _getTotalNumberOfDependents = () =>{
+    _toggleFilterBy = (all,grouped,notGrouped) =>{
+        let newState = this.state;
+        
+        if(all){
+            newState.filterBy.all = true;
+            newState.filterBy.grouped = false;
+            newState.filterBy.notGrouped = false;
+        }else if(grouped){
+            newState.filterBy.all = false;
+            newState.filterBy.grouped = true;
+            newState.filterBy.notGrouped = false;
+        }else{
+            newState.filterBy.all = false;
+            newState.filterBy.grouped = false;
+            newState.filterBy.notGrouped = true;
+        }
+
+        this.setState(newState);
+        console.log(this.state);
+    }
+    _getTotalNumberOfDependents = () => {
         return this.props.dependentState.data.length;
     }
-    _toggleRedirect = (dep) =>{
+    _toggleRedirect = (dep) => {
         let newState = this.state;
         window.location = "/admin/dependents/" + dep._id
         this.setState(newState);
     }
-    _getAverageAge = () =>{
-        if(this.props.dependentState.data.length<1){
+    _getAverageAge = () => {
+        if (this.props.dependentState.data.length < 1) {
             return 0;
         }
         let age = 0;
-        for(var i=0;i<this.props.dependentState.data.length;++i){
+        for (var i = 0; i < this.props.dependentState.data.length; ++i) {
             let birthday = +new Date(this.props.dependentState.data[i].dateOfBirth);
             age = age + ~~((Date.now() - birthday) / (31557600000));
         }
-        return age/this.props.dependentState.data.length;
+        return age / this.props.dependentState.data.length;
     }
-    _getAverageMeds = () =>{
+    _getAverageMeds = () => {
         let meds = 0;
-        if(this.props.dependentState.data.length<1){
+        if (this.props.dependentState.data.length < 1) {
             return 0;
         }
-        for(var i=0;i<this.props.dependentState.data.length;++i){
-            for(var ix=0;ix<this.props.dependentState.data[i].rxs.length;++ix){
+        for (var i = 0; i < this.props.dependentState.data.length; ++i) {
+            for (var ix = 0; ix < this.props.dependentState.data[i].rxs.length; ++ix) {
                 meds = meds + this.props.dependentState.data[i].rxs[ix].rxsMedications.length;
             }
         }
-        return (meds/this.props.dependentState.data.length);
+        return (meds / this.props.dependentState.data.length);
     }
-    _deleteDependent = (dep) =>{
-        if(window.confirm("Are you sure you want to delete "+dep.name.firstName+" profile and all their data?")){
+    _deleteDependent = (dep) => {
+        if (window.confirm("Are you sure you want to delete " + dep.name.firstName + " profile and all their data?")) {
             this.props.fetchDeleteDependent(dep._id);
         }
     }
-    componentDidMount = () =>{
+    _getData = () =>{
+        if(this.state.filterBy.all){
+            return this.props.dependentState.data;
+        }else if(this.state.filterBy.grouped){
+            return this._filterByGroup(true);
+        }else{
+            return this._filterByGroup(false);
+        }
+    }
+    _filterByGroup = (isGroup) =>{
+        let data = [];
+        for(var i=0;i<this.props.dependentState.data.length;++i){
+            if(isGroup && this.props.dependentState.data[i].group.length>0){
+                data.push(this.props.dependentState.data[i]);
+            }else if(!isGroup && this.props.dependentState.data[i].group.length<1){
+                data.push(this.props.dependentState.data[i]);
+            }
+        }
+        return data;
+    }
+    componentDidMount = () => {
         this.props.changeColor("#2196f3");
-        this.props.fetchPopulatedDependents(()=>{});
+        this.props.fetchPopulatedDependents(() => { });
     }
     render() {
         return (
             <>
                 <div className="row">
                     <div className="col-lg-12">
-                            <div className="row">
-                                <div className="col-lg-12">
-                                    <h4 className="view-header">Dependents</h4>
-                                </div>
-                                <div className="col-lg-12" style={{ marginBottom: "30px" }}>
-                                    <Overview dependentsLength={this._getTotalNumberOfDependents()} averageMed={this._getAverageMeds()} 
-                                        averageAge={this._getAverageAge()}/>
-                                </div>
-                                <div className="col-lg-12" style={{ marginBottom: "30px" }}>
-                                    <button type="button" 
-                                    onClick={()=>{this.props.togglePopUp("Create Dependent",<CreateDependent/>,"90%")}} 
-                                    className="btn btn-primary btn-fw">Create</button>
-                                </div>
-                            </div>
                         <div className="row">
                             <div className="col-lg-12">
-                                {this.props.dependentState.data.length>0?
-                                <DependentTable dependents={this.props.dependentState.data} delete={this._deleteDependent} 
-                                    changeDepSel={this._toggleRedirect}/>
-                                :null}
+                                <h4 className="view-header">Dependents</h4>
+                            </div>
+                            <div className="col-lg-12" style={{ marginBottom: "30px" }}>
+                                <Overview dependentsLength={this._getTotalNumberOfDependents()} averageMed={this._getAverageMeds()}
+                                    averageAge={this._getAverageAge()} />
+                            </div>
+                            <div className="col-lg-12" style={{ marginBottom: "30px" }}>
+                                <button type="button"
+                                    onClick={() => { this.props.togglePopUp("Create Dependent", <CreateDependent />, "90%") }}
+                                    className="btn btn-primary btn-fw">Create</button>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-lg-12" style={{ marginBottom: "30px" }}>
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <button onClick={()=>{this._toggleFilterBy(true)}} type="button" 
+                                        class={"btn "+(this.state.filterBy.all? "btn-primary":"btn-outline-secondary")}>All</button>
+                                    <button onClick={()=>{this._toggleFilterBy(false,true)}} type="button" 
+                                        class={"btn "+(this.state.filterBy.grouped? "btn-primary":"btn-outline-secondary")}>Is Grouped</button>
+                                    <button onClick={()=>{this._toggleFilterBy(false,false,true)}} type="button" 
+                                        class={"btn "+(this.state.filterBy.notGrouped? "btn-primary":"btn-outline-secondary")}>Not Grouped</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-lg-12">
+                                {this.props.dependentState.data.length > 0 ?
+                                    <DependentTable dependents={this._getData()} delete={this._deleteDependent}
+                                        changeDepSel={this._toggleRedirect} />
+                                    : null}
                             </div>
                         </div>
                     </div>
@@ -107,5 +166,7 @@ const mapStateToProps = (state) => ({
     groupState: state.groupState
 });
 
-export default connect(mapStateToProps, { fetchLogin, changeColor, fetchDeleteDependent, togglePopUp, 
-    fetchPopulatedDependents})(DependentView);
+export default connect(mapStateToProps, {
+    fetchLogin, changeColor, fetchDeleteDependent, togglePopUp,
+    fetchPopulatedDependents
+})(DependentView);

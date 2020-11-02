@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createMessage } from '../../actions/messages'
 
-class AdminLayout extends React.Component {
+class UserLayout extends React.Component {
     static propTypes = {
         message: PropTypes.object.isRequired,
         createMessage: PropTypes.func.isRequired,
@@ -31,11 +31,11 @@ class AdminLayout extends React.Component {
                 <div className="my-side-bar">
                     <div className={"my-brand " + (this._isCurrentURL("/admin/home") ? "my-nav-selected" : "")} 
                         style={{borderLeftColor:this.props.theme.pagePrimaryColor}}>
-                        <a href="/admin/dependents" className="my-nav-item">
+                        <a href="/user/dependents" className="my-nav-item">
                             <i title="Home" className="fas fa-notes-medical" style={{color:this.props.theme.pagePrimaryColor}}></i>
                         </a>
                     </div>
-                    <div className={"" + (this._isCurrentURL("/admin/dependents") ? "my-nav-selected" : "")} 
+                    {/* <div className={"" + (this._isCurrentURL("/admin/dependents") ? "my-nav-selected" : "")} 
                         style={{borderLeftColor:this.props.theme.pagePrimaryColor}}>
                         <a href="/admin/dependents" className="my-nav-item">
                             <i title="Medication(s)" className="fas fa-capsules" style={{color:this.props.theme.pagePrimaryColor}}></i>
@@ -52,7 +52,7 @@ class AdminLayout extends React.Component {
                         <a href="/admin/users" className="my-nav-item">
                             <i title="User(s)" className="fas fa-user-shield" style={{color:this.props.theme.pagePrimaryColor}}></i>
                         </a>
-                    </div>
+                    </div> */}
                     <div className={"" + (this._isCurrentURL("/admin/profile") ? "my-nav-selected" : "")} 
                         style={{borderLeftColor:this.props.theme.pagePrimaryColor}}>
                         <a href="/admin/profile" className="my-nav-item">
@@ -96,4 +96,4 @@ const mapStateToProps = (state) => ({
     theme: state.theme
 });
 
-export default connect(mapStateToProps, { createMessage })(AdminLayout);
+export default connect(mapStateToProps, { createMessage })(UserLayout);

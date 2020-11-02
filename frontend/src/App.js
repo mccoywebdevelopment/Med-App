@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Route, Switch } from "react-router-dom";
 import { BrowserRouter } from 'react-router-dom'
-import { adminRoutes, authRoutes } from "./Routes";
+import { adminRoutes, authRoutes, userRoutes } from "./Routes";
 import { changeRedirectURL } from "./actions/auth";
 
 import AdminLayout from "./layouts/admin/AdminLayout";
 import AuthLayout from "./layouts/shared/AuthLayout";
+import UserLayout from "./layouts/user/UserLayout";
 
 import "./assets/css/shared/fontawesome/css/all.min.css";
 
@@ -24,6 +25,16 @@ class App extends React.Component {
       let component = <AdminLayout>{route.component}</AdminLayout>
       return (
         <Route exact path={route.path} key={"adminRoute" + key}>
+          {component}
+        </Route>
+      );
+    });
+  }
+  _userRouteList = () => {
+    return userRoutes.map((route, key) => {
+      let component = <UserLayout>{route.component}</UserLayout>
+      return (
+        <Route exact path={route.path} key={"userRoute" + key}>
           {component}
         </Route>
       );
@@ -54,6 +65,7 @@ class App extends React.Component {
         <Switch>
           {this._adminRouteList()}
           {this._authRouteList()}
+          {this._userRouteList()}
         </Switch>
       </BrowserRouter>
     );

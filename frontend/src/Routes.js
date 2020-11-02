@@ -10,6 +10,7 @@ import ForgotPassword from "./views/shared/ForgotPassword";
 import ResetPassword from "./views/shared/ResetPassword";
 import Login from "./views/shared/Login";
 import Register from './views/shared/Register';
+import DependentViewUser from './views/user/DependentViewUser';
 
 import Test from './views/test/Test';
 
@@ -46,7 +47,8 @@ const adminRoutes = [
 
 const userRoutes = [
     {
-        path:'/user/dependents'
+        path:'/user/dependents',
+        component:  <DependentViewUser/>
     }
 ];
 
