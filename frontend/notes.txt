@@ -1,29 +1,10 @@
 TODO:
-Need to fix switch group it does the thing where is pops off
-the other dependents again :(
-
-Allow user to be grouped to multiple groups
-    -change create user
-    -create user
-
-
-NOTES:
-- Need to add groupID to isRemoved right now it's "" b/c the user deselected it (CreateDependent.js FORM)
-- Linux nodemon cmds:
-    lsof -i tcp:4000 
-    kill -9 44475
-    
-    echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
-- Flow for adding user w/ group:
-    Create user
-    Create guardian
-    add to group
-
-    for user registering:
-        find guardian by userID if found update guardian else
-        create new guardian
 
 OPTIMIZATIONS:
 -check if user fields is modified when fetchUpdateUser
 -pages (redo models/algorithms)
 -send reset password even when user is not yet authenticated.
+
+ERRORS:
+-Guardian is not updating it create a new one when you add user to group,
+ delete user, create user with same email, and then add user to the prev groups.

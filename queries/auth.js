@@ -29,7 +29,7 @@ function registerUser(body,token,email,callback){
                         if(err){
                             callback(err);
                         }else{
-                            var redirect = "/user/dependents";
+                            var redirect = "/user/dashboard";
                             if(userFound.isAdmin){
                                 redirect = "/admin/users";
                             }
@@ -46,6 +46,7 @@ function registerUser(body,token,email,callback){
                                 phoneNumber:body.phoneNumber
                             }
                             guardianModel.findOne({user:body.user},function(err,guardianFound){
+                                console.log(guardianFound);
                                 if(err){
                                     callback(err);
                                 }else if(!guardianFound){
@@ -119,7 +120,7 @@ function logginUser(body,callback){
                                 if(err){
                                     callback(err);
                                 }else{
-                                    var redirect = "/user/dependents";
+                                    var redirect = "/user/dashboard";
                                     if(userFound.isAdmin){
                                         redirect = "/admin/dependents";
                                     }
@@ -159,7 +160,7 @@ function resetUserPassword(body,callback){
                                 if(err){
                                     callback(err);
                                 }else{
-                                    var redirect = "/user/dependents";
+                                    var redirect = "/user/dashboard";
                                     if(userFound.isAdmin){
                                         redirect = "/admin/users";
                                     }

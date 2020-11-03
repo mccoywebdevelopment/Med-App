@@ -2,7 +2,7 @@ import { createMessage } from './messages';
 import { toggleLoading } from './loading';
 import { FETCH_USERS } from './types';
 import { addUser, addGuardian, removeGuardian } from './group';
-import { fetchGuardians } from './guardian';
+import { fetchGuardians,fetchCreateGuardian } from './guardian';
 import { FETCH } from '../config/helpers';
 
 export const fetchUsers = (isLoading, done) => (dispatch) => {
@@ -24,10 +24,7 @@ export const fetchUsers = (isLoading, done) => (dispatch) => {
   });
 }
 function combineGuardian(users, guardians) {
-  console.log(users);
-  console.log(guardians);
   let data = users;
-
   for (var i = 0; i < guardians.length; ++i) {
     for (var ix = 0; ix < users.length; ++ix) {
       if (guardians[i].user == users[ix]._id) {
@@ -38,30 +35,34 @@ function combineGuardian(users, guardians) {
   return data;
 }
 
+
 export const fetchCreateUser = (body, groupIDs, done) => (dispatch) => {
   dispatch(toggleLoading(true));
   FETCH('POST', '/users/', body, localStorage.getItem('JWT'), dispatch, false, (err, res) => {
     if (err) {
       dispatch(createMessage(err, 'danger'));
-    } else if (groupIDs.length > 0) {
-      let guardianBody = {
-        user: res
-      }
-      let i = 0;
-      groupIDs.forEach(groupID => {
-        dispatch(addUser(groupID, guardianBody, false, (groups) => {
-          if (err) {
-            dispatch(createMessage(err, 'danger'));
-            return;
-          } else if (i == groupIDs.length - 1) {
-            createUserAfter(body.username, dispatch, done);
-            return;
-          }
-          i++;
-        }));
-      });
-    } else {
-      createUserAfter(body.username, dispatch, done);
+    }else{
+      dispatch(fetchCreateGuardian({user:res._id},false,function(guardianCreated){
+        if(err){
+          dispatch(createMessage(err, 'danger'));
+        }else if (groupIDs.length > 0) {
+          let i = 0;
+          groupIDs.forEach(groupID => {
+            dispatch(addGuardian(groupID, guardianCreated._id, false, (groups) => {
+              if (err) {
+                dispatch(createMessage(err, 'danger'));
+                return;
+              } else if (i == groupIDs.length - 1) {
+                createUserAfter(body.username, dispatch, done);
+                return;
+              }
+              i++;
+            }));
+          });
+        } else {
+          createUserAfter(body.username, dispatch, done);
+        }
+      }));
     }
   });
 }
@@ -143,7 +144,6 @@ function updateUserAfter(dispatch, done, res) {
     }
   }));
 }
-
 
 export const sendTokenViaEmail = (email, done) => (dispatch) => {
   FETCH('GET', "/auth/email/send-welcome/" + email + "/", null, localStorage.getItem('JWT'), dispatch, false, (err, res) => {

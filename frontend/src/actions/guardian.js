@@ -35,10 +35,6 @@ export const fetchCreateGuardian = (body, isLoading, done) => (dispatch) => {
     if (err) {
       dispatch(createMessage(err, 'danger'));
     }
-    dispatch(fetchGuardians(isLoading, (guardians) => {
-      if (done) {
-        done(res);
-      }
-    }));
+    done(res);
   });
 }

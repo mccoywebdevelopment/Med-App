@@ -101,7 +101,6 @@ class Calendar extends React.Component{
         this.updateHandler();
     }
     eventClickHandler = (event) =>{
-        //alert(index);
         this.setState({window:event});
 
     }

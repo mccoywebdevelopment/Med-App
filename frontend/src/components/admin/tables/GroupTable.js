@@ -45,7 +45,6 @@ class GroupTable extends React.Component {
         let name = group.name;
         let numOfDep = group.dependents.length;
         let numOfAdmins = this._getNumberOfAdmins(group.guardians);
-        // alert(numOfAdmins)
         let guardianLength = group.guardians.length - numOfAdmins;
         let trStyle = {
         }

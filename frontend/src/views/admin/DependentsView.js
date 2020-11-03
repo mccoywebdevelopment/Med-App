@@ -46,7 +46,6 @@ class DependentView extends React.Component {
         }
 
         this.setState(newState);
-        console.log(this.state);
     }
     _getTotalNumberOfDependents = () => {
         return this.props.dependentState.data.length;

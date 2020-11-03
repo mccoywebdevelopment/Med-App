@@ -349,7 +349,6 @@ class CreateGroup extends React.Component {
         let newState = this.state;
         newState.itemList = [this._formatGroupInputsGuardian(), this._formatGroupInputsDependent()];
         this.setState(newState);
-        console.log(this.state);
     }
     _getSelectedValues = (values) => {
         let newState = this.state;
