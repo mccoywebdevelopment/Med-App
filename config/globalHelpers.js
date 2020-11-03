@@ -22,6 +22,7 @@ function verifyUser(req,res,next){
             }else if(todayDate>userFound.auth.expiresIn){
                 next({error:"Token expired"})
             }else{
+                req.user = userFound;
                 next();
             }
         });
@@ -48,6 +49,7 @@ function verifyAdmin(req,res,next){
             }else if(todayDate>userFound.auth.expiresIn){
                 next({error:"Token expired"})
             }else{
+                req.user = userFound;
                 next();
             }
         });

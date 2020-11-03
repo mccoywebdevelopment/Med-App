@@ -35,8 +35,6 @@ function patchUpdateById(body, id, callback) {
         if (err) {
           callback(err);
         } else {
-          console.log("\n\n\n\n\n\n\n\n\n\n");
-          console.log(newDoc);
           foundDoc.update(newDoc, function (err, result) {
             if (err) {
               callback(err);
@@ -178,7 +176,6 @@ function saveAndUpdateDoc(newDoc, body, callback) {
     }
   }
   if (body.removeGuardianIDs) {
-    console.log(true);
     removeGuardiansFromGroup(newDoc, body.removeGuardianIDs, function (err, newDoc) {
       index++;
       if (err && index == count) {
@@ -304,15 +301,12 @@ function addGuardianToGroup(newDoc, guardianId, callback) {
   });
 }
 function removeByID(id, arr) {
-  console.log(id);
-  console.log(arr);
   let newArr = [];
   for (var i = 0; i < arr.length; ++i) {
     if (arr[i]._id.toString() != id.toString() || arr[i].toString() != id.toString()) {
       newArr.push(arr[i]);
     }
   }
-  console.log(newArr);
   return newArr;
 }
 function deleteById(id, callback) {

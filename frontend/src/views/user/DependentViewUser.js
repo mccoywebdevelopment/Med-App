@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchLogin } from "../../actions/auth";
 import { togglePopUp } from '../../actions/popUp';
-import { fetchPopulatedDependents } from "../../actions/dependent";
+import { fetchPopulatedDependentsUser } from "../../actions/dependent";
 import { changeColor } from "../../actions/theme";
 
 import DependentTable from "../../components/admin/tables/DependentTable";
@@ -52,7 +52,7 @@ class DependentViewUser extends React.Component {
     }
     componentDidMount = () =>{
         this.props.changeColor("#2196f3");
-        this.props.fetchPopulatedDependents(()=>{});
+        this.props.fetchPopulatedDependentsUser(()=>{});
     }
     render() {
         return (
@@ -90,7 +90,7 @@ class DependentViewUser extends React.Component {
 }
 DependentViewUser.propTypes = {
     fetchLogin: PropTypes.func.isRequired,
-    fetchPopulatedDependents: PropTypes.func.isRequired,
+    fetchPopulatedDependentsUser: PropTypes.func.isRequired,
     togglePopUp: PropTypes.func.isRequired,
     changeColor: PropTypes.func.isRequired
 };
@@ -101,4 +101,4 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, { fetchLogin, changeColor, togglePopUp, 
-    fetchPopulatedDependents})(DependentViewUser);
+    fetchPopulatedDependentsUser})(DependentViewUser);

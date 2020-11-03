@@ -98,6 +98,22 @@ export const fetchPopulatedDependents = (isLoading, done) => (dispatch) => {
   }));
 }
 
+export const fetchPopulatedDependentsUser = (isLoading, done) => (dispatch) => {
+  FETCH('GET', '/users/get/dependents/', null, localStorage.getItem('JWT'), dispatch, isLoading, (err, dependents) => {
+    if (err) {
+      dispatch(createMessage(err, 'danger'));
+    } else {
+      dispatch({
+        type: FETCH_DEPENDENTS,
+        payload: dependents
+      });
+      if (done) {
+        done(dependents);
+      }
+    }
+  });
+}
+
 function attatchGroup(dependents, groups) {
   for (var i = 0; i < dependents.length; ++i) {
     dependents[i].group = "";

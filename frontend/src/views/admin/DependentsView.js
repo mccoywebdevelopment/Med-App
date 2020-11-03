@@ -109,6 +109,8 @@ class DependentView extends React.Component {
         this.props.fetchPopulatedDependents(() => { });
     }
     render() {
+        let isGroupLength = this._filterByGroup(true).length;
+        let notGroupLength = this._filterByGroup(false).length;
         return (
             <>
                 <div className="row">
@@ -133,9 +135,9 @@ class DependentView extends React.Component {
                                     <button onClick={()=>{this._toggleFilterBy(true)}} type="button" 
                                         class={"btn "+(this.state.filterBy.all? "btn-primary":"btn-outline-secondary")}>All</button>
                                     <button onClick={()=>{this._toggleFilterBy(false,true)}} type="button" 
-                                        class={"btn "+(this.state.filterBy.grouped? "btn-primary":"btn-outline-secondary")}>Is Grouped</button>
+                                        class={"btn "+(this.state.filterBy.grouped? "btn-primary":"btn-outline-secondary")}>Is Grouped({isGroupLength})</button>
                                     <button onClick={()=>{this._toggleFilterBy(false,false,true)}} type="button" 
-                                        class={"btn "+(this.state.filterBy.notGrouped? "btn-primary":"btn-outline-secondary")}>Not Grouped</button>
+                                        class={"btn "+(this.state.filterBy.notGrouped? "btn-primary":"btn-outline-secondary")}>Not Grouped({notGroupLength})</button>
                                 </div>
                             </div>
                         </div>

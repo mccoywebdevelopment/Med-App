@@ -71,7 +71,7 @@ router.route("/:id/:JWT")
 
 router.route('/get/dependents/:JWT')
 .get(verifyUser,function(req,res){
-    userQ.getDependents(req.params.JWT,function(err,result){
+    userQ.getDependents(req.user,function(err,result){
         if(err){
             console.log(err);
             res.json({error:err});

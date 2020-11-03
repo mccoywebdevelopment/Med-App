@@ -7,6 +7,7 @@ const rxsMedicationModel = require('../models/rxsMedication/RxsMedication');
 const Medication = require('../models/medication/Medication');
 const rxsDelete = require('./prescription').deleteById;
 const medDelete = require('./medication').deleteById;
+const findAllGroups = require('./group').findAll;
 
 function findDependentById(id, callback) {
   dependentModel.findById(id, function (err, result) {
@@ -302,20 +303,21 @@ function createDependent(body, callback) {
 
 
 function getDependentsWithMeds(callback) {
-  dependentModel.find({}).populate('rxs').populate('medications').exec(function (err, result) {
-    if (err) {
-      callback(err);
-    } else {
-      rxsMedicationModel.populate(result, { path: 'rxs.rxsMedications' }, function (err, finalResult) {
-        if (err) {
-          callback(err)
-        } else {
-          callback(null, finalResult);
-        }
-      });
-    }
-  });
+    dependentModel.find({}).populate('rxs').populate('medications').exec(function (err, result) {
+      if (err) {
+        callback(err);
+      } else {
+        rxsMedicationModel.populate(result, { path: 'rxs.rxsMedications' }, function (err, finalResult) {
+          if (err) {
+            callback(err)
+          } else {
+            callback(null, finalResult);
+          }
+        });
+      }
+    });
 }
+
 function removeOTCMedsFromDep(depId, medId, callback) {
   Medication.findByIdAndDelete(medId, function (err, result) {
     if (err) {
