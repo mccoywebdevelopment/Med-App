@@ -57,6 +57,8 @@ class DependentTable extends React.Component{
               <td onClick={()=>this._selectItem(dep)}>{dateOfBirth}</td>
               <td onClick={()=>this._selectItem(dep)}>{rxsMeds}</td>
               {/* <td>Ventrent</td> */}
+              {!this.props.isUserView?
+              <>
               <td style={group.style} onClick={()=>this._selectItem(dep._id)}>{group.text}</td>
               {!this.props.isSmall?
               <td>
@@ -64,6 +66,8 @@ class DependentTable extends React.Component{
                 {/* <i title="edit" className="fas fa-edit" style={{ paddingRight: '20px', color: '#2196F3' }}></i> */}
                 <i title="Delete" onClick={()=>{this.props.delete(dep)}} className="fas fa-trash" style={{ color: '#2196F3' }}></i>
               </td>
+              :null}
+              </>
               :null}
             </tr>
         );
@@ -79,8 +83,8 @@ class DependentTable extends React.Component{
             <th scope="col">DOB</th>
             <th scope="col"># Medication(s)</th>
             {/* <th scope="col">Last Med Taken</th> */}
-            <th scope="col">Grouped</th>
-            {!this.props.isSmall?<th scope="col">Actions</th>:null}
+            {!this.props.isUserView?<th scope="col">Grouped</th>:null}
+            {!this.props.isSmall && !this.props.isUserView?<th scope="col">Actions</th>:null}
           </tr>
         </thead>
         <tbody>

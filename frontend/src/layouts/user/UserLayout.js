@@ -94,7 +94,7 @@ class UserLayout extends React.Component {
                         : null
                     }
                     <div>
-                        {/* {this.props.children} */}
+                        {this.props.children}
                     </div>
                     <div style={{ marginTop: '30px' }}>
                         &nbsp;
