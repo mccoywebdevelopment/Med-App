@@ -8,3 +8,7 @@ OPTIMIZATIONS:
 ERRORS:
 -Guardian is not updating it create a new one when you add user to group,
  delete user, create user with same email, and then add user to the prev groups.
+
+ TIPS:
+ - To find all logs/alerts use: 
+    ./frontend/src/actions,./frontend/src/components,./frontend/src/views,./queries,./routes

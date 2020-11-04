@@ -47,7 +47,7 @@ const adminRoutes = [
 
 const userRoutes = [
     {
-        path:'/user/dashboard',
+        path:'/user/dependents',
         component:  <DependentViewUser/>
     }
 ];

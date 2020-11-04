@@ -24,7 +24,7 @@ class DependentViewUser extends React.Component {
     }
     _toggleRedirect = (dep) =>{
         let newState = this.state;
-        window.location = "/admin/dependents/" + dep._id
+        window.location = "/user/dependents/" + dep._id
         this.setState(newState);
     }
     _getAverageAge = () =>{
@@ -67,7 +67,7 @@ class DependentViewUser extends React.Component {
                                     <Overview dependentsLength={this._getTotalNumberOfDependents()} averageMed={this._getAverageMeds()} 
                                         averageAge={this._getAverageAge()}/>
                                 </div>
-                                <div className="col-lg-12" style={{ marginBottom: "30px" }}>
+                                <div className="col-lg-12" style={{ marginBottom: "0px" }}>
                                     {/* <button type="button" 
                                     onClick={()=>{this.props.togglePopUp("Create Dependent",<CreateDependent/>,"90%")}} 
                                     className="btn btn-primary btn-fw">Create</button> */}
@@ -76,9 +76,8 @@ class DependentViewUser extends React.Component {
                         <div className="row">
                             <div className="col-lg-12">
                                 {this.props.dependentState.data.length>0?
-                                // <DependentTable dependents={this.props.dependentState.data} delete={this._deleteDependent} 
-                                //     changeDepSel={this._toggleRedirect}/>
-                                <h1>test</h1>
+                                    <DependentTable dependents={this.props.dependentState.data} delete={this._deleteDependent} 
+                                        changeDepSel={this._toggleRedirect} isUserView={true}/>
                                 :null}
                             </div>
                         </div>

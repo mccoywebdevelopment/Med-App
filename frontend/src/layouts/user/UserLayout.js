@@ -28,63 +28,77 @@ class UserLayout extends React.Component {
     render() {
         return (
             <>
-                <div className="my-side-bar">
-                    <div className={"my-brand " + (this._isCurrentURL("/admin/home") ? "my-nav-selected" : "")} 
-                        style={{borderLeftColor:this.props.theme.pagePrimaryColor}}>
+                <div className="my-side-bar content-desktop">
+                    <div className={"my-brand " + (this._isCurrentURL("/admin/home") ? "my-nav-selected" : "")}
+                        style={{ borderLeftColor: this.props.theme.pagePrimaryColor }}>
                         <a href="/user/dependents" className="my-nav-item">
-                            <i title="Home" className="fas fa-notes-medical" style={{color:this.props.theme.pagePrimaryColor}}></i>
+                            <i title="Home" className="fas fa-notes-medical" style={{ color: this.props.theme.pagePrimaryColor }}></i>
                         </a>
                     </div>
-                    {/* <div className={"" + (this._isCurrentURL("/admin/dependents") ? "my-nav-selected" : "")} 
-                        style={{borderLeftColor:this.props.theme.pagePrimaryColor}}>
+                    <div className={"" + (this._isCurrentURL("/user/dependents") ? "my-nav-selected" : "")}
+                        style={{ borderLeftColor: this.props.theme.pagePrimaryColor }}>
                         <a href="/admin/dependents" className="my-nav-item">
-                            <i title="Medication(s)" className="fas fa-capsules" style={{color:this.props.theme.pagePrimaryColor}}></i>
+                            <i title="Medication(s)" className="fas fa-capsules" style={{ color: this.props.theme.pagePrimaryColor }}></i>
                         </a>
                     </div>
-                    <div className={"" + (this._isCurrentURL("/admin/groups") ? "my-nav-selected" : "")} 
-                        style={{borderLeftColor:this.props.theme.pagePrimaryColor}}>
-                        <a href="/admin/groups" className="my-nav-item">
-                            <i title="Group(s)" className="fas fa-users" style={{color:this.props.theme.pagePrimaryColor}}></i>
-                        </a>
-                    </div>
-                    <div className={"" + (this._isCurrentURL("/admin/users") ? "my-nav-selected" : "")} 
-                        style={{borderLeftColor:this.props.theme.pagePrimaryColor}}>
-                        <a href="/admin/users" className="my-nav-item">
-                            <i title="User(s)" className="fas fa-user-shield" style={{color:this.props.theme.pagePrimaryColor}}></i>
-                        </a>
-                    </div> */}
-                    <div className={"" + (this._isCurrentURL("/admin/profile") ? "my-nav-selected" : "")} 
-                        style={{borderLeftColor:this.props.theme.pagePrimaryColor}}>
+                    <div className={"" + (this._isCurrentURL("/admin/profile") ? "my-nav-selected" : "")}
+                        style={{ borderLeftColor: this.props.theme.pagePrimaryColor }}>
                         <a href="/admin/profile" className="my-nav-item">
-                            <i title="My Profile" className="fas fa-cog" style={{color:this.props.theme.pagePrimaryColor}}></i>
+                            <i title="My Profile" className="fas fa-cog" style={{ color: this.props.theme.pagePrimaryColor }}></i>
                         </a>
                     </div>
                 </div>
-                <div className="my-top-nav">
-
+                <div className="my-top-nav content-desktop">
                 </div>
+                <div className="navbar-bottom content-mobile content-mobile-navbar">
+                    <div className={"nav-item-mobile " + (this._isCurrentURL("/user/home") ? "my-nav-selected-mobile" : "")}
+                        style={{ borderLeftColor: this.props.theme.pagePrimaryColor }}>
+                        <a href="/user/home" className="my-nav-item">
+                            <i title="Home" className="fas fa-home"
+                                style={{ color: this.props.theme.pagePrimaryColor, fontSize: '24px' }}></i>
+                            <p style={{ fontSize: '0.7em' }}>Home</p>
+                        </a>
+                    </div>
+                    <div className={"nav-item-mobile " + (this._isCurrentURL("/user/dependents") ? "my-nav-selected-mobile" : "")}
+                        style={{ borderLeftColor: this.props.theme.pagePrimaryColor }}>
+                        <a href="/user/dependents" className="my-nav-item">
+                            <i title="Home" className="fas fa-capsules"
+                                style={{ color: this.props.theme.pagePrimaryColor, fontSize: '24px' }}></i>
+                            <p style={{ fontSize: '0.7em' }}>RXS</p>
+                        </a>
+                    </div>
+                    <div className={"nav-item-mobile " + (this._isCurrentURL("/user/profile") ? "my-nav-selected-mobile" : "")}
+                        style={{ borderLeftColor: this.props.theme.pagePrimaryColor }}>
+                        <a href="/user/profile" className="my-nav-item">
+                            <i title="Home" className="fas fa-cog"
+                                style={{ color: this.props.theme.pagePrimaryColor, fontSize: '24px' }}></i>
+                            <p style={{ fontSize: '0.7em' }}>Profile</p>
+                        </a>
+                    </div>
+                </div>
+
                 <div className="main">
-                    {this.props.message.text?
+                    {this.props.message.text ?
                         <div className="alert-container">
                             <div className="alert-container">
                                 <div className={"alert alert-dismissible alert-" + this.props.message.alertType} role="alert">
                                     {this.props.message.text}
-                                    {this.props.message.text.length>0?
-                                    <button type="button" onClick={()=>{this.props.createMessage("",null)}} class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                    :null}
+                                    {this.props.message.text.length > 0 ?
+                                        <button type="button" onClick={() => { this.props.createMessage("", null) }} class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        : null}
                                 </div>
                             </div>
                         </div>
-                    :null
+                        : null
                     }
                     <div>
-                        {this.props.children}
+                        {/* {this.props.children} */}
                     </div>
-                    <div style={{marginTop:'30px'}}>
-                    &nbsp;
-                    </div>
+                    <div style={{ marginTop: '30px' }}>
+                        &nbsp;
+</div>
                 </div>
             </>
         );

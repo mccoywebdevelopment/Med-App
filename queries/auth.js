@@ -29,7 +29,7 @@ function registerUser(body,token,email,callback){
                         if(err){
                             callback(err);
                         }else{
-                            var redirect = "/user/dashboard";
+                            var redirect = "/user/dependents";
                             if(userFound.isAdmin){
                                 redirect = "/admin/users";
                             }
@@ -120,7 +120,7 @@ function logginUser(body,callback){
                                 if(err){
                                     callback(err);
                                 }else{
-                                    var redirect = "/user/dashboard";
+                                    var redirect = "/user/dependents";
                                     if(userFound.isAdmin){
                                         redirect = "/admin/dependents";
                                     }
@@ -160,7 +160,7 @@ function resetUserPassword(body,callback){
                                 if(err){
                                     callback(err);
                                 }else{
-                                    var redirect = "/user/dashboard";
+                                    var redirect = "/user/dependents";
                                     if(userFound.isAdmin){
                                         redirect = "/admin/users";
                                     }
