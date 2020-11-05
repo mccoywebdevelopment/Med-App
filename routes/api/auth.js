@@ -2,8 +2,6 @@ const express = require('express');
 const errors = require('../errors');
 const router = express.Router();
 const authQ = require('../../queries/auth');
-const verifyUser = require('../../config/globalHelpers').verifyUser;
-
 
 router.route("/register/:email/:token")
 .post(function(req,res){
