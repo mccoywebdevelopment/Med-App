@@ -30,7 +30,7 @@ router.route("/login")
 });
 
 router.route("/reset-password/:JWT")
-.post(verifyUser,function(req,res){
+.post(function(req,res){
     authQ.resetUserPassword(req.body,function(err,result){
         if(err){
             console.log(err);

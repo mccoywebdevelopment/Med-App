@@ -46,7 +46,6 @@ function registerUser(body,token,email,callback){
                                 phoneNumber:body.phoneNumber
                             }
                             guardianModel.findOne({user:body.user},function(err,guardianFound){
-                                console.log(guardianFound);
                                 if(err){
                                     callback(err);
                                 }else if(!guardianFound){

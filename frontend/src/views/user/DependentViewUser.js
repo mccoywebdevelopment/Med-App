@@ -54,7 +54,6 @@ class DependentViewUser extends React.Component {
         }
         newState.filterBy.groups = groupArr;
         this.setState(newState);
-        console.log(this.state);
     }
     _getTotalNumberOfDependents = () => {
         return this.props.dependentState.data.length;

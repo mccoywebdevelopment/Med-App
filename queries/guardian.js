@@ -140,13 +140,11 @@ function saveToDoc(bodyData,callback){
 }
 
 function create(body,callback){
-  console.log(body);
   val.validator(guardianModel,body,function(err,result){
     if(err){
       callback(err);
     }else{
       saveToDoc(body,function(err,result){
-        console.log(result);
         if(err){
           callback(err);
         }else{
