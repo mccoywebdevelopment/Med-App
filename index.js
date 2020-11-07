@@ -2,7 +2,6 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const configVars = require('./config/configVars');
 const mongoose = require('mongoose');
 const usersRouter = require('./routes/api/users');
 const emailRouter = require('./routes/api/mailer');
@@ -19,7 +18,7 @@ const dataRouter = require('./routes/api/data');
 const medicationEvent = require('./routes/api/medicationEvent');
 const exportDataRouter = require('./routes/api/exportData');
 const PORT = process.env.PORT || 4000;
-const MONGO_URI = process.env.MONGODB_URI || configVars.MONGODB_URI;
+const MONGO_URI = process.env.MONGODB_URI || require('./config/configVars').MONGODB_URI;
 
 if(process.env.NODE_ENV !='production'){
     const cors = require('cors');
@@ -59,20 +58,11 @@ app.use(function(error, req, res, next) {
 });
 
 if(process.env.NODE_ENV ==='production'){
-    configVars.BASE_URL = "https://sun-note.herokuapp.com";
-    configVars.CLIENT_URL = "https://sun-note.herokuapp.com";
     const root = require('path').join(__dirname, 'client', 'build')
     app.use(express.static(root));
     app.get("*", (req, res) => {
         res.sendFile('index.html', { root });
     });
-    if(process.env.BASE_URL){
-        configVars.BASE_URL = process.env.BASE_URL;
-    }
-    if(process.env.CLIENT_URL){
-        configVars.CLIENT_URL = process.env.CLIENT_URL;
-    }
-
 }
 
 app.listen(PORT,function(req,res){

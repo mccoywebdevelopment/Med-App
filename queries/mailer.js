@@ -1,9 +1,11 @@
-const configVars = require('../config/configVars');
+const BASE_URL = process.env.BASE_URL || require('../config/configVars').BASE_URL;
+const CLIENT_URL = process.env.CLIENT_URL || require('../config/configVars').CLIENT_URL;
+const EMAIL = process.env.EMAIL || require('../config/configVars').EMAIL;
+const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD || require('../config/configVars').EMAIL_PASSWORD;
 const fs = require("fs");
 const nodemailer = require("nodemailer");
 const User = require('../models/user/User');
 const crypto = require('crypto');
-
 
 function authenticateUserEmail(email,token,callback){
   User.findOne({username:email},function(err,userFound){
@@ -86,17 +88,17 @@ function readHTMLFile(path,email,redirectUrl,emailToken,callback) {
                 html = html.replace("MSG",messageText);
                 html = html.replace("BTN_TEXT",buttonText);
                 if(redirectUrl == "api/auth/email/redirect"){
-                  html = html.replace("URL",configVars.BASE_URL+"/"+redirectUrl+"/"+email+"/"+token);
+                  html = html.replace("URL",BASE_URL+"/"+redirectUrl+"/"+email+"/"+token);
                   html = html +"<h1>If button doesn't works please follow this link:"+ 
-                  configVars.BASE_URL+"/"+redirectUrl+"/"+email+"/"+token + "</h1>";
+                  BASE_URL+"/"+redirectUrl+"/"+email+"/"+token + "</h1>";
                 }else{
-                  html = html.replace("URL",configVars.CLIENT_URL+"/auth/reset-password/"+email+"/"+token);
+                  html = html.replace("URL",CLIENT_URL+"/auth/reset-password/"+email+"/"+token);
                   html = html +"<h1>If button doesn't works please follow this link:"+ 
-                  configVars.CLIENT_URL+"/auth/reset-password/"+email+"/"+token + "</h1>";
+                  CLIENT_URL+"/auth/reset-password/"+email+"/"+token + "</h1>";
                 }
-                // html = html.replace("URL",configVars.CLIENT_URL+"/auth/reset-password/"+email+"/"+token);
+                // html = html.replace("URL",CLIENT_URL+"/auth/reset-password/"+email+"/"+token);
                 // html = html +"<h1>If button doesn't works please follow this link:"+ 
-                // configVars.CLIENT_URL+"/auth/reset-password/"+email+"/"+token + "</h1>";
+                // CLIENT_URL+"/auth/reset-password/"+email+"/"+token + "</h1>";
                 
                 sendNodeMail(html,email,subject,function(err,result){
                     if(err){
@@ -114,20 +116,21 @@ function readHTMLFile(path,email,redirectUrl,emailToken,callback) {
   function sendNodeMail(html,email,subject,callback){
     nodemailer.createTestAccount((err, account) => {
         if (err) {
-         // console.error("Failed to create a testing account. " + err.message);
+          console.error("Failed to create a testing account. " + err.message);
           callback(err);
         }
-  
+        console.log(EMAIL);
+        console.log(EMAIL_PASSWORD);
         const transporter = nodemailer.createTransport({
           service: "AOL",
           auth: {
-            user: configVars.EMAIL,
-            pass: configVars.EMAIL_PASSWORD
+            user: EMAIL,
+            pass: EMAIL_PASSWORD
           }
         });
   
         let message = {
-          from: "Sun Notes <" + configVars.EMAIL + ">",
+          from: "Sun Notes <" + EMAIL + ">",
           to: email,
           subject: subject,
           html: html

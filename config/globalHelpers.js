@@ -1,7 +1,4 @@
-const JWT_KEY = require('../config/configVars').JWT_KEY;
-const jwt = require('jsonwebtoken');
 const User = require('../models/user/User');
-
 
 function verifyUser(req,res,next){
     var todayDate = new Date();
