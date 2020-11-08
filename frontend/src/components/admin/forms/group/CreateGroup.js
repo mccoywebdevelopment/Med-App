@@ -480,7 +480,7 @@ class CreateGroup extends React.Component {
                             </div>
                             : null}
                         <div className="col-lg-12" style={{ paddingLeft: '12.5px', paddingRight: '12.5px' }}>
-                            {this.state.itemList.length > 0 && !this.props.isGroupSelected || this.state.overview.isEdit ?
+                            {this.state.itemList.length > 0 && this.state.itemList[0] && (!this.props.isGroupSelected || this.state.overview.isEdit) ?
                                 <Search isReadOnly={false} color={"#ffaf00"} placeholder="Search & Select Items" items={this.state.itemList}
                                     updateParentStateAll={this._getSelectedValues} dataSel={0} label={groupsLabel} />
                                 :
