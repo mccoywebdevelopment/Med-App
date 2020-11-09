@@ -129,17 +129,17 @@ class DependentViewUser extends React.Component {
             <>
                 <div className="row">
                     <div className="col-lg-12">
-                        <div className="row">
+                        <div className="row content-desktop">
                             <div className="col-lg-12">
                                 <h4 className="view-header">Dependents</h4>
                             </div>
-                            <div className="col-lg-12 content-desktop" style={{ marginBottom: "30px" }}>
+                            <div className="col-lg-12" style={{ marginBottom: "30px" }}>
                                 <Overview dependentsLength={this._getTotalNumberOfDependents()} averageMed={this._getAverageMeds()}
                                     averageAge={this._getAverageAge()} />
                             </div>
 
                         </div>
-                        <div className="row">
+                        <div className="row content-desktop">
                             <div className="col-lg-12" style={{ marginBottom: "30px" }}>
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <button onClick={() => { this._toggleFilterBy(true) }} type="button"
@@ -148,8 +148,8 @@ class DependentViewUser extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="row">
-                            <div className="col-lg-12 content-desktop">
+                        <div className="row content-desktop">
+                            <div className="col-lg-12">
                                 {this.props.dependentState.data.length > 0 ?
                                     <DependentTable dependents={this._getData()} delete={this._deleteDependent}
                                         changeDepSel={this._toggleRedirect} isUserView={true} />

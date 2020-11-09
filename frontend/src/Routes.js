@@ -49,7 +49,8 @@ const userRoutes = [
     {
         path:'/user/dependents',
         component:  <DependentViewUser/>
-    }
+    },
+    
 ];
 
 const authRoutes = [
