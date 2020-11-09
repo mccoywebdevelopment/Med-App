@@ -638,15 +638,21 @@ class CreateDependent extends React.Component {
                     {this.props.isDepSelected ?
                         <div className="col-lg-12" style={{ marginBottom: '10px' }}>
                             <h4 style={{ display: 'inline' }}>Dependent Overview</h4>
+                            <>
+                            {!this.props.isUser?
+                            <>
                             <i title="edit" onClick={() => { this._toggleIsEditOverview() }} className="fas fa-edit"
                                 style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
                             <i title="delete" onClick={() => { this.props.delete(this.props.isDepSelected) }} className="fas fa-trash"
                                 style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
+                            </>
+                            :null}
+                            </>
                             <i title="close" onClick={() => { this.props.goHome() }} style={{ float: 'right' }} className="fas fa-times"></i>
                         </div>
                         : null
                     }
-                    <DepOverview data={this.state.overview} update={this._update} updateError={this._updateError}
+                    <DepOverview isUser={this.props.isUser} data={this.state.overview} update={this._update} updateError={this._updateError}
                         isDepSelected={this.props.isDepSelected} groups={this.props.groupState.data}>
                         {!this.props.isDepSelected || this.state.overview.isEdit ?
                             <BelongsToGroup toggle={this._toggleGroupBtn} update={this._updateGroupValue} form={"overview"}
@@ -660,8 +666,10 @@ class CreateDependent extends React.Component {
                         <h4 style={{ display: 'inline' }}>RXS Medications <span style={{ fontSize: '17px' }}>
                             ({this.state.rxsMedList.list.length})
                             </span></h4>
+                            {!this.props.isUser?
                         <i title="add" className="fas fa-plus" onClick={this._toggleRxsMedAdd}
                             style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
+                            :null}
                         {this.state.rxsMedList.isAdd ?
                             <i title="delete empty med" className="fas fa-trash"
                                 onClick={() => { this._toggleRxsMedDelete(this.state.rxsMedList.list.length - 1) }}

@@ -67,10 +67,11 @@ export default class DepOverview extends React.Component {
                                 <span style={{paddingLeft:'10px'}}>{group._id}</span></a>
                             </div>
                         </>
-                        :
+                        :!this.props.isUser?
                         <div className="col-lg-6" style={{marginTop:'10px'}}>
                             <span>Belongs to Group:</span><span style={{color:'red',paddingLeft:'10px'}}>No</span>
                         </div>
+                        :null
                     }
                     <div className="col-lg-6" style={{marginTop:'10px'}}>
                         <span>Date Created:</span><span style={{paddingLeft:'10px'}}>

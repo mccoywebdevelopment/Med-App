@@ -5,6 +5,7 @@ import DependentDetails from "./views/admin/DependentDetails";
 import GroupDetails from "./views/admin/GroupDetails";
 import GroupView from "./views/admin/GroupView";
 import UserView from "./views/admin/UserView";
+import DependentDetailsUser from "./views/user/DependentDetailsUser";
 import UserDetails from "./views/admin/UserDetails";
 import ForgotPassword from "./views/shared/ForgotPassword";
 import ResetPassword from "./views/shared/ResetPassword";
@@ -49,6 +50,10 @@ const userRoutes = [
     {
         path:'/user/dependents',
         component:  <DependentViewUser/>
+    },
+    {
+        path:'/user/dependents/:id',
+        component:  <DependentDetailsUser/>
     },
     
 ];

@@ -55,12 +55,12 @@ class DependentDetails extends React.Component{
     }
     _redirectURL = () =>{
         return (
-            <Redirect push to={'/admin/dependents/'+this.state.isRedirect} />
+            <Redirect push to={'/user/dependents/'+this.state.isRedirect} />
         );
     }
     _goHome = () =>{
         return (
-            <Redirect push to={'/admin/dependents/'} />
+            <Redirect push to={'/user/dependents/'} />
         );
     }
     _getID = () =>{
@@ -135,13 +135,13 @@ class DependentDetails extends React.Component{
                 <div className="col-lg-6" style={{paddingLeft:'0px'}}>
                     {this.props.dependentState.data?
                     <DependentTable selected={this._getID()} changeDepSel={this._toggleRedirect} 
-                        dependents={this.props.dependentState.data} isSmall={true}/>
+                        dependents={this.props.dependentState.data} isSmall={true} isUserView={true}/>
                     :null}
                 </div>
                 <div className="col-lg-6 my-overview" style={{padding:'none'}} style={{paddingRight:'0px'}}>
                     <div className="card" style={{padding:"20px"}}>
                         <CreateDependent updateDep={this._updateDependent} isDepSelected={this.state.dependent} goHome={this._toggleHome}
-                             delete={this._deleteDependent}/>
+                            isUser={true} delete={this._deleteDependent}/>
                     </div>
                 </div>
             </div>

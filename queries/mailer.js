@@ -119,8 +119,6 @@ function readHTMLFile(path,email,redirectUrl,emailToken,callback) {
           console.error("Failed to create a testing account. " + err.message);
           callback(err);
         }
-        console.log(EMAIL);
-        console.log(EMAIL_PASSWORD);
         const transporter = nodemailer.createTransport({
           service: "AOL",
           auth: {
