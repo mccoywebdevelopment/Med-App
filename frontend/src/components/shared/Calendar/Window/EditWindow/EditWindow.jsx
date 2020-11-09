@@ -1,8 +1,6 @@
 import React from 'react';
 import {Row,Col,Button,Input,Label} from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import {updateEvent} from "../../../../api/calendar/Calendar"
+// import {updateEvent} from "../../../../api/calendar/Calendar"
 class EditWindow extends React.Component{
     state = {
         dateGiven:null,
@@ -52,7 +50,7 @@ class EditWindow extends React.Component{
         }
         var id = this.props.event.event._id;
         var jwt = localStorage.getItem("JWT");
-        await updateEvent(obj,jwt,id,(res)=>{
+        /*await updateEvent(obj,jwt,id,(res)=>{
             if(res.error){
                 var error = res.error;
                 if(typeof(res.error)=='object'){
@@ -64,7 +62,7 @@ class EditWindow extends React.Component{
                 this.props.updateEvents();
                 this.props.closeWindow();
             }
-        });
+        });*/
     }
     render(){
         const name = this.props.event.dependent.name.firstName + " " + 
@@ -114,7 +112,7 @@ class EditWindow extends React.Component{
                         <h3>{name}</h3>
                     </Col>
                     <Col lg="2">
-                        <FontAwesomeIcon onClick={this.props.closeWindow} style={exitStyle} icon={faTimes} />
+                        <i className="fas fa-times" onClick={this.props.closeWindow} style={exitStyle}/>
                     </Col>
                     <Col lg="12" style={{marginLeft:'3px',marginTop:'-10px'}}>
                         <h6>(DOB:   {dob})</h6>

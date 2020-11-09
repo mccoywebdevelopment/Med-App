@@ -1,8 +1,6 @@
 import React from 'react';
 import {Row,Col,Button} from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import {deleteMedEventById} from '../../../api/calendar/Event'
+// import {deleteMedEventById} from '../../../api/calendar/Event'
 
 import EditWindow from './EditWindow/EditWindow';
 
@@ -36,19 +34,19 @@ class Window extends React.Component{
     deleteHandler = async()=>{
         var id = this.props.event.event._id;
         var jwt = localStorage.getItem("JWT");
-        deleteMedEventById(id,jwt,(res)=>{
-            if(res.error){
-                var error = res.error;
-                if(typeof(res.error)=='object'){
-                    error = JSON.stringify(error);
-                }
-                this.props.updateEvents();
-                this.props.closeWindow();
-            }else{
-                this.props.updateEvents();
-                this.props.closeWindow();
-            }
-        });
+        // deleteMedEventById(id,jwt,(res)=>{
+        //     if(res.error){
+        //         var error = res.error;
+        //         if(typeof(res.error)=='object'){
+        //             error = JSON.stringify(error);
+        //         }
+        //         this.props.updateEvents();
+        //         this.props.closeWindow();
+        //     }else{
+        //         this.props.updateEvents();
+        //         this.props.closeWindow();
+        //     }
+        // });
     }
     render(){
         const name = this.props.event.dependent.name.firstName + " " + 
@@ -99,7 +97,7 @@ class Window extends React.Component{
                         <h3>{name}</h3>
                     </Col>
                     <Col lg="2">
-                        <FontAwesomeIcon onClick={this.props.closeWindow} style={exitStyle} icon={faTimes} />
+                        <i className="fas fa-times" style={exitStyle}/>
                     </Col>
                     <Col lg="12" style={{marginLeft:'3px',marginTop:'-10px'}}>
                         <h6>(DOB:   {dob})</h6>

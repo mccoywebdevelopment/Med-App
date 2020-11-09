@@ -62,6 +62,8 @@ export function getDaysArr(numOfDays,month,year,isDisabled,events){
         days.push({
             events:obj.events,
             day: i+1,
+            month:month,
+            year:year,
             isDisabled:isDisabled,
         });
     }

@@ -85,6 +85,7 @@ class Calendar extends React.Component{
         }
         newState.days = days;
         this.setState(newState);
+        console.log(this.state);
     }
     nextHandler = () =>{
         var month = this.state.currentView.month+1;
@@ -114,6 +115,8 @@ class Calendar extends React.Component{
     }
     constructor(props){
         super(props);
+    }
+    componentDidMount = () =>{
         this.mySetState("currentView",getCurrentMonth(),getCurrentYear());
     }
     render(){

@@ -1,6 +1,4 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 
 class Expand extends React.Component{
     constructor(props){
@@ -10,7 +8,7 @@ class Expand extends React.Component{
         return(
             <>
                 <div className="my-expand" onClick={this.props.expandHandler.bind(this,this.props.day)}>
-                    +{this.props.length-1} more <FontAwesomeIcon icon={faCaretDown} size={'1x'}/>
+                    +{this.props.length-1} more <i className="fas fa-caret-down"/>
                 </div>
             </>
         )

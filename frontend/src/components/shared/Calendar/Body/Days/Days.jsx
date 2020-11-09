@@ -9,11 +9,7 @@ class Days extends React.Component{
     }
     constructor(props){
         super(props);
-        let newState = this.state;
-        for(var i=0;i<this.props.updateHandler().days.length;++i){
-            newState.zIndex.push(false);
-        }
-        this.setState(newState);
+        console.log(this.props);
     }
     toggleZIndex = (day,eventsLens) =>{
         let newState = this.state;
@@ -43,13 +39,24 @@ class Days extends React.Component{
         }
         this.setState(newState);
     }
+    componentDidMount = () =>{
+        let newState = this.state;
+        for(var i=0;i<this.props.updateHandler().days.length;++i){
+            newState.zIndex.push(false);
+        }
+        this.setState(newState);
+        console.log(this.props.updateHandler().days);
+    }
     
     render(){
         const list = () =>{
             return this.props.updateHandler().days.map((day,key)=>{
-                var htmlDay = <Day eventClickHandler={this.props.eventClickHandler} day={day.day} dayIndex={key} events={day.events} isZindex={this.state.zIndex[key]} toggleZIndex={this.toggleZIndex}/>;
+                var htmlDay = <Day eventClickHandler={this.props.eventClickHandler} 
+                    day={day.day} month={day.month} year={day.year} currentView={this.props.updateHandler().currentView} dayIndex={key} events={day.events} 
+                        isZindex={this.state.zIndex[key]} toggleZIndex={this.toggleZIndex}/>;
                 if(day.isDisabled){
-                    htmlDay = <DisabledDay day={day.day} dayIndex={key} events={day.events} isZindex={this.state.zIndex[key]}/>
+                    htmlDay = <DisabledDay day={day.day} dayIndex={key} events={day.events} 
+                        isZindex={this.state.zIndex[key]}/>
                 }
                  return htmlDay
             });

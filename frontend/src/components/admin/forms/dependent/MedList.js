@@ -35,7 +35,7 @@ export default class MedList extends React.Component{
                     :   null
                 }
                 {rxsList.length>0?
-                    <MedicationTable list={rxsList} showMore={this.state.showMore} expandItem={this.props.toggleExpandMed}
+                    <MedicationTable isUser={this.props.isUser} list={rxsList} showMore={this.state.showMore} expandItem={this.props.toggleExpandMed}
                          toggleShowMore={this._toggleShowMore} delete={this.props.delete} edit={this.props.edit}/>
                     :null
                 }
