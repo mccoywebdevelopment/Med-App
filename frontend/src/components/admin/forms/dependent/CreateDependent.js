@@ -505,7 +505,7 @@ class CreateDependent extends React.Component {
     _tookMed = (index) =>{
         let med = this.state.rxsMedList.list[index].values;
 
-        this.props.togglePopUp("Medication Event",<TookMed title=""/>);
+        this.props.togglePopUp("Medication Name: "+med.name,<TookMed medID={med._rxsMedID}/>);
     }
     _formatRxs = (arr) => {
         let rxsArr = [];

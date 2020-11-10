@@ -1,29 +1,59 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import {fetchCreateMedEvent} from '../../../actions/event';
+import {togglePopUp} from '../../../actions/popUp';
 
-export default class TookMed extends React.Component {
+class TookMed extends React.Component {
     state = {
         values: {
-            title: "",
             isAway: false,
             notes: "",
             dateTaken: ""
+        },
+        errors:{
+            dateTaken:""
         },
         body: null
     }
     constructor(props) {
         super(props);
+        // alert(JSON.stringify(props));
+        alert(this.props.medID);
+    }
+    _isValid = () =>{
+        let newState = this.state;
+        let valid = true;;
+        if(this.state.values.dateTaken.length<1){
+            newState.errors.dateTaken = "This field is required";
+            valid = false;
+        }else{
+            newState.errors.dateTaken = "";
+        }
+        this.setState(newState);
+        if(!valid){
+            alert("Please fix the errors below:");
+        }
+        return valid;
     }
     _update = (key, value) => {
         let newState = this.state;
         newState.values[key] = value;
         this.setState(newState);
     }
-    componentDidMount = () => {
-        let newState = this.state;
-        newState.title = this.props.title;
-        this.setState(newState);
+    _getBody = ()=> {
+        return {
+            isAway:this.state.values.isAway,
+            notes:this.state.values.notes,
+            dateTaken:this.state.values.dateTaken
+        }
+    }
+    _submit = () =>{
+        if(this._isValid()){
+            this.props.fetchCreateMedEvent(this._getBody(),this.props.medID,true,(res)=>{
+                togglePopUp("",null);
+            });
+        }
     }
     render() {
         return (
@@ -37,7 +67,7 @@ export default class TookMed extends React.Component {
                                     value={this.state.values.dateTaken}
                                     onChange={(e) => { this._update("dateTaken", e.target.value) }} />
                                 <div className="invalid-feedback" style={{ display: 'block' }}>
-                                    {/*this.props.data.errors.dateOfBirth*/}&nbsp;
+                                    {this.state.errors.dateTaken}&nbsp;
 </div>
                             </div>
                         </div>
@@ -92,11 +122,11 @@ No <i className="input-helper"></i>
     }
 }
 
-// TookMed.propTypes = {
-
-// };
+TookMed.propTypes = {
+    fetchCreateMedEvent: PropTypes.func.isRequired
+};
 // const mapStateToProps = (state) => ({
 //     guardianState: state.guardianState
 // });
 
-// export default connect(mapStateToProps, {})(CreateDependent);
+export default connect(null, {fetchCreateMedEvent})(TookMed);

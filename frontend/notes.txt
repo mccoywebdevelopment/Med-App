@@ -1,4 +1,6 @@
 TODO:
+Fix export data (queries) line 128 after changing Medication Event Model to where the event is in the model 
+not the event itself.
 
 OPTIMIZATIONS:
 -check if user fields is modified when fetchUpdateUser
@@ -6,8 +8,6 @@ OPTIMIZATIONS:
 -send reset password even when user is not yet authenticated.
 
 ERRORS:
--Guardian is not updating it create a new one when you add user to group,
- delete user, create user with same email, and then add user to the prev groups.
 
  TIPS:
  - To find all logs/alerts use: 

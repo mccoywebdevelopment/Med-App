@@ -66,7 +66,7 @@ function findGuardianByJWT(jwt,callback){
     }
   });
 }
-function tookToday(rxsMedId,jwt,body,callback){
+function tookMedication(rxsMedId,jwt,body,callback){
   rxsMedicationModel.findById(rxsMedId).populate('events').exec(function(err,rxsMedicationFound){
     if(err){
       callback(err);
@@ -89,7 +89,7 @@ function tookToday(rxsMedId,jwt,body,callback){
                     if(err){
                       callback(err);
                     }else{
-                      callback(null,result);
+                      callback(null,rxsMedicationFound.name + " was recorded.");
                     }
                   });
                 }
@@ -133,7 +133,7 @@ function createRxsMedEvent(body,dependent,rxsMedication,guardian,callback){
 
 
   var eventBody = {
-    name:guardianName + " recorded took today.",
+    name:guardianName + " recorded Medication.",
     message:message
   }
 
@@ -145,6 +145,7 @@ function createRxsMedEvent(body,dependent,rxsMedication,guardian,callback){
         title:dependentName + " took " + rxsMedication.name,
         isAway:body.isAway,
         notes:body.notes,
+        dateTaken:body.dateTaken,
         event:eventCreated,
         dependent:dependent,
         createdBy:guardian
@@ -203,6 +204,7 @@ function updateModifiedFields(oldDoc,updatedFields,callback){
   var event = oldDoc.event;
   var dependent = oldDoc.dependent;
   var createdBy = oldDoc.createdBy;
+  var dateTaken = oldDoc.dateTaken;
 
   if(updatedFields.title){
     title = updatedFields.title;
@@ -219,11 +221,15 @@ function updateModifiedFields(oldDoc,updatedFields,callback){
   if(updatedFields.createdBy){
     createdBy = updatedFields.createdBy;
   }
+  if(updatedFields.dateTaken){
+    dateTaken = updatedFields.dateTaken;
+  }
   var obj = {
     title:title,
     isAway:isAway,
     notes:notes,
     event:event,
+    dateTaken:dateTaken,
     dependent:dependent,
     createdBy:createdBy
   }
@@ -257,6 +263,7 @@ function saveToDoc(bodyData,schemaModel,callback){
   var newDoc = new schemaModel({
     title:bodyData.title,
     event:bodyData.event,
+    dateTaken:bodyData.dateTaken,
     dependent:bodyData.dependent,
     createdBy:bodyData.createdBy
   });
@@ -293,4 +300,4 @@ function create(body,callback){
 }
 
 
-module.exports = {create,findAll,deleteById,findById,patchUpdateById,tookToday};
+module.exports = {create,findAll,deleteById,findById,patchUpdateById,tookMedication};

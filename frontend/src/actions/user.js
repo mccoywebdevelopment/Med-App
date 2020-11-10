@@ -1,7 +1,7 @@
 import { createMessage } from './messages';
 import { toggleLoading } from './loading';
 import { FETCH_USERS } from './types';
-import { addUser, addGuardian, removeGuardian } from './group';
+import { addGuardian, removeGuardian } from './group';
 import { fetchGuardians,fetchCreateGuardian } from './guardian';
 import { FETCH } from '../config/helpers';
 
