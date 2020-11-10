@@ -53,10 +53,10 @@ export default class MedicationTable extends React.Component {
                   </>
                   :
                   <>
-                  <i onClick={() => { this.props.tookToday(element.index) }} title="Took Today" className="fas fa-calendar-day"
+                  <i onClick={() => { this.props.tookMed(element.index) }} title="Verify Med Taken" className="fas fa-calendar-day"
                     style={{ paddingRight: '20px',color: '#2196F3' }}></i>
-                  <i onClick={() => { alert('t')}} title="Delete" title="Took Another Day" className="fas fa-calendar-alt"
-                    style={{ color: '#2196F3' }}></i>
+                  {/* <i onClick={() => { alert('t')}} title="Delete" title="Took Another Day" className="fas fa-calendar-alt"
+                    style={{ color: '#2196F3' }}></i> */}
                   </>
                 }
               </td>

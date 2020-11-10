@@ -37,13 +37,13 @@ class UserLayout extends React.Component {
                     </div>
                     <div className={"" + (this._isCurrentURL("/user/dependents") ? "my-nav-selected" : "")}
                         style={{ borderLeftColor: this.props.theme.pagePrimaryColor }}>
-                        <a href="/admin/dependents" className="my-nav-item">
+                        <a href="/user/dependents" className="my-nav-item">
                             <i title="Medication(s)" className="fas fa-capsules" style={{ color: this.props.theme.pagePrimaryColor }}></i>
                         </a>
                     </div>
-                    <div className={"" + (this._isCurrentURL("/admin/profile") ? "my-nav-selected" : "")}
+                    <div className={"" + (this._isCurrentURL("/auth/profile") ? "my-nav-selected" : "")}
                         style={{ borderLeftColor: this.props.theme.pagePrimaryColor }}>
-                        <a href="/admin/profile" className="my-nav-item">
+                        <a href="/auth/profile" className="my-nav-item">
                             <i title="My Profile" className="fas fa-cog" style={{ color: this.props.theme.pagePrimaryColor }}></i>
                         </a>
                     </div>

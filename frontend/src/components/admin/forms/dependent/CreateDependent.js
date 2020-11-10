@@ -12,6 +12,7 @@ import BelongsToGroup from './BelongsToGroup';
 
 import DepOverview from './DepOverview';
 import MedList from './MedList';
+import TookMed from '../../../user/forms/TookMed';
 
 class CreateDependent extends React.Component {
     static propTypes = {
@@ -501,7 +502,11 @@ class CreateDependent extends React.Component {
         }
         return arr;
     }
+    _tookMed = (index) =>{
+        let med = this.state.rxsMedList.list[index].values;
 
+        this.props.togglePopUp("Medication Event",<TookMed title=""/>);
+    }
     _formatRxs = (arr) => {
         let rxsArr = [];
         for (var i = 0; i < arr.length; ++i) {
@@ -679,7 +684,7 @@ class CreateDependent extends React.Component {
                 </div>
                 <div className="row" style={{ marginTop: '10px' }}>
                     <MedList data={this.state.rxsMedList} update={this._updateRxsMedValues} delete={this._toggleRxsMedDelete}
-                        edit={this._toggleEditRxsMed} toggleExpandMed={this._toggleExpandRxsMed} isUser={this.props.isUser} />
+                        edit={this._toggleEditRxsMed} tookMed={this._tookMed} toggleExpandMed={this._toggleExpandRxsMed} isUser={this.props.isUser} />
                 </div>
                 {/* <div className="row" style={{marginTop:'30px'}}>
 <div className="col-lg-12">
