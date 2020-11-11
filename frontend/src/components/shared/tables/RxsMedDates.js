@@ -14,42 +14,46 @@ class RxsMedDates extends React.Component {
     }
     componentDidMount = () => {
         this.props.fetchMedEvents(this.props.rxsMedID, true, (res) => {
-            alert(JSON.stringify(res));
             let newState = this.state;
-            newState.rxsMedEvents = res;
+            newState.rxsMedEvents = res.events;
             this.setState(newState);
         });
-    }
-    _findGuardianByID = (id) =>{
-
     }
     render() {
         const list = () => {
             return this.state.rxsMedEvents.map((event, index) => {
                 return(
-                    <tr index={"lkjmedTableInsasdl4***&^" + index} className="no-border">
-                        <td>{event.index + 1}</td>
+                    <tr index={"lkjmedTableInsasdl4***&^" + index}>
+                        <td>{index + 1}</td>
                         <td>{formateDate(event.dateTaken)}</td>
+                        <td>{event.createdBy.name.firstName + " " + event.createdBy.name.lastName}</td>
+                        <td>{event.isAway.toString()}</td>
+                        <td>{event.notes || "-"}</td>
                         <td></td>
                     </tr>
                 );
             });
         }
         return (
+            <div style={{minHeight:'30em',width:'100%'}}>
+            {this.state.rxsMedEvents.length>0?
             <table className="table my-med-table">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Date Given</th>
                         <th scope="col">Administer By</th>
+                        <th scrop="col">Is Away</th>
                         <th scope="col">Notes</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {/* {list()} */}
+                    {list()}
                 </tbody>
             </table>
+            :<h1 style={{textAlign:'center',marginTop:'10%'}}>No Events Registered.</h1>}
+            </div>
         );
     }
 }

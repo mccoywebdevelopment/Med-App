@@ -683,9 +683,14 @@ class CreateDependent extends React.Component {
                             style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
                             :null}
                         {this.state.rxsMedList.isAdd ?
+                            <>
                             <i title="delete empty med" className="fas fa-trash"
                                 onClick={() => { this._toggleRxsMedDelete(this.state.rxsMedList.list.length - 1) }}
-                                style={{ color: '#2196F3', float: 'right' }}></i>
+                                style={{ color: '#2196F3', float: 'right',paddingLeft:'20px',cursor:'pointer'}}></i>
+                             <a title="Undo changes"
+                                onClick={() => { this._toggleRxsMedDelete(this.state.rxsMedList.list.length - 1) }}
+                                style={{ color: '#2196F3', float: 'right',cursor:'pointer',textDecoration:'underline'  }}>Undo</a>
+                            </>
                             : null}
                     </div>
                 </div>
