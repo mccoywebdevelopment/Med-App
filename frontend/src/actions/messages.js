@@ -5,7 +5,7 @@ import { toggleLoading } from './loading';
 
 // CREATE MESSAGE
 export const createMessage = (text,alertType,time) => (dispatch) =>{
-  let timeout = 1200;
+  let timeout = 3000;
 
   if(typeof(text)=='object'){
     text = JSON.stringify(text);

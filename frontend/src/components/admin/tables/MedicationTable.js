@@ -41,10 +41,10 @@ export default class MedicationTable extends React.Component {
                   {!element.isExpand ? "More" : ""}&nbsp;
                 </p>
               </th>
-              <td>{element.values.name}</td>
+              <td>{element.values.name || "-"}</td>
               <td>{element.values.dosageQuantity} {element.values.dosageUnits}</td>
-              <td>{element.values.rxsNumber}</td>
-              <td>{formateDate(element.values.datePrescribed)}</td>
+              <td>{element.values.rxsNumber || "-"}</td>
+              <td>{formateDate(element.values.datePrescribed) || "-"}</td>
               <td>
                 {!this.props.isUser ?
                   <>
@@ -53,12 +53,12 @@ export default class MedicationTable extends React.Component {
                       style={{ paddingRight: '20px', color: '#2196F3',paddingBottom:'10px' }}></i>
 
                     <i onClick={() => { this.props.delete(element.index) }} title="Delete" className="fas fa-trash"
-                                          style={{ color: '#2196F3',paddingBottom:'10px' }}></i>
+                                          style={{ color: '#2196F3',paddingBottom:'10px',paddingRight:'20px' }}></i>
 
                     <i onClick={() => { this.props.tookMed(element.index) }} title="Verify Med Taken" className="fas fa-calendar-check"
                       style={{ paddingRight: '23px',color: '#2196F3',paddingBottom:'10px' }}></i>
 
-                    <i onClick={() => { this.props.tookMed(element.index) }} title="View Dates" className="fas fa-calendar-alt"
+                    <i onClick={() => { this.props.viewDates(element.index) }} title="View Dates" className="fas fa-calendar-alt"
                       style={{ color: '#2196F3',paddingBottom:'10px'}}></i>
                   </>
                   :
@@ -76,19 +76,19 @@ export default class MedicationTable extends React.Component {
                 <tr index={"lkjmedTableInside^sdf&*&^" + index} className="no-border" style={style}>
                   <td></td>
                   <td colSpan="2">
-                    <span className="inner-title">Doctor's Name:</span><br /><br />{element.values.doctorName}
+                    <span className="inner-title">Doctor's Name:</span><br /><br />{element.values.doctorName || "-"}
                   </td>
                   <td colSpan="3">
-                    <span className="inner-title">Doctor's Number:</span><br /><br />{element.values.doctorPhone}
+                    <span className="inner-title">Doctor's Number:</span><br /><br />{element.values.doctorPhone || "-"}
                   </td>
                 </tr>
                 <tr index={"medTableInside^&23*&^" + index} className="no-border" style={style}>
                   <td></td>
                   <td colSpan="2">
-                    <span className="inner-title">End Date:</span><br /><br />{element.values.endDate}
+                    <span className="inner-title">End Date:</span><br /><br />{element.values.endDate || "-"}
                   </td>
                   <td colSpan="3">
-                    <span className="inner-title">When to Take:</span><br /><br />{element.values.whenToTake}
+                    <span className="inner-title">When to Take:</span><br /><br />{element.values.whenToTake || "-"}
                   </td>
                 </tr>
                 <tr index={"mAedTableInhjkhkhside^&*&^" + index} className="no-border-top" style={style}>
@@ -98,9 +98,9 @@ export default class MedicationTable extends React.Component {
                       style={{ color: '#2196F3', paddingTop: "5px", marginBottom: '10px', cursor: "pointer" }}>{element.isExpand ? "Less" : ""}&nbsp;</p>
                   </th>
                   <td colSpan="2" style={{ verticalAlign: 'top' }}>
-                    <span className="inner-title">Reason:</span><br /><br />{element.values.reason}</td>
+                    <span className="inner-title">Reason:</span><br /><br />{element.values.reason || "-"}</td>
                   <td colSpan="3" style={{ verticalAlign: 'top' }}>
-                    <span className="inner-title">Intructions:</span><br /><br />{element.values.instructions}</td>
+                    <span className="inner-title">Intructions:</span><br /><br />{element.values.instructions || "-"}</td>
                 </tr>
               </React.Fragment>
               : null

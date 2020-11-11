@@ -13,6 +13,7 @@ import BelongsToGroup from './BelongsToGroup';
 import DepOverview from './DepOverview';
 import MedList from './MedList';
 import TookMed from '../../../user/forms/TookMed';
+import RxsMedDates from '../../../shared/tables/RxsMedDates';
 
 class CreateDependent extends React.Component {
     static propTypes = {
@@ -29,8 +30,9 @@ class CreateDependent extends React.Component {
         this._toggleRxsMedAdd = this._toggleRxsMedAdd.bind(this);
         this._toggleEditRxsMed = this._toggleEditRxsMed.bind(this);
         this._toggleExpandRxsMed = this._toggleExpandRxsMed.bind(this);
+        this._tookMed = this._tookMed.bind(this);
+        this._viewDates = this._viewDates.bind(this);
         this._initState();
-
         // this._test();
     }
     _initState = () => {
@@ -504,8 +506,13 @@ class CreateDependent extends React.Component {
     }
     _tookMed = (index) =>{
         let med = this.state.rxsMedList.list[index].values;
-
-        this.props.togglePopUp("Medication Name: "+med.name,<TookMed medID={med._rxsMedID}/>);
+        let name = this.props.isDepSelected.name.firstName + " " + this.props.isDepSelected.name.lastName;
+        this.props.togglePopUp(med.name,<TookMed medID={med._rxsMedID}/>);
+    }
+    _viewDates = (index) =>{
+        let med = this.state.rxsMedList.list[index].values;
+        let name = this.props.isDepSelected.name.firstName + " " + this.props.isDepSelected.name.lastName;
+        this.props.togglePopUp(med.name,<RxsMedDates rxsMedID={med._rxsMedID}/>);
     }
     _formatRxs = (arr) => {
         let rxsArr = [];
@@ -676,15 +683,20 @@ class CreateDependent extends React.Component {
                             style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
                             :null}
                         {this.state.rxsMedList.isAdd ?
+                            <>
                             <i title="delete empty med" className="fas fa-trash"
                                 onClick={() => { this._toggleRxsMedDelete(this.state.rxsMedList.list.length - 1) }}
-                                style={{ color: '#2196F3', float: 'right' }}></i>
+                                style={{ color: '#2196F3', float: 'right',paddingLeft:'20px',cursor:'pointer'}}></i>
+                             <a title="Undo changes"
+                                onClick={() => { this._toggleRxsMedDelete(this.state.rxsMedList.list.length - 1) }}
+                                style={{ color: '#2196F3', float: 'right',cursor:'pointer',textDecoration:'underline'  }}>Undo</a>
+                            </>
                             : null}
                     </div>
                 </div>
                 <div className="row" style={{ marginTop: '10px' }}>
                     <MedList data={this.state.rxsMedList} update={this._updateRxsMedValues} delete={this._toggleRxsMedDelete}
-                        edit={this._toggleEditRxsMed} tookMed={this._tookMed} toggleExpandMed={this._toggleExpandRxsMed} isUser={this.props.isUser} />
+                        edit={this._toggleEditRxsMed} tookMed={this._tookMed} viewDates={this._viewDates} toggleExpandMed={this._toggleExpandRxsMed} isUser={this.props.isUser} />
                 </div>
                 {/* <div className="row" style={{marginTop:'30px'}}>
 <div className="col-lg-12">

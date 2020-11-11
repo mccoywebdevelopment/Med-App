@@ -3,7 +3,7 @@ const router = express.Router();
 const path = require('path');
 const errors = require('../errors');
 const mailQ = require('../../queries/mailer');
-const CLIENT_URL = process.env.CLIENT_URL || require('../config/configVars').CLIENT_URL;
+const CLIENT_URL = process.env.CLIENT_URL || require('../../config/configVars').CLIENT_URL;
 const verifyAdmin = require('../../config/globalHelpers').verifyAdmin;
 const createUser = require('../../queries/user').create;
 
