@@ -89,7 +89,7 @@ function tookMedication(rxsMedId,jwt,body,callback){
                     if(err){
                       callback(err);
                     }else{
-                      callback(null,rxsMedicationFound.name + " was recorded.");
+                      callback(null,rxsMedEvent);
                     }
                   });
                 }

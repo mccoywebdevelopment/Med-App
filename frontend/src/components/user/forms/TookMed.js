@@ -50,9 +50,8 @@ class TookMed extends React.Component {
     }
     _submit = () =>{
         if(this._isValid()){
-            this.props.fetchCreateMedEvent(this._getBody(),this.props.medID,true,(res)=>{
-                togglePopUp("",null);
-            });
+            this.props.fetchCreateMedEvent(this._getBody(),this.props.medID,true);
+            this.props.togglePopUp();
         }
     }
     render() {
@@ -123,10 +122,11 @@ No <i className="input-helper"></i>
 }
 
 TookMed.propTypes = {
-    fetchCreateMedEvent: PropTypes.func.isRequired
+    fetchCreateMedEvent: PropTypes.func.isRequired,
+    togglePopUp: PropTypes.func.isRequired
 };
 // const mapStateToProps = (state) => ({
 //     guardianState: state.guardianState
 // });
 
-export default connect(null, {fetchCreateMedEvent})(TookMed);
+export default connect(null, {fetchCreateMedEvent,togglePopUp})(TookMed);

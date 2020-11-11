@@ -8,7 +8,6 @@ class Day extends React.Component{
     }
     constructor(props){
         super(props);
-        console.log(this.props);
     }
     toggleOverFlow = () =>{
         this.setState({hovered: !this.state.hovered});

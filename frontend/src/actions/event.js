@@ -6,8 +6,11 @@ export const fetchCreateMedEvent = (body, rxsMedID, isLoading, done) => (dispatc
   FETCH('POST', '/rxsMedication-event/'+rxsMedID+'/', body, localStorage.getItem('JWT'), dispatch, isLoading, (err, res) => {
     if (err) {
       dispatch(createMessage(err, 'danger'));
+    }else{
+      dispatch(createMessage(res, "success"));
+      if(done){
+        done(res);
+      }
     }
-    dispatch(createMessage(res, "success"));
-    done(res);
   });
 }

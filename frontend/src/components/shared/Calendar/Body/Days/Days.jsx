@@ -9,7 +9,6 @@ class Days extends React.Component{
     }
     constructor(props){
         super(props);
-        console.log(this.props);
     }
     toggleZIndex = (day,eventsLens) =>{
         let newState = this.state;
@@ -45,7 +44,6 @@ class Days extends React.Component{
             newState.zIndex.push(false);
         }
         this.setState(newState);
-        console.log(this.props.updateHandler().days);
     }
     
     render(){

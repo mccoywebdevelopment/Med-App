@@ -85,7 +85,6 @@ class Calendar extends React.Component{
         }
         newState.days = days;
         this.setState(newState);
-        console.log(this.state);
     }
     nextHandler = () =>{
         var month = this.state.currentView.month+1;
