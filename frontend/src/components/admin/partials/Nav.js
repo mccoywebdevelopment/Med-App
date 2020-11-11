@@ -28,10 +28,8 @@ export default function Nav(){
           {/* partial:../../partials/_navbar.html */}
           <nav className="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div className="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
-              <a className="navbar-brand brand-logo" href="../../index.html">
-                <img src="../../../assets/images/logo.svg" alt="logo" /> </a>
-              <a className="navbar-brand brand-logo-mini" href="../../index.html">
-                <img src="../../../assets/images/logo-mini.svg" alt="logo" /> </a>
+              <a className="navbar-brand brand-logo" href="../../index.html"></a>
+              <a className="navbar-brand brand-logo-mini" href="../../index.html"></a>
             </div>
             <div className="navbar-menu-wrapper d-flex align-items-center">
               <ul className="navbar-nav">

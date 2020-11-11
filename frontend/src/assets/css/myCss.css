@@ -136,7 +136,7 @@ td {
   border-bottom-left-radius: 10px;
 }
 .auth.auth-bg-1 {
-  background: url("../images/auth/login_pic.svg");
+  /* background: url("../images/auth/login_pic.svg"); */
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
