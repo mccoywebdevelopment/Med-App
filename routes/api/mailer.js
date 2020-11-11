@@ -3,7 +3,7 @@ const router = express.Router();
 const path = require('path');
 const errors = require('../errors');
 const mailQ = require('../../queries/mailer');
-const configVars = require('../../config/configVars');
+const CLIENT_URL = process.env.CLIENT_URL || require('../config/configVars').CLIENT_URL;
 const verifyAdmin = require('../../config/globalHelpers').verifyAdmin;
 const createUser = require('../../queries/user').create;
 
@@ -51,7 +51,7 @@ router.route("/redirect/:email/:token")
       res.status(errors.code.BAD_REQUEST).json({error:"Invalid Token"});
     }else{
       res.writeHead(301,
-        {Location: configVars.CLIENT_URL+'/auth/register/'+req.params.email+'/'+token}
+        {Location: CLIENT_URL+'/auth/register/'+req.params.email+'/'+token}
       );
       res.end();
     }
