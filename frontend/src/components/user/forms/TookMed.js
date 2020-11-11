@@ -19,7 +19,6 @@ class TookMed extends React.Component {
     constructor(props) {
         super(props);
         // alert(JSON.stringify(props));
-        alert(this.props.medID);
     }
     _isValid = () =>{
         let newState = this.state;

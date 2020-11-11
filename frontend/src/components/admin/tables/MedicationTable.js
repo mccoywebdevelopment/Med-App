@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState }from "react";
 import { formateDate } from "../../../config/helpers";
+import {Dropdown, DropdownItem, DropdownToggle, DropdownMenu} from 'reactstrap';
 
 export default class MedicationTable extends React.Component {
   constructor(props) {
     super(props);
   }
   render() {
+
     var left = [];
     if (this.props.list.length > 2 && !this.props.showMore) {
       for (var i = 2; i < this.props.list.length; ++i) {
@@ -37,7 +39,7 @@ export default class MedicationTable extends React.Component {
                 <p onClick={() => { this.props.expandItem(element.index) }} title="view rest of med"
                   style={{ color: '#2196F3', paddingTop: "5px", marginBottom: '10px', cursor: "pointer" }}>
                   {!element.isExpand ? "More" : ""}&nbsp;
-</p>
+                </p>
               </th>
               <td>{element.values.name}</td>
               <td>{element.values.dosageQuantity} {element.values.dosageUnits}</td>
@@ -46,14 +48,22 @@ export default class MedicationTable extends React.Component {
               <td>
                 {!this.props.isUser ?
                   <>
+
                     <i onClick={() => { this.props.edit(element.index) }} title="edit" className="fas fa-edit"
-                      style={{ paddingRight: '20px', color: '#2196F3' }}></i>
+                      style={{ paddingRight: '20px', color: '#2196F3',paddingBottom:'10px' }}></i>
+
                     <i onClick={() => { this.props.delete(element.index) }} title="Delete" className="fas fa-trash"
-                      style={{ color: '#2196F3' }}></i>
+                                          style={{ color: '#2196F3',paddingBottom:'10px' }}></i>
+
+                    <i onClick={() => { this.props.tookMed(element.index) }} title="Verify Med Taken" className="fas fa-calendar-check"
+                      style={{ paddingRight: '23px',color: '#2196F3',paddingBottom:'10px' }}></i>
+
+                    <i onClick={() => { this.props.tookMed(element.index) }} title="View Dates" className="fas fa-calendar-alt"
+                      style={{ color: '#2196F3',paddingBottom:'10px'}}></i>
                   </>
                   :
                   <>
-                  <i onClick={() => { this.props.tookMed(element.index) }} title="Verify Med Taken" className="fas fa-calendar-day"
+                  <i onClick={() => { this.props.tookMed(element.index) }} title="Verify Med Taken" className="fas fa-calendar-check"
                     style={{ paddingRight: '20px',color: '#2196F3' }}></i>
                   {/* <i onClick={() => { alert('t')}} title="Delete" title="Took Another Day" className="fas fa-calendar-alt"
                     style={{ color: '#2196F3' }}></i> */}

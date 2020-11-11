@@ -54,11 +54,9 @@ export function FETCH(type, url, body, jwt, dispatch, isLoading, done) {
     if(jwt){
         uri = uri + jwt;
     }
-    alert(uri);
     fetch(uri, fetchObj)
         .then(res => res.json())
         .then(res => {
-            alert(JSON.stringify(res))
             if (isLoading) {
                 dispatch(toggleLoading(false));
             }

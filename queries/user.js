@@ -5,7 +5,6 @@ const findAllGroups = require('./group').findAll;
 const RxsMedication = require('../models/rxsMedication/RxsMedication');
 const Rxs = require('../models/rxs/Rxs');
 const Medication = require('../models/medication/Medication');
-const { forEach } = require('lodash');
 
 function getDependents(user, callback) {
   findAllGroups(function (err, allGroups) {
@@ -119,7 +118,7 @@ function patchUpdateById(body, id, callback) {
 
 function updateModifiedFields(oldDoc, updatedFields) {
   var username = oldDoc.username;
-  var password = oldDoc.password;
+  // var password = oldDoc.password;
   var isAdmin = oldDoc.isAdmin;
 
   if (updatedFields.userName) {
@@ -130,7 +129,7 @@ function updateModifiedFields(oldDoc, updatedFields) {
   }
   var obj = {
     username: username,
-    password: password,
+    // password: password,
     isAdmin: isAdmin
   }
   return obj;
