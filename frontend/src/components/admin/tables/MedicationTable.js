@@ -53,12 +53,12 @@ export default class MedicationTable extends React.Component {
                       style={{ paddingRight: '20px', color: '#2196F3',paddingBottom:'10px' }}></i>
 
                     <i onClick={() => { this.props.delete(element.index) }} title="Delete" className="fas fa-trash"
-                                          style={{ color: '#2196F3',paddingBottom:'10px' }}></i>
+                                          style={{ color: '#2196F3',paddingBottom:'10px',paddingRight:'20px' }}></i>
 
                     <i onClick={() => { this.props.tookMed(element.index) }} title="Verify Med Taken" className="fas fa-calendar-check"
                       style={{ paddingRight: '23px',color: '#2196F3',paddingBottom:'10px' }}></i>
 
-                    <i onClick={() => { this.props.tookMed(element.index) }} title="View Dates" className="fas fa-calendar-alt"
+                    <i onClick={() => { this.props.viewDates(element.index) }} title="View Dates" className="fas fa-calendar-alt"
                       style={{ color: '#2196F3',paddingBottom:'10px'}}></i>
                   </>
                   :

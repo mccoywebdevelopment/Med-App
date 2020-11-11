@@ -5,6 +5,16 @@ const eventQ = require('../../queries/medicationEvent');
 const verifyUser = require('../../config/globalHelpers').verifyUser;
 
 router.route("/:rxsMedicationId/:JWT")
+.get(verifyUser,function(req,res){
+    eventQ.getEventByRxsMedID(req.params.rxsMedicationId,function(err,result){
+        if(err){
+            console.log(err);
+            res.status(errors.code.BAD_REQUEST).json({error:err});
+        }else{
+            res.send(result);
+        }
+    });
+})
 .post(verifyUser,function(req,res){
     /*
     fields:

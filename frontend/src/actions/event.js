@@ -13,3 +13,16 @@ export const fetchCreateMedEvent = (body, rxsMedID, isLoading, done) => (dispatc
     }
   });
 }
+
+export const fetchMedEvents = (rxsMedID,isLoading,done) => (dispatch) => {
+  FETCH('GET', '/rxsMedication-event/'+rxsMedID+'/', null, localStorage.getItem('JWT'), dispatch, isLoading, (err, res) => {
+    if (err) {
+      dispatch(createMessage(err, 'danger'));
+    }else{
+      // dispatch(createMessage(res.t, "success"));
+      if(done){
+        done(res);
+      }
+    }
+  });
+}
