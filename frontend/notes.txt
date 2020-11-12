@@ -2,12 +2,17 @@ TODO:
 Fix export data (queries) line 128 after changing Medication Event Model to where the event is in the model 
 not the event itself.
 
+fix date for took medication today it always submits a day behind.
+
+
+
 OPTIMIZATIONS:
 -check if user fields is modified when fetchUpdateUser
 -pages (redo models/algorithms)
 -send reset password even when user is not yet authenticated.
 
 ERRORS:
+When popup error have to reset local storage. 
 
  TIPS:
  - To find all logs/alerts use: 

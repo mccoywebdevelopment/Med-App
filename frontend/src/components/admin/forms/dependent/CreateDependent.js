@@ -95,6 +95,30 @@ class CreateDependent extends React.Component {
         }
         return data;
     }
+    _toggleUndo = (med) => {
+        let newState = this.state;
+        newState.rxsMedList.isAdd = !newState;
+        this.setState(newState);
+        if (this.props.isDepSelected && this._isOldData(med._id)) {
+            this._toggleRxsMedDelete(this.state.rxsMedList.list.length - 1, true);
+        } else if (!this.props.isDepSelected) {
+            this._toggleRxsMedDelete(this.state.rxsMedList.list.length - 1, true);
+        }
+
+        if (this.props.isDepSelected) {
+            this._initState();
+            this._formatSelDep(this.props.isDepSelected);
+        }
+    }
+    _isOldData = (id) => {
+        let oldMedList = JSON.parse(this.state.oldData.rxsMedList);
+        for (var i = 0; i < oldMedList.length; ++i) {
+            if (oldMedList._id == id) {
+                return true;
+            }
+        }
+        return false;
+    }
     _isUpdated = () => {
         let oldDataOverview = this.state.oldData.overview;
         let oldDataRxs = this.state.oldData.rxsMedList;
@@ -207,22 +231,27 @@ class CreateDependent extends React.Component {
         newState.rxsMedList.list[index].values[name] = value;
         this.setState(newState);
     }
-    _toggleRxsMedDelete = (index) => {
-        if (window.confirm("Are you sure you want to delete " + this.state.rxsMedList.list[index].values.name + " medication?")) {
-            let newState = this.state;
-            //Last element don't show form
-            if (index == newState.rxsMedList.list.length - 1) {
-                newState.rxsMedList.isAdd = false;
-            }
-            newState.rxsMedList.list.splice(index, 1);
-            for (var i = 0; i < newState.rxsMedList.list.length; ++i) {
-                if (newState.rxsMedList.list[i].index == newState.rxsMedList.indexSelected) {
-                    newState.rxsMedList.indexSelected = i;
-                }
-                newState.rxsMedList.list[i].index = i;
-            }
-            this.setState(newState);
+    _toggleRxsMedDelete = (index, notWindow) => {
+        if (notWindow) {
+            this._deleteListByIndex(index);
+        } else if (window.confirm("Are you sure you want to delete " + this.state.rxsMedList.list[index].values.name + " medication?")) {
+            this._deleteListByIndex(index);
         }
+    }
+    _deleteListByIndex = (index) => {
+        let newState = this.state;
+        //Last element don't show form
+        if (index == newState.rxsMedList.list.length - 1) {
+            newState.rxsMedList.isAdd = false;
+        }
+        newState.rxsMedList.list.splice(index, 1);
+        for (var i = 0; i < newState.rxsMedList.list.length; ++i) {
+            if (newState.rxsMedList.list[i].index == newState.rxsMedList.indexSelected) {
+                newState.rxsMedList.indexSelected = i;
+            }
+            newState.rxsMedList.list[i].index = i;
+        }
+        this.setState(newState);
     }
     _toggleRxsMedAdd = () => {
         let newState = this.state;
@@ -300,12 +329,12 @@ class CreateDependent extends React.Component {
     _toggleIsEditOverview = () => {
         let newState = this.state;
 
-        if(newState.overview.isEdit == true){
-            if(window.confirm("Are you sure you want to proceed without saving changes?")){
+        if (newState.overview.isEdit == true) {
+            if (window.confirm("Are you sure you want to proceed without saving changes?")) {
                 this._formatSelDep(this.props.isDepSelected);
                 newState.overview.isEdit = !newState.overview.isEdit;
             }
-        }else{
+        } else {
             newState.overview.isEdit = !newState.overview.isEdit;
         }
         this.setState(newState);
@@ -504,15 +533,15 @@ class CreateDependent extends React.Component {
         }
         return arr;
     }
-    _tookMed = (index) =>{
+    _tookMed = (index) => {
         let med = this.state.rxsMedList.list[index].values;
         let name = this.props.isDepSelected.name.firstName + " " + this.props.isDepSelected.name.lastName;
-        this.props.togglePopUp(med.name,<TookMed medID={med._rxsMedID}/>);
+        this.props.togglePopUp(med.name, <TookMed medID={med._rxsMedID} />);
     }
-    _viewDates = (index) =>{
+    _viewDates = (index) => {
         let med = this.state.rxsMedList.list[index].values;
         let name = this.props.isDepSelected.name.firstName + " " + this.props.isDepSelected.name.lastName;
-        this.props.togglePopUp(med.name,<RxsMedDates rxsMedID={med._rxsMedID}/>);
+        this.props.togglePopUp(med.name, <RxsMedDates rxsMedID={med._rxsMedID} />);
     }
     _formatRxs = (arr) => {
         let rxsArr = [];
@@ -621,8 +650,8 @@ class CreateDependent extends React.Component {
         if (!this._isOverviewErrors() && !this._isRxsMedErrors()) {
             if (this.props.isDepSelected) {
                 //check if group is modified if so update group then call get populated dependents
-                this.props.fetchUpdateDependent(this.props.isDepSelected.name.firstName + " " + this.props.isDepSelected.name.lastName,this.props.isDepSelected._id,
-                    this._formatBody(),this._isGroupModified(),(res) => {
+                this.props.fetchUpdateDependent(this.props.isDepSelected.name.firstName + " " + this.props.isDepSelected.name.lastName, this.props.isDepSelected._id,
+                    this._formatBody(), this._isGroupModified(), (res) => {
                         this._initState();
                         this.props.updateDep(res._id);
                     });
@@ -633,7 +662,7 @@ class CreateDependent extends React.Component {
         }
     }
     componentDidMount = () => {
-        if(this.props.isDepSelected){
+        if (this.props.isDepSelected) {
             this._formatSelDep(this.props.isDepSelected);
         }
     }
@@ -651,14 +680,19 @@ class CreateDependent extends React.Component {
                         <div className="col-lg-12" style={{ marginBottom: '10px' }}>
                             <h4 style={{ display: 'inline' }}>Dependent Overview</h4>
                             <>
-                            {!this.props.isUser?
-                            <>
-                            <i title="edit" onClick={() => { this._toggleIsEditOverview() }} className="fas fa-edit"
-                                style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
-                            <i title="delete" onClick={() => { this.props.delete(this.props.isDepSelected) }} className="fas fa-trash"
-                                style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
-                            </>
-                            :null}
+                                {!this.props.isUser ?
+                                    <>
+                                        <i title="edit" onClick={() => { this._toggleIsEditOverview() }} className="fas fa-edit"
+                                            style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
+                                        <i title="delete" onClick={() => { this.props.delete(this.props.isDepSelected) }} className="fas fa-trash"
+                                            style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
+                                                                                        {this._isUpdated() ?
+                                    <a title="Undo changes"
+                                        onClick={() => { this._toggleUndo(this.state.rxsMedList.list.length - 1) }}
+                                        style={{ color: '#2196F3',  paddingLeft: '20px', color: '#2196F3', cursor: 'pointer', textDecoration: 'underline' }}>Undo All Changes</a>
+                                    : null}
+                                    </>
+                                    : null}
                             </>
                             <i title="close" onClick={() => { this.props.goHome() }} style={{ float: 'right' }} className="fas fa-times"></i>
                         </div>
@@ -677,19 +711,16 @@ class CreateDependent extends React.Component {
                     <div className="col-lg-12">
                         <h4 style={{ display: 'inline' }}>RXS Medications <span style={{ fontSize: '17px' }}>
                             ({this.state.rxsMedList.list.length})
-                            </span></h4>
-                            {!this.props.isUser?
-                        <i title="add" className="fas fa-plus" onClick={this._toggleRxsMedAdd}
-                            style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
-                            :null}
+                        </span></h4>
+                        {!this.props.isUser ?
+                            <i title="add" className="fas fa-plus" onClick={this._toggleRxsMedAdd}
+                                style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
+                            : null}
                         {this.state.rxsMedList.isAdd ?
                             <>
-                            <i title="delete empty med" className="fas fa-trash"
-                                onClick={() => { this._toggleRxsMedDelete(this.state.rxsMedList.list.length - 1) }}
-                                style={{ color: '#2196F3', float: 'right',paddingLeft:'20px',cursor:'pointer'}}></i>
-                             <a title="Undo changes"
-                                onClick={() => { this._toggleRxsMedDelete(this.state.rxsMedList.list.length - 1) }}
-                                style={{ color: '#2196F3', float: 'right',cursor:'pointer',textDecoration:'underline'  }}>Undo</a>
+                                <i title="delete empty med" className="fas fa-trash"
+                                    onClick={() => { this._toggleRxsMedDelete(this.state.rxsMedList.list.length - 1) }}
+                                    style={{ color: '#2196F3', float: 'right', paddingLeft: '20px', cursor: 'pointer' }}></i>
                             </>
                             : null}
                     </div>

@@ -64,6 +64,8 @@ export default class MedicationTable extends React.Component {
                   <>
                   <i onClick={() => { this.props.tookMed(element.index) }} title="Verify Med Taken" className="fas fa-calendar-check"
                     style={{ paddingRight: '20px',color: '#2196F3' }}></i>
+                  <i onClick={() => { this.props.viewDates(element.index) }} title="View Dates" className="fas fa-calendar-alt"
+                    style={{ color: '#2196F3'}}></i>
                   {/* <i onClick={() => { alert('t')}} title="Delete" title="Took Another Day" className="fas fa-calendar-alt"
                     style={{ color: '#2196F3' }}></i> */}
                   </>
@@ -84,7 +86,7 @@ export default class MedicationTable extends React.Component {
                 <tr index={"medTableInside^&23*&^" + index} className="no-border" style={style}>
                   <td></td>
                   <td colSpan="2">
-                    <span className="inner-title">End Date:</span><br /><br />{element.values.endDate || "-"}
+                    <span className="inner-title">End Date:</span><br /><br />{formateDate(element.values.endDate) || "-"}
                   </td>
                   <td colSpan="3">
                     <span className="inner-title">When to Take:</span><br /><br />{element.values.whenToTake || "-"}
