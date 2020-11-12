@@ -1,6 +1,5 @@
 import React, { useState }from "react";
 import { formateDate } from "../../../config/helpers";
-import {Dropdown, DropdownItem, DropdownToggle, DropdownMenu} from 'reactstrap';
 
 export default class MedicationTable extends React.Component {
   constructor(props) {

@@ -7,52 +7,148 @@ import { formateDate } from "../../../config/helpers";
 
 class RxsMedDates extends React.Component {
     state = {
-        rxsMedEvents: []
+        rxsMedEvents: [],
+        list: [],
+        left: [],
+        showMore: false
     }
     constructor(props) {
         super(props);
+    }
+    _formatList = (list, left) => {
+        let newState = this.state;
+        newState.list = list;
+        newState.left = left;
+        this.setState(newState);
+    }
+    _toggleShowMore = () =>{
+        let newState = this.state;
+        newState.showMore = !newState.showMore;
+        this.setState(newState);
+        this._getList();
+    }
+    _getList = () => {
+        let left = [];
+        let list = this.state.rxsMedEvents;
+
+        if (this.state.rxsMedEvents && this.state.rxsMedEvents.length > 2 && !this.state.showMore) {
+            for (var i = 2; i < this.state.rxsMedEvents.length; ++i) {
+                left.push(this.state.rxsMedEvents[i]);
+            }
+            list = [this.state.rxsMedEvents[0], this.state.rxsMedEvents[1]];
+        }
+        this._formatList(list, left);
+    }
+    _sortRxsMedEvents = (medEvents) =>{
+        medEvents.sort(function(a,b){
+            return new Date(b.dateTaken) - new Date(a.dateTaken);
+        });
+        return medEvents;
     }
     componentDidMount = () => {
         this.props.fetchMedEvents(this.props.rxsMedID, true, (res) => {
             let newState = this.state;
             newState.rxsMedEvents = res.events;
+            newState.rxsMedEvents = this._sortRxsMedEvents(newState.rxsMedEvents);
             this.setState(newState);
+            this._getList();
         });
     }
     render() {
-        const list = () => {
-            return this.state.rxsMedEvents.map((event, index) => {
-                return(
-                    <tr index={"lkjmedTableInsasdl4***&^" + index}>
-                        <td>{index + 1}</td>
-                        <td>{formateDate(event.dateTaken)}</td>
-                        <td>{event.createdBy.name.firstName + " " + event.createdBy.name.lastName}</td>
-                        <td>{event.isAway.toString()}</td>
-                        <td>{event.notes || "-"}</td>
-                        <td></td>
-                    </tr>
-                );
-            });
+        // const list = () => {
+        //     return this.state.rxsMedEvents.map((event, index) => {
+        //         return(
+        //             <tr index={"lkjmedTableInsasdl4***&^" + index}>
+        //                 <td>{index + 1}</td>
+        //                 <td>{formateDate(event.dateTaken)}</td>
+        //                 <td>{event.createdBy.name.firstName + " " + event.createdBy.name.lastName}</td>
+        //                 <td>{event.isAway.toString()}</td>
+        //                 <td>{event.notes || "-"}</td>
+        //                 <td></td>
+        //             </tr>
+        //         );
+        //     });
+        // }
+        console.log(this.state)
+
+        const listTable = () => {
+            return this.state.list.map((element, index) => {
+                let style = {
+                    background: 'inherit'
+                }
+                if (index % 2 == 0) {
+                    // style.background = "#ededed";
+                }
+                return (
+                    <React.Fragment key={"slk3(((asdf" + index}>
+                        <tr index={"medTable^&*&^" + index} style={style}>
+                            <th scope="row" style={{ paddingBottom: '0', paddingTop: '0' }}>
+                                <p style={{ marginBottom: '0px', paddingTop: '10px' }}>{index + 1}</p>
+                                <p onClick={() => { this.props.expandItem(element.index) }} title="view rest of med"
+                                    style={{ color: '#2196F3', paddingTop: "5px", marginBottom: '10px', cursor: "pointer" }}>
+                                    {!element.isExpand ? "More" : ""}&nbsp;
+                                </p>
+                            </th>
+                            <td>{formateDate(element.dateTaken) || "-"}</td>
+                            <td>{element.createdBy.name.firstName + " " + element.createdBy.name.lastName || "-"}</td>
+                            <td>{element.isAway.toString() || "-"}</td>
+                            <td>{"test" || "-"}</td>
+                        </tr>
+                        {element.isExpand ?
+                            <React.Fragment key={"slk3(((" + index}>
+                                <tr index={"lkjmedTableInside^sdf&*&^" + index} className="no-border" style={style}>
+                                    <td>test</td>
+                                </tr>
+                                <tr index={"mAedTableInhjkhkhside^&*&^" + index} className="no-border-top" style={style}>
+                                    <th scope="row" style={{ paddingBottom: '0', paddingTop: '0', borderTop: 'none' }}>
+                                        <p style={{ marginBottom: '0px', paddingTop: '28px' }}></p>
+                                        <p onClick={() => { this.props.expandItem(element.index) }} title="view rest of med"
+                                            style={{ color: '#2196F3', paddingTop: "5px", marginBottom: '10px', cursor: "pointer" }}>{element.isExpand ? "Less" : ""}&nbsp;</p>
+                                    </th>
+                                    <td colSpan="2" style={{ verticalAlign: 'top' }}>
+                                        <span className="inner-title">Reason:</span><br /><br />{"test" || "-"}</td>
+                                </tr>
+                            </React.Fragment>
+                            : null
+                        }
+                    </React.Fragment>
+                )
+            })
         }
         return (
-            <div style={{minHeight:'30em',width:'100%'}}>
-            {this.state.rxsMedEvents.length>0?
-            <table className="table my-med-table">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Date Given</th>
-                        <th scope="col">Administer By</th>
-                        <th scrop="col">Is Away</th>
-                        <th scope="col">Notes</th>
-                        <th scope="col">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {list()}
-                </tbody>
-            </table>
-            :<h1 style={{textAlign:'center',marginTop:'10%'}}>No Events Registered.</h1>}
+            <div style={{ minHeight: '30em', width: '100%' }}>
+                {this.state.rxsMedEvents && this.state.rxsMedEvents.length > 0 ?
+                    <table className="table my-med-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Date Given</th>
+                                <th scope="col">Administer By</th>
+                                <th scrop="col">Is Away</th>
+                                <th scope="col">Notes</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {listTable()}
+                        </tbody>
+                    </table>
+                    : 
+                    <h1 style={{ textAlign: 'center', marginTop: '10%' }}>No Events Registered.</h1>
+                }
+
+                {this.state.left.length > 0 ?
+                    <p onClick={this._toggleShowMore} title="view" style={{ marginTop: '15px', marginLeft: '5px', cursor: 'pointer', color: '#2196F3', marginBottom: '0' }}>
+                        <i className="fas fa-plus" style={{ paddingRight: '10px' }}></i>
+                        {this.state.left.length} More Events
+                    </p>
+                    : this.state.showMore && this.state.list.length > 2 ?
+                        <p onClick={this._toggleShowMore} title="view" style={{ marginTop: '15px', marginLeft: '5px', cursor: 'pointer', color: '#2196F3', marginBottom: '0' }}>
+                            <i className="fas fa-minus" style={{ paddingRight: '10px' }}></i>
+                        Show Less
+                        </p>
+                        : null
+                }
             </div>
         );
     }

@@ -3,6 +3,8 @@ import React from 'react';
 import Search from '../../components/shared/Search/Search';
 import CreateGroup from '../../components/admin/forms/group/CreateGroup';
 import Calendar from "../../components/shared/Calendar/Calendar";
+import RxsDates from "../../components/shared/tables/RxsMedDates";
+import RxsMedDates from '../../components/shared/tables/RxsMedDates';
 
 export default class Test extends React.Component{
     
@@ -48,7 +50,8 @@ export default class Test extends React.Component{
                     <div className="col-lg-12">
                         {/* <Search color={"#8862e0"} placeholder="Search & Select Item(s)" items={items} label="Items:"/> */}
                         {/* <CreateGroup/> */}
-                        <Calendar events={[]}/>
+                        {/* <Calendar events={[]}/> */}
+                        <RxsMedDates rxsMedID={"5f8d9940aa9d4b39f8b749c5"}/>
                     </div>
                 </div>
             </div>

@@ -293,17 +293,11 @@ function saveToDoc(bodyData, schemaModel, callback) {
   var newDoc = new schemaModel({
     title: bodyData.title,
     event: bodyData.event,
+    isAway: bodyData.isAway,
     dateTaken: bodyData.dateTaken,
     dependent: bodyData.dependent,
     createdBy: bodyData.createdBy
   });
-  if (typeof (bodyData.isAway) != 'undefined') {
-    var value = false;
-    if (bodyData.isAway == 'true') {
-      value = true
-    }
-    newDoc.isAway = value;
-  }
   if (typeof (bodyData.notes) != 'undefined') {
     newDoc.notes = bodyData.notes;
   }
@@ -318,11 +312,12 @@ function saveToDoc(bodyData, schemaModel, callback) {
 }
 
 function create(body, callback) {
-
+  console.log(body);
   saveToDoc(body, medicationEventModel, function (err, result) {
     if (err) {
       callback(err);
     } else {
+      console.log(result);
       callback(null, result);
     }
   });

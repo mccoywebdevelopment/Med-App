@@ -20,6 +20,7 @@ router.route("/:rxsMedicationId/:JWT")
     fields:
         isAway,notes,dateTaken
     */
+   console.log(req.body)
     eventQ.tookMedication(req.params.rxsMedicationId,req.params.JWT,req.body,function(err,result){
         if(err){
             console.log(err);
