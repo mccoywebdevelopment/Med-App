@@ -28,31 +28,33 @@ function firstAndLastNameValidator(name,isRequired){
         isValid:true,
         errorMsg:""
     }
-    var nameList = name.split(' ');
-    for(var i=0;i<nameList.length;++i){
-        if(nameList[i]==''){
-            nameList.splice(i,1);
-        }
-    }
     if(name.length<1 && isRequired ){
         feedback.errorMsg = "This field is required";
         feedback.isValid = false;
     }else if(isRequired && !name.includes(' ')){
         feedback.errorMsg = "Please provide first & last name";
         feedback.isValid = false;
-    }else if(nameList.length!=2){
-        feedback.errorMsg = "Please enter first & last name";
-        feedback.isValid = false;
     }
+    if(name.length>0){
+        var nameList = name.split(' ');
+        for(var i=0;i<nameList.length;++i){
+            if(nameList[i]==''){
+                nameList.splice(i,1);
+            }
+        }
+        if(nameList.length!=2){
+            feedback.errorMsg = "Please enter first & last name";
+            feedback.isValid = false;
+        }
+        if(nameList[0].length<3){
+            feedback.errorMsg = "First name must be at least 3 characters.";
+            feedback.isValid = false;
+        }
 
-    if(nameList[0].length<3){
-        feedback.errorMsg = "First name must be at least 3 characters.";
-        feedback.isValid = false;
-    }
-
-    if(nameList[1].length<3){
-        feedback.errorMsg = "Last name must be at least 3 characters.";
-        feedback.isValid = false;
+        if(nameList[1] && nameList[1].length<3){
+            feedback.errorMsg = "Last name must be at least 3 characters.";
+            feedback.isValid = false;
+        }
     }
 
     return feedback;

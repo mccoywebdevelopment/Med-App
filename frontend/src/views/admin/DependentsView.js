@@ -138,6 +138,8 @@ class DependentView extends React.Component {
                                     <button onClick={()=>{this._toggleFilterBy(false,false,true)}} type="button" 
                                         class={"btn "+(this.state.filterBy.notGrouped? "btn-primary":"btn-outline-secondary")}>Not Grouped({notGroupLength})</button>
                                 </div>
+                                    <button style={{float:'right'}}type="button" class="btn btn-outline-primary btn-fw">
+                                    <i class="fas fa-download"></i>Export</button>
                             </div>
                         </div>
                         <div className="row">

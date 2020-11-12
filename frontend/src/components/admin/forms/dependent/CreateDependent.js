@@ -319,6 +319,7 @@ class CreateDependent extends React.Component {
     }
     _overviewValidation = () => {
         let newState = this.state;
+        console.log(this.state);
         newState.overview.errors.name = firstAndLastNameValidator(newState.overview.values.name, true).errorMsg;
         newState.overview.errors.dateOfBirth = prevDateValidator(newState.overview.values.dateOfBirth, true).errorMsg;
         if (this.state.overview.values.group.isYes) {
@@ -438,6 +439,7 @@ class CreateDependent extends React.Component {
         if (this.state.rxsMedList.isAdd && this.state.rxsMedList.list.length > 0) {
             let newState = this.state;
             let index = newState.rxsMedList.list.length - 1;
+            console.log(this.state);
 
             //Required fields:
             let name = newState.rxsMedList.list[index].values.name;
