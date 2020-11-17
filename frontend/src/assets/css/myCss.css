@@ -330,3 +330,11 @@ background-color:#F0F1F1;
   padding:0.5em;
   width: 40%;
 }
+
+.hover-white:hover>i{
+  color:white;
+}
+::-webkit-scrollbar {
+  display: none;
+  visibility: hidden;
+}

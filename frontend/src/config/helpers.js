@@ -8,10 +8,14 @@ export function getAge(date) {
     return date;
 }
 export function formateDate(date) {
-    let d = new Date(date);
-    d = d.getMonth() + 1 + '/' + (d.getDate()) + '/' + d.getFullYear();
+    if(date){
+        let d = new Date(date);
+        d = d.getMonth() + 1 + '/' + (d.getDate()) + '/' + d.getFullYear();
 
-    return d;
+        return d;
+    }else{
+        return null;
+    }
 }
 export function getPath(window, index) {
     let arr = window.location.pathname.split('/');

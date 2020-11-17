@@ -39,6 +39,11 @@ class RxsMedDates extends React.Component {
         }
         this._formatList(list, left);
     }
+    _expandItem = (index,value) =>{
+        let newState = this.state;
+        newState.list[index].isExpand = value;
+        this.setState(newState);
+    }
     _sortRxsMedEvents = (medEvents) =>{
         medEvents.sort(function(a,b){
             return new Date(b.dateTaken) - new Date(a.dateTaken);
@@ -84,7 +89,7 @@ class RxsMedDates extends React.Component {
                         <tr index={"medTable^&*&^" + index} style={style}>
                             <th scope="row" style={{ paddingBottom: '0', paddingTop: '0' }}>
                                 <p style={{ marginBottom: '0px', paddingTop: '10px' }}>{index + 1}</p>
-                                <p onClick={() => { this.props.expandItem(element.index) }} title="view rest of med"
+                                <p onClick={() => { this._expandItem(index,true) }} title="view rest of med"
                                     style={{ color: '#2196F3', paddingTop: "5px", marginBottom: '10px', cursor: "pointer" }}>
                                     {!element.isExpand ? "More" : ""}&nbsp;
                                 </p>
@@ -92,21 +97,21 @@ class RxsMedDates extends React.Component {
                             <td>{formateDate(element.dateTaken) || "-"}</td>
                             <td>{element.createdBy.name.firstName + " " + element.createdBy.name.lastName || "-"}</td>
                             <td>{element.isAway.toString() || "-"}</td>
-                            <td>{"test" || "-"}</td>
                         </tr>
                         {element.isExpand ?
                             <React.Fragment key={"slk3(((" + index}>
                                 <tr index={"lkjmedTableInside^sdf&*&^" + index} className="no-border" style={style}>
-                                    <td>test</td>
+                                <td></td>
+                                <td colSpan="4">
+                                    <span className="inner-title">Notes:</span><br /><br />{element.notes || "-"}
+                                </td>
                                 </tr>
                                 <tr index={"mAedTableInhjkhkhside^&*&^" + index} className="no-border-top" style={style}>
                                     <th scope="row" style={{ paddingBottom: '0', paddingTop: '0', borderTop: 'none' }}>
                                         <p style={{ marginBottom: '0px', paddingTop: '28px' }}></p>
-                                        <p onClick={() => { this.props.expandItem(element.index) }} title="view rest of med"
+                                        <p onClick={() => { this._expandItem(index,false) }} title="view rest of med"
                                             style={{ color: '#2196F3', paddingTop: "5px", marginBottom: '10px', cursor: "pointer" }}>{element.isExpand ? "Less" : ""}&nbsp;</p>
                                     </th>
-                                    <td colSpan="2" style={{ verticalAlign: 'top' }}>
-                                        <span className="inner-title">Reason:</span><br /><br />{"test" || "-"}</td>
                                 </tr>
                             </React.Fragment>
                             : null
@@ -125,7 +130,6 @@ class RxsMedDates extends React.Component {
                                 <th scope="col">Date Given</th>
                                 <th scope="col">Administer By</th>
                                 <th scrop="col">Is Away</th>
-                                <th scope="col">Notes</th>
                                 <th scope="col">Actions</th>
                             </tr>
                         </thead>
