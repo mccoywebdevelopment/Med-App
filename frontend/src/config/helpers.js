@@ -12,6 +12,9 @@ export function formateDate(date) {
         let d = new Date(date);
         d = d.getMonth() + 1 + '/' + (d.getDate()) + '/' + d.getFullYear();
 
+        if(d.toString().includes('T')){
+            d = d.toString().split('T')[0];
+        }
         return d;
     }else{
         return null;

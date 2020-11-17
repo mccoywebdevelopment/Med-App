@@ -21,7 +21,19 @@ export const fetchMedEvents = (rxsMedID,isLoading,done) => (dispatch) => {
     if (err) {
       dispatch(createMessage(err, 'danger'));
     }else{
-      // dispatch(createMessage(res.t, "success"));
+      if(done){
+        done(res);
+      }
+    }
+  });
+}
+
+export const fetchDeleteMedEvent = (rxsMedID,isLoading,done) => (dispatch) => {
+  FETCH('DELETE', '/rxsMedication-event/'+rxsMedID+'/',null, localStorage.getItem('JWT'), dispatch, isLoading, (err, res) => {
+    if (err) {
+      dispatch(createMessage(err, 'danger'));
+    }else{
+      // dispatch(createMessage("Successfully deteted " + res.title, 'info'));
       if(done){
         done(res);
       }

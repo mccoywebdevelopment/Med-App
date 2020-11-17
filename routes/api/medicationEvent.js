@@ -20,7 +20,6 @@ router.route("/:rxsMedicationId/:JWT")
     fields:
         isAway,notes,dateTaken
     */
-   console.log(req.body)
     eventQ.tookMedication(req.params.rxsMedicationId,req.params.JWT,req.body,function(err,result){
         if(err){
             console.log(err);
@@ -31,7 +30,7 @@ router.route("/:rxsMedicationId/:JWT")
     })
 });
 
-router.route("/:id/:JWT/")
+router.route("/:id/:JWT")
 .patch(verifyUser,function(req,res){
     eventQ.patchUpdateById(req.body,req.params.eventId,function(err,result){
         if(err){
@@ -44,7 +43,7 @@ router.route("/:id/:JWT/")
     });
 })
 .delete(verifyUser,function(req,res){
-    eventQ.deleteById(req.params.eventId,function(err,result){
+    eventQ.deleteById(req.params.id,function(err,result){
         if(err){
             console.log(err);
             res.status(errors.code.BAD_REQUEST).json({error:err});

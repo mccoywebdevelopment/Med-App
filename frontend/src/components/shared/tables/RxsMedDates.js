@@ -1,9 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchMedEvents } from '../../../actions/event';
+import { fetchMedEvents, fetchDeleteMedEvent} from '../../../actions/event';
 import { togglePopUp } from '../../../actions/popUp';
 import { formateDate } from "../../../config/helpers";
+
+import TookMed from "../../user/forms/TookMed";
 
 class RxsMedDates extends React.Component {
     state = {
@@ -20,6 +22,31 @@ class RxsMedDates extends React.Component {
         newState.list = list;
         newState.left = left;
         this.setState(newState);
+    }
+    _delete = (index) =>{
+        // alert(JSON.stringify(this.state.list[index]));
+        // alert(JSON.stringify(this.state));
+        let event = this.state.list[index];
+        if (window.confirm("Are you sure you want to delete " + event.title + " on " +formateDate(event.dateTaken))) {
+            // this.props.fetchDeleteDependent(dep._id);
+            this.props.fetchDeleteMedEvent(event._id,true,(res)=>{
+                this.props.fetchMedEvents(this.props.rxsMedID, true, (res) => {
+                    this._init(res);
+                });
+            });
+
+        }
+    }
+    _edit = (index) =>{
+        let event = this.state.list[index];
+        // alert(JSON.stringify(this.props));
+        let title = "Edit " + event.title + " on " + formateDate(event.dateTaken);
+        let isEdit = {
+            dateTaken:formateDate(event.dateTaken),
+            notes:event.notes,
+            isAway:event.isAway
+        }
+        this.props.togglePopUp(title, <TookMed isEdit={isEdit} medID={this.props.rxsMedID} />);
     }
     _toggleShowMore = () =>{
         let newState = this.state;
@@ -50,31 +77,19 @@ class RxsMedDates extends React.Component {
         });
         return medEvents;
     }
+    _init = (res) =>{
+        let newState = this.state;
+        newState.rxsMedEvents = res.events;
+        newState.rxsMedEvents = this._sortRxsMedEvents(newState.rxsMedEvents);
+        this.setState(newState);
+        this._getList();
+    }
     componentDidMount = () => {
         this.props.fetchMedEvents(this.props.rxsMedID, true, (res) => {
-            let newState = this.state;
-            newState.rxsMedEvents = res.events;
-            newState.rxsMedEvents = this._sortRxsMedEvents(newState.rxsMedEvents);
-            this.setState(newState);
-            this._getList();
+            this._init(res);
         });
     }
     render() {
-        // const list = () => {
-        //     return this.state.rxsMedEvents.map((event, index) => {
-        //         return(
-        //             <tr index={"lkjmedTableInsasdl4***&^" + index}>
-        //                 <td>{index + 1}</td>
-        //                 <td>{formateDate(event.dateTaken)}</td>
-        //                 <td>{event.createdBy.name.firstName + " " + event.createdBy.name.lastName}</td>
-        //                 <td>{event.isAway.toString()}</td>
-        //                 <td>{event.notes || "-"}</td>
-        //                 <td></td>
-        //             </tr>
-        //         );
-        //     });
-        // }
-        console.log(this.state)
 
         const listTable = () => {
             return this.state.list.map((element, index) => {
@@ -97,6 +112,10 @@ class RxsMedDates extends React.Component {
                             <td>{formateDate(element.dateTaken) || "-"}</td>
                             <td>{element.createdBy.name.firstName + " " + element.createdBy.name.lastName || "-"}</td>
                             <td>{element.isAway.toString() || "-"}</td>
+                            <td>
+                                <i title="edit" onClick={()=>{this._edit(index)}} className="fas fa-edit" style={{ paddingRight: '20px', color: '#2196F3' }}></i>
+                                <i title="Delete" onClick={()=>{this._delete(index)}} className="fas fa-trash" style={{ color: '#2196F3' }}></i>
+                            </td>
                         </tr>
                         {element.isExpand ?
                             <React.Fragment key={"slk3(((" + index}>
@@ -160,6 +179,7 @@ class RxsMedDates extends React.Component {
 
 RxsMedDates.propTypes = {
     fetchMedEvents: PropTypes.func.isRequired,
+    fetchDeleteMedEvent: PropTypes.func.isRequired
 };
 
-export default connect(null, { fetchMedEvents, togglePopUp })(RxsMedDates);
+export default connect(null, { fetchMedEvents, togglePopUp, fetchDeleteMedEvent })(RxsMedDates);

@@ -37,6 +37,13 @@ function patchUpdateById(body,id,callback){
     });
   
 }
+function formateDate(date){
+  let dates = date.split('-');
+  let yyyy = dates[0];
+  let mm = dates[1];
+  let dd = dates[2];
+  return(mm+"-"+dd+"-"+yyyy);
+}
 function updateModifiedFields(oldDoc,updatedFields){
   var name = oldDoc.name;
   var dosage = oldDoc.dosage;
@@ -60,13 +67,13 @@ function updateModifiedFields(oldDoc,updatedFields){
     reason = updatedFields.reason;
   }
   if(updatedFields.datePrescribed){
-    datePrescribed = updatedFields.datePrescribed;
+    datePrescribed = formateDate(updatedFields.datePrescribed);
   }
   if(updatedFields.instructions){
     instructions = updatedFields.instructions;
   }
   if(updatedFields.endDate){
-    endDate = updatedFields.endDate;
+    endDate = formateDate(updatedFields.endDate);
   }
   if(updatedFields.event){
     callback("EVENT NOT IMPLEMENTED");
@@ -136,14 +143,14 @@ function saveToDoc(bodyData,schemaModel,callback){
         unit:bodyData.unit
       },
       reason:bodyData.reason,
-      datePrescribed:bodyData.datePrescribed
+      datePrescribed:formateDate(bodyData.datePrescribed)
   });
 
   if(typeof(bodyData.instructions)!='undefined'){
     newDoc.instructions = bodyData.instructions
   }
   if(typeof(bodyData.endDate)!='undefined'){
-    newDoc.endDate = bodyData.endDate;
+    newDoc.endDate = formateDate(bodyData.endDate);
   }
   if(typeof(bodyData.value)!='undefined'){
     newDoc.whenToTake.value = bodyData.value;

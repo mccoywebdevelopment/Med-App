@@ -53,6 +53,24 @@ class TookMed extends React.Component {
             this.props.togglePopUp();
         }
     }
+    _formateDateIsEdit = (date) =>{
+        let dates = date.split('/');
+        alert(JSON.stringify(dates))
+        let yyyy = dates[2];
+        let mm = dates[0];
+        let dd = dates[1];
+        return(yyyy + "-" + mm + "-" + dd);
+    }
+    componentDidMount = () =>{
+        if(this.props.isEdit){
+            alert(this._formateDateIsEdit(this.props.isEdit.dateTaken));
+            let newState = this.state;
+            newState.values.isAway = this.props.isEdit.isAway;
+            newState.values.dateTaken = this._formateDateIsEdit(this.props.isEdit.dateTaken);
+            newState.values.notes = this.props.isEdit.notes;
+        }
+        // alert(JSON.stringify(this.state));
+    }
     render() {
         return (
             <>

@@ -51,7 +51,7 @@ export default class Test extends React.Component{
                         {/* <Search color={"#8862e0"} placeholder="Search & Select Item(s)" items={items} label="Items:"/> */}
                         {/* <CreateGroup/> */}
                         {/* <Calendar events={[]}/> */}
-                        <RxsMedDates rxsMedID={"5f8d9940aa9d4b39f8b749c5"}/>
+                        <RxsMedDates rxsMedID={"5fb3cdc070d5c9647bbce0d7"}/>
                     </div>
                 </div>
             </div>

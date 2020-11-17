@@ -284,7 +284,9 @@ function deleteById(id, callback) {
   medicationEventModel.findOneAndDelete({ _id: id }).exec(function (err, deletedDoc) {
     if (err) {
       callback(err);
-    } else {
+    }else if(!deletedDoc){
+      callback("Medication event not found.");
+    }else {
       callback(null, deletedDoc);
     }
   });
