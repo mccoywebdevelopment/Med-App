@@ -16,6 +16,21 @@ export const fetchCreateMedEvent = (body, rxsMedID, isLoading, done) => (dispatc
   });
 }
 
+export const fetchUpdateMedEvent = (body, rxsMedID, isLoading, done) => (dispatch) => {
+  body.dateTaken = formateDate(body.dateTaken);
+
+  FETCH('PATCH', '/rxsMedication-event/'+rxsMedID+'/', body, localStorage.getItem('JWT'), dispatch, isLoading, (err, res) => {
+    if (err) {
+      dispatch(createMessage(err, 'danger'));
+    }else{
+      dispatch(createMessage(res.title, "success"));
+      if(done){
+        done(res);
+      }
+    }
+  });
+}
+
 export const fetchMedEvents = (rxsMedID,isLoading,done) => (dispatch) => {
   FETCH('GET', '/rxsMedication-event/'+rxsMedID+'/', null, localStorage.getItem('JWT'), dispatch, isLoading, (err, res) => {
     if (err) {

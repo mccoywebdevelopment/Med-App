@@ -55,7 +55,6 @@ class TookMed extends React.Component {
     }
     _formateDateIsEdit = (date) =>{
         let dates = date.split('/');
-        alert(JSON.stringify(dates))
         let yyyy = dates[2];
         let mm = dates[0];
         let dd = dates[1];
@@ -63,11 +62,11 @@ class TookMed extends React.Component {
     }
     componentDidMount = () =>{
         if(this.props.isEdit){
-            alert(this._formateDateIsEdit(this.props.isEdit.dateTaken));
             let newState = this.state;
             newState.values.isAway = this.props.isEdit.isAway;
             newState.values.dateTaken = this._formateDateIsEdit(this.props.isEdit.dateTaken);
             newState.values.notes = this.props.isEdit.notes;
+            this.setState(newState);
         }
         // alert(JSON.stringify(this.state));
     }
@@ -111,7 +110,7 @@ Yes
                                         <input readOnly={true} type="radio" className="form-check-input" name="membershipRadios"
                                             id="membershipRadios2" value="no" onClick={() => { this._update("isAway", false) }}
                                             checked={!this.state.values.isAway} />
-No <i className="input-helper"></i>
+                                                No <i className="input-helper"></i>
                                     </label>
                                 </div>
                             </div>
@@ -131,6 +130,9 @@ No <i className="input-helper"></i>
                     </div>
                 </div>
                 <div className="row" style={{ marginTop: '30px', marginBottom: '30px' }}>
+                    {this.props.isEdit?
+                        <button className="btn btn-primary" style={{marginRight:'30px'}} onClick={() => { this._submit() }}>Back</button>
+                    :null}
                     <button className="btn btn-primary" onClick={() => { this._submit() }}>Submit</button>
                 </div>
             </>

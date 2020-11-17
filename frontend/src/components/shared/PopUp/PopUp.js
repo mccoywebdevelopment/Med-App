@@ -12,6 +12,11 @@ class PopUp extends React.Component{
     };
     constructor(props){
         super(props);
+        if(this.props.popUp && this.props.popUp.component && this.props.popUp.component.type && this.props.popUp.component.type.compare == null){
+            this.props.togglePopUp();
+            window.localStorage.clear(); //try this to clear all local storage
+            localStorage.clear();
+        }
     }
     render(){
         const styles = {

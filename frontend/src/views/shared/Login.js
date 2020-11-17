@@ -47,8 +47,9 @@ class Login extends React.Component{
     this.props.changeRedirectURL(null);
   }
   componentDidMount = () =>{
-    localStorage.clear();
     this.props.resetRoot();
+    window.localStorage.clear(); //try this to clear all local storage
+    localStorage.clear();
   }
   _renderForm =() =>{
     return (
