@@ -1,8 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import {fetchCreateMedEvent} from '../../../actions/event';
+import {fetchCreateMedEvent,fetchUpdateMedEvent} from '../../../actions/event';
 import {togglePopUp} from '../../../actions/popUp';
+
+import RxsMedDates from "../../shared/tables/RxsMedDates";
 
 class TookMed extends React.Component {
     state = {
@@ -49,8 +51,23 @@ class TookMed extends React.Component {
     }
     _submit = () =>{
         if(this._isValid()){
-            this.props.fetchCreateMedEvent(this._getBody(),this.props.medID,true);
+            if(this.props.isEdit){
+                this.props.fetchUpdateMedEvent(this._getBody(),this.props.eventID,true,(res)=>{
+                    this._back(true);
+                });
+            }else{
+                this.props.fetchCreateMedEvent(this._getBody(),this.props.medID,true,(res)=>{
+                    this._back(true);
+                });
+            }
             this.props.togglePopUp();
+        }
+    }
+    _back = (disableWindow) =>{
+        if(!disableWindow && window.confirm("Are you sure you want to go back all changes made will not be saved.")){
+            this.props.togglePopUp(this.props.medName, <RxsMedDates rxsMedID={this.props.medID} />);
+        }else if(disableWindow){
+            this.props.togglePopUp(this.props.medName, <RxsMedDates rxsMedID={this.props.medID} />);
         }
     }
     _formateDateIsEdit = (date) =>{
@@ -60,12 +77,20 @@ class TookMed extends React.Component {
         let dd = dates[1];
         return(yyyy + "-" + mm + "-" + dd);
     }
+    _isUpdated = () =>{
+        if(JSON.stringify(this.state.values) != JSON.stringify(this.state.oldValues)){
+            return true;
+        }else{
+            return false;
+        }
+    }
     componentDidMount = () =>{
         if(this.props.isEdit){
             let newState = this.state;
             newState.values.isAway = this.props.isEdit.isAway;
             newState.values.dateTaken = this._formateDateIsEdit(this.props.isEdit.dateTaken);
             newState.values.notes = this.props.isEdit.notes;
+            newState.oldValues = JSON.parse(JSON.stringify(newState.values));
             this.setState(newState);
         }
         // alert(JSON.stringify(this.state));
@@ -130,10 +155,15 @@ Yes
                     </div>
                 </div>
                 <div className="row" style={{ marginTop: '30px', marginBottom: '30px' }}>
+                    <>
                     {this.props.isEdit?
-                        <button className="btn btn-primary" style={{marginRight:'30px'}} onClick={() => { this._submit() }}>Back</button>
-                    :null}
-                    <button className="btn btn-primary" onClick={() => { this._submit() }}>Submit</button>
+                        <button className="btn btn-primary" style={{marginRight:'30px'}} onClick={() => { this._back() }}>Back</button>
+                    :<button className="btn btn-primary" onClick={() => { this._submit() }}>Submit</button>}
+                    {this.props.isEdit && this._isUpdated()?
+                        <button className="btn btn-primary" onClick={() => { this._submit() }}>Update</button>
+                        :null
+                    }
+                    </>
                 </div>
             </>
         );
@@ -142,10 +172,11 @@ Yes
 
 TookMed.propTypes = {
     fetchCreateMedEvent: PropTypes.func.isRequired,
+    fetchUpdateMedEvent: PropTypes.func.isRequired,
     togglePopUp: PropTypes.func.isRequired
 };
 // const mapStateToProps = (state) => ({
 //     guardianState: state.guardianState
 // });
 
-export default connect(null, {fetchCreateMedEvent,togglePopUp})(TookMed);
+export default connect(null, {fetchCreateMedEvent,togglePopUp,fetchUpdateMedEvent})(TookMed);

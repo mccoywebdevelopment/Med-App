@@ -535,13 +535,13 @@ class CreateDependent extends React.Component {
     }
     _tookMed = (index) => {
         let med = this.state.rxsMedList.list[index].values;
-        let name = this.props.isDepSelected.name.firstName + " " + this.props.isDepSelected.name.lastName;
-        this.props.togglePopUp(med.name, <TookMed medID={med._rxsMedID} />);
+        // let name = this.props.isDepSelected.name.firstName + " " + this.props.isDepSelected.name.lastName;
+        this.props.togglePopUp(med.name, <TookMed medName={med.name} medID={med._rxsMedID} />);
     }
     _viewDates = (index) => {
         let med = this.state.rxsMedList.list[index].values;
-        let name = this.props.isDepSelected.name.firstName + " " + this.props.isDepSelected.name.lastName;
-        this.props.togglePopUp(med.name, <RxsMedDates rxsMedID={med._rxsMedID} />);
+        // let name = this.props.isDepSelected.name.firstName + " " + this.props.isDepSelected.name.lastName;
+        this.props.togglePopUp(med.name, <RxsMedDates medName={med.name} rxsMedID={med._rxsMedID} />);
     }
     _formatRxs = (arr) => {
         let rxsArr = [];
@@ -727,7 +727,8 @@ class CreateDependent extends React.Component {
                 </div>
                 <div className="row" style={{ marginTop: '10px' }}>
                     <MedList data={this.state.rxsMedList} update={this._updateRxsMedValues} delete={this._toggleRxsMedDelete}
-                        edit={this._toggleEditRxsMed} tookMed={this._tookMed} viewDates={this._viewDates} toggleExpandMed={this._toggleExpandRxsMed} isUser={this.props.isUser} />
+                        edit={this._toggleEditRxsMed} tookMed={this._tookMed} viewDates={this._viewDates} toggleExpandMed={this._toggleExpandRxsMed}
+                        isUser={this.props.isUser} isCreate={!this.props.isDepSelected} />
                 </div>
                 {/* <div className="row" style={{marginTop:'30px'}}>
 <div className="col-lg-12">

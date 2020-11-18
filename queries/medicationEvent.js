@@ -38,13 +38,11 @@ function getEventByRxsMedID(rxsMedID, callback) {
     } else {
       let i = 0;
       rxsMedFound.events.forEach((event, index) => {
-        console.log(event)
         Guardian.findById(event.createdBy, function (err, guardian) {
           if (err) {
             callback(err);
             return;
           } else if (guardian) {
-            console.log(guardian);
             rxsMedFound.events[index].createdBy = guardian;
           }
           if (i == rxsMedFound.events.length - 1) {
@@ -65,6 +63,7 @@ function patchUpdateById(body, id, callback) {
       callback("Doc not found");
     } else {
       updateModifiedFields(foundDoc, body, function (err, obj) {
+        console.log(obj);
         foundDoc.update(obj, function (err, result) {
           if (err) {
             callback(err);
@@ -239,7 +238,7 @@ function updateModifiedFields(oldDoc, updatedFields, callback) {
   if (updatedFields.title) {
     title = updatedFields.title;
   }
-  if (updatedFields.isAway) {
+  if (typeof(updatedFields.isAway)!=undefined) {
     isAway = updatedFields.isAway;
   }
   if (typeof (updatedFields.notes) != undefined) {
@@ -263,7 +262,7 @@ function updateModifiedFields(oldDoc, updatedFields, callback) {
     dependent: dependent,
     createdBy: createdBy
   }
-  if (updatedFields.event.timeStamp) {
+  if (updatedFields.event && updatedFields.event.timeStamp) {
     var newEvent = event;
     newEvent.timeStamp = updatedFields.event.timeStamp;
     eventModel.findOneAndUpdate({ _id: obj.event._id }, { timeStamp: updatedFields.event.timeStamp }, function (err, result) {
@@ -314,12 +313,10 @@ function saveToDoc(bodyData, schemaModel, callback) {
 }
 
 function create(body, callback) {
-  console.log(body);
   saveToDoc(body, medicationEventModel, function (err, result) {
     if (err) {
       callback(err);
     } else {
-      console.log(result);
       callback(null, result);
     }
   });

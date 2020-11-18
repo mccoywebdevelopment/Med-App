@@ -24,29 +24,24 @@ class RxsMedDates extends React.Component {
         this.setState(newState);
     }
     _delete = (index) =>{
-        // alert(JSON.stringify(this.state.list[index]));
-        // alert(JSON.stringify(this.state));
         let event = this.state.list[index];
         if (window.confirm("Are you sure you want to delete " + event.title + " on " +formateDate(event.dateTaken))) {
-            // this.props.fetchDeleteDependent(dep._id);
             this.props.fetchDeleteMedEvent(event._id,true,(res)=>{
                 this.props.fetchMedEvents(this.props.rxsMedID, true, (res) => {
                     this._init(res);
                 });
             });
-
         }
     }
     _edit = (index) =>{
         let event = this.state.list[index];
-        // alert(JSON.stringify(this.props));
         let title = "Edit " + event.title + " on " + formateDate(event.dateTaken);
         let isEdit = {
             dateTaken:formateDate(event.dateTaken),
             notes:event.notes,
-            isAway:event.isAway
+            isAway:event.isAway,
         }
-        this.props.togglePopUp(title, <TookMed isEdit={isEdit} medID={this.props.rxsMedID} />);
+        this.props.togglePopUp(title, <TookMed eventID={event._id} medName={this.props.medName} isEdit={isEdit} medID={this.props.rxsMedID} />);
     }
     _toggleShowMore = () =>{
         let newState = this.state;

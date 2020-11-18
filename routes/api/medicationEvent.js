@@ -32,7 +32,7 @@ router.route("/:rxsMedicationId/:JWT")
 
 router.route("/:id/:JWT")
 .patch(verifyUser,function(req,res){
-    eventQ.patchUpdateById(req.body,req.params.eventId,function(err,result){
+    eventQ.patchUpdateById(req.body,req.params.id,function(err,result){
         if(err){
             console.log(err);
             res.status(errors.code.BAD_REQUEST).json({error:err});
