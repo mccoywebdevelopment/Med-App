@@ -9,6 +9,7 @@ import { changeColor } from "../../actions/theme";
 import DependentTable from "../../components/admin/tables/DependentTable";
 import Overview from "../../components/admin/Overview/Overview";
 import CreateDependent from "../../components/admin/forms/dependent/CreateDependent";
+import ExportDataForm from "../../components/admin/forms/exportData/ExportDataForm";
 
 class DependentView extends React.Component {
     static propTypes = {
@@ -83,6 +84,9 @@ class DependentView extends React.Component {
             this.props.fetchDeleteDependent(dep._id);
         }
     }
+    _toggleExportData = () =>{
+        this.props.togglePopUp("Export Data",<ExportDataForm/>);
+    }
     _getData = () =>{
         if(this.state.filterBy.all){
             return this.props.dependentState.data;
@@ -138,7 +142,7 @@ class DependentView extends React.Component {
                                     <button onClick={()=>{this._toggleFilterBy(false,false,true)}} type="button" 
                                         class={"btn "+(this.state.filterBy.notGrouped? "btn-primary":"btn-outline-secondary")}>Not Grouped({notGroupLength})</button>
                                 </div>
-                                    <button style={{float:'right'}}type="button" class="btn btn-outline-primary btn-fw hover-white">
+                                    <button onClick={()=>{this._toggleExportData()}} style={{float:'right'}}type="button" class="btn btn-outline-primary btn-fw hover-white">
                                     <i class="fas fa-download"></i>Export</button>
                             </div>
                         </div>
