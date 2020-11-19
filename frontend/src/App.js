@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Route, Switch } from "react-router-dom";
 import { BrowserRouter } from 'react-router-dom'
-import { adminRoutes, authRoutes, userRoutes } from "./Routes";
+import { adminRoutes, authRoutes, userRoutes, auth2Routes } from "./Routes";
 import { changeRedirectURL } from "./actions/auth";
 
 import AdminLayout from "./layouts/admin/AdminLayout";
@@ -50,6 +50,26 @@ class App extends React.Component {
       );
     });
   }
+  _authAdminList = () =>{
+    return auth2Routes.map((route, key) => {
+      let component = <AdminLayout>{route.component}</AdminLayout>
+      return (
+        <Route exact path={route.path} key={"authRouteAdmin" + key}>
+          {component}
+        </Route>
+      );
+    });
+  }
+  _authUserList = () =>{
+    return auth2Routes.map((route, key) => {
+      let component = <UserLayout>{route.component}</UserLayout>
+      return (
+        <Route exact path={route.path} key={"authRouteUser" + key}>
+          {component}
+        </Route>
+      );
+    });
+  }
   _redirect = () =>{
 
     if(this.props.auth.redirectURL){
@@ -66,6 +86,8 @@ class App extends React.Component {
           {this._adminRouteList()}
           {this._authRouteList()}
           {this._userRouteList()}
+          {/* {this._authAdminList()}
+          {this._authUserList()} */}
         </Switch>
       </BrowserRouter>
     );

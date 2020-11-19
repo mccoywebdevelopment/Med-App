@@ -8,6 +8,7 @@ import "../../assets/css/myCss.css";
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createMessage } from '../../actions/messages'
+import { API_URI } from "../../config/variables";
 
 class AdminLayout extends React.Component {
     static propTypes = {
@@ -26,6 +27,7 @@ class AdminLayout extends React.Component {
         return false;
     }
     render() {
+        let logoutPath = API_URI + "/auth/logout/" + localStorage.getItem('JWT');
         return (
             <>
                 <div className="my-side-bar">
@@ -57,6 +59,12 @@ class AdminLayout extends React.Component {
                         style={{borderLeftColor:this.props.theme.pagePrimaryColor}}>
                         <a href="/admin/profile" className="my-nav-item">
                             <i title="My Profile" className="fas fa-cog" style={{color:this.props.theme.pagePrimaryColor}}></i>
+                        </a>
+                    </div>
+
+                    <div style={{marginTop:'100px'}}> 
+                        <a href={logoutPath} className="my-nav-item">
+                            <i title="Log Out" className="fas fa-sign-out-alt" style={{color:this.props.theme.pagePrimaryColor}}></i>
                         </a>
                     </div>
                 </div>

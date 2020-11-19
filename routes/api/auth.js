@@ -2,6 +2,7 @@ const express = require('express');
 const errors = require('../errors');
 const router = express.Router();
 const authQ = require('../../queries/auth');
+const CLIENT_URL = require('../../config/configVars').CLIENT_URL
 
 router.route("/register/:email/:token")
 .post(function(req,res){
@@ -46,7 +47,7 @@ router.route("/logout/:token")
             console.log(err);
             res.status(errors.code.BAD_REQUEST).json({error:err});
         }else{
-            res.send({"result":result});
+            res.redirect(CLIENT_URL +'/auth/login');
         }
     });
 });

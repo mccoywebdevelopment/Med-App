@@ -12,6 +12,7 @@ import ResetPassword from "./views/shared/ResetPassword";
 import Login from "./views/shared/Login";
 import Register from './views/shared/Register';
 import DependentViewUser from './views/user/DependentViewUser';
+import Profile from "./views/shared/Profile";
 
 import Test from './views/test/Test';
 
@@ -41,6 +42,10 @@ const adminRoutes = [
         component: <GroupDetails/>
     },
     {
+        path:'/admin/profile',
+        component:  <Profile/>
+    },
+    {
         path: "/test",
         component: <Test/>
     }
@@ -54,6 +59,10 @@ const userRoutes = [
     {
         path:'/user/dependents/:id',
         component:  <DependentDetailsUser/>
+    },
+    {
+        path:'/user/profile',
+        component:  <Profile/>
     },
     
 ];
@@ -75,6 +84,13 @@ const authRoutes = [
         path: "/auth/register/:email/:token",
         component: <Register/>
     }
+];
+
+const auth2Routes = [
+    {
+        path: "/auth/Profile",
+        component: <Profile/>
+    }
 ]
 
-export {adminRoutes,userRoutes,authRoutes}
+export {adminRoutes,userRoutes,authRoutes,auth2Routes}

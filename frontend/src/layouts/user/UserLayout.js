@@ -8,6 +8,7 @@ import "../../assets/css/myCss.css";
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createMessage } from '../../actions/messages'
+import { API_URI } from "../../config/variables";
 
 class UserLayout extends React.Component {
     static propTypes = {
@@ -26,6 +27,7 @@ class UserLayout extends React.Component {
         return false;
     }
     render() {
+        let logoutPath = API_URI + "/auth/logout/" + localStorage.getItem('JWT');
         return (
             <>
                 <div className="my-side-bar content-desktop">
@@ -41,10 +43,16 @@ class UserLayout extends React.Component {
                             <i title="Medication(s)" className="fas fa-capsules" style={{ color: this.props.theme.pagePrimaryColor }}></i>
                         </a>
                     </div>
-                    <div className={"" + (this._isCurrentURL("/auth/profile") ? "my-nav-selected" : "")}
+                    <div className={"" + (this._isCurrentURL("/user/profile") ? "my-nav-selected" : "")}
                         style={{ borderLeftColor: this.props.theme.pagePrimaryColor }}>
-                        <a href="/auth/profile" className="my-nav-item">
+                        <a href="/user/profile" className="my-nav-item">
                             <i title="My Profile" className="fas fa-cog" style={{ color: this.props.theme.pagePrimaryColor }}></i>
+                        </a>
+                    </div>
+
+                    <div style={{ marginTop: '100px' }}>
+                        <a href={logoutPath} className="my-nav-item">
+                            <i title="Log Out" className="fas fa-sign-out-alt" style={{ color: this.props.theme.pagePrimaryColor }}></i>
                         </a>
                     </div>
                 </div>

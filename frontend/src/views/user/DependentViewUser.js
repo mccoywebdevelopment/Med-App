@@ -129,6 +129,11 @@ class DependentViewUser extends React.Component {
             <>
                 <div className="row">
                     <div className="col-lg-12">
+                    <div className="row content-mobile">
+                            <div className="col-lg-12">
+                                <h1>Mobile is not supported use desktop</h1>
+                            </div>
+                        </div>
                         <div className="row content-desktop">
                             <div className="col-lg-12">
                                 <h4 className="view-header">Dependents</h4>
