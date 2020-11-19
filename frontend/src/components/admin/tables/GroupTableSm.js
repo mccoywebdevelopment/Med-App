@@ -19,21 +19,26 @@ class GroupTableSm extends React.Component {
     }
     return null;
 }
-  _getNumOfAdmins = (guardians) => {
-    let users = [];
-    for (var i = 0; i < guardians.length; ++i) {
-        let user = this._getUserByID(guardians[i].user);
-        if (user) {
-            users.push(user);
-        }
-    }
-    let admins = 0;
-    for (var i = 0; i < users.length; ++i) {
-        if (users[i].isAdmin) {
-            admins++;
-        }
-    }
-    return admins;
+_getNumberOfAdmins = (guardians) =>{
+  let num = 0;
+  for(var i=0;i<guardians.length;++i){
+      let userID = guardians[i].user;
+      let found = false;
+      for(var ix=0;ix<this.props.users.length;++ix){
+          if(this.props.users[ix]._id == userID 
+              && this.props.users[ix].isAdmin){
+                  found = true;
+                  num++;
+          }
+          if(this.props.users[ix]._id == userID){
+            found = true;
+          }
+      }
+      if(!found){
+          num++;
+      }
+  }
+  return num;
 }
   render() {
     const list = (groups) => {
@@ -44,8 +49,8 @@ class GroupTableSm extends React.Component {
             <th scope="row">{index + 1}</th>
             <td colSpan="2">{group.name}</td>
             <td>{group.dependents.length}</td>
-            <td>{group.guardians.length - this._getNumOfAdmins(group.guardians)}</td>
-            <td>{this._getNumOfAdmins(group.guardians)}</td>
+            <td>{group.guardians.length - this._getNumberOfAdmins(group.guardians)}</td>
+            <td>{this._getNumberOfAdmins(group.guardians)}</td>
           </tr>
         );
       });

@@ -11,7 +11,7 @@ function exportDataGivenMonthYear(month,year,callback){
     if(typeof(month)=='undefined' || month<0 || month>11){
         callback("Please enter a valid month");
     }
-    Dependent.find({}).populate('rxs').exec(function(err,res){
+    Dependent.find({}).populate('rxs').populate('rxs.rxsMedications').exec(function(err,res){
         if(err){
             callback(err);
         }else if(res.length<1){
@@ -28,19 +28,24 @@ function exportDataGivenMonthYear(month,year,callback){
                             callback(err);
                         }else{
                             Guardian.populate(res,{path:'rxs.rxsMedications.events.createdBy'},function(err,res){
-                                Event.populate(res,{path:'rxs.rxsMedications.events.event'},function(err,res){
-                                    if(err){
-                                        callback(err);
-                                    }else{
-                                        writeData(month,year,res,function(err,result){
-                                            if(err){
-                                                callback(err);
-                                            }else{
-                                                callback(null,result);
-                                            }
-                                        });
-                                    }
-                                });
+                                if(err){
+                                    callback(err);
+                                }else{
+                                    Event.populate(res,{path:'rxs.rxsMedications.events.event'},function(err,res){
+                                        if(err){
+                                            callback(err);
+                                        }else{
+                                            // console.log(res[1].rxs[0].rxsMedications[0].events[0])
+                                            writeData(month,year,res,function(err,result){
+                                                if(err){
+                                                    callback(err);
+                                                }else{
+                                                    callback(null,result);
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
                             });
                         }
                     });
@@ -112,13 +117,13 @@ function createWorkSheet(wb,dependent,month,year){
                 y_index = obj.y_index;
             }
             x_index = x_index + 1;
-            // if(rxsMedications[ix].events.length<1){
-            // }
         }
     }
     return ws;
 }
 function createRxsMedDates(ws,wb,x_index,y_index,event,month,year){
+    console.log("\n\n\n\n\n\n");
+    console.log(event);
     var obj = {
         x_index:x_index,
         y_index:y_index,
@@ -133,12 +138,12 @@ function createRxsMedDates(ws,wb,x_index,y_index,event,month,year){
         ws.cell(x_index,y_index).string(getTime(event.event.timeStamp));
         y_index = y_index + 1;
         var guardianName = "";
-        if(typeof(event.createdBy.name)!='undefined'){
-            guardianName = event.createdBy.name.firstName+" "+event.createdBy.name.lastName;
+        if(typeof(event.createdByStr)!='undefined'){
+            guardianName = event.createdByStr;
         }
         ws.cell(x_index,y_index).string(guardianName);
         y_index = y_index + 1;
-        ws.cell(x_index,y_index).string(event.notes);
+        ws.cell(x_index,y_index).string(event.notes || "-");
 
         obj.x_index = x_index + 1;
         obj.y_index = y_index - 4;
@@ -191,7 +196,7 @@ function createRxsMedicationInfo(ws,wb,x_index,y_index,rxs,rxsMedication){
     y_index = y_index - 1;
     ws.cell(x_index,y_index).string("Dosage:");
     y_index = y_index + 1;
-    ws.cell(x_index,y_index).string(rxsMedication.dosage);
+    ws.cell(x_index,y_index).string(rxsMedication.dosage.quantity.toString() + " " + rxsMedication.dosage.unit);
 
     x_index = x_index + 1;
     y_index = y_index - 1;
@@ -203,19 +208,19 @@ function createRxsMedicationInfo(ws,wb,x_index,y_index,rxs,rxsMedication){
     y_index = y_index - 1;
     ws.cell(x_index,y_index).string("Date Prescribed:");
     y_index = y_index + 1;
-    ws.cell(x_index,y_index).string(getDate(new Date(rxsMedication.datePrescribed)));
+    ws.cell(x_index,y_index).string(getDate(new Date(rxsMedication.datePrescribed.toString())));
 
     x_index = x_index + 1;
     y_index = y_index - 1;
     ws.cell(x_index,y_index).string("Intructions:");
     y_index = y_index + 1;
-    ws.cell(x_index,y_index).string(rxsMedication.instructions);
+    ws.cell(x_index,y_index).string(rxsMedication.instructions || "-");
 
     x_index = x_index + 1;
     y_index = y_index - 1;
     ws.cell(x_index,y_index).string("End Date:");
     y_index = y_index + 1;
-    ws.cell(x_index,y_index).string(rxsMedication.endDate);
+    ws.cell(x_index,y_index).string(rxsMedication.endDate || "-");
 
     var obj = {
         x_index:x_index+1,

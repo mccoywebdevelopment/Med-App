@@ -177,7 +177,8 @@ function createRxsMedEvent(body, dependent, rxsMedication, guardian, callback) {
         dateTaken: body.dateTaken,
         event: eventCreated,
         dependent: dependent,
-        createdBy: guardian
+        createdBy: guardian,
+        createdByStr: guardianName
       }
       create(medicationEventBody, function (err, medEventCreated) {
         if (err) {
@@ -233,6 +234,7 @@ function updateModifiedFields(oldDoc, updatedFields, callback) {
   var event = oldDoc.event;
   var dependent = oldDoc.dependent;
   var createdBy = oldDoc.createdBy;
+  var createdByStr = oldDoc.createdByStr;
   var dateTaken = oldDoc.dateTaken;
 
   if (updatedFields.title) {
@@ -249,6 +251,7 @@ function updateModifiedFields(oldDoc, updatedFields, callback) {
   }
   if (updatedFields.createdBy) {
     createdBy = updatedFields.createdBy;
+    createdByStr = createdBy.name.firstName + " " + createdByStr.name.lastName;
   }
   if (updatedFields.dateTaken) {
     dateTaken = updatedFields.dateTaken;
@@ -260,7 +263,8 @@ function updateModifiedFields(oldDoc, updatedFields, callback) {
     event: event,
     dateTaken: dateTaken,
     dependent: dependent,
-    createdBy: createdBy
+    createdBy: createdBy,
+    createdByStr: createdByStr
   }
   if (updatedFields.event && updatedFields.event.timeStamp) {
     var newEvent = event;
@@ -297,7 +301,8 @@ function saveToDoc(bodyData, schemaModel, callback) {
     isAway: bodyData.isAway,
     dateTaken: bodyData.dateTaken,
     dependent: bodyData.dependent,
-    createdBy: bodyData.createdBy
+    createdBy: bodyData.createdBy,
+    createdByStr: bodyData.createdBy.name.firstName + " " + bodyData.createdBy.name.lastName
   });
   if (typeof (bodyData.notes) != 'undefined') {
     newDoc.notes = bodyData.notes;

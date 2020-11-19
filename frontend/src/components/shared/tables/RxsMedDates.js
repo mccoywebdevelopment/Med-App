@@ -105,7 +105,7 @@ class RxsMedDates extends React.Component {
                                 </p>
                             </th>
                             <td>{formateDate(element.dateTaken) || "-"}</td>
-                            <td>{element.createdBy.name.firstName + " " + element.createdBy.name.lastName || "-"}</td>
+                            <td>{element.createdByStr || "-"}</td>
                             <td>{element.isAway.toString() || "-"}</td>
                             <td>
                                 <i title="edit" onClick={()=>{this._edit(index)}} className="fas fa-edit" style={{ paddingRight: '20px', color: '#2196F3' }}></i>
