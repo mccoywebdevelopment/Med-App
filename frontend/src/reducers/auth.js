@@ -1,8 +1,7 @@
 import { FETCH_LOGIN , CHANGE_REDIRECT_URL, FETCH_REGISTER, FETCH_RESET_PASSWORD} from '../actions/types';
 
 const initialState = {
-    JWT:null,
-    isAdmin:false,
+    user:null,
     redirectURL:null
 }
 
@@ -11,14 +10,13 @@ export default function(state = initialState, action){
         case FETCH_LOGIN:
             return{
                 ...state,
-                JWT: action.payload.JWT,
-                isAdmin: action.payload,
+                user:action.payload.user,
                 redirectURL:action.payload.redirectURL
             }
         case FETCH_REGISTER:
             return{
                 ...state,
-                JWT: action.payload.JWT,
+                user:action.payload.user,
                 redirectURL:action.payload.redirectURL
             }
         case CHANGE_REDIRECT_URL:
@@ -29,8 +27,7 @@ export default function(state = initialState, action){
         case FETCH_RESET_PASSWORD:
             return{
                 ...state,
-                JWT: action.payload.JWT,
-                isAdmin: action.payload,
+                user:action.payload.user,
                 redirectURL:action.payload.redirectURL
             }
         default:

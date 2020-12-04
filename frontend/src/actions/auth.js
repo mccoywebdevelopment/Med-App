@@ -33,7 +33,7 @@ export const fetchResetPassword = (postData,token) => (dispatch) => {
 export const fetchRegister = (email,token,postData) => (dispatch) => {
   FETCH('POST','/auth/register/'+email+'/'+token,postData,null,dispatch,true,(err,res)=>{
     if(err){
-      dispatch(createMessage(res.error, 'danger',20000));
+      dispatch(createMessage(err, 'danger',20000));
     }else{
       localStorage.setItem("JWT",res.result.JWT);
       dispatch({
@@ -47,7 +47,7 @@ export const fetchRegister = (email,token,postData) => (dispatch) => {
 export const fetchForgotPassword = (postData) => (dispatch) => {
   FETCH('POST','/auth/email/forgot-password',postData,null,dispatch,true,(err,res)=>{
     if(err){
-      dispatch(createMessage(res.error, 'danger',20000));
+      dispatch(createMessage(err, 'danger',20000));
     }else{
       dispatch(createMessage("Please check your email for further instructions.",'info',20000));
     }

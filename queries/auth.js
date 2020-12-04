@@ -33,12 +33,7 @@ function registerUser(body,token,email,callback){
                             if(userFound.isAdmin){
                                 redirect = "/admin/users";
                             }
-                            delete userFound['password'];
-                            var obj = {
-                                JWT:token,
-                                redirectURL:redirect,
-                                user:userFound
-                            }
+                            userFound.password = undefined;
                             body.user = userSaved._id.toString();
                             let guardianBody = {
                                 firstName:body.firstName,
@@ -54,6 +49,12 @@ function registerUser(body,token,email,callback){
                                         if(err){
                                             callback(err);
                                         }else{
+                                            userFound = addDetailsToUser(guardianCreated,userFound);
+                                            var obj = {
+                                                JWT:token,
+                                                redirectURL:redirect,
+                                                user:userFound
+                                            }
                                             callback(null,obj);
                                         }
                                     });
@@ -65,6 +66,12 @@ function registerUser(body,token,email,callback){
                                         if(err){
                                             callback(err);
                                         }else{
+                                            userFound = addDetailsToUser(updatedGuardian,userFound);
+                                            var obj = {
+                                                JWT:token,
+                                                redirectURL:redirect,
+                                                user:userFound
+                                            }
                                             callback(null,obj);
                                         }
                                     });
@@ -123,11 +130,21 @@ function logginUser(body,callback){
                                     if(userFound.isAdmin){
                                         redirect = "/admin/dependents";
                                     }
-                                    var obj = {
-                                        JWT:token,
-                                        redirectURL:redirect
-                                    }
-                                    callback(null,obj);
+                                    userFound.password = undefined;
+                                    guardianModel.findOne({user:userFound._id},function(err,guardianFound){
+                                        if(err){
+                                            callback(err);
+                                        }else{
+                                            userFound = addDetailsToUser(guardianFound,userFound);
+                                            console.log(userFound)
+                                            var obj = {
+                                                JWT:token,
+                                                redirectURL:redirect,
+                                                user:userFound
+                                            }
+                                            callback(null,obj);
+                                        }
+                                    });
                                 }
                             });
                         }
@@ -136,6 +153,18 @@ function logginUser(body,callback){
             });
         }
     });
+}
+function addDetailsToUser(guardian,user){
+    user = JSON.parse(JSON.stringify(user));
+    user.phoneNumber = guardian.phoneNumber || "";
+    
+    if(user.name && user.name.firstName && user.name.lastName){
+        user.name = guardian.name.firstName + " " + guardian.name.lastName;
+    }else{
+        user.name = "";
+    }
+
+    return user;
 }
 function resetUserPassword(body,callback){
     if(!body.email || !body.password){
