@@ -1,5 +1,6 @@
 import { FETCH_LOGIN, CHANGE_REDIRECT_URL, FETCH_REGISTER, FETCH_RESET_PASSWORD } from './types';
 import { createMessage } from './messages';
+import { toggleLoading } from './loading';
 import {FETCH} from "../config/helpers";
 
 export const fetchLogin = postData => dispatch => {
@@ -50,6 +51,18 @@ export const fetchForgotPassword = (postData) => (dispatch) => {
       dispatch(createMessage(err, 'danger',20000));
     }else{
       dispatch(createMessage("Please check your email for further instructions.",'info',20000));
+    }
+  });
+}
+
+export const fetchDeleteAccount = () => (dispatch) => {
+  dispatch(toggleLoading(true));
+  FETCH('POST','/auth/delete-account',null,null,dispatch,true,(err,res)=>{
+    if(err){
+      dispatch(createMessage(err, 'danger',20000));
+    }else{
+      dispatch(toggleLoading(false));
+      dispatch(createMessage("Your account has been successfully deleted",'success',20000));
     }
   });
 }

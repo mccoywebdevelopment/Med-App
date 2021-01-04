@@ -3,6 +3,7 @@ const crypto = require('crypto');
 const createGuardian = require('./guardian').create;
 const guardianModel = require('../models/guardian/Guardian');
 const updateGuardian = require('./guardian').patchUpdateById;
+const Guardian = require('../models/guardian/Guardian');
 
 function registerUser(body,token,email,callback){
     User.findOne({username:email},function(err,userFound){
@@ -158,7 +159,7 @@ function addDetailsToUser(guardian,user){
     user = JSON.parse(JSON.stringify(user));
     user.phoneNumber = guardian.phoneNumber || "";
     
-    if(user.name && user.name.firstName && user.name.lastName){
+    if(guardian.name && guardian.name.firstName && guardian.name.lastName){
         user.name = guardian.name.firstName + " " + guardian.name.lastName;
     }else{
         user.name = "";
@@ -192,11 +193,26 @@ function resetUserPassword(body,callback){
                                     if(userFound.isAdmin){
                                         redirect = "/admin/users";
                                     }
-                                    var obj = {
-                                        JWT:token,
-                                        redirectURL:redirect
-                                    }
-                                    callback(null,obj);
+                                    // var obj = {
+                                    //     JWT:token,
+                                    //     redirectURL:redirect
+                                    // }
+                                    // callback(null,obj);
+                                    userFound.password = undefined;
+                                    guardianModel.findOne({user:userFound._id},function(err,guardianFound){
+                                        if(err){
+                                            callback(err);
+                                        }else{
+                                            userFound = addDetailsToUser(guardianFound,userFound);
+                                            console.log(userFound)
+                                            var obj = {
+                                                JWT:token,
+                                                redirectURL:redirect,
+                                                user:userFound
+                                            }
+                                            callback(null,obj);
+                                        }
+                                    });
                                 }
                             });
                     }
@@ -232,6 +248,50 @@ function logoutUser(jwt,callback){
     });
 }
 
+function deleteAccount(jwt,callback){
+    User.find({},function(err,users){
+        if(err){
+            callback(err);
+        }else{
+            let userFound = null;
+            let numOfAdmins = 0;
+
+            for(var i=0;i<users.length;++i){
+                if(users[i].auth.token == jwt){
+                    userFound = users[i];
+                }else if(users[i].isAdmin){
+                    numOfAdmins++;
+                }
+            }
+
+            if(!userFound){
+                callback("User not found.");
+            }else{
+                Guardian.findOne({user:userFound._id},function(err,guardianFound){
+                    if(err){
+                        callback(err);
+                    }else if(!guardianFound){
+                        callback('Guardian not found.');
+                    }else{
+                        guardianFound.remove().exec(function(err,res){
+                            if(err){
+                                callback(err);
+                            }else{
+                                userFound.remove().exec(function(err,res){
+                                    if(err){
+                                        callback(err);
+                                    }else{
+                                        callback(null,null);
+                                    }
+                                })
+                            }
+                        });
+                    }
+                });
+            }
+        }
+    });
+}
 
 
-module.exports={registerUser,logginUser,signToken,resetUserPassword,logoutUser};
+module.exports={registerUser,logginUser,signToken,resetUserPassword,logoutUser,deleteAccount};

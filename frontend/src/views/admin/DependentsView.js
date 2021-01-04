@@ -142,13 +142,15 @@ class DependentView extends React.Component {
                                     <button onClick={()=>{this._toggleFilterBy(false,false,true)}} type="button" 
                                         class={"btn "+(this.state.filterBy.notGrouped? "btn-primary":"btn-outline-secondary")}>Not Grouped({notGroupLength})</button>
                                 </div>
+                                {this._getData().length > 0 ?
                                     <button onClick={()=>{this._toggleExportData()}} style={{float:'right'}}type="button" class="btn btn-outline-primary btn-fw hover-white">
                                     <i class="fas fa-download"></i>Export</button>
+                                    : null}
                             </div>
                         </div>
                         <div className="row">
                             <div className="col-lg-12">
-                                {this.props.dependentState.data.length > 0 ?
+                                {this._getData().length > 0 ?
                                     <DependentTable dependents={this._getData()} delete={this._deleteDependent}
                                         changeDepSel={this._toggleRedirect} />
                                     : null}

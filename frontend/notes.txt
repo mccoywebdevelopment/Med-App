@@ -17,3 +17,12 @@ When popup error have to reset local storage.
  TIPS:
  - To find all logs/alerts use: 
     ./frontend/src/actions,./frontend/src/components,./frontend/src/views,./queries,./routes
+
+
+profile:
+view/edit the following:
+
+   Name
+   phone number
+   password
+   

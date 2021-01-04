@@ -52,6 +52,19 @@ router.route("/logout/:token")
     });
 });
 
+router.route("/delete-account/:token")
+.post(function(req,res){
+    authQ.deleteAccount(req.params.token,function(err,result){
+        if(err){
+            console.log(err);
+            res.status(errors.code.BAD_REQUEST).json({error:err});
+        }else{
+            res.send({"result":result})
+            // res.redirect(CLIENT_URL +'/auth/login');
+        }
+    });
+});
+
 
 
 module.exports = router;

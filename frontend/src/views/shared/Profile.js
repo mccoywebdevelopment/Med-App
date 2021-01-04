@@ -1,13 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { changeColor } from "../../actions/theme";
+import { fetchDeleteAccount } from "../../actions/auth";
 
 class Profile extends React.Component {
   state = {
-    email:"",
-    phoneNumber:"",
-    name:"",
-    isAdmin:false
+    email: "",
+    phoneNumber: "",
+    name: "",
+    isAdmin: false
   }
   static propTypes = {
     auth: PropTypes.object.isRequired,
@@ -15,14 +17,19 @@ class Profile extends React.Component {
   constructor(props) {
     super(props);
   }
-  componentDidMount = ()=>{
+  _toggleDelete = () =>{
+    if(window.confirm("Are you sure you want to delete your account?")){
+      this.props.fetchDeleteAccount();
+    }
+  }
+  componentDidMount = () => {
+    this.props.changeColor("#2196f3");
     let newState = this.state;
     newState.email = this.props.auth.user.username;
     newState.phoneNumber = this.props.auth.user.phoneNumber;
     newState.name = this.props.auth.user.name;
     newState.isAdmin = this.props.auth.user.isAdmin;
     this.setState(newState);
-    console.log(this.state);
   }
   render() {
     return (
@@ -34,57 +41,51 @@ class Profile extends React.Component {
             </div>
 
             <div className="row card" style={{ padding: '25px' }}>
-              <form>
-                <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <label for="inputEmail4">Email</label>
-                    <input type="email" class="form-control" id="inputEmail4" placeholder="Email" />
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label for="inputPassword4">Password</label>
-                    <input type="password" class="form-control" id="inputPassword4" placeholder="Password" />
-                  </div>
+              <div class="form-row">
+                <div class="form-group  col-lg-6">
+                  <label for="inputAddress">Name</label>
+                  <input type="text" class="form-control" id="inputName" value={this.state.name} placeholder="" />
                 </div>
-                <div class="form-group">
-                  <label for="inputAddress">Address</label>
-                  <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St" />
+              </div>
+              <div class="form-row">
+                <div class="form-group  col-lg-6">
+                  <label for="inputAddress">Phone Number</label>
+                  <input value={this.state.phoneNumber} type="number" class="form-control" id="inputNumber" placeholder="" />
                 </div>
-                <div class="form-group">
-                  <label for="inputAddress2">Address 2</label>
-                  <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor" />
+              </div>
+              <div class="form-row">
+                <div class="form-group  col-lg-6">
+                  <label for="inputAddress">Is Admin</label>
+                  <input value={this.state.isAdmin} type="text" class="form-control" id="inputName" value={this.state.isAdmin} placeholder="" readOnly/>
                 </div>
-                <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <label for="inputCity">City</label>
-                    <input type="text" class="form-control" id="inputCity" />
-                  </div>
-                  <div class="form-group col-md-4">
-                    <label for="inputState">State</label>
-                    <select id="inputState" class="form-control">
-                      <option selected>Choose...</option>
-                      <option>...</option>
-                    </select>
-                  </div>
-                  <div class="form-group col-md-2">
-                    <label for="inputZip">Zip</label>
-                    <input type="text" class="form-control" id="inputZip" />
-                  </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-lg-6">
+                  <label for="inputEmail4">Email</label>
+                  <input type="email" value={this.state.email} class="form-control" id="inputEmail" placeholder="@youremail.com" readOnly />
                 </div>
-                <div class="form-group">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="gridCheck" />
-                    <label class="form-check-label" for="gridCheck">
-                      Check me out
-                    </label>
-                  </div>
+              </div>
+              {/* <div class="form-row">
+                <div class="form-group col-lg-6">
+                  <label for="inputEmail4">Password</label>
+                  <input type="password" class="form-control" id="inputPassword" placeholder="********" readOnly />
                 </div>
-                <button type="submit" class="btn btn-primary">Sign in</button>
-              </form>
+              </div> */}
 
+              <div class="row" style={{marginBottom:'60px'}}>
+                <div class="col-lg-3" style={{paddingLeft:'0px'}}>
+                <button onClick={()=>{this._toggleDelete()}} type="button" class="btn btn-outline-danger">Delete My Account</button>
+                </div>
+                <div class="col-lg-3" style={{paddingRight:'0px'}}>
+                  <a href="/auth/forgot-password" style={{float:'right'}} type="button" class="btn btn-outline-info">Change My Password</a>
+                </div>
+              </div>
 
-
-
-
+              <div class="form-row">
+                <div class="form-group col-lg-6">
+                  <button type="button" class="btn btn-primary">Save Changes</button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -92,13 +93,12 @@ class Profile extends React.Component {
     );
   }
 }
-// Login.propTypes = {
-//   fetchLogin: PropTypes.func.isRequired,
-//   changeRedirectURL: PropTypes.func.isRequired,
-//   resetRoot: PropTypes.func.isRequired
-// };
+Profile.propTypes = {
+  changeColor: PropTypes.func.isRequired,
+  fetchDeleteAccount: PropTypes.func.isRequired
+};
 const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, {})(Profile);
+export default connect(mapStateToProps, {changeColor,fetchDeleteAccount})(Profile);

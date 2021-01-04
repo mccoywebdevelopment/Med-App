@@ -84,15 +84,6 @@ class Register extends React.Component{
                 <div className="auto-form-wrapper">
                   <form action="#">
                     <div className="form-group" style={{marginBottom:'30px'}}>
-                      <label className="label">Email</label>
-                      <div className="input-group">
-                        <input type="text" className="form-control" name="email" placeholder="Email" value={this.state.email} disabled/>
-                        <div className="invalid-feedback" style={{display:'block'}}>
-                          {this.state.emailErrMsg}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="form-group" style={{marginBottom:'30px'}}>
                       <label className="label">Name</label>
                       <div className="input-group">
                         <input type="text" className="form-control" placeholder="First & Last Name" value={this.state.name} 
@@ -111,6 +102,15 @@ class Register extends React.Component{
                                 {this.state.phoneNumberErrMsg}&nbsp;
                             </div>
                         </div>
+                    </div>
+                    <div className="form-group" style={{marginBottom:'30px'}}>
+                      <label className="label">Email</label>
+                      <div className="input-group">
+                        <input type="text" className="form-control" name="email" placeholder="Email" value={this.state.email} disabled/>
+                        <div className="invalid-feedback" style={{display:'block'}}>
+                          {this.state.emailErrMsg}
+                        </div>
+                      </div>
                     </div>
                     <div className="form-group" style={{marginBottom:'20px'}}>
                       <label className="label">Password
