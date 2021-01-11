@@ -60,11 +60,6 @@ router.route("/:id/:JWT")
             }
         })
     });
-// /api/dependents
-// /api/dependents/:id
-// /api/dependents/dependents-medication/medication    GET ALL MEDICATIONS from children
-// /api/dependents/:id/dependents-medication/medication GET MEDICATION from specific children
-// /api/dependents/:id/addRxs/:rxsId
 
 router.route('/dependents-medication/medication/:JWT')
     .get(verifyAdmin, function (req, res) {
@@ -77,23 +72,5 @@ router.route('/dependents-medication/medication/:JWT')
             }
         });
     });
-
-
-// router.route('/:id/OTC-medication/:medId/:JWT')
-// .delete(verifyAdmin,function(req,res){
-//     dependentQ.removeOTCMedsFromDep(req.params.id,req.params.medId,function(err,result){
-//         if(err){
-//             console.log(err);
-//             res.status(errors.code.BAD_REQUEST).json({error:err});
-//         }else{
-//             res.send(result);
-//         }
-//     });
-// });
-
-
-
-
-
 
 module.exports = router;

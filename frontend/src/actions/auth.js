@@ -57,12 +57,15 @@ export const fetchForgotPassword = (postData) => (dispatch) => {
 
 export const fetchDeleteAccount = () => (dispatch) => {
   dispatch(toggleLoading(true));
-  FETCH('POST','/auth/delete-account',null,null,dispatch,true,(err,res)=>{
+  FETCH('POST','/auth/delete-account/'+localStorage.getItem('JWT'),null,null,dispatch,true,(err,res)=>{
     if(err){
       dispatch(createMessage(err, 'danger',20000));
     }else{
       dispatch(toggleLoading(false));
       dispatch(createMessage("Your account has been successfully deleted",'success',20000));
+      setTimeout(function(){
+        window.location = "/auth/login";
+      },3000)
     }
   });
 }

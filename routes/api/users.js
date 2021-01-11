@@ -23,14 +23,6 @@ router.route("/:JWT")
             console.log(error);
             res.status(errors.code.BAD_REQUEST).json({error:error});
         }else{
-            // createGuardian({user:result._id},function(err,guardianCreated){
-            //     if(err){
-            //         console.log(err);
-            //         res.status(errors.code.BAD_REQUEST).json({error:error});
-            //     }else{
-            //         res.send(result);
-            //     }
-            // })
             res.send(result);
         }
     });

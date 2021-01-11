@@ -63,7 +63,6 @@ function patchUpdateById(body, id, callback) {
       callback("Doc not found");
     } else {
       updateModifiedFields(foundDoc, body, function (err, obj) {
-        console.log(obj);
         foundDoc.update(obj, function (err, result) {
           if (err) {
             callback(err);

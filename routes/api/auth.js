@@ -59,8 +59,7 @@ router.route("/delete-account/:token")
             console.log(err);
             res.status(errors.code.BAD_REQUEST).json({error:err});
         }else{
-            res.send({"result":result})
-            // res.redirect(CLIENT_URL +'/auth/login');
+            res.send({"result":result});
         }
     });
 });

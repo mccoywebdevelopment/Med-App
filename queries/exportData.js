@@ -35,7 +35,6 @@ function exportDataGivenMonthYear(month,year,callback){
                                         if(err){
                                             callback(err);
                                         }else{
-                                            // console.log(res[1].rxs[0].rxsMedications[0].events[0])
                                             writeData(month,year,res,function(err,result){
                                                 if(err){
                                                     callback(err);
@@ -122,8 +121,6 @@ function createWorkSheet(wb,dependent,month,year){
     return ws;
 }
 function createRxsMedDates(ws,wb,x_index,y_index,event,month,year){
-    console.log("\n\n\n\n\n\n");
-    console.log(event);
     var obj = {
         x_index:x_index,
         y_index:y_index,

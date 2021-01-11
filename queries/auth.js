@@ -137,7 +137,7 @@ function logginUser(body,callback){
                                             callback(err);
                                         }else{
                                             userFound = addDetailsToUser(guardianFound,userFound);
-                                            console.log(userFound)
+
                                             var obj = {
                                                 JWT:token,
                                                 redirectURL:redirect,
@@ -193,18 +193,13 @@ function resetUserPassword(body,callback){
                                     if(userFound.isAdmin){
                                         redirect = "/admin/users";
                                     }
-                                    // var obj = {
-                                    //     JWT:token,
-                                    //     redirectURL:redirect
-                                    // }
-                                    // callback(null,obj);
                                     userFound.password = undefined;
                                     guardianModel.findOne({user:userFound._id},function(err,guardianFound){
                                         if(err){
                                             callback(err);
                                         }else{
                                             userFound = addDetailsToUser(guardianFound,userFound);
-                                            console.log(userFound)
+
                                             var obj = {
                                                 JWT:token,
                                                 redirectURL:redirect,
@@ -273,11 +268,11 @@ function deleteAccount(jwt,callback){
                     }else if(!guardianFound){
                         callback('Guardian not found.');
                     }else{
-                        guardianFound.remove().exec(function(err,res){
+                        guardianFound.remove(function(err,removed){
                             if(err){
                                 callback(err);
                             }else{
-                                userFound.remove().exec(function(err,res){
+                                userFound.remove(function(err,removed){
                                     if(err){
                                         callback(err);
                                     }else{

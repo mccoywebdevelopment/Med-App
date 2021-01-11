@@ -8,15 +8,18 @@ export function getAge(date) {
     return date;
 }
 export function formateDate(date) {
-    if(date){
+    if (date) {
+
         let d = new Date(date);
         d = d.getMonth() + 1 + '/' + (d.getDate()) + '/' + d.getFullYear();
 
-        if(d.toString().includes('T')){
+        if (d.toString().includes('T')) {
             d = d.toString().split('T')[0];
         }
         return d;
-    }else{
+
+
+    } else {
         return null;
     }
 }
@@ -33,15 +36,15 @@ export function getPath(window, index) {
 export function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
-export function reduceFraction(numerator,denominator){
-    if(denominator == 0){
-        return[numerator,0];
+export function reduceFraction(numerator, denominator) {
+    if (denominator == 0) {
+        return [numerator, 0];
     }
-    var gcd = function gcd(a,b){
-      return b ? gcd(b, a%b) : a;
+    var gcd = function gcd(a, b) {
+        return b ? gcd(b, a % b) : a;
     };
-    gcd = gcd(numerator,denominator);
-    return [numerator/gcd, denominator/gcd];
+    gcd = gcd(numerator, denominator);
+    return [numerator / gcd, denominator / gcd];
 }
 
 export function FETCH(type, url, body, jwt, dispatch, isLoading, done) {
@@ -54,11 +57,11 @@ export function FETCH(type, url, body, jwt, dispatch, isLoading, done) {
             'content-type': 'application/json'
         }
     }
-    if (type == "POST" || type=="PATCH") {
+    if (body && type == "POST" || type == "PATCH") {
         fetchObj.body = JSON.stringify(body);
     }
     let uri = API_URI + url;
-    if(jwt){
+    if (jwt) {
         uri = uri + jwt;
     }
     fetch(uri, fetchObj)

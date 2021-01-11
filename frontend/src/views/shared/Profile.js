@@ -9,7 +9,8 @@ class Profile extends React.Component {
     email: "",
     phoneNumber: "",
     name: "",
-    isAdmin: false
+    isAdmin: false,
+    oldState:null
   }
   static propTypes = {
     auth: PropTypes.object.isRequired,
@@ -17,18 +18,48 @@ class Profile extends React.Component {
   constructor(props) {
     super(props);
   }
+  _update = (inputName, value) => {
+    let newState = this.state;
+    newState[inputName] = value;
+    this.setState(newState);
+}
   _toggleDelete = () =>{
     if(window.confirm("Are you sure you want to delete your account?")){
       this.props.fetchDeleteAccount();
     }
   }
+
+  _isUpdated = () =>{
+    let oldData = this.state.oldState;
+    let newData = {
+      email:this.state.email,
+      phoneNumber:this.state.phoneNumber,
+      name:this.state.name,
+      isAdmin:this.state.isAdmin
+    }
+
+    if(JSON.stringify(oldData) == JSON.stringify(newData)){
+      return true;
+    }
+    return false;
+  }
+
   componentDidMount = () => {
+    if(!this.props.auth || !this.props.auth.user){
+      window.location = "/auth/login";
+    }
     this.props.changeColor("#2196f3");
     let newState = this.state;
     newState.email = this.props.auth.user.username;
     newState.phoneNumber = this.props.auth.user.phoneNumber;
     newState.name = this.props.auth.user.name;
     newState.isAdmin = this.props.auth.user.isAdmin;
+    newState.oldState = {
+      email:newState.email,
+      phoneNumber:newState.phoneNumber,
+      name:newState.name,
+      isAdmin:newState.isAdmin
+    }
     this.setState(newState);
   }
   render() {
@@ -44,13 +75,13 @@ class Profile extends React.Component {
               <div class="form-row">
                 <div class="form-group  col-lg-6">
                   <label for="inputAddress">Name</label>
-                  <input type="text" class="form-control" id="inputName" value={this.state.name} placeholder="" />
+                  <input onChange={(e)=>{this._update("name",e.target.value)}} type="text" class="form-control" id="inputName" value={this.state.name} placeholder="" />
                 </div>
               </div>
               <div class="form-row">
                 <div class="form-group  col-lg-6">
                   <label for="inputAddress">Phone Number</label>
-                  <input value={this.state.phoneNumber} type="number" class="form-control" id="inputNumber" placeholder="" />
+                  <input onChange={(e)=>{this._update("phoneNumber",e.target.value)}} value={this.state.phoneNumber} type="number" class="form-control" id="inputNumber" placeholder="" />
                 </div>
               </div>
               <div class="form-row">
@@ -74,7 +105,7 @@ class Profile extends React.Component {
 
               <div class="row" style={{marginBottom:'60px'}}>
                 <div class="col-lg-3" style={{paddingLeft:'0px'}}>
-                <button onClick={()=>{this._toggleDelete()}} type="button" class="btn btn-outline-danger">Delete My Account</button>
+                <button onClick={(e)=>{this._toggleDelete()}} type="button" class="btn btn-outline-danger">Delete My Account</button>
                 </div>
                 <div class="col-lg-3" style={{paddingRight:'0px'}}>
                   <a href="/auth/forgot-password" style={{float:'right'}} type="button" class="btn btn-outline-info">Change My Password</a>
@@ -83,7 +114,7 @@ class Profile extends React.Component {
 
               <div class="form-row">
                 <div class="form-group col-lg-6">
-                  <button type="button" class="btn btn-primary">Save Changes</button>
+                  <button type="button" class="btn btn-primary" style={{visibility: this._isUpdated()? 'hidden':'visible'}}>Save Changes</button>
                 </div>
               </div>
             </div>
