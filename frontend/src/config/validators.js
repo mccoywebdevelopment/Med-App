@@ -64,6 +64,7 @@ function phoneNumberValidator(phoneNumber,isRequired){
         isValid:true,
         errorMsg:""
     }
+    phoneNumber = phoneNumber.toString();
     phoneNumber = phoneNumber.replace(/-/g,"");
     phoneNumber = phoneNumber.replace("(","");
     phoneNumber = phoneNumber.replace(")","");

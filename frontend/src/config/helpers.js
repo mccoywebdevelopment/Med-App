@@ -23,6 +23,25 @@ export function formateDate(date) {
         return null;
     }
 }
+
+function addZero(value){
+    value = value.toString();
+    if(value.length == 1){
+        value = '0'+value
+    }
+    return value;
+}
+export function toInputDate(date){
+    if(typeof(date)=='string'){
+        console.log(date);
+        let date1 = date.split('-');
+        if(date1[2] && date1[2].length == 4){
+            date = date1[2] + "-" + date1[0] + '-' + date1[1];
+        }
+    }
+
+    return date;
+}
 export function getPath(window, index) {
     let arr = window.location.pathname.split('/');
     if (!index) {

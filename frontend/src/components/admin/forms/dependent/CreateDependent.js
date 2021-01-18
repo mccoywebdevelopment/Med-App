@@ -9,6 +9,7 @@ import {
     numberValidator, phoneNumberValidator
 } from '../../../../config/validators';
 import BelongsToGroup from './BelongsToGroup';
+import { toInputDate } from "../../../../config/helpers";
 
 import DepOverview from './DepOverview';
 import MedList from './MedList';
@@ -566,9 +567,9 @@ class CreateDependent extends React.Component {
                     quantity: arr[i][ix].values.dosageQuantity,
                     unit: arr[i][ix].values.dosageUnits,
                     reason: arr[i][ix].values.reason,
-                    datePrescribed: arr[i][ix].values.datePrescribed
+                    datePrescribed: toInputDate(arr[i][ix].values.datePrescribed)
                 });
-                /* optional fiels for RxsMedication Model */
+                /* optional fields for RxsMedication Model */
                 if (arr[i][ix].values._rxsMedID) {
                     rxsMedication[rxsMedication.length - 1]._id = arr[i][ix].values._rxsMedID;
                 }
@@ -576,7 +577,7 @@ class CreateDependent extends React.Component {
                     rxsMedication[rxsMedication.length - 1].instructions = arr[i][ix].values.instructions;
                 }
                 if (arr[i][ix].values.endDate) {
-                    rxsMedication[rxsMedication.length - 1].endDate = arr[i][ix].values.endDate;
+                    rxsMedication[rxsMedication.length - 1].endDate = toInputDate(arr[i][ix].values.endDate);
                 }
                 if (arr[i][ix].values.whenToTake) {
                     rxsMedication[rxsMedication.length - 1].value = arr[i][ix].values.whenToTake;
@@ -650,11 +651,13 @@ class CreateDependent extends React.Component {
         if (!this._isOverviewErrors() && !this._isRxsMedErrors()) {
             if (this.props.isDepSelected) {
                 //check if group is modified if so update group then call get populated dependents
+
                 this.props.fetchUpdateDependent(this.props.isDepSelected.name.firstName + " " + this.props.isDepSelected.name.lastName, this.props.isDepSelected._id,
                     this._formatBody(), this._isGroupModified(), (res) => {
                         this._initState();
                         this.props.updateDep(res._id);
                     });
+
             } else {
                 this.props.fetchCreateDependent(this._formatBody(), this.state.overview.values.group.value);
             }
@@ -686,11 +689,11 @@ class CreateDependent extends React.Component {
                                             style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
                                         <i title="delete" onClick={() => { this.props.delete(this.props.isDepSelected) }} className="fas fa-trash"
                                             style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
-                                                                                        {this._isUpdated() ?
-                                    <a title="Undo changes"
-                                        onClick={() => { this._toggleUndo(this.state.rxsMedList.list.length - 1) }}
-                                        style={{ color: '#2196F3',  paddingLeft: '20px', color: '#2196F3', cursor: 'pointer', textDecoration: 'underline' }}>Undo All Changes</a>
-                                    : null}
+                                        {this._isUpdated() ?
+                                            <a title="Undo changes"
+                                                onClick={() => { this._toggleUndo(this.state.rxsMedList.list.length - 1) }}
+                                                style={{ color: '#2196F3', paddingLeft: '20px', color: '#2196F3', cursor: 'pointer', textDecoration: 'underline' }}>Undo All Changes</a>
+                                            : null}
                                     </>
                                     : null}
                             </>
@@ -711,7 +714,7 @@ class CreateDependent extends React.Component {
                     <div className="col-lg-12">
                         <h4 style={{ display: 'inline' }}>RXS Medications <span style={{ fontSize: '17px' }}>
                             ({this.state.rxsMedList.list.length})
-                        </span></h4>
+</span></h4>
                         {!this.props.isUser ?
                             <i title="add" className="fas fa-plus" onClick={this._toggleRxsMedAdd}
                                 style={{ paddingLeft: '20px', color: '#2196F3' }}></i>

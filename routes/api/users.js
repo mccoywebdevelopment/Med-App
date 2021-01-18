@@ -74,6 +74,11 @@ router.route('/get/dependents/:JWT')
     });
 });
 
+router.route('/update-profile/:JWT')
+.get(verifyUser,function(req,res){
+    
+});
+
 router.route('/create-first-user/:secretKey/:username/:password')
 .get(function(req,res){
     userQ.createFirstUser(req.params.secretKey,req.params.username,req.params.password,function(err,result){

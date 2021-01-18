@@ -96,6 +96,7 @@ export const fetchDeleteUser = (userID, done) => (dispatch) => {
 }
 
 export const fetchUpdateUser = (userID, body, isGroupModified, guardianID, done) => (dispatch) => {
+  console.log(true)
   dispatch(toggleLoading(true));
   FETCH('PATCH', '/users/' + userID + '/', body, localStorage.getItem('JWT'), dispatch, false, (err, res) => {
     if (err) {

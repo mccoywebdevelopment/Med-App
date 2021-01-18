@@ -1,4 +1,5 @@
 import React from "react";
+import { toInputDate } from "../../../../config/helpers";
 
 export default class RxsMedForm extends React.Component {
     constructor(props) {
@@ -7,8 +8,9 @@ export default class RxsMedForm extends React.Component {
             isScroll: true
         }
     }
-    componentDidMount = () =>{
-        this.setState({isScroll:false});
+    componentDidMount = () => {
+        this.setState({ isScroll: false });
+        console.log(this.props.data.values)
     }
     render() {
         var scrollTo;
@@ -29,7 +31,7 @@ export default class RxsMedForm extends React.Component {
                                 value={this.props.data.values.name} onChange={(e) => { this.props.update(this.props.index, "name", e.target.value) }} />
                             <div className="invalid-feedback" style={{ display: 'block' }}>
                                 {this.props.data.errors.name}&nbsp;
-                            </div>
+</div>
                         </div>
                     </div>
                 </div>
@@ -41,7 +43,7 @@ export default class RxsMedForm extends React.Component {
                                 value={this.props.data.values.reason} onChange={(e) => { this.props.update(this.props.index, "reason", e.target.value) }} />
                             <div className="invalid-feedback" style={{ display: 'block' }}>
                                 {this.props.data.errors.reason}&nbsp;
-                            </div>
+</div>
                         </div>
                     </div>
                 </div>
@@ -53,7 +55,7 @@ export default class RxsMedForm extends React.Component {
                                 value={this.props.data.values.dosageQuantity} onChange={(e) => { this.props.update(this.props.index, "dosageQuantity", e.target.value) }} />
                             <div className="invalid-feedback" style={{ display: 'block' }}>
                                 {this.props.data.errors.dosageQuantity}&nbsp;
-                            </div>
+</div>
                         </div>
                     </div>
                 </div>
@@ -65,7 +67,7 @@ export default class RxsMedForm extends React.Component {
                                 value={this.props.data.values.dosageUnits} onChange={(e) => { this.props.update(this.props.index, "dosageUnits", e.target.value) }} />
                             <div className="invalid-feedback" style={{ display: 'block' }}>
                                 {this.props.data.errors.dosageUnits}&nbsp;
-                            </div>
+</div>
                         </div>
                     </div>
                 </div>
@@ -77,7 +79,7 @@ export default class RxsMedForm extends React.Component {
                                 value={this.props.data.values.rxsNumber} onChange={(e) => { this.props.update(this.props.index, "rxsNumber", e.target.value) }} />
                             <div className="invalid-feedback" style={{ display: 'block' }}>
                                 {this.props.data.errors.rxsNumber}&nbsp;
-                            </div>
+</div>
                         </div>
                     </div>
                 </div>
@@ -89,7 +91,7 @@ export default class RxsMedForm extends React.Component {
                                 value={this.props.data.values.doctorName} onChange={(e) => { this.props.update(this.props.index, "doctorName", e.target.value) }} />
                             <div className="invalid-feedback" style={{ display: 'block' }}>
                                 {this.props.data.errors.doctorName}&nbsp;
-                            </div>
+</div>
                         </div>
                     </div>
                 </div>
@@ -101,7 +103,7 @@ export default class RxsMedForm extends React.Component {
                                 value={this.props.data.values.doctorPhone} onChange={(e) => { this.props.update(this.props.index, "doctorPhone", e.target.value) }} />
                             <div className="invalid-feedback" style={{ display: 'block' }}>
                                 {this.props.data.errors.doctorPhone}&nbsp;
-                            </div>
+</div>
                         </div>
                     </div>
                 </div>
@@ -109,11 +111,11 @@ export default class RxsMedForm extends React.Component {
                     <div className="form-group">
                         <label className="label">Date Prescribed</label>
                         <div className="input-group">
-                            <input type="date" className="form-control" name="name" placeholder="mm/dd/yyyy"
-                                value={this.props.data.values.datePrescribed} onChange={(e) => { this.props.update(this.props.index, "datePrescribed", e.target.value) }} />
+                            <input type="date" className="form-control" name="name"
+                                value={toInputDate(this.props.data.values.datePrescribed)} onChange={(e) => { this.props.update(this.props.index, "datePrescribed", e.target.value) }} />
                             <div className="invalid-feedback" style={{ display: 'block' }}>
                                 {this.props.data.errors.datePrescribed}&nbsp;
-                            </div>
+</div>
                         </div>
                     </div>
                 </div>
@@ -122,10 +124,10 @@ export default class RxsMedForm extends React.Component {
                         <label className="label">End Date (optional)</label>
                         <div className="input-group">
                             <input type="date" className="form-control" name="name" placeholder="mm/dd/yyyy"
-                                value={this.props.data.values.endDate} onChange={(e) => { this.props.update(this.props.index, "endDate", e.target.value) }} />
+                                value={toInputDate(this.props.data.values.endDate)} onChange={(e) => { this.props.update(this.props.index, "endDate", e.target.value) }} />
                             <div className="invalid-feedback" style={{ display: 'block' }}>
                                 {this.props.data.errors.endDate}&nbsp;
-                            </div>
+</div>
                         </div>
                     </div>
                 </div>
@@ -135,15 +137,17 @@ export default class RxsMedForm extends React.Component {
                         <div className="input-group">
                             {/* <input type="date" className="form-control" name="name" placeholder="mm/dd/yyyy"
 value={this.props.data.values.endDate} onChange={(e) => { this.props.update(this.props.index, "endDate", e.target.value) }} /> */}
-                            <select className="form-control" id="exampleFormControlSelect2" onChange={(e) => { this.props.update(this.props.index, "whenToTake", e.target.value) }}>
+                            <select className="form-control" id="exampleFormControlSelect2" onChange={(e) => { this.props.update(this.props.index, "whenToTake", e.target.value) }} value={this.props.data.values.whenToTake}>
+
                                 <option defaultValue="">----Select Any----</option>
                                 <option value="morning">Morning</option>
                                 <option value="afternoon">Afternoon</option>
                                 <option value="evening">Evening</option>
+                                    
                             </select>
                             <div className="invalid-feedback" style={{ display: 'block' }}>
                                 {this.props.data.errors.endDate}&nbsp;
-                            </div>
+</div>
                         </div>
                     </div>
                 </div>
@@ -155,7 +159,7 @@ value={this.props.data.values.endDate} onChange={(e) => { this.props.update(this
                                 value={this.props.data.values.instructions} onChange={(e) => { this.props.update(this.props.index, "instructions", e.target.value) }} />
                             <div className="invalid-feedback" style={{ display: 'block' }}>
                                 {this.props.data.errors.instructions}&nbsp;
-                            </div>
+</div>
                         </div>
                     </div>
                 </div>
