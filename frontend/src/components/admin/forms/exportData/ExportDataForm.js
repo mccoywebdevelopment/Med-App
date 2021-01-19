@@ -12,9 +12,6 @@ class ExportDataForm extends React.Component{
     }
     constructor(props){
         super(props);
-        let newState = this.state;
-        newState.year = new Date().getFullYear().toString();
-        this.setState(newState);
     }
     monthChangeHandler = (e) =>{
         let newState = this.state;
@@ -28,6 +25,11 @@ class ExportDataForm extends React.Component{
     }
     _submit = () =>{
         this.props.fetchExportData(this.state.month,this.state.year,true);
+    }
+    componentDidMount = () =>{
+        let newState = this.state;
+        newState.year = new Date().getFullYear().toString();
+        this.setState(newState);
     }
     render(){
         var options = [];

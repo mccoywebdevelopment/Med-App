@@ -134,17 +134,17 @@ class DependentView extends React.Component {
                         </div>
                         <div className="row">
                             <div className="col-lg-12" style={{ marginBottom: "30px" }}>
-                                <div class="btn-group" role="group" aria-label="Basic example">
+                                <div className="btn-group" role="group" aria-label="Basic example">
                                     <button onClick={()=>{this._toggleFilterBy(true)}} type="button" 
-                                        class={"btn "+(this.state.filterBy.all? "btn-primary":"btn-outline-secondary")}>All</button>
+                                        className={"btn "+(this.state.filterBy.all? "btn-primary":"btn-outline-secondary")}>All</button>
                                     <button onClick={()=>{this._toggleFilterBy(false,true)}} type="button" 
-                                        class={"btn "+(this.state.filterBy.grouped? "btn-primary":"btn-outline-secondary")}>Is Grouped({isGroupLength})</button>
+                                        className={"btn "+(this.state.filterBy.grouped? "btn-primary":"btn-outline-secondary")}>Is Grouped({isGroupLength})</button>
                                     <button onClick={()=>{this._toggleFilterBy(false,false,true)}} type="button" 
-                                        class={"btn "+(this.state.filterBy.notGrouped? "btn-primary":"btn-outline-secondary")}>Not Grouped({notGroupLength})</button>
+                                        className={"btn "+(this.state.filterBy.notGrouped? "btn-primary":"btn-outline-secondary")}>Not Grouped({notGroupLength})</button>
                                 </div>
                                 {this._getData().length > 0 ?
-                                    <button onClick={()=>{this._toggleExportData()}} style={{float:'right'}}type="button" class="btn btn-outline-primary btn-fw hover-white">
-                                    <i class="fas fa-download"></i>Export</button>
+                                    <button onClick={()=>{this._toggleExportData()}} style={{float:'right'}}type="button" className="btn btn-outline-primary btn-fw hover-white">
+                                    <i className="fas fa-download"></i>Export</button>
                                     : null}
                             </div>
                         </div>

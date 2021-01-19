@@ -63,4 +63,9 @@ class DependentTableSm extends React.Component {
   }
 }
 
-export default connect(null, {})(DependentTableSm);
+const mapStateToProps = (state) => ({
+  theme: state.theme
+});
+
+
+export default connect(mapStateToProps,null)(DependentTableSm);

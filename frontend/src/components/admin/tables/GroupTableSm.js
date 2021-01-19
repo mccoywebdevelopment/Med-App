@@ -78,4 +78,8 @@ _getNumberOfAdmins = (guardians) =>{
   }
 }
 
-export default connect(null, {})(GroupTableSm);
+const mapStateToProps = (state) => ({
+  theme: state.theme
+});
+
+export default connect(mapStateToProps, {})(GroupTableSm);

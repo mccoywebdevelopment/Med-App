@@ -1,15 +1,9 @@
 
 import React from 'react';
-import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { selectItem } from '../../../actions/table';
-
 
 class DependentTable extends React.Component{
-  static propTypes = {
-    table: PropTypes.object.isRequired
-  };
   constructor(props){
     super(props);
   }
@@ -95,11 +89,5 @@ class DependentTable extends React.Component{
   }
 }
 
-DependentTable.propTypes = {
-  selectItem: PropTypes.func.isRequired
-};
-const mapStateToProps = (state) => ({
-  table: state.table
-});
 
-export default connect(mapStateToProps, {selectItem})(DependentTable);
+export default connect(null, null)(DependentTable);

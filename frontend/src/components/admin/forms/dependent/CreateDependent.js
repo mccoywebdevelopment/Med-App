@@ -35,8 +35,8 @@ class CreateDependent extends React.Component {
         this._viewDates = this._viewDates.bind(this);
         this._initState();
     }
-    _initState = () => {
-        this.state = {
+    _getInitObj = () =>{
+        return({
             oldData: {
                 overview: null,
                 rxsMedList: null
@@ -70,6 +70,13 @@ class CreateDependent extends React.Component {
                 list: []
             },
             notes: []
+        });
+    }
+    _initState = () => {
+        if(!this.state){
+            this.state = this._getInitObj();
+        }else{
+            this.setState(this._getInitObj());
         }
     }
     _formatSelDep = (dep) => {

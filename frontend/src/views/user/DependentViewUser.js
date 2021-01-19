@@ -118,8 +118,8 @@ class DependentViewUser extends React.Component {
         const filterGroupBtnsList = () =>{
             return this.state.filterBy.groups.map((group,index)=>{
                 return(
-                    <button id={"myButtonList9394"+index} onClick={() => { this._toggleFilterBy(false, index) }} type="button"
-                        class={"btn " + (this.state.filterBy.index ==index ? "btn-primary" : "btn-outline-secondary")}>
+                    <button id={"myButtonList9394"+index} key={"myButtonLkist9394"+index} onClick={() => { this._toggleFilterBy(false, index) }} type="button"
+                        className={"btn " + (this.state.filterBy.index ==index ? "btn-primary" : "btn-outline-secondary")}>
                         {group.name}({group.dependents.length})
                     </button>
                 );
@@ -146,9 +146,9 @@ class DependentViewUser extends React.Component {
                         </div>
                         <div className="row content-desktop">
                             <div className="col-lg-12" style={{ marginBottom: "30px" }}>
-                                <div class="btn-group" role="group" aria-label="Basic example">
+                                <div className="btn-group" role="group" aria-label="Basic example">
                                     <button onClick={() => { this._toggleFilterBy(true) }} type="button"
-                                        class={"btn " + (this.state.filterBy.all ? "btn-primary" : "btn-outline-secondary")}>All</button>
+                                        className={"btn " + (this.state.filterBy.all ? "btn-primary" : "btn-outline-secondary")}>All</button>
                                     {filterGroupBtnsList()}
                                 </div>
                             </div>

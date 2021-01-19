@@ -92,7 +92,7 @@ class UserLayout extends React.Component {
                                 <div className={"alert alert-dismissible alert-" + this.props.message.alertType} role="alert">
                                     {this.props.message.text}
                                     {this.props.message.text.length > 0 ?
-                                        <button type="button" onClick={() => { this.props.createMessage("", null) }} class="close" data-dismiss="alert" aria-label="Close">
+                                        <button type="button" onClick={() => { this.props.createMessage("", null) }} className="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                         : null}

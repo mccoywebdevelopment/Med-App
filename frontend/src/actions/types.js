@@ -16,8 +16,6 @@ export const FETCH_GROUPS = "FETCH_GROUPS";
 export const PATCH_GROUP_BY_ID = "PATCH_GROUP_BY_ID";
 //====================Dependent===========
 export const FETCH_DEPENDENTS ="FETCH_DEPENDENTS";
-//====================Table===============
-export const SELECT_ITEM = "SELECT_ITEM";
 //====================THEME===============
 export const CHANGE_PAGE_PRIMARY_COLOR = "CHANGE_PAGE_PRIMARY_COLOR";
 //====================Root================
