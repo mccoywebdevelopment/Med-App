@@ -16,4 +16,7 @@ ERRORS:
  - To find all logs/alerts use: 
     ./frontend/src/actions,./frontend/src/components,./frontend/src/views,./queries,./routes,./config
 
+- To create first users:
+   https://med-app-v1.herokuapp.com/api/users/create-first-user/:secretKey/:username/:password
+
    

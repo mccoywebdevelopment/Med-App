@@ -6,6 +6,7 @@ const findAllGroups = require('./group').findAll;
 const RxsMedication = require('../models/rxsMedication/RxsMedication');
 const Rxs = require('../models/rxs/Rxs');
 const Medication = require('../models/medication/Medication');
+const SECRET_KEY = process.env.SECRET_KEY || require('../config/configVars').SECRET_KEY;
 const { addDetailsToUser } = require('../config/globalHelpers');
 
 function getDependents(user, callback) {
@@ -244,7 +245,7 @@ function createFirstUser(secretKey, email, password, callback) {
       callback(err);
     } else if (result.length > 0) {
       callback("User already created");
-    } else if (secretKey != "serendipity") {
+    } else if (secretKey != SECRET_KEY) {
       callback("Invalid Key");
     } else {
       var body = {
