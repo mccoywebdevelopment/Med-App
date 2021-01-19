@@ -1,0 +1,16 @@
+TODO:
+- Make test cases
+- Run through entire app
+
+OPTIMIZATIONS:
+- add urls to user/dependents in group view
+
+ERRORS:
+- when editing took on specific date (isAway) sometimes the title of the popUp doesn't show after the user submits
+   the view dates popUp.
+
+ TIPS:
+ - To find all logs/alerts use: 
+    ./frontend/src/actions,./frontend/src/components,./frontend/src/views,./queries,./routes,./config
+
+   

@@ -1,4 +1,4 @@
-import { FETCH_LOGIN, CHANGE_REDIRECT_URL, FETCH_REGISTER, FETCH_RESET_PASSWORD } from './types';
+import { FETCH_LOGIN, CHANGE_REDIRECT_URL, FETCH_REGISTER, FETCH_RESET_PASSWORD, FETCH_UPDATE_PROFILE } from './types';
 import { createMessage } from './messages';
 import { toggleLoading } from './loading';
 import {FETCH} from "../config/helpers";
@@ -27,6 +27,26 @@ export const fetchResetPassword = (postData,token) => (dispatch) => {
         type: FETCH_RESET_PASSWORD,
         payload: res.result
       });
+    }
+  });
+}
+
+
+export const fetchUpdateProfile = (body, done) => (dispatch) => {
+  dispatch(toggleLoading(true));
+  FETCH('POST', '/users/update-profile/', body, localStorage.getItem('JWT'), dispatch, false, (err, res) => {
+    if (err) {
+      dispatch(createMessage(err, 'danger'));
+    }else{
+      dispatch(toggleLoading(false));
+      dispatch(createMessage("Your account has been successfully updated",'success',20000));
+      dispatch({
+        type: FETCH_UPDATE_PROFILE,
+        payload: res.result
+      });
+      if(done){
+        done(res);
+      }
     }
   });
 }

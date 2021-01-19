@@ -63,4 +63,16 @@ function findUserByJwt(jwt,callback){
         }
       });
 }
-module.exports = {verifyUser,verifyAdmin,findUserByJwt};
+function addDetailsToUser(guardian,user){
+    user = JSON.parse(JSON.stringify(user));
+    user.phoneNumber = guardian.phoneNumber || "";
+    
+    if(guardian.name && guardian.name.firstName && guardian.name.lastName){
+        user.name = guardian.name.firstName + " " + guardian.name.lastName;
+    }else{
+        user.name = "";
+    }
+
+    return user;
+}
+module.exports = {verifyUser,verifyAdmin,findUserByJwt,addDetailsToUser};

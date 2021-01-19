@@ -42,8 +42,6 @@ function patchUpdateDependentById(body, id, callback) {
               if (err) {
                 callback(err);
               } else {
-                console.log("\n\n\n\n\n\n\n")
-                console.log(JSON.stringify(body));
                 callback(null, obj);
               }
             });

@@ -1,10 +1,12 @@
 const userModel = require('../models/user/User');
 const val = require('./helpers/helper');
 const Guardian = require('../models/guardian/Guardian');
+const updateGuardianByID = require('./guardian').patchUpdateById;
 const findAllGroups = require('./group').findAll;
 const RxsMedication = require('../models/rxsMedication/RxsMedication');
 const Rxs = require('../models/rxs/Rxs');
 const Medication = require('../models/medication/Medication');
+const { addDetailsToUser } = require('../config/globalHelpers');
 
 function getDependents(user, callback) {
   findAllGroups(function (err, allGroups) {
@@ -135,6 +137,36 @@ function updateModifiedFields(oldDoc, updatedFields) {
   return obj;
 }
 
+function updateProfile(body,callback){
+  userModel.findById(body._id,function(err,userFound){
+    if(err){
+      callback(err);
+    }else if(!userFound){
+      callback("User not found.");
+    }else{
+      delete body._id;
+      let bodyGuard = {
+        updatedFields:body
+      }
+      Guardian.findOne({user:userFound._id},function(err,guardianFound){
+        if(err){
+          callback(err);
+        }else if(!guardianFound){
+          callback("Guardian not found.");
+        }else{
+          updateGuardianByID(bodyGuard,guardianFound._id,function(err,updatedDoc){
+            if(err){
+              callback(err);
+            }else{
+              let userObj = addDetailsToUser(updatedDoc,userFound);
+              callback(null,{result:userObj});
+            }
+          });
+        }
+      });
+    }
+  });
+}
 
 function deleteById(id, callback) {
   userModel.findOneAndDelete({ _id: id }, function (err, deletedDoc) {
@@ -232,4 +264,4 @@ function createFirstUser(secretKey, email, password, callback) {
 }
 
 
-module.exports = { create, findAll, findExceptMe, deleteById, findById, patchUpdateById, getDependents, createFirstUser };
+module.exports = { create, findAll, findExceptMe, deleteById, findById, patchUpdateById, getDependents, createFirstUser, updateProfile };

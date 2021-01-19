@@ -34,7 +34,6 @@ class CreateDependent extends React.Component {
         this._tookMed = this._tookMed.bind(this);
         this._viewDates = this._viewDates.bind(this);
         this._initState();
-        this._test();
     }
     _initState = () => {
         this.state = {

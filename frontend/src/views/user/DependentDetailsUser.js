@@ -98,19 +98,28 @@ class DependentDetails extends React.Component{
     }
     componentDidUpdate = () =>{
         let id = getPath(window,"end");
-        if(id != this.state.dependent._id && !this.state.goHome){
+        if(!this.state.dependent || id != this.state.dependent._id && !this.state.goHome){
             this._setDep(this._findDepByID(id));
             this._toggleRedirect(false);
         }else if(id != this.state.dependent._id){
             this._setDep(this._findDepByID(id));
         }
+
+        if(!this.state.dependent){
+            this.setState({...this.state,goHome:true});
+        }
     }
     componentDidMount =()=>{
         let id = getPath(window,"end");
+        
         if(!this.props.dependentState.fetched){
             this.props.fetchPopulatedDependents(()=>{});
         }
         this._setDep(this._findDepByID(id));
+
+        if(!this.state.dependent){
+            this.setState({...this.state,goHome:true});
+        }
 
         this.backListener = browserHistory.listen(location => {
             if (location.action === "POP") {

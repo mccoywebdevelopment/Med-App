@@ -10,7 +10,6 @@ export default class RxsMedForm extends React.Component {
     }
     componentDidMount = () => {
         this.setState({ isScroll: false });
-        console.log(this.props.data.values)
     }
     render() {
         var scrollTo;

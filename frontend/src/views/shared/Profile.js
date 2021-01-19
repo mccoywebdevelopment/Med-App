@@ -2,26 +2,25 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { changeColor } from "../../actions/theme";
-import { fetchDeleteAccount } from "../../actions/auth";
-import { fetchUpdateUser } from "../../actions/user";
+import { fetchDeleteAccount,fetchUpdateProfile } from "../../actions/auth";
 import { fetchGuardians } from "../../actions/guardian";
-import { firstAndLastNameValidator,phoneNumberValidator } from "../../config/validators";
+import { firstAndLastNameValidator, phoneNumberValidator } from "../../config/validators";
 
 class Profile extends React.Component {
   state = {
     email: "",
     phoneNumber: "",
     name: "",
-    isAdmin: false,
+    isAdmin: "false",
     oldState: null,
-    nameError:"",
-    phoneNumberError:""
+    nameError: "",
+    phoneNumberError: ""
   }
   static propTypes = {
     auth: PropTypes.object.isRequired,
     guardianState: PropTypes.object.isRequired,
     fetchGuardians: PropTypes.func.isRequired,
-    fetchUpdateUser: PropTypes.func.isRequired
+    fetchUpdateProfile: PropTypes.func.isRequired
   };
   constructor(props) {
     super(props);
@@ -36,51 +35,40 @@ class Profile extends React.Component {
       this.props.fetchDeleteAccount();
     }
   }
-  _getGuardianID = (guardians,userID)=>{
-    for(var i=0;i<guardians.length;++i){
-      if(guardians[i].user == userID){
+  _getGuardianID = (guardians, userID) => {
+    for (var i = 0; i < guardians.length; ++i) {
+      if (guardians[i].user == userID) {
         return guardians[i]._id
       }
     }
     return null;
   }
-  _validator = () =>{
+  _validator = () => {
     let newState = this.state;
 
-    newState.nameError = firstAndLastNameValidator(newState.name,true).errorMsg;
-    newState.phoneNumberError = phoneNumberValidator(newState.phoneNumber,true).errorMsg;
+    newState.nameError = firstAndLastNameValidator(newState.name, true).errorMsg;
+    newState.phoneNumberError = phoneNumberValidator(newState.phoneNumber, true).errorMsg;
 
     this.setState(newState);
   }
-  _submit = () =>{
+  _submit = () => {
     this._validator();
 
-    if(!this.state.nameError.length>0 && !this.state.phoneNumberError.length>0){
-      alert(true)
-      if(!this.props.guardianState.fetched){
-        this.props.fetchGuardians(true,(guardians)=>{
-          let guardianID = this._getGuardianID(guardians,this.props.auth.user._id);
-          let body = {
-            phoneNumber: this.state.phoneNumber,
-            firstName: this.state.name.split(' ')[0],
-            lastName: this.state.name.split(' ')[1],
-          }
-          this.props.fetchUpdateUser(this.props.auth.user._id,body,false,guardianID);
-        });
-      }else{
-        let guardianID = this._getGuardianID(this.props.guardianState.data,this.props.auth.user._id);
-          let body = {
-            phoneNumber: this.state.phoneNumber,
-            firstName: this.state.name.split(' ')[0],
-            lastName: this.state.name.split(' ')[1],
-          }
-          console.log('sdlfj')
-          this.props.fetchUpdateUser(this.props.auth.user._id,body,false,guardianID,(res)=>{
-            console.log(res)
-          });
+    if (!this.state.nameError.length > 0 && !this.state.phoneNumberError.length > 0) {
+      let body = {
+        phoneNumber: this.state.phoneNumber,
+        firstName: this.state.name.split(' ')[0],
+        lastName: this.state.name.split(' ')[1],
+        _id: this.props.auth.user._id
       }
+      this.props.fetchUpdateProfile(body, () => {
+        this._init();
+      });
+
     }
+
   }
+
   _isUpdated = () => {
     let oldData = this.state.oldState;
     let newData = {
@@ -96,11 +84,7 @@ class Profile extends React.Component {
     return false;
   }
 
-  componentDidMount = () => {
-    if (!this.props.auth || !this.props.auth.user) {
-      window.location = "/auth/login";
-    }
-    this.props.changeColor("#2196f3");
+  _init=()=>{
     let newState = this.state;
     newState.email = this.props.auth.user.username;
     newState.phoneNumber = this.props.auth.user.phoneNumber;
@@ -113,6 +97,14 @@ class Profile extends React.Component {
       isAdmin: newState.isAdmin
     }
     this.setState(newState);
+  }
+
+  componentDidMount = () => {
+    if (!this.props.auth || !this.props.auth.user) {
+      window.location = "/auth/login";
+    }
+    this.props.changeColor("#2196f3");
+    this._init();
   }
   render() {
     return (
@@ -130,22 +122,22 @@ class Profile extends React.Component {
                   <input onChange={(e) => { this._update("name", e.target.value) }} type="text" className="form-control" id="inputName" value={this.state.name} placeholder="" />
                   <div className="invalid-feedback" style={{ display: 'block' }}>
                     {this.state.nameError}&nbsp;
-                  </div>
+</div>
                 </div>
               </div>
               <div className="form-row">
                 <div className="form-group  col-lg-6">
                   <label htmlFor="inputAddress">Phone Number</label>
-                  <input onChange={(e) => { this._update("phoneNumber", e.target.value) }} value={this.state.phoneNumber} type="number" className="form-control" id="inputNumber" placeholder="000-000-0000" minLength="10" maxLength="10" />
+                  <input onChange={(e) => { this._update("phoneNumber", e.target.value) }} value={this.state.phoneNumber} type="tel" className="form-control" id="inputNumber" placeholder="000-000-0000" minLength="10" maxLength="10" />
                   <div className="invalid-feedback" style={{ display: 'block' }}>
                     {this.state.phoneNumberError}&nbsp;
-                  </div>
+</div>
                 </div>
               </div>
               <div className="form-row">
                 <div className="form-group  col-lg-6">
                   <label htmlFor="inputAddress">Is Admin</label>
-                  <input value={this.state.isAdmin} type="text" className="form-control" id="inputName" value={this.state.isAdmin} placeholder="" readOnly />
+                  <input type="text" className="form-control" id="inputName" value={this.state.isAdmin} placeholder="" readOnly />
                 </div>
               </div>
               <div className="form-row">
@@ -172,7 +164,7 @@ class Profile extends React.Component {
 
               <div className="form-row">
                 <div className="form-group col-lg-6">
-                  <button onClick={()=>{this._submit()}} type="button" className="btn btn-primary" style={{ visibility: this._isUpdated() ? 'hidden' : 'visible' }}>Save Changes</button>
+                  <button onClick={() => { this._submit() }} type="button" className="btn btn-primary" style={{ visibility: this._isUpdated() ? 'hidden' : 'visible' }}>Save Changes</button>
                 </div>
               </div>
             </div>
@@ -186,11 +178,11 @@ Profile.propTypes = {
   changeColor: PropTypes.func.isRequired,
   fetchDeleteAccount: PropTypes.func.isRequired,
   fetchGuardians: PropTypes.func.isRequired,
-  fetchUpdateUser: PropTypes.func.isRequired
+  fetchUpdateProfile: PropTypes.func.isRequired
 };
 const mapStateToProps = (state) => ({
   auth: state.auth,
   guardianState: state.guardianState
 });
 
-export default connect(mapStateToProps, { changeColor, fetchDeleteAccount, fetchGuardians, fetchUpdateUser })(Profile);
+export default connect(mapStateToProps, { changeColor, fetchDeleteAccount, fetchGuardians, fetchUpdateProfile })(Profile);

@@ -5,9 +5,6 @@ export default class MedicationTable extends React.Component {
   constructor(props) {
     super(props);
   }
-  componentDidMount(){
-    console.log(this.props);
-  }
   render() {
 
     var left = [];

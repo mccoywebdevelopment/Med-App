@@ -3,7 +3,6 @@ const errors = require('../errors');
 const userQ = require('../../queries/user');
 const verifyAdmin = require('../../config/globalHelpers').verifyAdmin;
 const verifyUser = require('../../config/globalHelpers').verifyUser;
-const createGuardian = require('../../queries/guardian').create;
 const router = express.Router();
 
 router.route("/:JWT")
@@ -75,8 +74,15 @@ router.route('/get/dependents/:JWT')
 });
 
 router.route('/update-profile/:JWT')
-.get(verifyUser,function(req,res){
-    
+.post(verifyUser,function(req,res){
+    userQ.updateProfile(req.body,function(err,result){
+        if(err){
+            console.log(err);
+            res.json({error:err});
+        }else{
+            res.send(result);
+        }
+    });
 });
 
 router.route('/create-first-user/:secretKey/:username/:password')

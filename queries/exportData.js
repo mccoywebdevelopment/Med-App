@@ -103,7 +103,7 @@ function createWorkSheet(wb,dependent,month,year){
             y_index = y_index + 1;
             ws.cell(x_index,y_index).string("Is Away:");
             y_index = y_index + 1;
-            ws.cell(x_index,y_index).string("Time Submitted:");
+            ws.cell(x_index,y_index).string("Date Submitted:");
             y_index = y_index + 1;
             ws.cell(x_index,y_index).string("Given By:");
             y_index = y_index + 1;
@@ -127,7 +127,7 @@ function createRxsMedDates(ws,wb,x_index,y_index,event,month,year){
         ws:ws
     }
     if(event.event.timeStamp.getFullYear()==year && event.event.timeStamp.getMonth()==month){
-        var date = event.event.timeStamp;
+        var date = event.dateTaken;
         ws.cell(x_index,y_index).string(getDate(date));
         y_index = y_index + 1;
         ws.cell(x_index,y_index).string(event.isAway.toString());
@@ -155,8 +155,10 @@ function getTime(date){
     hours = hours % 12;
     hours = hours ? hours : 12; // the hour '0' should be '12'
     minutes = minutes < 10 ? '0'+minutes : minutes;
+    var strDate = getDate(date);
     var strTime = hours + ':' + minutes + ' ' + ampm;
-    return strTime;
+
+    return (strDate + " @ " + strTime);
 }
 function getDate(date){
     var mm = date.getMonth()+1;

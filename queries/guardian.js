@@ -27,6 +27,8 @@ function patchUpdateById(body,id,callback){
     guardianModel.findById(id,function(err,foundDoc){
       if(err){
         callback(err);
+      }else if(!foundDoc){
+        callback("Guardian not found.")
       }else{
         updateModifiedFields(foundDoc,body.updatedFields,function(err,newDoc){
           if(err){

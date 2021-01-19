@@ -1,4 +1,4 @@
-import { FETCH_LOGIN , CHANGE_REDIRECT_URL, FETCH_REGISTER, FETCH_RESET_PASSWORD} from '../actions/types';
+import { FETCH_LOGIN , CHANGE_REDIRECT_URL, FETCH_REGISTER, FETCH_RESET_PASSWORD, FETCH_UPDATE_PROFILE} from '../actions/types';
 
 const initialState = {
     user:null,
@@ -29,6 +29,11 @@ export default function(state = initialState, action){
                 ...state,
                 user:action.payload.user,
                 redirectURL:action.payload.redirectURL
+            }
+        case FETCH_UPDATE_PROFILE:
+            return{
+                ...state,
+                user:action.payload
             }
         default:
             return state;

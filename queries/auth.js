@@ -4,6 +4,7 @@ const createGuardian = require('./guardian').create;
 const guardianModel = require('../models/guardian/Guardian');
 const updateGuardian = require('./guardian').patchUpdateById;
 const Guardian = require('../models/guardian/Guardian');
+const { addDetailsToUser } = require('../config/globalHelpers');
 
 function registerUser(body,token,email,callback){
     User.findOne({username:email},function(err,userFound){
@@ -155,18 +156,7 @@ function logginUser(body,callback){
         }
     });
 }
-function addDetailsToUser(guardian,user){
-    user = JSON.parse(JSON.stringify(user));
-    user.phoneNumber = guardian.phoneNumber || "";
-    
-    if(guardian.name && guardian.name.firstName && guardian.name.lastName){
-        user.name = guardian.name.firstName + " " + guardian.name.lastName;
-    }else{
-        user.name = "";
-    }
 
-    return user;
-}
 function resetUserPassword(body,callback){
     if(!body.email || !body.password){
         callback("Missing one of the following fields.")
