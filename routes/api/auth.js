@@ -2,7 +2,7 @@ const express = require('express');
 const errors = require('../errors');
 const router = express.Router();
 const authQ = require('../../queries/auth');
-const CLIENT_URL = require('../../config/configVars').CLIENT_URL
+const CLIENT_URL = process.env.CLIENT_URL || require('../../config/configVars').CLIENT_URL
 
 router.route("/register/:email/:token")
 .post(function(req,res){
