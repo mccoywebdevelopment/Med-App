@@ -1,6 +1,7 @@
 const userModel = require('../models/user/User');
 const val = require('./helpers/helper');
 const Guardian = require('../models/guardian/Guardian');
+const createGuardian = require('./guardian').create;
 const updateGuardianByID = require('./guardian').patchUpdateById;
 const findAllGroups = require('./group').findAll;
 const RxsMedication = require('../models/rxsMedication/RxsMedication');
@@ -55,8 +56,8 @@ function getDependents(user, callback) {
     }
   });
 }
-function attatchGroup(group){
-  return _objectWithoutProperties(group,["dependents"])
+function attatchGroup(group) {
+  return _objectWithoutProperties(group, ["dependents"])
 }
 function _objectWithoutProperties(obj, keys) {
   var target = {};
@@ -138,29 +139,29 @@ function updateModifiedFields(oldDoc, updatedFields) {
   return obj;
 }
 
-function updateProfile(body,callback){
-  userModel.findById(body._id,function(err,userFound){
-    if(err){
+function updateProfile(body, callback) {
+  userModel.findById(body._id, function (err, userFound) {
+    if (err) {
       callback(err);
-    }else if(!userFound){
+    } else if (!userFound) {
       callback("User not found.");
-    }else{
+    } else {
       delete body._id;
       let bodyGuard = {
-        updatedFields:body
+        updatedFields: body
       }
-      Guardian.findOne({user:userFound._id},function(err,guardianFound){
-        if(err){
+      Guardian.findOne({ user: userFound._id }, function (err, guardianFound) {
+        if (err) {
           callback(err);
-        }else if(!guardianFound){
+        } else if (!guardianFound) {
           callback("Guardian not found.");
-        }else{
-          updateGuardianByID(bodyGuard,guardianFound._id,function(err,updatedDoc){
-            if(err){
+        } else {
+          updateGuardianByID(bodyGuard, guardianFound._id, function (err, updatedDoc) {
+            if (err) {
               callback(err);
-            }else{
-              let userObj = addDetailsToUser(updatedDoc,userFound);
-              callback(null,{result:userObj});
+            } else {
+              let userObj = addDetailsToUser(updatedDoc, userFound);
+              callback(null, { result: userObj });
             }
           });
         }
@@ -248,16 +249,32 @@ function createFirstUser(secretKey, email, password, callback) {
     } else if (secretKey != SECRET_KEY) {
       callback("Invalid Key");
     } else {
-      var body = {
+      let firstUser = new userModel({
         username: email,
         password: password,
         isAdmin: true
-      }
-      create(body, function (err, result) {
+      });
+      firstUser.auth.isVerified = true;
+
+      firstUser.save(function (err, userCreated) {
         if (err) {
           callback(err);
         } else {
-          callback(null, result);
+          let guardBody = {
+            user: userCreated._id,
+            firstName: "ADMIN",
+            lastName: "ONE",
+            phoneNumber: 11111111
+          }
+          
+          createGuardian(guardBody, function (err, guardCreated) {
+            if (err) {
+              callback(err);
+            } else {
+              guardCreated.user = result;
+              callback(null, guardCreated);
+            }
+          });
         }
       });
     }
