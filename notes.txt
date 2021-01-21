@@ -1,7 +1,5 @@
 TODO:
-- Make test cases
-- Run through entire app
-- Push to live
+- fix email
 
 OPTIMIZATIONS:
 - add urls to user/dependents in group view
@@ -11,6 +9,7 @@ ERRORS:
 - when editing took on specific date (isAway) sometimes the title of the popUp doesn't show after the user submits
    the view dates popUp.
 - fetch groups error 404 when admin loads view dependents
+- fix emailing make tokens accessable multiple times (microsoft outlook)
 
  TIPS:
  - To find all logs/alerts use: 

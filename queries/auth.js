@@ -88,7 +88,7 @@ function registerUser(body,token,email,callback){
 }
 function setExpireToken(userFound){
     var today = new Date();
-    today.setHours(today.getHours() + 4);
+    today.setHours(today.getHours() + 48);
 
     userFound.auth.expiresIn = today;
     return userFound;
