@@ -4,6 +4,11 @@ TODO:
 OPTIMIZATIONS:
 - add urls to user/dependents in group view
 - when editing rxsMedication allow the user to exit form like click outside or x icon
+- when creating group allow name to display there email if not validated
+- add color coding to all tables
+- add picture to empty tables
+- add filters to all tables
+- add data dashboard
 
 ERRORS:
 - when editing took on specific date (isAway) sometimes the title of the popUp doesn't show after the user submits
