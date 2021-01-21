@@ -80,7 +80,7 @@ class UserTable extends React.Component {
               <td>
                 <i title="view" onClick={() => this._selectItem(user)} className="fas fa-eye"
                   style={{ paddingRight: '20px', color: this.props.theme.pagePrimaryColor }}></i>
-                  {!user.auth.isVerified?
+                  {!user.auth.isVerified || user.auth.statusValue == 'pending'?
                     <i title="Send Invite" onClick={() => { this._sendTokenViaEmail(user) }} className="fas fa-envelope"
                       style={{ paddingRight: '20px',color: this.props.theme.pagePrimaryColor }}></i>
                   :null}
