@@ -69,8 +69,12 @@ const userRoutes = [
 
 const authRoutes = [
     {
-        path: "/auth/login",
+        path: "/auth/login/",
         component: <Login/>
+    },
+    {
+        path: "/auth/login/:email/:password",
+        component: <Login isCreditials={true}/>
     },
     {
         path: "/auth/forgot-password",

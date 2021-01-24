@@ -23,14 +23,6 @@ export function formateDate(date) {
         return null;
     }
 }
-
-function addZero(value){
-    value = value.toString();
-    if(value.length == 1){
-        value = '0'+value
-    }
-    return value;
-}
 export function toInputDate(date){
     if(typeof(date)=='string'){
         console.log(date);
@@ -51,6 +43,9 @@ export function getPath(window, index) {
     } else {
         return arr[index];
     }
+}
+export function getPaths(window){
+    return window.location.pathname.split('/');
 }
 export function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);

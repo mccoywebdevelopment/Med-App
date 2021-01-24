@@ -9,6 +9,8 @@ OPTIMIZATIONS:
 - add picture to empty tables
 - add filters to all tables
 - add data dashboard
+- add QR codes
+- add mobile view
 
 ERRORS:
 - when editing took on specific date (isAway) sometimes the title of the popUp doesn't show after the user submits

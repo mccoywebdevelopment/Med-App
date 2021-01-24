@@ -5,6 +5,7 @@ import { fetchLogin } from "../../actions/auth";
 import { changeRedirectURL } from "../../actions/auth";
 import { resetRoot } from "../../actions/root";
 import { Redirect } from 'react-router-dom';
+import { getPath, getPaths} from '../../config/helpers';
 import { emailValidator,passwordValidator } from '../../config/validators';
 
 class Login extends React.Component{
@@ -50,6 +51,15 @@ class Login extends React.Component{
     this.props.resetRoot();
     window.localStorage.clear(); //try this to clear all local storage
     localStorage.clear();
+
+    if(this.props.isCreditials){
+      let paths = getPaths(window);
+      let newState = this.state;
+      newState.email = paths[paths.length - 2];
+      newState.password = paths[paths.length -1];
+      this.setState(newState);
+    }
+    
   }
   _renderForm =() =>{
     return (
