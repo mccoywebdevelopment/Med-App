@@ -6,4 +6,4 @@
 //export const API_URI = "https://med-app-testing.herokuapp.com/"
 
 // prod mode:
-// export const API_URI = "https://med-app-v1.herokuapp.com/api";
+export const API_URI = "https://med-app-v1.herokuapp.com/api";
