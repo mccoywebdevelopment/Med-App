@@ -8,7 +8,7 @@ const RxsMedication = require('../models/rxsMedication/RxsMedication');
 const Rxs = require('../models/rxs/Rxs');
 const Medication = require('../models/medication/Medication');
 const SECRET_KEY = process.env.SECRET_KEY || require('../config/configVars').SECRET_KEY;
-const CANNOT_DELETE_ADMIN = process.env.CAN_DELETE_ADMIN || require('../config/configVars').CANNOT_DELETE_ADMIN;
+const CANNOT_DELETE_ADMIN = process.env.CANNOT_DELETE_ADMIN || require('../config/configVars').CANNOT_DELETE_ADMIN;
 const { addDetailsToUser } = require('../config/globalHelpers');
 
 function getDependents(user, callback) {
