@@ -8,7 +8,7 @@ const RxsMedication = require('../models/rxsMedication/RxsMedication');
 const Rxs = require('../models/rxs/Rxs');
 const Medication = require('../models/medication/Medication');
 const SECRET_KEY = process.env.SECRET_KEY || require('../config/configVars').SECRET_KEY;
-const CANNOT_DELETE_ADMIN = process.env.CANNOT_DELETE_ADMIN || require('../config/configVars').CANNOT_DELETE_ADMIN;
+const CAN_DELETE_ADMIN = process.env.CAN_DELETE_ADMIN || require('../config/configVars').CAN_DELETE_ADMIN;
 const { addDetailsToUser } = require('../config/globalHelpers');
 
 function getDependents(user, callback) {
@@ -177,7 +177,7 @@ function deleteById(id, callback) {
       callback(err);
     }else if(!userFound){
       callback('User could not be found.');
-    }else if(userFound.isAdmin && CANNOT_DELETE_ADMIN){
+    }else if(userFound.isAdmin && !CAN_DELETE_ADMIN){
       callback('Delete admin setting is selected to false.');
     }else{
       userFound.deleteOne(function(err,deletedDoc){
