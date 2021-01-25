@@ -8,7 +8,7 @@ const RxsMedication = require('../models/rxsMedication/RxsMedication');
 const Rxs = require('../models/rxs/Rxs');
 const Medication = require('../models/medication/Medication');
 const SECRET_KEY = process.env.SECRET_KEY || require('../config/configVars').SECRET_KEY;
-const CAN_DELETE_ADMIN = process.env.CAN_DELETE_ADMIN || require('../config/configVars').CAN_DELETE_ADMIN;
+const CAN_DELETE_ADMIN = process.env.CAN_DELETE_ADMIN || require('../config/configVars').CAN_DELETE_ADMIN || "false";
 const { addDetailsToUser } = require('../config/globalHelpers');
 
 function getDependents(user, callback) {
@@ -172,15 +172,15 @@ function updateProfile(body, callback) {
 }
 
 function deleteById(id, callback) {
-  userModel.findOne({_id:id},function(err,userFound){
-    if(err){
+  userModel.findOne({ _id: id }, function (err, userFound) {
+    if (err) {
       callback(err);
-    }else if(!userFound){
+    } else if (!userFound) {
       callback('User could not be found.');
-    }else if(userFound.isAdmin && !CAN_DELETE_ADMIN){
+    } else if (userFound.isAdmin && CAN_DELETE_ADMIN.toString().toLowerCase() == "false") {
       callback('Delete admin setting is selected to false.');
-    }else{
-      userFound.deleteOne(function(err,deletedDoc){
+    } else {
+      userFound.deleteOne(function (err, deletedDoc) {
         if (err) {
           callback(err);
         } else {
@@ -195,20 +195,8 @@ function deleteById(id, callback) {
       });
     }
   });
-  // userModel.findOneAndDelete({ _id: id }, function (err, deletedDoc) {
-    // if (err) {
-    //   callback(err);
-    // } else {
-    //   Guardian.find({ user: id }).remove().exec(function (err, guardianDeleted) {
-    //     if (err) {
-    //       callback(err);
-    //     } else {
-    //       callback(null, deletedDoc);
-    //     }
-    //   });
-    // }
-  // });
 }
+
 function saveToDoc(bodyData, schemaModel, callback) {
   //Later maybe make this generic
   var newDoc = new schemaModel({
@@ -290,7 +278,7 @@ function createFirstUser(secretKey, email, password, callback) {
             lastName: "ONE",
             phoneNumber: 11111111
           }
-          
+
           createGuardian(guardBody, function (err, guardCreated) {
             if (err) {
               callback(err);
