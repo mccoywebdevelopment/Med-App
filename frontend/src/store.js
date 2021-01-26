@@ -18,25 +18,13 @@ const persistConfig = {
 // Middleware: Redux Persist Persisted Reducer
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-let store;
-
-if(API_URI == "http://localhost:4000/api"){
-  store = createStore(
-    persistedReducer,
-    compose(
-      applyMiddleware(...middleware),
-      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-    )
-  );
-}else{
-  store = createStore(
-    persistedReducer,
-    compose(
-      applyMiddleware(...middleware),
-      // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-    )
-  );
-}
+const store = createStore(
+  persistedReducer,
+  compose(
+    applyMiddleware(...middleware),
+    // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  )
+);
 
 let persistor = persistStore(store);
 
