@@ -2,13 +2,8 @@ import React from 'react';
 
 import Nav from "./Nav";
 
-// import "../../../assets/vendors/iconfonts/mdi/css/materialdesignicons.min.css";
-// import "../../../assets/vendors/iconfonts/ionicons/css/ionicons.css";
-// import "../../../assets/vendors/iconfonts/typicons/src/font/typicons.css";
-// import "../../../assets/vendors/iconfonts/flag-icon-css/css/flag-icon.min.css";
-// import "../../../assets/vendors/css/vendor.bundle.base.css";
-import "../../../assets/css/shared/style.css";
-import "../../../assets/css/demo_1/style.css";
+import "../../../assets/css/bootstrap/style.css";
+import "../../../assets/css/template/style.css";
 import "../../../assets/images/favicon.png";
 
 

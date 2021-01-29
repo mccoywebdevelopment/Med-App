@@ -10,7 +10,7 @@ import AdminLayout from "./layouts/admin/AdminLayout";
 import AuthLayout from "./layouts/shared/AuthLayout";
 import UserLayout from "./layouts/user/UserLayout";
 
-import "./assets/css/shared/fontawesome/css/all.min.css";
+import "./assets/css/fontawesome/css/all.min.css";
 
 class App extends React.Component {
   static propTypes = {

@@ -44,24 +44,49 @@ export default class MedicationTable extends React.Component {
               <td>{element.values.dosageQuantity} {element.values.dosageUnits}</td>
               <td>{element.values.rxsNumber || "-"}</td>
               <td>{formateDate(element.values.datePrescribed) || "-"}</td>
-              <td>
+              <td style={{ textAlign: 'left' }}>
                 {!this.props.isCreate ?
-                  <>
-                    {!this.props.isUser ?
-                      <>
-                        <i onClick={() => { this.props.edit(element.index) }} title="edit" className="fas fa-edit"
-                          style={{ paddingRight: '20px', color: '#2196F3', paddingBottom: '10px' }}></i>
 
-                        <i onClick={() => { this.props.delete(element.index) }} title="Delete" className="fas fa-trash"
-                          style={{ color: '#2196F3', paddingBottom: '10px', paddingRight: '20px' }}></i>
-                      </>
-                      : null}
-                    <i onClick={() => { this.props.tookMed(element.index) }} title="Verify Med Taken" className="fas fa-calendar-check"
-                      style={{ paddingRight: '23px', color: '#2196F3' }}></i>
-                    <i onClick={() => { this.props.viewDates(element.index) }} title="View Dates" className="fas fa-calendar-alt"
-                      style={{ color: '#2196F3' }}></i>
+                  <div class="dropdown">
+                    <i title="Actions" className="fas fa-ellipsis-v" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                      style={{ color: '#2196F3', fontSize: '20px', paddingRight: '5px' }}></i>
 
-                  </>
+
+                    <div class="dropdown-menu dropdown-menu-left my-dropdown" aria-labelledby="dropdownMenuButton">
+                      <a onClick={() => { this.props.viewDates(element.index) }} class="dropdown-item"
+                        style={{ cursor: 'pointer' }}>
+                        View Dates <i title="View Dates" className="fas fa-calendar-alt"
+                          style={{ color: '#2196F3', float: 'right' }}></i>
+                      </a>
+                      <a onClick={() => { this.props.tookMed(element.index) }} class="dropdown-item"
+                        style={{ cursor: 'pointer', paddingTop: '15px' }}>
+                        Log <i title="Verify Med Taken" className="fas fa-calendar-check"
+                          style={{ color: '#2196F3', float: 'right' }}></i>
+                      </a>
+
+                      {!this.props.isUser ?
+                        <>
+                          <div class="dropdown-divider"></div>
+                          <a onClick={() => { this.props.edit(element.index) }} class="dropdown-item"
+                            style={{ cursor: 'pointer' }}>
+                            Edit <i title="Edit Medication" className="fas fa-edit"
+                              style={{ color: '#2196F3', float: 'right' }}></i>
+                          </a>
+                          <a onClick={() => { this.props.delete(element.index) }} class="dropdown-item"
+                            style={{ cursor: 'pointer', paddingTop: '15px' }}>
+                            Delete <i title="Delete Medication" className="fas fa-trash"
+                              style={{ color: '#2196F3', float: 'right' }}></i>
+                      </a>
+                        </>
+
+                        :
+                        null
+                      }
+
+                    </div>
+                  </div>
+
+
                   :
                   <>
                     <i onClick={() => { this.props.edit(element.index) }} title="edit" className="fas fa-edit"
@@ -71,6 +96,33 @@ export default class MedicationTable extends React.Component {
                       style={{ color: '#2196F3', paddingBottom: '10px', paddingRight: '20px' }}></i>
                   </>
                 }
+
+                {/* {!this.props.isCreate ?
+<>
+{!this.props.isUser ?
+<>
+<i onClick={() => { this.props.edit(element.index) }} title="edit" className="fas fa-edit"
+style={{ paddingRight: '20px', color: '#2196F3', paddingBottom: '10px' }}></i>
+
+<i onClick={() => { this.props.delete(element.index) }} title="Delete" className="fas fa-trash"
+style={{ color: '#2196F3', paddingBottom: '10px', paddingRight: '20px' }}></i>
+</>
+: null}
+<i onClick={() => { this.props.tookMed(element.index) }} title="Verify Med Taken" className="fas fa-calendar-check"
+style={{ paddingRight: '23px', color: '#2196F3' }}></i>
+<i onClick={() => { this.props.viewDates(element.index) }} title="View Dates" className="fas fa-calendar-alt"
+style={{ color: '#2196F3' }}></i>
+
+</>
+:
+<>
+<i onClick={() => { this.props.edit(element.index) }} title="edit" className="fas fa-edit"
+style={{ paddingRight: '20px', color: '#2196F3', paddingBottom: '10px' }}></i>
+
+<i onClick={() => { this.props.delete(element.index) }} title="Delete" className="fas fa-trash"
+style={{ color: '#2196F3', paddingBottom: '10px', paddingRight: '20px' }}></i>
+</>
+} */}
               </td>
             </tr>
             {element.isExpand ?
@@ -120,7 +172,7 @@ export default class MedicationTable extends React.Component {
               <th scope="col">Name</th>
               <th scope="col">Dosage</th>
               <th scope="col">Rxs#</th>
-              <th scope="col">Date prescribed</th>
+              <th scope="col">Date PSCR</th>
               <th scope="col">Actions{this.props.isExpand ? <i title="expand" className="fas fa-expand" style={{ float: 'right' }}></i> : null}</th>
             </tr>
           </thead>
