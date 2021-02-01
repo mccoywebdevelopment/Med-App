@@ -5,6 +5,7 @@ OPTIMIZATIONS:
 - add urls to user/dependents in group view
 - when editing rxsMedication allow the user to exit form like click outside or x icon
 - when creating group allow name to display there email if not validated
+- fix importing for bootstrap had to add it twice to make dropdowns work
 - add color coding to all tables
 - add picture to empty tables
 - add filters to all tables
@@ -16,8 +17,8 @@ ERRORS:
 - when editing took on specific date (isAway) sometimes the title of the popUp doesn't show after the user submits
    the view dates popUp.
 - fetch groups error 404 when admin loads view dependents
-- fix emailing make tokens accessable multiple times (microsoft outlook)
-- fix importing for bootstrap had to add it twice to make dropdowns work
+- after updating user isAdmin the adding them to a group via group view the selected group view shows the prevous
+   isAdmin value
 
  TIPS:
  - IMPORTANT disable redux dev tools extention in store.js before prod/testing deployment
