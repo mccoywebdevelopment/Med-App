@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchGroups, fetchDeleteGroup } from "../../actions/group";
+import { changeColor } from "../../actions/theme";
+import { fetchUsers } from "../../actions/user";
 import { getPath } from '../../config/helpers';
 import { Redirect } from 'react-router-dom';
 import { browserHistory } from 'react-router';
@@ -118,6 +120,8 @@ class GroupDetails extends React.Component{
                 this._setGroup(this._findByID(id));
             }
         });
+
+        this.props.changeColor("#ffaf00");
     }
     render(){
         return(
@@ -132,18 +136,20 @@ class GroupDetails extends React.Component{
                 </>
             :
             <div className="row">
+                {this.props.groupState.data?
+                <>
                 <div className="col-lg-6" style={{paddingLeft:'0px'}}>
-                    {this.props.groupState.data?
                     <GroupTable selected={this._getID()} changeGroupSel={this._toggleRedirect} 
                         groups={this.props.groupState.data} isSmall={true} users={this.props.userState.data}/>
-                    :null}
                 </div>
                 <div className="col-lg-6 my-overview" style={{padding:'none'}} style={{paddingRight:'0px'}}>
                     <div className="card" style={{padding:"20px"}}>
-                        <CreateGroup users={this.props.userState.data} updateGroup={this._updateGroup} groups={this.props.groupState.data} isGroupSelected={this.state.group} 
+                        <CreateGroup updateGroup={this._updateGroup} groups={this.props.groupState.data} isGroupSelected={this.state.group} 
                             goHome={this._toggleHome} delete={this._deleteGroup}/>
                     </div>
                 </div>
+                </>
+                :null}
             </div>
             }
             </>
@@ -152,10 +158,12 @@ class GroupDetails extends React.Component{
 }
 GroupDetails.propTypes = {
     fetchGroups: PropTypes.func.isRequired,
-    fetchDeleteGroup: PropTypes.func.isRequired
+    fetchDeleteGroup: PropTypes.func.isRequired,
+    fetchUsers: PropTypes.func.isRequired,
+    changeColor: PropTypes.func.isRequired,
 }
 const mapStateToProps = (state) => ({
     userState: state.userState,
     groupState: state.groupState
 });
-export default connect(mapStateToProps,{fetchGroups,fetchDeleteGroup})(GroupDetails);
+export default connect(mapStateToProps,{fetchGroups,fetchDeleteGroup,fetchUsers,changeColor})(GroupDetails);

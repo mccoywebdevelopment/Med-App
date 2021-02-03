@@ -9,8 +9,6 @@ export const fetchGroups = (isLoading, done) => (dispatch) => {
     if (err) {
       dispatch(createMessage(err, 'danger'));
     } else {
-      console.log(err)
-      console.log(res)
       dispatch({
         type: FETCH_GROUPS,
         payload: res

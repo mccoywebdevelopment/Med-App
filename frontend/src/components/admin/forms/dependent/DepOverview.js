@@ -60,12 +60,12 @@ export default class DepOverview extends React.Component {
                                 <span>Belongs to Group:</span><span style={{paddingLeft:'10px',color:'#19d895'}}>Yes</span>
                             </div>
                             <div className="col-lg-6" style={{marginTop:'10px'}}>
-                                <span>Group Name:</span><span style={{paddingLeft:'10px'}}>{group.name}</span>
+                                <span>Group Name:</span><a target="_blank" href={"/admin/groups/"+group._id}><span style={{paddingLeft:'10px'}}>{group.name}</span></a>
                             </div>
-                            <div className="col-lg-12" style={{marginTop:'10px',paddingLeft: '12.5px'}}>
+                            {/* <div className="col-lg-12" style={{marginTop:'10px',paddingLeft: '12.5px'}}>
                                 <span>Group ID:</span><a target="_blank" href={"/admin/groups/"+group._id}>
                                 <span style={{paddingLeft:'10px'}}>{group._id}</span></a>
-                            </div>
+                            </div> */}
                         </>
                         :!this.props.isUser?
                         <div className="col-lg-6" style={{marginTop:'10px'}}>

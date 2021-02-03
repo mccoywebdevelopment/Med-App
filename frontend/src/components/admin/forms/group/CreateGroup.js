@@ -335,6 +335,9 @@ class CreateGroup extends React.Component {
                 }
                 this._formatItems();
             });
+            // if(!this.props.userState.fetched){
+            //     this.props.fetchUsers(()=>{});
+            // }
         })
     }
     _fetchGroups = (done) => {
@@ -484,7 +487,10 @@ class CreateGroup extends React.Component {
                                 <Search isReadOnly={false} color={"#ffaf00"} placeholder="Search & Select Items" items={this.state.itemList}
                                     updateParentStateAll={this._getSelectedValues} dataSel={0} label={groupsLabel} />
                                 :
-                                <GuardianTableSm users={this.props.userState.data} guardians={this._getGuardiansFromGroupSel()} />
+                                <>
+                                    <GuardianTableSm guardians={this._getGuardiansFromGroupSel()} users={this.props.userState.data}/>
+                                </>
+                                
                             }
                         </div>
                         {this.props.isGroupSelected && !this.state.overview.isEdit?

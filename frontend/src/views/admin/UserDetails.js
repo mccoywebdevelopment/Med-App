@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchUsers, fetchDeleteUser } from "../../actions/user";
+import { changeColor } from "../../actions/theme";
 import { getPath } from '../../config/helpers';
 import { Redirect } from 'react-router-dom';
 import { browserHistory } from 'react-router';
@@ -98,6 +99,7 @@ class UserDetails extends React.Component{
     }
     componentDidUpdate = () =>{
         let id = getPath(window,"end");
+
         if(id != this.state.user._id && !this.state.goHome){
             this._setUser(this._findDepByID(id));
             this._toggleRedirect(false);
@@ -118,6 +120,7 @@ class UserDetails extends React.Component{
                 this._setUser(this._findDepByID(id));
             }
         });
+        this.props.changeColor("#8862e0");
     }
     render(){
         return(
@@ -152,10 +155,11 @@ class UserDetails extends React.Component{
 }
 UserDetails.propTypes = {
     fetchUsers: PropTypes.func.isRequired,
-    fetchDeleteUser: PropTypes.func.isRequired
+    fetchDeleteUser: PropTypes.func.isRequired,
+    changeColor: PropTypes.func.isRequired,
 }
 const mapStateToProps = (state) => ({
     userState: state.userState,
     groupState: state.groupState
 });
-export default connect(mapStateToProps,{fetchUsers,fetchDeleteUser})(UserDetails);
+export default connect(mapStateToProps,{fetchUsers,fetchDeleteUser,changeColor})(UserDetails);

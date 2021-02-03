@@ -43,11 +43,13 @@ _getNumberOfAdmins = (guardians) =>{
   render() {
     const list = (groups) => {
       return groups.map((group, index) => {
+
+        let url = "/admin/groups/" + group._id;
         
         return (
           <tr key={"userTable" + index}>
             <th scope="row">{index + 1}</th>
-            <td colSpan="2">{group.name}</td>
+            <td colSpan="2"><a href={url}>{group.name}</a></td>
             <td>{group.dependents.length}</td>
             <td>{group.guardians.length - this._getNumberOfAdmins(group.guardians)}</td>
             <td>{this._getNumberOfAdmins(group.guardians)}</td>

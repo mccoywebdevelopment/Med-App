@@ -29,10 +29,11 @@ class DependentTableSm extends React.Component {
         let age = getAge(dependent.dateOfBirth);
         let dateOfBirth = formateDate(dependent.dateOfBirth);
         let medLen = this._getLenOfMeds(dependent);
+        let url = "/admin/dependents/" + dependent._id;
         return (
           <tr key={"userTable" + index}>
             <th scope="row">{index + 1}</th>
-            <td colSpan="2">{name}</td>
+            <td colSpan="2"><a href={url}>{name}</a></td>
             <td>{age}</td>
             <td>{medLen}</td>
             {/* <td>{dateOfBirth}</td> */}

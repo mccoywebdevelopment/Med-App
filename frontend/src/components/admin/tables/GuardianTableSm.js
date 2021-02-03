@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -27,6 +26,12 @@ class GroupTableSm extends React.Component {
         let user = this._getUserByGuardian(this.props.users,guardian);
         let phoneNumber = "-";
         let name = "-"
+        let url = "";
+        if(!user){
+          url = "/admin/profile";
+        }else{
+          url = "/admin/users/" + user._id;
+        }
         if(guardian.name && guardian.name.firstName){
             name = guardian.name.firstName + " " + guardian.name.lastName;
         }
@@ -39,7 +44,7 @@ class GroupTableSm extends React.Component {
         return (
           <tr key={"userTable" + index}>
             <th scope="row">{index + 1}</th>
-            <td colSpan="2">{name}</td>
+            <td colSpan="2"><a href={url}>{name}</a></td>
             <td>{isAdmin.toString()}</td>
             <td colSpan="2">{phoneNumber}</td>
           </tr>
