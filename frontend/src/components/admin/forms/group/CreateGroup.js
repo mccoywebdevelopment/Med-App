@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchGuardians } from '../../../../actions/guardian';
+import { fetchUsers } from '../../../../actions/user';
 import { fetchPopulatedDependents } from "../../../../actions/dependent";
 import { togglePopUp } from "../../../../actions/popUp";
 import { fetchCreateGroup, fetchUpdateGroup } from "../../../../actions/group";
@@ -43,6 +44,7 @@ class CreateGroup extends React.Component {
                 body: null,
                 isEdit: false
             },
+            isLoaded:false,
             dependents: [],
             guardians: [],
             itemList: []
@@ -328,16 +330,16 @@ class CreateGroup extends React.Component {
         }
     }
     componentDidMount = () => {
-        this.props.fetchGuardians(true, (guards) => {
+        this.props.fetchGuardians(false, (guards) => {
             this.props.fetchPopulatedDependents(false, (deps) => {
-                if (this.props.isGroupSelected) {
-                    this._formatSelGroup(this.props.isGroupSelected);
-                }
-                this._formatItems();
+                this.props.fetchUsers(true,()=>{
+                    if (this.props.isGroupSelected) {
+                        this._formatSelGroup(this.props.isGroupSelected);
+                    }
+                    this._formatItems();
+                    this.setState({...this.state,isLoaded:true});
+                });
             });
-            // if(!this.props.userState.fetched){
-            //     this.props.fetchUsers(()=>{});
-            // }
         })
     }
     _fetchGroups = (done) => {
@@ -486,10 +488,9 @@ class CreateGroup extends React.Component {
                             {this.state.itemList.length > 0 && this.state.itemList[0] && (!this.props.isGroupSelected || this.state.overview.isEdit) ?
                                 <Search isReadOnly={false} color={"#ffaf00"} placeholder="Search & Select Items" items={this.state.itemList}
                                     updateParentStateAll={this._getSelectedValues} dataSel={0} label={groupsLabel} />
-                                :
-                                <>
+                                :this.state.isLoaded?
                                     <GuardianTableSm guardians={this._getGuardiansFromGroupSel()} users={this.props.userState.data}/>
-                                </>
+                                :null
                                 
                             }
                         </div>
@@ -529,7 +530,8 @@ CreateGroup.propTypes = {
     fetchGuardians: PropTypes.func.isRequired,
     fetchPopulatedDependents: PropTypes.func.isRequired,
     fetchCreateGroup: PropTypes.func.isRequired,
-    fetchUpdateGroup: PropTypes.func.isRequired
+    fetchUpdateGroup: PropTypes.func.isRequired,
+    fetchUsers: PropTypes.func.isRequired
 };
 const mapStateToProps = (state) => ({
     groupState: state.groupState,
@@ -539,5 +541,5 @@ const mapStateToProps = (state) => ({
     theme: state.theme
 });
 
-export default connect(mapStateToProps, { fetchGuardians, fetchPopulatedDependents, togglePopUp,
+export default connect(mapStateToProps, { fetchGuardians, fetchUsers, fetchPopulatedDependents, togglePopUp,
          fetchCreateGroup, fetchUpdateGroup})(CreateGroup);
