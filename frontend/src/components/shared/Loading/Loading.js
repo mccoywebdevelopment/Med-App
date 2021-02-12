@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import BounceLoader from "react-spinners/MoonLoader";
+import {toggleLoading} from '../../../actions/loading';
+import {createMessage} from '../../../actions/messages'
 import { fadeInDown } from 'react-animations';
 import Radium, {StyleRoot} from 'radium';
 
@@ -12,6 +14,15 @@ class Loading extends React.Component{
     };
     constructor(props){
         super(props);
+    }
+
+    componentDidMount = () =>{
+        setTimeout(()=>{
+            if(this.props.loading){
+                this.props.toggleLoading(false);
+                this.props.createMessage("Script took too long to fetch please check console.",'danger');
+            }
+        },15000)
     }
     
     render(){
@@ -48,9 +59,13 @@ class Loading extends React.Component{
         )
     }
 }
+Loading.propTypes = {
+    toggleLoading: PropTypes.func.isRequired,
+    createMessage: PropTypes.func.isRequired
+};
 const mapStateToProps = (state) => ({
     loading: state.loading,
     theme: state.theme
 });
 
-export default connect(mapStateToProps)(Loading);
+export default connect(mapStateToProps,{toggleLoading,createMessage})(Loading);
