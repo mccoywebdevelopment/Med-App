@@ -77,7 +77,7 @@ class DependentTable extends React.Component{
             <th scope="col">DOB</th>
             <th scope="col"># Medication(s)</th>
             {/* <th scope="col">Last Med Taken</th> */}
-            {!this.props.isUserView?<th scope="col">Grouped</th>:null}
+            {!this.props.isUserView?<th scope="col">Active</th>:null}
             {!this.props.isSmall && !this.props.isUserView?<th scope="col">Actions</th>:null}
           </tr>
         </thead>

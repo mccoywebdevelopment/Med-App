@@ -29,4 +29,20 @@ ERRORS:
 - To create first users:
    https://med-app-v1.herokuapp.com/api/users/create-first-user/:secretKey/:username/:password
 
+
+   function updateWhenToTake(this,values){
+    for(var i=0;i<this.whenToTake.length;++i){
+        let found = false;
+        for(var ix=0;ix<values.length;++ix){
+            if(values[ix].toLowerCase() == this.whenToTake[i].title.toLowerCase()){
+                this.whenToTake[i].value = true;
+                found = true;
+            }
+        }
+        if(!found){
+            this.whenToTake[i].value = false;
+        }
+    }
+}
+
    

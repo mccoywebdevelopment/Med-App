@@ -55,6 +55,13 @@ class AdminLayout extends React.Component {
                             <i title="User(s)" className="fas fa-user-shield" style={{color:this.props.theme.pagePrimaryColor}}></i>
                         </a>
                     </div>
+                    <div className={"" + (this._isCurrentURL("/admin/notifications") ? "my-nav-selected" : "")} 
+                        style={{borderLeftColor:this.props.theme.pagePrimaryColor}}>
+                        <a href="/admin/notifications" className="my-nav-item">
+                            <i title="notification(s)" className="fas fa-bell" style={{color:this.props.theme.pagePrimaryColor}}></i>
+                            <span className="badge badge-light my-badge">9</span>
+                        </a>
+                    </div>
                     <div className={"" + (this._isCurrentURL("/admin/profile") ? "my-nav-selected" : "")} 
                         style={{borderLeftColor:this.props.theme.pagePrimaryColor}}>
                         <a href="/admin/profile" className="my-nav-item">

@@ -47,18 +47,18 @@ export default class MedicationTable extends React.Component {
               <td style={{ textAlign: 'left' }}>
                 {!this.props.isCreate ?
 
-                  <div class="dropdown">
+                  <div className="dropdown">
                     <i title="Actions" className="fas fa-ellipsis-v" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                       style={{ color: '#2196F3', fontSize: '20px', paddingRight: '5px' }}></i>
 
 
-                    <div class="dropdown-menu dropdown-menu-left my-dropdown" aria-labelledby="dropdownMenuButton">
-                      <a onClick={() => { this.props.viewDates(element.index) }} class="dropdown-item"
+                    <div className="dropdown-menu dropdown-menu-left my-dropdown" aria-labelledby="dropdownMenuButton">
+                      <a onClick={() => { this.props.viewDates(element.index) }} className="dropdown-item"
                         style={{ cursor: 'pointer' }}>
                         View Dates <i title="View Dates" className="fas fa-calendar-alt"
                           style={{ color: '#2196F3', float: 'right' }}></i>
                       </a>
-                      <a onClick={() => { this.props.tookMed(element.index) }} class="dropdown-item"
+                      <a onClick={() => { this.props.tookMed(element.index) }} className="dropdown-item"
                         style={{ cursor: 'pointer', paddingTop: '15px' }}>
                         Log <i title="Verify Med Taken" className="fas fa-calendar-check"
                           style={{ color: '#2196F3', float: 'right' }}></i>
@@ -66,13 +66,13 @@ export default class MedicationTable extends React.Component {
 
                       {!this.props.isUser ?
                         <>
-                          <div class="dropdown-divider"></div>
-                          <a onClick={() => { this.props.edit(element.index) }} class="dropdown-item"
+                          <div className="dropdown-divider"></div>
+                          <a onClick={() => { this.props.edit(element.index) }} className="dropdown-item"
                             style={{ cursor: 'pointer' }}>
                             Edit <i title="Edit Medication" className="fas fa-edit"
                               style={{ color: '#2196F3', float: 'right' }}></i>
                           </a>
-                          <a onClick={() => { this.props.delete(element.index) }} class="dropdown-item"
+                          <a onClick={() => { this.props.delete(element.index) }} className="dropdown-item"
                             style={{ cursor: 'pointer', paddingTop: '15px' }}>
                             Delete <i title="Delete Medication" className="fas fa-trash"
                               style={{ color: '#2196F3', float: 'right' }}></i>

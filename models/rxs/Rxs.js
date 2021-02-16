@@ -1,7 +1,7 @@
 var mongoose = require("mongoose");
 
 var RxsSchema = new mongoose.Schema({
-    rxsNumber:{type:Number,required:true},
+    rxsNumber:{type:Number},
 
     doctorContacts:{
         name:{

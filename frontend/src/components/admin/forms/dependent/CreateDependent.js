@@ -35,8 +35,8 @@ class CreateDependent extends React.Component {
         this._viewDates = this._viewDates.bind(this);
         this._initState();
     }
-    _getInitObj = () =>{
-        return({
+    _getInitObj = () => {
+        return ({
             oldData: {
                 overview: null,
                 rxsMedList: null
@@ -73,9 +73,9 @@ class CreateDependent extends React.Component {
         });
     }
     _initState = () => {
-        if(!this.state){
+        if (!this.state) {
             this.state = this._getInitObj();
-        }else{
+        } else {
             this.setState(this._getInitObj());
         }
     }
@@ -720,7 +720,7 @@ class CreateDependent extends React.Component {
                     <div className="col-lg-12">
                         <h4 style={{ display: 'inline' }}>RXS Medications <span style={{ fontSize: '17px' }}>
                             ({this.state.rxsMedList.list.length})
-</span></h4>
+                            </span></h4>
                         {!this.props.isUser ?
                             <i title="add" className="fas fa-plus" onClick={this._toggleRxsMedAdd}
                                 style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
@@ -739,22 +739,7 @@ class CreateDependent extends React.Component {
                         edit={this._toggleEditRxsMed} tookMed={this._tookMed} viewDates={this._viewDates} toggleExpandMed={this._toggleExpandRxsMed}
                         isUser={this.props.isUser} isCreate={!this.props.isDepSelected} />
                 </div>
-                {/* <div className="row" style={{marginTop:'30px'}}>
-<div className="col-lg-12">
-<h4 style={{display:'inline'}}>OTC Medications <span style={{fontSize:'17px'}}>({this.state.otcMedList.list.length})</span></h4>
-<i title="add" onClick={this._to} className="fas fa-plus" style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
-</div>
-</div>
-<div className="row" style={{marginTop:'30px'}}>
-<div className="col-lg-12">
-<h4 style={{display:'inline'}}>Notes <span style={{fontSize:'17px'}}>({this.state.notes.length})</span></h4>
-<i title="add" className="fas fa-plus" style={{ paddingLeft: '20px', color: '#2196F3' }}></i>
-</div>
-</div>
-<div className="row" style={{marginTop:'10px'}}>
-<div className="col-lg-12">
-</div>
-</div> */}
+
                 <div className="row" style={{ marginTop: '30px', marginBottom: '30px' }}>
                     {!this.props.isDepSelected ?
                         <button className="btn btn-primary" onClick={() => { this._submit() }}>Submit</button>

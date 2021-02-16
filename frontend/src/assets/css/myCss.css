@@ -342,3 +342,13 @@ background-color:#F0F1F1;
 .my-dropdown{
   transform: translate3d(-100px, 20px, 0px)!important;
 }
+
+.my-badge{
+  position: absolute;
+  text-decoration: none;
+  border-radius: 50%;
+  background-color: red;
+  padding-left: 5px;
+  color: #fff;
+  font-size: 10px;
+}

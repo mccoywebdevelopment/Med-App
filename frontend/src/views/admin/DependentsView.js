@@ -138,9 +138,9 @@ class DependentView extends React.Component {
                                     <button onClick={()=>{this._toggleFilterBy(true)}} type="button" 
                                         className={"btn "+(this.state.filterBy.all? "btn-primary":"btn-outline-secondary")}>All</button>
                                     <button onClick={()=>{this._toggleFilterBy(false,true)}} type="button" 
-                                        className={"btn "+(this.state.filterBy.grouped? "btn-primary":"btn-outline-secondary")}>Is Grouped({isGroupLength})</button>
+                                        className={"btn "+(this.state.filterBy.grouped? "btn-primary":"btn-outline-secondary")}>Active ({isGroupLength})</button>
                                     <button onClick={()=>{this._toggleFilterBy(false,false,true)}} type="button" 
-                                        className={"btn "+(this.state.filterBy.notGrouped? "btn-primary":"btn-outline-secondary")}>Not Grouped({notGroupLength})</button>
+                                        className={"btn "+(this.state.filterBy.notGrouped? "btn-primary":"btn-outline-secondary")}>Inactive ({notGroupLength})</button>
                                 </div>
                                 {this._getData().length > 0 ?
                                     <button onClick={()=>{this._toggleExportData()}} style={{float:'right'}}type="button" className="btn btn-outline-primary btn-fw hover-white">
