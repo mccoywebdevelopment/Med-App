@@ -81,3 +81,6 @@ app.listen(PORT, function (req, res) {
     console.log('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n' +
         'Listening on PORT:' + PORT + '\n');
 });
+
+
+require('./queries/wordDoc');
