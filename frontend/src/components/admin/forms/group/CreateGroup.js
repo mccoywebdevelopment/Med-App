@@ -318,10 +318,15 @@ class CreateGroup extends React.Component {
         if (this._validation()) {
             let body = this._formatBody();
             if (this.props.isGroupSelected) {
+                alert('update')
                 this.props.fetchUpdateGroup(this.props.isGroupSelected._id,this._formatBody(),(res)=>{
+                    // this._initState();
+                    // this.props.updateGroup(res._id);
+                    // this._formatItems();
                     this._initState();
-                    this.props.updateGroup(res._id);
-                    this._formatItems();
+                    this.props.updateGroup(res._id,()=>{
+                        this._fetchData();
+                    });
                 });
             } else {
                 this.props.fetchCreateGroup(body, this.state.dependents, this.state.guardians);
@@ -329,18 +334,28 @@ class CreateGroup extends React.Component {
             this.props.togglePopUp();
         }
     }
+    _fetchData = () =>{
+         if (this.props.isGroupSelected) {
+            this._formatSelGroup(this.props.isGroupSelected);
+        }
+        this._formatItems();
+        this.setState({...this.state,isLoaded:true});
+    }
+    // _fetchData = () =>{
+    //     this.props.fetchGuardians(false, (guards) => {
+    //         this.props.fetchPopulatedDependents(false, (deps) => {
+    //             this.props.fetchUsers(true,()=>{
+    //                 if (this.props.isGroupSelected) {
+    //                     this._formatSelGroup(this.props.isGroupSelected);
+    //                 }
+    //                 this._formatItems();
+    //                 this.setState({...this.state,isLoaded:true});
+    //             });
+    //         });
+    //     })
+    // }
     componentDidMount = () => {
-        this.props.fetchGuardians(false, (guards) => {
-            this.props.fetchPopulatedDependents(false, (deps) => {
-                this.props.fetchUsers(true,()=>{
-                    if (this.props.isGroupSelected) {
-                        this._formatSelGroup(this.props.isGroupSelected);
-                    }
-                    this._formatItems();
-                    this.setState({...this.state,isLoaded:true});
-                });
-            });
-        })
+        this._fetchData();
     }
     _fetchGroups = (done) => {
         let newState = this.state;
@@ -410,13 +425,19 @@ class CreateGroup extends React.Component {
         let tableBody = [];
         let selectedValues = this.state.dependents;
         let hiddenValues = [];
-
+        console.log(selectedValues);
         for (var i = 0; i < this.props.dependentState.data.length; ++i) {
             if ((this.props.isGroupSelected && this.props.dependentState.data[i].group.toString() == this.props.isGroupSelected._id.toString()) ||
                      (this.props.dependentState.data[i].group.length < 1)) {
                 values.push(this.props.dependentState.data[i]._id);
+
+                if(this.props.dependentState.data[i].group.length<1 && selectedValues.indexOf(this.props.dependentState.data[i]._id) == -1 ){
                 tableBody.push(this.props.dependentState.data[i].name.firstName + " " +
-                 this.props.dependentState.data[i].name.lastName);
+                this.props.dependentState.data[i].name.lastName+"    <span style='color:red;float:right;'>Deactive</span>");
+                }else{
+                    tableBody.push(this.props.dependentState.data[i].name.firstName + " " +
+                    this.props.dependentState.data[i].name.lastName);
+                }
                 tableBody.push(formateDate(this.props.dependentState.data[i].dateOfBirth));
                 tableBody.push(getAge(this.props.dependentState.data[i].dateOfBirth));
             }

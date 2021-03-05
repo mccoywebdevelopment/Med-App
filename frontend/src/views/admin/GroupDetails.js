@@ -7,6 +7,8 @@ import { fetchUsers } from "../../actions/user";
 import { getPath } from '../../config/helpers';
 import { Redirect } from 'react-router-dom';
 import { browserHistory } from 'react-router';
+import { fetchGuardians } from '../../actions/guardian';
+import { fetchPopulatedDependents } from "../../actions/dependent";
 
 import GroupTable from '../../components/admin/tables/GroupTable';
 import CreateGroup from '../../components/admin/forms/group/CreateGroup';
@@ -52,8 +54,11 @@ class GroupDetails extends React.Component{
             this.setState(newState);
         }
     }
-    _updateGroup = (id) =>{
+    _updateGroup = (id,callback) =>{
         this._setGroup(this._findByID(id));
+        this._fetchData(()=>{
+            callback();
+        });
     }
     _redirectURL = () =>{
         return (
@@ -106,6 +111,15 @@ class GroupDetails extends React.Component{
         }else if(id != this.state.group._id){
             this._setGroup(this._findByID(id));
         }
+    }
+    _fetchData = (callback) =>{
+        this.props.fetchGuardians(false, (guards) => {
+            this.props.fetchPopulatedDependents(false, (deps) => {
+                this.props.fetchUsers(true,()=>{
+                    callback();
+                });
+            });
+        })
     }
     componentDidMount =()=>{
         let id = getPath(window,"end");
