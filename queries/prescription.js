@@ -108,14 +108,6 @@ function updateModifiedFields(oldDoc,updatedFields,callback){
 }
 
 function createRxsMedicationAndAttatch(obj,rxsMedication,callback){
-  // createRxsMedication(rxsMedication,function(err,result){
-  //   if(err){
-  //     callback(err);
-  //   }else{
-  //     obj.rxsMedications.push(result);
-  //     callback(null,obj);
-  //   }
-  // });
   if(rxsMedication.length<1){
     callback(null,obj);
   }
@@ -196,6 +188,7 @@ function saveToDoc(bodyData,schemaModel,callback){
     rxsNumber:bodyData.rxsNumber,
   });
   if(typeof(bodyData.rxsMedication)!='undefined'){
+
     createRxsMedicationAndAttatch(newDoc,bodyData.rxsMedication,function(err,newDoc){
       if(err){
         callback(err);

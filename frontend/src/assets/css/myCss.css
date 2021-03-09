@@ -352,3 +352,12 @@ background-color:#F0F1F1;
   color: #fff;
   font-size: 10px;
 }
+
+.multi-select>div{
+  width:100%;
+  font-size: 1rem;
+}
+
+.form-control{
+  font-size: .9rem;
+}

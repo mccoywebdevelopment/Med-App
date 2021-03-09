@@ -1,7 +1,7 @@
 import { FETCH_GROUPS } from '../actions/types';
 
 const initialState = {
-    isFetched:false,
+    fetched:false,
     data:[]
 }
 export default function(state = initialState, action){
@@ -9,7 +9,7 @@ export default function(state = initialState, action){
         case FETCH_GROUPS:
             return{
                 ...state,
-                isFetched:true,
+                fetched:true,
                 data:action.payload
             }
         default:

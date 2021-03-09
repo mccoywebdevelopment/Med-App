@@ -19,8 +19,8 @@ class DependentView extends React.Component {
     };
     state = {
         filterBy:{
-            all:true,
-            grouped:false,
+            all:false,
+            grouped:true,
             notGrouped:false
         }
     }
@@ -123,7 +123,7 @@ class DependentView extends React.Component {
                                 <h4 className="view-header">Dependents</h4>
                             </div>
                             <div className="col-lg-12" style={{ marginBottom: "30px" }}>
-                                <Overview dependentsLength={this._getTotalNumberOfDependents()} averageMed={this._getAverageMeds()}
+                                <Overview dependentsLength={this._getData().length} averageMed={this._getAverageMeds()}
                                     averageAge={this._getAverageAge()} />
                             </div>
                             <div className="col-lg-12" style={{ marginBottom: "30px" }}>

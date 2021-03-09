@@ -22,6 +22,28 @@ export default class MedicationTable extends React.Component {
         left: []
       }
     }
+    const whenToTake = (element) =>{
+      return element.values.whenToTake.map((value)=>{
+        let styles = {
+          marginRight:"10px",
+          borderRadius:"2px",
+          padding:"5px"
+        }
+        if(value == "morning"){
+          styles.backgroundColor = "rgba(0,185,251,0.1)"
+          styles.color = "#00b9fb";
+        }else if(value == "afternoon"){
+          styles.backgroundColor = "rgba(255,165,0,0.1)"
+          styles.color = "orange";
+        }else{
+          styles.backgroundColor = "rgba(191,0,255,0.1)";
+          styles.color = "#bf00ff";
+        }
+        return(
+          <span style={styles}>{value}</span>
+        )
+      });
+    }
     const list = () => {
       return this.state.list.map((element, index) => {
         let style = {
@@ -96,33 +118,6 @@ export default class MedicationTable extends React.Component {
                       style={{ color: '#2196F3', paddingBottom: '10px', paddingRight: '20px' }}></i>
                   </>
                 }
-
-                {/* {!this.props.isCreate ?
-<>
-{!this.props.isUser ?
-<>
-<i onClick={() => { this.props.edit(element.index) }} title="edit" className="fas fa-edit"
-style={{ paddingRight: '20px', color: '#2196F3', paddingBottom: '10px' }}></i>
-
-<i onClick={() => { this.props.delete(element.index) }} title="Delete" className="fas fa-trash"
-style={{ color: '#2196F3', paddingBottom: '10px', paddingRight: '20px' }}></i>
-</>
-: null}
-<i onClick={() => { this.props.tookMed(element.index) }} title="Verify Med Taken" className="fas fa-calendar-check"
-style={{ paddingRight: '23px', color: '#2196F3' }}></i>
-<i onClick={() => { this.props.viewDates(element.index) }} title="View Dates" className="fas fa-calendar-alt"
-style={{ color: '#2196F3' }}></i>
-
-</>
-:
-<>
-<i onClick={() => { this.props.edit(element.index) }} title="edit" className="fas fa-edit"
-style={{ paddingRight: '20px', color: '#2196F3', paddingBottom: '10px' }}></i>
-
-<i onClick={() => { this.props.delete(element.index) }} title="Delete" className="fas fa-trash"
-style={{ color: '#2196F3', paddingBottom: '10px', paddingRight: '20px' }}></i>
-</>
-} */}
               </td>
             </tr>
             {element.isExpand ?
@@ -142,7 +137,7 @@ style={{ color: '#2196F3', paddingBottom: '10px', paddingRight: '20px' }}></i>
                     <span className="inner-title">End Date:</span><br /><br />{formateDate(element.values.endDate) || "-"}
                   </td>
                   <td colSpan="3">
-                    <span className="inner-title">When to Take:</span><br /><br />{element.values.whenToTake || "-"}
+                    <span className="inner-title">When to Take:</span><br /><br />{<span>{whenToTake(element)}</span> || "-"}
                   </td>
                 </tr>
                 <tr index={"mAedTableInhjkhkhside^&*&^" + index} className="no-border-top" style={style}>

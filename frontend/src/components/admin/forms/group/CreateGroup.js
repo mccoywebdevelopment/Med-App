@@ -14,6 +14,7 @@ import Search from "../../../shared/Search/Search";
 import GuardianTableSm from "../../tables/GuardianTableSm";
 import DependentTableSm from "../../tables/DependentTableSm";
 
+
 class CreateGroup extends React.Component {
     static propTypes = {
         groupState: PropTypes.object.isRequired,
@@ -318,14 +319,10 @@ class CreateGroup extends React.Component {
         if (this._validation()) {
             let body = this._formatBody();
             if (this.props.isGroupSelected) {
-                alert('update')
                 this.props.fetchUpdateGroup(this.props.isGroupSelected._id,this._formatBody(),(res)=>{
-                    // this._initState();
-                    // this.props.updateGroup(res._id);
-                    // this._formatItems();
                     this._initState();
                     this.props.updateGroup(res._id,()=>{
-                        this._fetchData();
+                        this._fetchData(()=>{});
                     });
                 });
             } else {
@@ -334,35 +331,28 @@ class CreateGroup extends React.Component {
             this.props.togglePopUp();
         }
     }
-    _fetchData = () =>{
-         if (this.props.isGroupSelected) {
-            this._formatSelGroup(this.props.isGroupSelected);
+    _fetchData = (callback) =>{
+    
+         if (!this.props.userState.fetched) {
+            this.props.fetchUsers(true,()=>{
+                if (this.props.isGroupSelected) {
+                    this._formatSelGroup(this.props.isGroupSelected);
+                }
+                this._formatItems();
+                this.setState({...this.state,isLoaded:true});
+                callback();
+            });
+        }else{
+            if (this.props.isGroupSelected) {
+                this._formatSelGroup(this.props.isGroupSelected);
+            }
+            this._formatItems();
+            this.setState({...this.state,isLoaded:true});
+            callback();
         }
-        this._formatItems();
-        this.setState({...this.state,isLoaded:true});
     }
-    // _fetchData = () =>{
-    //     this.props.fetchGuardians(false, (guards) => {
-    //         this.props.fetchPopulatedDependents(false, (deps) => {
-    //             this.props.fetchUsers(true,()=>{
-    //                 if (this.props.isGroupSelected) {
-    //                     this._formatSelGroup(this.props.isGroupSelected);
-    //                 }
-    //                 this._formatItems();
-    //                 this.setState({...this.state,isLoaded:true});
-    //             });
-    //         });
-    //     })
-    // }
     componentDidMount = () => {
-        this._fetchData();
-    }
-    _fetchGroups = (done) => {
-        let newState = this.state;
-        this.props.fetchGroups(() => {
-            newState.fetchedGroups = true;
-            this.setState(newState);
-            done();
+        this._fetchData(()=>{
         });
     }
     _formatItems = () => {
@@ -425,7 +415,7 @@ class CreateGroup extends React.Component {
         let tableBody = [];
         let selectedValues = this.state.dependents;
         let hiddenValues = [];
-        console.log(selectedValues);
+
         for (var i = 0; i < this.props.dependentState.data.length; ++i) {
             if ((this.props.isGroupSelected && this.props.dependentState.data[i].group.toString() == this.props.isGroupSelected._id.toString()) ||
                      (this.props.dependentState.data[i].group.length < 1)) {

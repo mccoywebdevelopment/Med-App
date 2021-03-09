@@ -8,10 +8,12 @@ import dependents from './dependents';
 import guardians from './guardians';
 import users from './users';
 import theme from './theme';
+import settings from './settings';
 
 const appReducer = combineReducers({
   /* your app’s top-level reducers */
   auth,
+  settings,
   message,
   loading,
   theme,

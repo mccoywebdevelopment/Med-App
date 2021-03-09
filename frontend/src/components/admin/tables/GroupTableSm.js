@@ -1,12 +1,8 @@
 
 import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 
-class GroupTableSm extends React.Component {
-  static propTypes = {
-    theme: PropTypes.object.isRequired
-  };
+export default class GroupTableSm extends React.Component {
+
   constructor(props) {
     super(props);
   }
@@ -79,9 +75,3 @@ _getNumberOfAdmins = (guardians) =>{
     );
   }
 }
-
-const mapStateToProps = (state) => ({
-  theme: state.theme
-});
-
-export default connect(mapStateToProps, {})(GroupTableSm);

@@ -32,9 +32,7 @@ doc.addSection({
     ]
 });
 
-console.log(true)
 
 Packer.toBuffer(doc).then((buffer)=>{
-    console.log(buffer);
     fs.writeFileSync("test.docx",buffer);
 });

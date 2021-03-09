@@ -1,11 +1,6 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 
-class GroupTableSm extends React.Component {
-  static propTypes = {
-    theme: PropTypes.object.isRequired
-  };
+export default class GuardianTableSm extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -72,5 +67,3 @@ class GroupTableSm extends React.Component {
     );
   }
 }
-
-export default connect(null, {})(GroupTableSm);

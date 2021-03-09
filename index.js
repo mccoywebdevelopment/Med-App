@@ -83,4 +83,4 @@ app.listen(PORT, function (req, res) {
 });
 
 
-require('./queries/wordDoc');
+// require('./queries/wordDoc');

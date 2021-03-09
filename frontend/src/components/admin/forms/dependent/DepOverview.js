@@ -14,7 +14,7 @@ export default class DepOverview extends React.Component {
         return null;
     }
     render() {
-        let group = this._getGroup(this.props.data.values.group.value);
+        let group = this._getGroup(this.props.data.values.group);
         return (
             <>
                 {!this.props.isDepSelected || this.props.data.isEdit?
@@ -54,7 +54,7 @@ export default class DepOverview extends React.Component {
                     <div className="col-lg-6">
                         <span>Age:</span><span style={{paddingLeft:'10px'}}>{getAge(this.props.data.values.dateOfBirth)}</span>
                     </div>
-                    {this.props.data.values.group.value.length>0 && group?
+                    {this.props.data.values.group.length>0 && group?
                         <>
                             <div className="col-lg-6" style={{marginTop:'10px'}}>
                                 <span>Active:</span><span style={{paddingLeft:'10px',color:'#19d895'}}>Yes</span>
@@ -62,10 +62,6 @@ export default class DepOverview extends React.Component {
                             <div className="col-lg-6" style={{marginTop:'10px'}}>
                                 <span>Group Name:</span><a target="_blank" href={"/admin/groups/"+group._id}><span style={{paddingLeft:'10px'}}>{group.name}</span></a>
                             </div>
-                            {/* <div className="col-lg-12" style={{marginTop:'10px',paddingLeft: '12.5px'}}>
-                                <span>Group ID:</span><a target="_blank" href={"/admin/groups/"+group._id}>
-                                <span style={{paddingLeft:'10px'}}>{group._id}</span></a>
-                            </div> */}
                         </>
                         :!this.props.isUser?
                         <div className="col-lg-6" style={{marginTop:'10px'}}>

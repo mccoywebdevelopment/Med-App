@@ -5,10 +5,15 @@ import { FETCH } from '../config/helpers';
 import { toggleLoading } from './loading';
 
 export const fetchGroups = (isLoading, done) => (dispatch) => {
+  if(isLoading){
+    dispatch(toggleLoading(true));
+  }
   FETCH('GET', '/groups/', null, localStorage.getItem('JWT'), dispatch, isLoading, (err, res) => {
     if (err) {
+      dispatch(toggleLoading(false));
       dispatch(createMessage(err, 'danger'));
     } else {
+      dispatch(toggleLoading(false));
       dispatch({
         type: FETCH_GROUPS,
         payload: res

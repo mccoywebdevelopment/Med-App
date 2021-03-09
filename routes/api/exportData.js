@@ -12,7 +12,6 @@ router.route("/:month/:year/:JWT")
             console.log(err);
             res.status(errors.code.BAD_REQUEST).json({error:err});
         }else{
-            console.log(true)
             res.download(path.join(__dirname,'../..','/config/excel/data.xlsx'));
         }
     });

@@ -8,7 +8,7 @@ import {
     firstAndLastNameValidator, prevDateValidator, nameValidator,
     numberValidator, phoneNumberValidator
 } from '../../../../config/validators';
-import BelongsToGroup from './BelongsToGroup';
+import BelongsToGroupV2 from './BelongsToGroupV2';
 import { toInputDate } from "../../../../config/helpers";
 
 import DepOverview from './DepOverview';
@@ -34,6 +34,7 @@ class CreateDependent extends React.Component {
         this._tookMed = this._tookMed.bind(this);
         this._viewDates = this._viewDates.bind(this);
         this._initState();
+        this._test();
     }
     _getInitObj = () => {
         return ({
@@ -51,10 +52,7 @@ class CreateDependent extends React.Component {
                 values: {
                     name: "",
                     dateOfBirth: "",
-                    group: {
-                        isYes: false,
-                        value: ""
-                    }
+                    group: ""
                 },
                 body: null,
                 isEdit: false,
@@ -170,8 +168,8 @@ class CreateDependent extends React.Component {
                         dosageUnits: dep.rxs[i].rxsMedications[ix].dosage.unit,
                         doctorName: dep.rxs[i].doctorContacts.name.firstName + " " + dep.rxs[i].doctorContacts.name.lastName,
                         doctorPhone: dep.rxs[i].doctorContacts.phoneNumber,
-                        rxsNumber: dep.rxs[i].rxsNumber,
-                        whenToTake: dep.rxs[i].rxsMedications[ix].whenToTake.value || ""
+                        rxsNumber: dep.rxs[i].rxsNumber || "",
+                        whenToTake: dep.rxs[i].rxsMedications[ix].whenToTake || ""
                     },
                     body: null
                 });
@@ -182,15 +180,9 @@ class CreateDependent extends React.Component {
     }
     _getGroupSelDep = (dep) => {
         if (typeof (dep.group) != 'undefined' && dep.group.length > 0) {
-            return {
-                isYes: true,
-                value: dep.group
-            }
-        } else {
-            return {
-                isYes: false,
-                value: ""
-            }
+            return dep.group
+        }else{
+            return "";
         }
     }
     _toggleExpandRxsMed = (index) => {
@@ -198,9 +190,9 @@ class CreateDependent extends React.Component {
         newState.rxsMedList.list[index].isExpand = !newState.rxsMedList.list[index].isExpand;
         this.setState(newState);
     }
-    _updateGroupValue = (form, name, value) => {
+    _updateGroupValue = (value) => {
         let newState = this.state;
-        newState[form].values['group'][name] = value;
+        newState.overview.values.group = value;
         this.setState(newState);
     }
     _toggleEditRxsMed = (index) => {
@@ -305,19 +297,9 @@ class CreateDependent extends React.Component {
         this.setState(newState);
     }
     _toggleGroupBtn = () => {
-        let newState = this.state;
-        if (!newState.overview.values.group.isYes && this.props.groupState.data.length < 1) {
+        if (this.props.groupState.data.length < 1) {
             alert("No groups");
-        } else {
-            newState.overview.values.group.isYes = !newState.overview.values.group.isYes;
-            if (!newState.overview.values.group.isYes) {
-                newState.overview.errors.group = "";
-            }
         }
-        if (!newState.overview.values.group.isYes) {
-            newState.overview.values.group.value = "";
-        }
-        this.setState(newState);
     }
     _updateError = (form, inputName, value) => {
         let newState = this.state;
@@ -328,9 +310,7 @@ class CreateDependent extends React.Component {
         let newState = this.state;
         newState.overview.errors.name = firstAndLastNameValidator(newState.overview.values.name, true).errorMsg;
         newState.overview.errors.dateOfBirth = prevDateValidator(newState.overview.values.dateOfBirth, true).errorMsg;
-        if (this.state.overview.values.group.isYes) {
-            newState.overview.errors.group = this._groupValidation();
-        }
+        newState.overview.errors.group = this._groupValidation();
         this.setState(newState);
     }
     _toggleIsEditOverview = () => {
@@ -374,70 +354,70 @@ class CreateDependent extends React.Component {
                 doctorName: "Dr. Kendle",
                 doctorPhone: "4808901678",
                 rxsNumber: "111",
-                whenToTake: "Morning"
+                whenToTake: ["morning"]
             },
             body: null
         });
-        newState.rxsMedList.list.push({
-            index: 1,
-            errors: {
-                name: "",
-                reason: "",
-                datePrescribed: "",
-                instructions: "",
-                endDate: "",
-                dosageQuantity: "",
-                dosageUnits: "",
-                doctorName: "",
-                doctorPhone: "",
-                rxsNumber: "",
-                whenToTake: ""
-            },
-            values: {
-                name: "Tyfoid",
-                reason: "For medical reasons",
-                datePrescribed: "2020-08-04",
-                instructions: "None",
-                endDate: "",
-                dosageQuantity: "1",
-                dosageUnits: "pills",
-                doctorName: "Dr. Kendle",
-                doctorPhone: "48089016789",
-                rxsNumber: "111",
-                whenToTake: "Morning"
-            },
-            body: null
-        });
-        newState.rxsMedList.list.push({
-            index: 2,
-            errors: {
-                name: "",
-                reason: "",
-                datePrescribed: "",
-                instructions: "",
-                endDate: "",
-                dosageQuantity: "",
-                dosageUnits: "",
-                doctorName: "",
-                doctorPhone: "",
-                rxsNumber: "",
-                whenToTake: ""
-            },
-            values: {
-                name: "Selium",
-                reason: "For aging dynosoum",
-                datePrescribed: "2020-02-12",
-                instructions: "Take yearly.",
-                endDate: "",
-                dosageQuantity: "8",
-                dosageUnits: "pills",
-                doctorName: "Dr. Morgan",
-                doctorPhone: "4808901678",
-                rxsNumber: "13467",
-                whenToTake: "Morning"
-            },
-            body: null
-        });
+        // newState.rxsMedList.list.push({
+        //     index: 1,
+        //     errors: {
+        //         name: "",
+        //         reason: "",
+        //         datePrescribed: "",
+        //         instructions: "",
+        //         endDate: "",
+        //         dosageQuantity: "",
+        //         dosageUnits: "",
+        //         doctorName: "",
+        //         doctorPhone: "",
+        //         rxsNumber: "",
+        //         whenToTake: ""
+        //     },
+        //     values: {
+        //         name: "Tyfoid",
+        //         reason: "For medical reasons",
+        //         datePrescribed: "2020-08-04",
+        //         instructions: "None",
+        //         endDate: "",
+        //         dosageQuantity: "1",
+        //         dosageUnits: "pills",
+        //         doctorName: "Dr. Kendle",
+        //         doctorPhone: "48089016789",
+        //         rxsNumber: "111",
+        //         whenToTake: ["morning","afternoon"]
+        //     },
+        //     body: null
+        // });
+        // newState.rxsMedList.list.push({
+        //     index: 2,
+        //     errors: {
+        //         name: "",
+        //         reason: "",
+        //         datePrescribed: "",
+        //         instructions: "",
+        //         endDate: "",
+        //         dosageQuantity: "",
+        //         dosageUnits: "",
+        //         doctorName: "",
+        //         doctorPhone: "",
+        //         rxsNumber: "",
+        //         whenToTake: ""
+        //     },
+        //     values: {
+        //         name: "Selium",
+        //         reason: "For aging dynosoum",
+        //         datePrescribed: "2020-02-12",
+        //         instructions: "Take yearly.",
+        //         endDate: "",
+        //         dosageQuantity: "8",
+        //         dosageUnits: "pills",
+        //         doctorName: "Dr. Morgan",
+        //         doctorPhone: "4808901678",
+        //         rxsNumber: "13467",
+        //         whenToTake: ["morning","afternoon","evening"]
+        //     },
+        //     body: null
+        // });
         newState.rxsMedList.indexSelected = newState.rxsMedList.list.length - 1;
         this.setState(newState);
     }
@@ -463,7 +443,7 @@ class CreateDependent extends React.Component {
             newState.rxsMedList.list[index].errors.dosageUnits = nameValidator(dosageUnits, true).errorMsg;
             newState.rxsMedList.list[index].errors.doctorName = firstAndLastNameValidator(doctorName, true).errorMsg;
             newState.rxsMedList.list[index].errors.doctorPhone = phoneNumberValidator(doctorPhone, true).errorMsg;
-            newState.rxsMedList.list[index].errors.rxsNumber = numberValidator(rxsNumber, true).errorMsg;
+            newState.rxsMedList.list[index].errors.rxsNumber = numberValidator(rxsNumber, false).errorMsg;
 
             //Optional fields:
             let instuctions = newState.rxsMedList.list[index].values.instructions;
@@ -472,7 +452,7 @@ class CreateDependent extends React.Component {
 
             newState.rxsMedList.list[index].errors.instructions = nameValidator(instuctions, false).errorMsg;
             newState.rxsMedList.list[index].errors.endDate = nameValidator(endDate, false).errorMsg;
-            newState.rxsMedList.list[index].errors.whenToTake = nameValidator(whenToTake, false).errorMsg;
+            newState.rxsMedList.list[index].errors.whenToTake = nameValidator(whenToTake, true).errorMsg;
 
             newState.rxsMedList.list[index].body = {
                 name: name,
@@ -485,8 +465,14 @@ class CreateDependent extends React.Component {
     _groupValidation = () => {
         var error = "";
         var found = false;
+        if(this.state.overview.values.group == "empty"){
+            let newState = this.state;
+            newState.overview.values.group = "";
+            this.setState(newState);
+            return error;
+        }
         for (var i = 0; i < this.props.groupState.data.length; ++i) {
-            if (this.props.groupState.data[i]._id == this.state.overview.values.group.value) {
+            if (this.props.groupState.data[i]._id == this.state.overview.values.group) {
                 found = true;
             }
         }
@@ -514,6 +500,7 @@ class CreateDependent extends React.Component {
         return false;
     }
     _validation = () => {
+        console.log(this.state);
         this._overviewValidation();
         this._rxsMedValidation();
         if (this._isOverviewErrors() || this._isRxsMedErrors()) {
@@ -586,7 +573,7 @@ class CreateDependent extends React.Component {
                     rxsMedication[rxsMedication.length - 1].endDate = toInputDate(arr[i][ix].values.endDate);
                 }
                 if (arr[i][ix].values.whenToTake) {
-                    rxsMedication[rxsMedication.length - 1].value = arr[i][ix].values.whenToTake;
+                    rxsMedication[rxsMedication.length - 1].whenToTake = arr[i][ix].values.whenToTake;
                 }
 
             }
@@ -619,21 +606,21 @@ class CreateDependent extends React.Component {
         let group = this.state.overview.values.group;
         if (JSON.stringify(oldGroup) != JSON.stringify(group)) {
 
-            if (oldGroup.value.length > 0 && group.value.length > 0) {
+            if (oldGroup.length > 0 && group.length > 0) {
                 //Changed Group
                 //delete and add
                 return {
-                    groupID: group.value,
-                    oldGroupID: oldGroup.value,
+                    groupID: group,
+                    oldGroupID: oldGroup,
                     isSwitched: true,
                     isRemoved: false,
                     isAdd: false
                 }
-            } else if (oldGroup.value.length < 1 && group.value.length > 0) {
+            } else if (oldGroup.length < 1 && group.length > 0) {
                 //add to group(new)
                 //add
                 return {
-                    groupID: group.value,
+                    groupID: group,
                     isSwitched: false,
                     isRemoved: false,
                     isAdd: true
@@ -665,7 +652,7 @@ class CreateDependent extends React.Component {
                     });
 
             } else {
-                this.props.fetchCreateDependent(this._formatBody(), this.state.overview.values.group.value);
+                this.props.fetchCreateDependent(this._formatBody(), this.state.overview.values.group);
             }
             this.props.togglePopUp();
         }
@@ -709,10 +696,8 @@ class CreateDependent extends React.Component {
                     }
                     <DepOverview isUser={this.props.isUser} data={this.state.overview} update={this._update} updateError={this._updateError}
                         isDepSelected={this.props.isDepSelected} groups={this.props.groupState.data}>
-                        {!this.props.isDepSelected || this.state.overview.isEdit ?
-                            <BelongsToGroup toggle={this._toggleGroupBtn} update={this._updateGroupValue} form={"overview"}
-                                groups={this.props.groupState.data} data={this.state.overview.values.group}
-                                error={this.state.overview.errors.group} />
+                        {!this.props.isDepSelected || this.state.overview.isEdit  ?
+                            <BelongsToGroupV2 group={this.state.overview.values.group} update={this._updateGroupValue} error={this.state.overview.errors.group}/>
                             : null}
                     </DepOverview>
                 </div>

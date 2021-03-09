@@ -38,7 +38,6 @@ export default class SearchList extends React.Component {
             */
             for (var i = 0; i < rowLen; ++i) {
                 let list = JSON.parse(JSON.stringify(this.props.itemObj.tableData[1]));
-                console.log(list);
                 let itemLen = this.props.itemObj.tableData[0].length;
                 let start = i * itemLen;
                 let end = itemLen; 

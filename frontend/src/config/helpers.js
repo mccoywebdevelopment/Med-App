@@ -1,5 +1,8 @@
 import { toggleLoading } from '../actions/loading';
 import { API_URI } from '../config/variables';
+import {store} from '../store';
+
+let timezone = store.getState().settings.timeZone;
 
 export function getAge(date) {
     let birthday = +new Date(date);
@@ -91,3 +94,16 @@ export function FETCH(type, url, body, jwt, dispatch, isLoading, done) {
             }
         });
 }
+
+let options = {
+    timeZone: 'America/New_York',
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+  },
+  formatter = new Intl.DateTimeFormat([], options);
+
+console.log(formatter.format(new Date()));

@@ -13,37 +13,7 @@ var RxsMedicationSchema = new mongoose.Schema({
     },
 
     whenToTake: [
-        {
-            title: { type: String, default: "morning" },
-            value: { type: Boolean, default: false },
-            time: [
-                { type: String, default: "4:00 am" },
-                { type: String, default: "11:59 pm" }]
-        },
-        {
-            title: { type: String, default: "afternoon" },
-            value: { type: Boolean, default: false },
-            time: [{
-                type: String,
-                default: "12:00 pm"
-            },
-            {
-                type: String,
-                default: "5:59 pm"
-            }]
-        },
-        {
-            title: { type: String, default: "evening" },
-            value: { type: Boolean, default: false },
-            time: [{
-                type: String,
-                default: "6:00 pm"
-            },
-            {
-                type: String,
-                default: "11:59 pm"
-            }]
-        }
+        {type:String}
     ],
     events: [{
         type: mongoose.Schema.Types.ObjectId,

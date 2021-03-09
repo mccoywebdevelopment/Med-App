@@ -105,11 +105,13 @@ class GroupDetails extends React.Component{
     }
     componentDidUpdate = () =>{
         let id = getPath(window,"end");
-        if(id != this.state.group._id && !this.state.goHome){
-            this._setGroup(this._findByID(id));
-            this._toggleRedirect(false);
-        }else if(id != this.state.group._id){
-            this._setGroup(this._findByID(id));
+        if(this.state.group){
+            if(id != this.state.group._id && !this.state.goHome){
+                this._setGroup(this._findByID(id));
+                this._toggleRedirect(false);
+            }else if(id != this.state.group._id){
+                this._setGroup(this._findByID(id));
+            }
         }
     }
     _fetchData = (callback) =>{
@@ -124,9 +126,12 @@ class GroupDetails extends React.Component{
     componentDidMount =()=>{
         let id = getPath(window,"end");
         if(!this.props.groupState.fetched){
-            this.props.fetchGroups(()=>{});
+            this.props.fetchGroups(true,()=>{
+                this._setGroup(this._findByID(id));
+            });
+        }else{
+            this._setGroup(this._findByID(id));
         }
-        this._setGroup(this._findByID(id));
 
         this.backListener = browserHistory.listen(location => {
             if (location.action === "POP") {
@@ -150,7 +155,7 @@ class GroupDetails extends React.Component{
                 </>
             :
             <div className="row">
-                {this.props.groupState.data?
+                {this.props.groupState.data && this.state.group?
                 <>
                 <div className="col-lg-6" style={{paddingLeft:'0px'}}>
                     <GroupTable selected={this._getID()} changeGroupSel={this._toggleRedirect} 
@@ -175,9 +180,11 @@ GroupDetails.propTypes = {
     fetchDeleteGroup: PropTypes.func.isRequired,
     fetchUsers: PropTypes.func.isRequired,
     changeColor: PropTypes.func.isRequired,
+    fetchGuardians: PropTypes.func.isRequired,
+    fetchPopulatedDependents: PropTypes.func.isRequired
 }
 const mapStateToProps = (state) => ({
     userState: state.userState,
     groupState: state.groupState
 });
-export default connect(mapStateToProps,{fetchGroups,fetchDeleteGroup,fetchUsers,changeColor})(GroupDetails);
+export default connect(mapStateToProps,{fetchGroups,fetchDeleteGroup,fetchUsers,fetchGuardians,fetchPopulatedDependents,changeColor})(GroupDetails);

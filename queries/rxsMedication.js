@@ -78,8 +78,29 @@ function updateModifiedFields(oldDoc,updatedFields){
   if(updatedFields.event){
     callback("EVENT NOT IMPLEMENTED");
   }
-  if(updatedFields.value){
-    whenToTake.value = updatedFields.value;
+  if(updatedFields.whenToTake){
+
+    let whenToTakearr = [];
+    for(var i=0;i<updatedFields.whenToTake.length;++i){
+      if(updatedFields.whenToTake[i] == "morning"){
+        whenToTakearr.push("morning")
+      }
+      if(updatedFields.whenToTake[i] == "afternoon"){
+        whenToTakearr.push("afternoon")
+      }
+      if(updatedFields.whenToTake[i] == "evening"){
+        whenToTakearr.push("evening")
+      }
+    }
+
+    if(whenToTake.length<1){
+      callback("When to take is required!");
+    }else{
+      whenToTake = whenToTakearr;
+    }
+
+  }else{
+    callback("Need multiple values for when to take option");
   }
 
 
@@ -145,15 +166,35 @@ function saveToDoc(bodyData,schemaModel,callback){
       reason:bodyData.reason,
       datePrescribed:formateDate(bodyData.datePrescribed)
   });
-
   if(typeof(bodyData.instructions)!='undefined'){
     newDoc.instructions = bodyData.instructions
   }
   if(typeof(bodyData.endDate)!='undefined'){
     newDoc.endDate = formateDate(bodyData.endDate);
   }
-  if(typeof(bodyData.value)!='undefined'){
-    newDoc.whenToTake.value = bodyData.value;
+  if(typeof(bodyData.whenToTake)!='undefined' && bodyData.whenToTake.length>0){
+
+    let whenToTake = [];
+    for(var i=0;i<bodyData.whenToTake.length;++i){
+      if(bodyData.whenToTake[i] == "morning"){
+        whenToTake.push("morning")
+      }
+      if(bodyData.whenToTake[i] == "afternoon"){
+        whenToTake.push("afternoon")
+      }
+      if(bodyData.whenToTake[i] == "evening"){
+        whenToTake.push("evening")
+      }
+    }
+
+    if(whenToTake.length<1){
+      callback("When to take is required!");
+    }else{
+      newDoc.whenToTake = whenToTake;
+    }
+    
+  }else{
+    callback("Need multiple values for when to take option");
   }
   if(typeof(bodyData.events)!='undefined'){
     callback("Create events function still needs to be created");
