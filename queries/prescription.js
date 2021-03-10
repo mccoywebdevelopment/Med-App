@@ -33,10 +33,14 @@ function patchUpdateById(body,id,callback){
           if(err){
             callback(err);
           }else{
-            rxsModel.findByIdAndUpdate(id,obj,function(err,result){
+            // console.log("\n\n\n\n\nObj")
+            // console.log(obj)
+            rxsModel.findOneAndUpdate({_id:id},obj,function(err,result){
               if(err){
                 callback(err);
               }else{
+                // console.log("\n\n\n\n\nfinal");
+                // console.log(result)
                 callback(null,result);
               }
             });
@@ -52,8 +56,6 @@ function updateModifiedFields(oldDoc,updatedFields,callback){
   var lastName = oldDoc.doctorContacts.name.lastName;
   var phoneNumber = oldDoc.doctorContacts.phoneNumber;
   var rxsNumber = oldDoc.rxsNumber;
-  // var _id = oldDoc._id;
-  var rxsMedications = oldDoc.rxsMedications;
 
   if(updatedFields.firstName){
     firstName = updatedFields.firstName;
@@ -84,6 +86,8 @@ function updateModifiedFields(oldDoc,updatedFields,callback){
       if(err){
         callback(err)
       }else{
+        // console.log("\n\n\n\n")
+        // console.log(res)
         obj.rxsMed = res;
         callback(null,obj);
       }
@@ -240,6 +244,7 @@ function getRxsMeds(rxs,callback){
         if(err){
           console.log(err);
         }else{
+          // console.log(rxsCreated)
           rxsArr.push(rxsCreated);
         }
         if(i == rxs.rxsMedication.length){

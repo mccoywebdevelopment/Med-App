@@ -64,8 +64,11 @@ export default class MedicationTable extends React.Component {
               </th>
               <td>{element.values.name || "-"}</td>
               <td>{element.values.dosageQuantity} {element.values.dosageUnits}</td>
-              <td>{element.values.rxsNumber || "-"}</td>
-              <td>{formateDate(element.values.datePrescribed) || "-"}</td>
+              {/* <td>{element.values.rxsNumber || "-"}</td> */}
+               <td colSpan="3">
+                  {<span>{whenToTake(element)}</span> || "-"}
+                </td>
+              {/* <td colSpan="2">{formateDate(element.values.datePrescribed) || "-"}</td> */}
               <td style={{ textAlign: 'left' }}>
                 {!this.props.isCreate ?
 
@@ -133,14 +136,15 @@ export default class MedicationTable extends React.Component {
                 </tr>
                 <tr index={"medTableInside^&23*&^" + index} className="no-border" style={style}>
                   <td></td>
-                  <td colSpan="2">
+                  <td colSpan="2"> <span className="inner-title">Date PSCR:</span><br /><br />{formateDate(element.values.datePrescribed) || "-"}</td>
+                  <td colSpan="3">
                     <span className="inner-title">End Date:</span><br /><br />{formateDate(element.values.endDate) || "-"}
                   </td>
-                  <td colSpan="3">
+                  {/* <td colSpan="3">
                     <span className="inner-title">When to Take:</span><br /><br />{<span>{whenToTake(element)}</span> || "-"}
-                  </td>
+                  </td> */}
                 </tr>
-                <tr index={"mAedTableInhjkhkhside^&*&^" + index} className="no-border-top" style={style}>
+                <tr index={"mAedTableInhjkhkhside^&*&^" + index} className="no-border" style={style}>
                   <th scope="row" style={{ paddingBottom: '0', paddingTop: '0', borderTop: 'none' }}>
                     <p style={{ marginBottom: '0px', paddingTop: '28px' }}></p>
                     <p onClick={() => { this.props.expandItem(element.index) }} title="view rest of med"
@@ -150,6 +154,10 @@ export default class MedicationTable extends React.Component {
                     <span className="inner-title">Reason:</span><br /><br />{element.values.reason || "-"}</td>
                   <td colSpan="3" style={{ verticalAlign: 'top' }}>
                     <span className="inner-title">Intructions:</span><br /><br />{element.values.instructions || "-"}</td>
+                </tr>
+                <tr index={"medTableInside^&7876*&^" + index} className="no-border-top" style={style}>
+                  <td></td>
+                  <td colSpan="6"><span className="inner-title">RXS Number:</span><br /><br />{element.values.rxsNumber || "-"}</td>
                 </tr>
               </React.Fragment>
               : null
@@ -166,8 +174,8 @@ export default class MedicationTable extends React.Component {
               <th scope="col">#</th>
               <th scope="col">Name</th>
               <th scope="col">Dosage</th>
-              <th scope="col">Rxs#</th>
-              <th scope="col">Date PSCR</th>
+              <th scope="col" colSpan="3">When to Take</th>
+              {/* <th scope="col" colSpan="2">Date PSCR</th> */}
               <th scope="col">Actions{this.props.isExpand ? <i title="expand" className="fas fa-expand" style={{ float: 'right' }}></i> : null}</th>
             </tr>
           </thead>

@@ -34,7 +34,7 @@ class CreateDependent extends React.Component {
         this._tookMed = this._tookMed.bind(this);
         this._viewDates = this._viewDates.bind(this);
         this._initState();
-        this._test();
+        // this._test();
     }
     _getInitObj = () => {
         return ({
@@ -500,7 +500,6 @@ class CreateDependent extends React.Component {
         return false;
     }
     _validation = () => {
-        console.log(this.state);
         this._overviewValidation();
         this._rxsMedValidation();
         if (this._isOverviewErrors() || this._isRxsMedErrors()) {
@@ -515,7 +514,7 @@ class CreateDependent extends React.Component {
             let items = [data[0]];
             data.splice(0, 1);
             for (var i = 0; i < data.length; ++i) {
-                if (items[0].values.rxsNumber == data[i].values.rxsNumber &&
+                if ((items[0].values.rxsNumber && items[0].values.rxsNumber.length>0 && (items[0].values.rxsNumber == data[i].values.rxsNumber)) &&
                     items[0].values.doctorPhone == data[i].values.doctorPhone &&
                     items[0].values.doctorName == data[i].values.doctorName) {
                     items.push(data[i]);

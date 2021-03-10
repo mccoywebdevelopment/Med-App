@@ -173,7 +173,6 @@ function saveToDoc(bodyData,schemaModel,callback){
     newDoc.endDate = formateDate(bodyData.endDate);
   }
   if(typeof(bodyData.whenToTake)!='undefined' && bodyData.whenToTake.length>0){
-
     let whenToTake = [];
     for(var i=0;i<bodyData.whenToTake.length;++i){
       if(bodyData.whenToTake[i] == "morning"){

@@ -11,7 +11,6 @@ var RxsMedicationSchema = new mongoose.Schema({
         quantity: { type: Number, required: true },
         unit: { type: String, required: true }
     },
-
     whenToTake: [
         {type:String}
     ],
