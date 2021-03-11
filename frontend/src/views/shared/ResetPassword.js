@@ -46,8 +46,8 @@ class ResetPassword extends React.Component{
     }
   }
   componentDidMount = () =>{
-    localStorage.clear();
-    this.props.resetRoot();
+    // localStorage.clear();
+    // this.props.resetRoot();
   }
   componentWillUnmount =() =>{
     this.props.changeRedirectURL(null);
@@ -107,11 +107,12 @@ class ResetPassword extends React.Component{
   render(){
     return(
     <>
-      {this.props.auth.redirectURL?
+      {/* {this.props.auth.redirectURL?
         this._renderRedirect()
         :
         this._renderForm()
-      }
+      } */}
+      {this._renderForm()}
     </>
     );
   }

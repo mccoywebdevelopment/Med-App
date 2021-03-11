@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchLogin } from "../../actions/auth";
-import { changeRedirectURL } from "../../actions/auth";
+import { fetchLogin, changeRedirectURL, changeCurrentURL } from "../../actions/auth";
 import { resetRoot } from "../../actions/root";
 import { Redirect } from 'react-router-dom';
 import { getPath, getPaths} from '../../config/helpers';
@@ -41,16 +40,26 @@ class Login extends React.Component{
         username:this.state.email,
         password:this.state.password
       }
-      this.props.fetchLogin(body);
+      this.props.fetchLogin(body,(res)=>{
+        if(!this.props.auth.redirectURL && this.props.auth.currentURL){
+          this.props.changeRedirectURL(this.props.auth.currentURL);
+          this.props.changeCurrentURL(false);
+        }else{
+          this.props.changeRedirectURL(res.result.redirectURL);
+        }
+        let redirectURL = this.props.auth.redirectURL;
+        this.props.changeRedirectURL(false);
+        window.location = redirectURL;
+      });
     }
   }
   componentWillUnmount =() =>{
     this.props.changeRedirectURL(null);
   }
   componentDidMount = () =>{
-    this.props.resetRoot();
-    window.localStorage.clear(); //try this to clear all local storage
-    localStorage.clear();
+    // this.props.resetRoot();
+    // window.localStorage.clear(); //try this to clear all local storage
+    // localStorage.clear();
 
     if(this.props.isCreditials){
       let paths = getPaths(window);
@@ -107,31 +116,35 @@ class Login extends React.Component{
       </div>
     );
   }
-  _renderRedirect =()=>{
-    const redirectURL = this.props.auth.redirectURL;
-    return(
-      <Redirect push to={redirectURL}/>
-    )
-  }
+  // _renderRedirect =()=>{
+  //   const redirectURL = this.props.auth.redirectURL;
+  //   return(
+  //     <Redirect push to={redirectURL}/>
+  //   )
+  // }
   render(){
     return(
-    <>
-      {this.props.auth.redirectURL?
-        this._renderRedirect()
-        :
-        this._renderForm()
-      }
-    </>
+      <>
+      {this._renderForm()}
+      </>
+    // <>
+    //   {this.props.auth.redirectURL?
+    //     this._renderRedirect()
+    //     :
+    //     this._renderForm()
+    //   }
+    // </>
     );
   }
 }
 Login.propTypes = {
   fetchLogin: PropTypes.func.isRequired,
   changeRedirectURL: PropTypes.func.isRequired,
+  changeCurrentURL: PropTypes.func.isRequired,
   resetRoot: PropTypes.func.isRequired
 };
 const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps,{fetchLogin,changeRedirectURL,resetRoot})(Login);
+export default connect(mapStateToProps,{fetchLogin,changeRedirectURL,resetRoot,changeCurrentURL})(Login);

@@ -1,4 +1,4 @@
-import { CREATE_MESSAGE, CHANGE_REDIRECT_URL } from './types';
+import { CREATE_MESSAGE, CHANGE_REDIRECT_URL, CHANGE_CURRENT_URL } from './types';
 import { togglePopUp } from './popUp';
 import { toggleLoading } from './loading';
 
@@ -22,19 +22,12 @@ export const createMessage = (text,alertType,time) => (dispatch) =>{
   if(time){
     timeout = time;
   }
-  setTimeout(()=>{
+  if(text=="Token expired" || text=="User not found."){
+    alert(window.location);
     dispatch({
-      type: CREATE_MESSAGE,
-      payload: {
-        text:"",
-        alertType:""
-      }
+      type: CHANGE_CURRENT_URL,
+      payload:String(window.location)
     });
-    if(text=="Token expired" || text=="User not found."){
-      dispatch({
-        type: CHANGE_REDIRECT_URL,
-        payload:"/auth/login"
-      })
-    }
-  },timeout)
+    window.location = '/auth/login';
+  }
 };

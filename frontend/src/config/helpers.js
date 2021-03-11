@@ -1,4 +1,5 @@
 import { toggleLoading } from '../actions/loading';
+import { CHANGE_CURRENT_URL, CHANGE_REDIRECT_URL} from '../actions/types';
 import { API_URI } from '../config/variables';
 import {store} from '../store';
 
@@ -82,28 +83,45 @@ export function FETCH(type, url, body, jwt, dispatch, isLoading, done) {
         uri = uri + jwt;
     }
     fetch(uri, fetchObj)
-        .then(res => res.json())
+        .then(res => {
+            if(res.status >= 400 && (!jwt || jwt.length<1)) {
+                alert(true)
+                dispatch({
+                    type: CHANGE_CURRENT_URL,
+                    payload:String(window.location)
+                  });
+                  dispatch({
+                    type: CHANGE_REDIRECT_URL,
+                    payload:"/auth/login"
+                  });
+                  return false;
+            }else{
+                return res.json();
+            }
+        })
         .then(res => {
             if (isLoading) {
                 dispatch(toggleLoading(false));
             }
-            if (done && res.error) {
+            if (done && res && res.error) {
                 done(res.error);
-            } else if (done) {
+            } else if (done && res) {
                 done(null, res);
+            }else{
+                done(null,null)
             }
         });
 }
 
-let options = {
-    timeZone: 'America/New_York',
-    year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-    second: 'numeric',
-  },
-  formatter = new Intl.DateTimeFormat([], options);
+// let options = {
+//     timeZone: 'America/New_York',
+//     year: 'numeric',
+//     month: 'numeric',
+//     day: 'numeric',
+//     hour: 'numeric',
+//     minute: 'numeric',
+//     second: 'numeric',
+//   },
+//   formatter = new Intl.DateTimeFormat([], options);
 
-console.log(formatter.format(new Date()));
+// console.log(formatter.format(new Date()));

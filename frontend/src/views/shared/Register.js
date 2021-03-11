@@ -70,8 +70,8 @@ class Register extends React.Component{
     this.props.changeRedirectURL(null);
   }
   componentDidMount = () =>{
-    localStorage.clear();
-    this.props.resetRoot();
+    // localStorage.clear();
+    // this.props.resetRoot();
   }
   _renderForm =() =>{
     return (
@@ -152,11 +152,12 @@ class Register extends React.Component{
   render(){
     return(
     <>
-      {this.props.auth.redirectURL?
+      {/* {this.props.auth.redirectURL?
         this._renderRedirect()
         :
         this._renderForm()
-      }
+      } */}
+      {this._renderForm()}
     </>
     );
   }

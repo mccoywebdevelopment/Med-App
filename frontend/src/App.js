@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Route, Switch } from "react-router-dom";
 import { BrowserRouter } from 'react-router-dom'
 import { adminRoutes, authRoutes, userRoutes, auth2Routes } from "./Routes";
-import { changeRedirectURL } from "./actions/auth";
+import { changeRedirectURL, changeCurrentURL } from "./actions/auth";
 
 import AdminLayout from "./layouts/admin/AdminLayout";
 import AuthLayout from "./layouts/shared/AuthLayout";
@@ -15,8 +15,12 @@ import "./assets/css/fontawesome/css/all.min.css";
 class App extends React.Component {
   static propTypes = {
     auth: PropTypes.object.isRequired,
-    changeRedirectURL: PropTypes.func.isRequired
+    changeRedirectURL: PropTypes.func.isRequired,
+    changeCurrentURL: PropTypes.func.isRequired
   };
+  state = {
+    redirect:null
+  }
   constructor(props) {
     super(props);
   }
@@ -72,11 +76,12 @@ class App extends React.Component {
   }
   _redirect = () =>{
 
-    if(this.props.auth.redirectURL){
-      let redirect = this.props.auth.redirectURL;
-      this.props.changeRedirectURL(null);
-      window.location = redirect;
-    }
+    // if(this.props.auth.redirectURL){
+    //   let redirect = this.props.auth.redirectURL;
+    //   this.props.changeRedirectURL(false);
+    //   window.location = redirect;
+    // }
+
   }
   render() {
     this._redirect();
@@ -86,8 +91,6 @@ class App extends React.Component {
           {this._adminRouteList()}
           {this._authRouteList()}
           {this._userRouteList()}
-          {/* {this._authAdminList()}
-          {this._authUserList()} */}
         </Switch>
       </BrowserRouter>
     );
@@ -98,4 +101,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { changeRedirectURL })(App);
+export default connect(mapStateToProps, { changeRedirectURL,changeCurrentURL })(App);

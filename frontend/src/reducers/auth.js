@@ -1,8 +1,9 @@
-import { FETCH_LOGIN , CHANGE_REDIRECT_URL, FETCH_REGISTER, FETCH_RESET_PASSWORD, FETCH_UPDATE_PROFILE} from '../actions/types';
+import { FETCH_LOGIN , CHANGE_REDIRECT_URL, CHANGE_CURRENT_URL, FETCH_REGISTER, FETCH_RESET_PASSWORD, FETCH_UPDATE_PROFILE} from '../actions/types';
 
 const initialState = {
     user:null,
-    redirectURL:null
+    redirectURL:null,
+    currentURL: "http://localhost:3000/admin/groups"
 }
 
 export default function(state = initialState, action){
@@ -11,7 +12,7 @@ export default function(state = initialState, action){
             return{
                 ...state,
                 user:action.payload.user,
-                redirectURL:action.payload.redirectURL
+                // redirectURL:action.payload.redirectURL
             }
         case FETCH_REGISTER:
             return{
@@ -23,6 +24,11 @@ export default function(state = initialState, action){
             return{
                 ...state,
                 redirectURL:action.payload
+            }
+        case CHANGE_CURRENT_URL:
+            return{
+                ...state,
+                currentURL:action.payload
             }
         case FETCH_RESET_PASSWORD:
             return{

@@ -33,14 +33,10 @@ function patchUpdateById(body,id,callback){
           if(err){
             callback(err);
           }else{
-            // console.log("\n\n\n\n\nObj")
-            // console.log(obj)
             rxsModel.findOneAndUpdate({_id:id},obj,function(err,result){
               if(err){
                 callback(err);
               }else{
-                // console.log("\n\n\n\n\nfinal");
-                // console.log(result)
                 callback(null,result);
               }
             });
@@ -86,8 +82,6 @@ function updateModifiedFields(oldDoc,updatedFields,callback){
       if(err){
         callback(err)
       }else{
-        // console.log("\n\n\n\n")
-        // console.log(res)
         obj.rxsMed = res;
         callback(null,obj);
       }
@@ -95,20 +89,7 @@ function updateModifiedFields(oldDoc,updatedFields,callback){
   }else{
     callback(null,obj);
   }
-
-  // if(updatedFields.rxsMedication){
-  //   createRxsMedicationAndAttatch(obj,updatedFields.rxsMedication,function(err,obj){
-  //     if(err){
-  //       callback(err);
-  //     }else{
-  //       callback(null,obj);
-  //     }
-  //   });
-  // }else{
-  //   callback(null,obj);
-  // }
   callback(null,obj)
-
 }
 
 function createRxsMedicationAndAttatch(obj,rxsMedication,callback){
@@ -244,7 +225,6 @@ function getRxsMeds(rxs,callback){
         if(err){
           console.log(err);
         }else{
-          // console.log(rxsCreated)
           rxsArr.push(rxsCreated);
         }
         if(i == rxs.rxsMedication.length){

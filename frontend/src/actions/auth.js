@@ -1,9 +1,10 @@
-import { FETCH_LOGIN, CHANGE_REDIRECT_URL, FETCH_REGISTER, FETCH_RESET_PASSWORD, FETCH_UPDATE_PROFILE } from './types';
+import { FETCH_LOGIN, CHANGE_REDIRECT_URL, CHANGE_CURRENT_URL, 
+  FETCH_REGISTER, FETCH_RESET_PASSWORD, FETCH_UPDATE_PROFILE } from './types';
 import { createMessage } from './messages';
 import { toggleLoading } from './loading';
 import {FETCH} from "../config/helpers";
 
-export const fetchLogin = postData => dispatch => {
+export const fetchLogin = (postData,callback) => dispatch => {
   FETCH('POST','/auth/login',postData,null,dispatch,true,(err,res)=>{
     if(err){
       dispatch(createMessage(err, 'danger',20000));
@@ -13,6 +14,9 @@ export const fetchLogin = postData => dispatch => {
         type: FETCH_LOGIN,
         payload: res.result
       });
+      if(callback){
+        callback(res);
+      }
     }
   });
 }
@@ -95,4 +99,11 @@ export const changeRedirectURL = newURL => dispatch => {
     type: CHANGE_REDIRECT_URL,
     payload: newURL
   })
+}
+
+export const changeCurrentURL = newURL => dispatch => {
+  dispatch({
+    type: CHANGE_CURRENT_URL,
+    payload: newURL
+  });
 }
