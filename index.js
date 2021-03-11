@@ -7,6 +7,7 @@ const usersRouter = require('./routes/api/users');
 const emailRouter = require('./routes/api/mailer');
 const guardiansRouter = require('./routes/api/guardians');
 const dependentsRouter = require('./routes/api/dependents');
+const quickRespRouter = require('./routes/api/QR');
 const groupsRouter = require('./routes/api/groups');
 const authRouter = require('./routes/api/auth');
 const medsRouter = require('./routes/api/medications');
@@ -60,6 +61,7 @@ app.use("/api/events/", eventRouter);
 app.use("/api/rxsMedication-event/", medicationEvent);
 app.use("/api/calendar/", calendarRouter);
 app.use("/api/export-data/", exportDataRouter);
+app.use("/api/QR/",quickRespRouter);
 
 app.get('/api', function (req, res) {
     res.send("success");
