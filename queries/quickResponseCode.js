@@ -7,7 +7,8 @@ const rxsModel = require('../models/rxs/Rxs');
 const path = require('path');
 const ejs = require('ejs');
 const fs = require("fs");
-const {CLIENT_URL} = require('../config/configVars')
+const {CLIENT_URL} = require('../config/configVars');
+const { S_IXOTH } = require('constants');
 
 
 var createCode = function(url, type) {
@@ -28,7 +29,7 @@ function render(basePath, data, callback) {
     let templateLocation = basePath + "/template/index.html";
     let handlebarsLocation = basePath + "/handlebars-result/index.html";
     let resultLocation = basePath + "/result/index.pdf";
-    // console.log(base64_encode(basePath+"/template/qr.jfif"));
+
     fs.readFile(templateLocation, { encoding: 'utf-8' }, function (err, file) {
         if (err) {
             callback(err);
@@ -36,7 +37,7 @@ function render(basePath, data, callback) {
             callback("Can't find template file.");
         } else {
             // let settings = getSettings(groups);
-            var output = ejs.render ( file.toString() , {groups:data,settings:{CLIENT_URL:CLIENT_URL}} );
+            var output = ejs.render ( file.toString() , {pages:data} );
         
             fs.writeFile(handlebarsLocation, output, function (err) {
                 if (err) {
@@ -58,6 +59,38 @@ function render(basePath, data, callback) {
     });
 }
 
+function formatData(groups){
+    let pages = [];
+    for(var i=0;i<groups.length;++i){
+        for(var ix=0;ix<groups[i].dependents.length;++ix){
+            let rxsMedications = getDependentsMeds(groups[i].dependents[ix]);
+            for(var x=0;x<rxsMedications.length;++x){
+                if(x%5==0 || x==0){
+                    pages.push({
+                        dependentName:groups[i].dependents[ix].name.firstName + " " + groups[i].dependents[ix].name.lastName,
+                        dependentURL:CLIENT_URL + "/admin/dependents/"+groups[i].dependents[ix]._id,
+                        dependentDateOfBirth:groups[i].dependents[ix].dateOfBirth,
+                        dependentCreated:groups[i].dependents[ix].dateCreated,
+                        group:groups[i].name,
+                        rxsMedications:[rxsMedications[x]]
+                    });
+                }else{
+                    pages[pages.length-1].rxsMedications.push(rxsMedications[x]);
+                }
+            }
+        }
+    }
+    return pages;
+}
+function getDependentsMeds(dep){
+    let meds = [];
+    for(var i=0;i<dep.rxs.length;++i){
+        for(var ix=0;ix<dep.rxs[i].rxsMedications.length;++ix){
+            meds.push(dep.rxs[i].rxsMedications[ix]);
+        }
+    }
+    return meds;
+}
 function getData(depID,medID,callback){
     if(depID == "all"){
         groupModel.find({}).populate('dependents').exec(function (err, groupsFound) {
@@ -74,6 +107,7 @@ function getData(depID,medID,callback){
                           if(err){
                               callback(err);
                           }else{
+                              res = formatData(res);
                               callback(null,res);
                           }
                         });
@@ -105,5 +139,7 @@ function generateFile(basePath, depID, medID, callack) {
         }
     });
 }
+
+// generateFile("test","all",null,()=>{});
 
 module.exports = { createCode, generateFile }

@@ -29,45 +29,7 @@ function createCode(data,callback) {
     }
   });
 }
-// QRCode.toFile('./test.png',"test",function(err,result){
-//   if(err){
-//     console.log(err);
-//   }else{
-//     console.log(result)
-//   }
-// });
-// function findByIdWithQR(ids,callback){
-//   if(ids.length<1){
-//     callback(null,[]);
-//     return;
-//   }
-//   var i = 0;
-//   var rxsMeds = [];
 
-//   ids.forEach(element => {
-//     findById(element.toString(),function(err,rxsMedFound){
-//       if(err){
-//         callback(err);
-//         return;
-//       }else{
-//         createCode(rxsMedFound.name,'utf8',function(err,code){
-//           if(err){
-//             callback(err);
-//             return;
-//           }else{
-//             let med = JSON.parse(JSON.stringify(rxsMedFound));
-//             med.base64 = base64_encode(code);
-//             rxsMeds.push(med);
-//             if(rxsMeds.length == ids.length){
-//               callback(null,rxsMeds);
-//             }
-//           }
-//           i++;
-//         });
-//       }
-//     });
-//   });
-// }
 function findById(id, callback) {
   RxsMedModel.findById(id, function (err, result) {
     if (err) {

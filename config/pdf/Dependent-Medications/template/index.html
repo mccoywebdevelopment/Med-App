@@ -29,7 +29,7 @@
     }
     
     .invoice-box table tr td:nth-child(2) {
-        text-align: right;
+        text-align: left;
     }
     
     .invoice-box table tr.top table td {
@@ -130,8 +130,7 @@ function toDate(dateObj){
     return date;
 }
 %>
-<%for(var i=0;i<groups.length;++i){%>
-    <%for(var ix=0;ix<groups[i].dependents.length;++ix){%>
+<%for(var i=0;i<pages.length;++i){%>
 <body>
     <div class="invoice-box">
         <table cellpadding="0" cellspacing="0" style="padding-top:20px;">
@@ -140,10 +139,11 @@ function toDate(dateObj){
                     <table>
                         <tr>
                             <td>
-                                <span class="title"><%=groups[i].dependents[ix].name.firstName%> <%=groups[i].dependents[ix].name.lastName%></span><br>
-                                DOB: <%=toDate(groups[i].dependents[ix].dateOfBirth)%><br>
-                                Created: <%=toDate(groups[i].dependents[ix].dateCreated)%><br>
-                                Group Name: <%=groups[i].name%>
+                                <span class="title"><%=pages[i].dependentName%></span><br>
+                                <a href="<%=pages[i].dependentURL%>"><%=pages[i].dependentURL%></a><br>
+                                DOB: <%=toDate(pages[i].dependentDateOfBirth)%><br>
+                                Created: <%=toDate(pages[i].dependentCreated)%><br>
+                                Group Name: <%=pages[i].group%>
                             </td>
                             <td style="padding-bottom: 40px;">
                                 <span class="title">QR INFO</span><br>
@@ -158,35 +158,32 @@ function toDate(dateObj){
         <table class="dep-med">
             <tr class="heading">
                 <td>
-                    <span style="padding-left: 0px;">QR Code</span>
+                    <span>QR Code</span>
                 </td>
                 
                 <td>
-                    <span style="padding-right: 80px;">Name</span>
+                    <span style="padding-left:26px">Name</span>
                 </td>
-                <td>
+                <!--<td>
                     <span style="padding-left: 40px;">Medication URL</span>
-                </td>
+                </td>-->
             </tr>
             
-           <%for(var z = 0;z<groups[i].dependents[ix].rxs.length;++z){%>
-           <%for(var x = 0;x<groups[i].dependents[ix].rxs[z].rxsMedications.length;++x){%>
+           <%for(var x = 0;x<pages[i].rxsMedications.length;++x){%>
             <tr class="details">
                 <td style="padding: 0px;width: 100px;">
-                    <img class="img" src="data:image/png;base64,<%=groups[i].dependents[ix].rxs[z].rxsMedications[x].base64 %>"/>
+                    <img class="img" src="data:image/png;base64,<%=pages[i].rxsMedications[x].base64 %>"/>
                 </td>
                 
                 <td>
-                    <%=groups[i].dependents[ix].rxs[z].rxsMedications[x].name%>
+                    <%=pages[i].rxsMedications[x].name%>
                 </td>
 
-                <td style="overflow-wrap:anywhere;">
-                    <a href="<%=settings.CLIENT_URL%>/admin/dependents/<%=groups[i].dependents[ix]._id%>"><%=settings.CLIENT_URL%>/admin/dependents/<%=groups[i].dependents[ix]._id%></a>
-                </td>
+
+
             </tr>
 
             <%}%>
-             <%}%>
            
 
 
@@ -199,7 +196,6 @@ function toDate(dateObj){
 
 
 </body>
-<%}%>
 <%}%>
 </html>
     
