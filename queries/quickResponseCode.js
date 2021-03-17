@@ -36,7 +36,7 @@ function render(basePath, data, callback) {
             callback("Can't find template file.");
         } else {
             // let settings = getSettings(groups);
-            var output = ejs.render ( file.toString() , {groups:data} );
+            var output = ejs.render ( file.toString() , {groups:data,settings:{CLIENT_URL:CLIENT_URL}} );
         
             fs.writeFile(handlebarsLocation, output, function (err) {
                 if (err) {

@@ -2,6 +2,7 @@ const RxsMedModel = require('../models/rxsMedication/RxsMedication');
 const val = require('./helpers/helper');
 const delMedEvent = require('./medicationEvent').deleteById;
 const QRCode = require('qrcode');
+const {CLIENT_URL} = require('../config/configVars');
 const fs = require('fs');
 
 function findAll(callback) {
@@ -255,12 +256,13 @@ function saveToDoc(bodyData, schemaModel, callback) {
     callback("Create events function still needs to be created");
     //create Events
   }
-
-  createCode("test",function (err, code) {
+  let refID = require("crypto").randomBytes(64).toString('hex');
+  let logURL = CLIENT_URL + "/user/log-med/" + refID;
+  newDoc.refID = refID;
+  createCode(logURL,function (err, code) {
     if (err) {
       callback(err);
     } else {
-      console.log(code);
       newDoc.base64 = code;
       newDoc.save(function (err, result) {
         if (err) {

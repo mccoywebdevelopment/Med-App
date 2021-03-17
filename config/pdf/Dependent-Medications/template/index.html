@@ -97,6 +97,15 @@
     }
     body,html,.invoice-box{
       height: 100%;
+      padding:0px;
+      margin:0px;
+    }
+    .invoice-box{
+        overflow-x:auto;
+        overflow-y:auto;
+        padding:20px;
+        padding-bottom:0px;
+        padding-top:0px;
     }
     .dep-med>tbody>.details>td{
         padding: 30px;
@@ -121,12 +130,11 @@ function toDate(dateObj){
     return date;
 }
 %>
-
 <%for(var i=0;i<groups.length;++i){%>
     <%for(var ix=0;ix<groups[i].dependents.length;++ix){%>
 <body>
     <div class="invoice-box">
-        <table cellpadding="0" cellspacing="0">
+        <table cellpadding="0" cellspacing="0" style="padding-top:20px;">
             <tr class="top">
                 <td colspan="2">
                     <table>
@@ -154,7 +162,7 @@ function toDate(dateObj){
                 </td>
                 
                 <td>
-                    <span style="padding-right: 40px;">Name</span>
+                    <span style="padding-right: 80px;">Name</span>
                 </td>
                 <td>
                     <span style="padding-left: 40px;">Medication URL</span>
@@ -169,11 +177,11 @@ function toDate(dateObj){
                 </td>
                 
                 <td>
-
+                    <%=groups[i].dependents[ix].rxs[z].rxsMedications[x].name%>
                 </td>
 
-                <td>
-                    <a href="https://stackoverflow.com/questions/25772742/how-to-place-svg-image-file-in-html-using-javascript">https://stackoverflow.com/questions/25772742/how-to-place-svg-image-file-in-html-using-javascript</a>
+                <td style="overflow-wrap:anywhere;">
+                    <a href="<%=settings.CLIENT_URL%>/admin/dependents/<%=groups[i].dependents[ix]._id%>"><%=settings.CLIENT_URL%>/admin/dependents/<%=groups[i].dependents[ix]._id%></a>
                 </td>
             </tr>
 
@@ -190,10 +198,8 @@ function toDate(dateObj){
     </div>
 
 
-
-    
 </body>
 <%}%>
 <%}%>
-
 </html>
+    
