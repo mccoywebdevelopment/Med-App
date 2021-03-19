@@ -31,9 +31,9 @@ function registerUser(body,token,email,callback){
                         if(err){
                             callback(err);
                         }else{
-                            var redirect = "/user/dependents";
+                            var redirect = "/user/home";
                             if(userFound.isAdmin){
-                                redirect = "/admin/users";
+                                redirect = "/admin/dependents";
                             }
                             userFound.password = undefined;
                             body.user = userSaved._id.toString();
@@ -128,7 +128,7 @@ function logginUser(body,callback){
                                 if(err){
                                     callback(err);
                                 }else{
-                                    var redirect = "/user/dependents";
+                                    var redirect = "/user/home";
                                     if(userFound.isAdmin){
                                         redirect = "/admin/dependents";
                                     }

@@ -8,7 +8,9 @@ import "../../assets/css/myCss.css";
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createMessage } from '../../actions/messages'
-import { API_URI } from "../../config/variables";
+import { changeColor } from '../../actions/theme';
+
+import UserNav from './UserNav';
 
 class UserLayout extends React.Component {
     static propTypes = {
@@ -19,73 +21,14 @@ class UserLayout extends React.Component {
     constructor(props) {
         super(props);
     }
-    _isCurrentURL = (url) => {
-        // alert(url);
-        if (window.location.href.includes(url)) {
-            return true;
-        }
-        return false;
+    componentDidMount = () =>{
+        this.props.changeColor("#2196f3");
     }
     render() {
-        let logoutPath = API_URI + "/auth/logout/" + localStorage.getItem('JWT');
         return (
             <>
-                <div className="my-side-bar content-desktop">
-                    <div className={"my-brand " + (this._isCurrentURL("/admin/home") ? "my-nav-selected" : "")}
-                        style={{ borderLeftColor: this.props.theme.pagePrimaryColor }}>
-                        <a href="/user/dependents" className="my-nav-item">
-                            <i title="Home" className="fas fa-notes-medical" style={{ color: this.props.theme.pagePrimaryColor }}></i>
-                        </a>
-                    </div>
-                    <div className={"" + (this._isCurrentURL("/user/dependents") ? "my-nav-selected" : "")}
-                        style={{ borderLeftColor: this.props.theme.pagePrimaryColor }}>
-                        <a href="/user/dependents" className="my-nav-item">
-                            <i title="Medication(s)" className="fas fa-capsules" style={{ color: this.props.theme.pagePrimaryColor }}></i>
-                        </a>
-                    </div>
-                    <div className={"" + (this._isCurrentURL("/user/profile") ? "my-nav-selected" : "")}
-                        style={{ borderLeftColor: this.props.theme.pagePrimaryColor }}>
-                        <a href="/user/profile" className="my-nav-item">
-                            <i title="My Profile" className="fas fa-cog" style={{ color: this.props.theme.pagePrimaryColor }}></i>
-                        </a>
-                    </div>
-
-                    <div style={{ marginTop: '100px' }}>
-                        <a href={logoutPath} className="my-nav-item">
-                            <i title="Log Out" className="fas fa-sign-out-alt" style={{ color: this.props.theme.pagePrimaryColor }}></i>
-                        </a>
-                    </div>
-                </div>
-                <div className="my-top-nav content-desktop">
-                </div>
-                <div className="navbar-bottom content-mobile content-mobile-navbar">
-                    <div className={"nav-item-mobile " + (this._isCurrentURL("/user/home") ? "my-nav-selected-mobile" : "")}
-                        style={{ borderLeftColor: this.props.theme.pagePrimaryColor }}>
-                        <a href="/user/home" className="my-nav-item">
-                            <i title="Home" className="fas fa-home"
-                                style={{ color: this.props.theme.pagePrimaryColor, fontSize: '24px' }}></i>
-                            <p style={{ fontSize: '0.7em' }}>Home</p>
-                        </a>
-                    </div>
-                    <div className={"nav-item-mobile " + (this._isCurrentURL("/user/dependents") ? "my-nav-selected-mobile" : "")}
-                        style={{ borderLeftColor: this.props.theme.pagePrimaryColor }}>
-                        <a href="/user/dependents" className="my-nav-item">
-                            <i title="Home" className="fas fa-capsules"
-                                style={{ color: this.props.theme.pagePrimaryColor, fontSize: '24px' }}></i>
-                            <p style={{ fontSize: '0.7em' }}>RXS</p>
-                        </a>
-                    </div>
-                    <div className={"nav-item-mobile " + (this._isCurrentURL("/user/profile") ? "my-nav-selected-mobile" : "")}
-                        style={{ borderLeftColor: this.props.theme.pagePrimaryColor }}>
-                        <a href="/user/profile" className="my-nav-item">
-                            <i title="Home" className="fas fa-cog"
-                                style={{ color: this.props.theme.pagePrimaryColor, fontSize: '24px' }}></i>
-                            <p style={{ fontSize: '0.7em' }}>Profile</p>
-                        </a>
-                    </div>
-                </div>
-
-                <div className="main">
+                
+                <div className="content-mobile content-content-mobile">
                     {this.props.message.text ?
                         <div className="alert-container">
                             <div className="alert-container">
@@ -101,12 +44,16 @@ class UserLayout extends React.Component {
                         </div>
                         : null
                     }
-                    <div>
+                    <div className="container">
                         {this.props.children}
                     </div>
                     <div style={{ marginTop: '30px' }}>
                         &nbsp;
-</div>
+                    </div>
+                </div>
+                <UserNav/>
+                <div className="content-desktop">
+                    <h1>Desktop View not supported please login via phone/ipad.</h1>
                 </div>
             </>
         );
@@ -118,4 +65,4 @@ const mapStateToProps = (state) => ({
     theme: state.theme
 });
 
-export default connect(mapStateToProps, { createMessage })(UserLayout);
+export default connect(mapStateToProps, { createMessage,changeColor })(UserLayout);

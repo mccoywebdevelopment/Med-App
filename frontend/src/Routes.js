@@ -5,14 +5,13 @@ import DependentDetails from "./views/admin/DependentDetails";
 import GroupDetails from "./views/admin/GroupDetails";
 import GroupView from "./views/admin/GroupView";
 import UserView from "./views/admin/UserView";
-import DependentDetailsUser from "./views/user/DependentDetailsUser";
 import UserDetails from "./views/admin/UserDetails";
 import ForgotPassword from "./views/shared/ForgotPassword";
 import ResetPassword from "./views/shared/ResetPassword";
 import Login from "./views/shared/Login";
 import Register from './views/shared/Register';
-import DependentViewUser from './views/user/DependentViewUser';
 import Profile from "./views/shared/Profile";
+import Home from "./views/user/mobile/Home";
 
 import Test from './views/test/Test';
 
@@ -53,18 +52,9 @@ const adminRoutes = [
 
 const userRoutes = [
     {
-        path:'/user/dependents',
-        component:  <DependentViewUser/>
-    },
-    {
-        path:'/user/dependents/:id',
-        component:  <DependentDetailsUser/>
-    },
-    {
-        path:'/user/profile',
-        component:  <Profile/>
-    },
-    
+        path: "/user/home",
+        component: <Home/>
+    }
 ];
 
 const authRoutes = [

@@ -169,6 +169,7 @@ td {
   margin-left: auto;
   margin-right: auto;
   text-align: center;
+  height:300px!important;
 }
 .z-100 {
   z-index: 100;
@@ -302,6 +303,8 @@ background-color:#F0F1F1;
 }
 .content-mobile {
   display: none;
+  width:100%;
+  /* padding:30px; */
 }
 
 @media screen and (max-width: 768px) {
@@ -313,6 +316,9 @@ background-color:#F0F1F1;
   }
   .content-mobile-navbar{
     display: inline-flex;
+  }
+  body,#root{
+    background:#F5F9FA;
   }
 }
 .navbar-bottom {
@@ -330,10 +336,28 @@ background-color:#F0F1F1;
   padding:0.5em;
   width: 40%;
 }
-
+.hover-white{
+  padding:10px;
+  padding-right:20px;
+  padding-left:20px;
+}
 .hover-white:hover>i{
   color:white;
 }
+.hover-white:active>i{
+  color:white;
+  
+}
+.hover-white:focus>i{
+  color:white;
+}
+.hover-white:focus-within>i{
+  color:white;
+}
+.hover-white:target>i{
+  color:white;
+}
+
 ::-webkit-scrollbar {
   display: none;
   visibility: hidden;
@@ -360,4 +384,28 @@ background-color:#F0F1F1;
 
 .form-control{
   font-size: .9rem;
+}
+.dropdown-toggle:after { content: none!important }
+
+.my-loader{
+  /* height:100%; */
+}
+
+div[data-radium]{
+  height: 100%;
+}
+
+.content-content-mobile{
+  padding:0px;
+  height:36.8em;
+  padding-top:10px;
+}
+.content-mobile-navbar{
+  font-size: 10px;
+}
+
+.nav-item-selected{
+  /* transform: translate(); */
+  transition: all 0.5s ease-in-out;
+  opacity: 1;
 }

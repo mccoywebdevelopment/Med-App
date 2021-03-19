@@ -15,19 +15,30 @@ export const createMessage = (text,alertType,time) => (dispatch) =>{
     dispatch(togglePopUp());
     timeout = 15000;
   }
-  dispatch({
-    type: CREATE_MESSAGE,
-    payload: {text, alertType},
-  });
   if(time){
     timeout = time;
   }
-  if(text=="Token expired" || text=="User not found."){
-    alert(window.location);
+  if(text=="Token expired" || text=="User not found." || text=="Token is undefined."){
     dispatch({
       type: CHANGE_CURRENT_URL,
       payload:String(window.location)
     });
     window.location = '/auth/login';
   }
+  dispatch({
+    type: CREATE_MESSAGE,
+    payload: {
+      text:text,
+      alertType:alertType
+    },
+  });
+  setTimeout(()=>{
+    dispatch({
+      type: CREATE_MESSAGE,
+      payload: {
+        text:"",
+        alertType:""
+      },
+    });
+  },timeout)
 };

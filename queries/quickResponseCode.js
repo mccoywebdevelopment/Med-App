@@ -1,14 +1,11 @@
 const QRCode = require('qrcode');
-const Handlebars = require('handlebars');
 const puppeteer = require('puppeteer');
 const groupModel = require('../models/group/Group');
 const rxsMedicationModel = require('../models/rxsMedication/RxsMedication');
 const rxsModel = require('../models/rxs/Rxs');
-const path = require('path');
 const ejs = require('ejs');
-const fs = require("fs");
-const {CLIENT_URL} = require('../config/configVars');
-const { S_IXOTH } = require('constants');
+const fs = require('fs')
+const {CLIENT_URL} = process.env.CLIENT_URL || require('../config/configVars');
 
 
 var createCode = function(url, type) {
@@ -120,9 +117,6 @@ function getData(depID,medID,callback){
     }
 }
 function generateFile(basePath, depID, medID, callack) {
-    let data = {
-        title: "bitch"
-    }
     getData(depID,medID,function(err,data){
         if(err){
             callack(err);
@@ -139,7 +133,5 @@ function generateFile(basePath, depID, medID, callack) {
         }
     });
 }
-
-// generateFile("test","all",null,()=>{});
 
 module.exports = { createCode, generateFile }

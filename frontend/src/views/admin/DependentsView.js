@@ -5,6 +5,7 @@ import { fetchLogin } from "../../actions/auth";
 import { togglePopUp } from '../../actions/popUp';
 import { fetchPopulatedDependents, fetchDeleteDependent } from "../../actions/dependent";
 import { changeColor } from "../../actions/theme";
+import { fetchQRData } from "../../actions/data";
 
 import DependentTable from "../../components/admin/tables/DependentTable";
 import Overview from "../../components/admin/Overview/Overview";
@@ -18,10 +19,10 @@ class DependentView extends React.Component {
         groupState: PropTypes.object.isRequired
     };
     state = {
-        filterBy:{
-            all:false,
-            grouped:true,
-            notGrouped:false
+        filterBy: {
+            all: false,
+            grouped: true,
+            notGrouped: false
         }
     }
     constructor(props) {
@@ -29,18 +30,18 @@ class DependentView extends React.Component {
         this._deleteDependent = this._deleteDependent.bind(this);
         this._toggleRedirect = this._toggleRedirect.bind(this);
     }
-    _toggleFilterBy = (all,grouped,notGrouped) =>{
+    _toggleFilterBy = (all, grouped, notGrouped) => {
         let newState = this.state;
-        
-        if(all){
+
+        if (all) {
             newState.filterBy.all = true;
             newState.filterBy.grouped = false;
             newState.filterBy.notGrouped = false;
-        }else if(grouped){
+        } else if (grouped) {
             newState.filterBy.all = false;
             newState.filterBy.grouped = true;
             newState.filterBy.notGrouped = false;
-        }else{
+        } else {
             newState.filterBy.all = false;
             newState.filterBy.grouped = false;
             newState.filterBy.notGrouped = true;
@@ -84,24 +85,28 @@ class DependentView extends React.Component {
             this.props.fetchDeleteDependent(dep._id);
         }
     }
-    _toggleExportData = () =>{
-        this.props.togglePopUp("Export Data",<ExportDataForm/>);
+
+    _toggleExportData = () => {
+        this.props.togglePopUp("Export Data", <ExportDataForm />);
     }
-    _getData = () =>{
-        if(this.state.filterBy.all){
+    _toggleQRData = () => {
+        this.props.fetchQRData();
+    }
+    _getData = () => {
+        if (this.state.filterBy.all) {
             return this.props.dependentState.data;
-        }else if(this.state.filterBy.grouped){
+        } else if (this.state.filterBy.grouped) {
             return this._filterByGroup(true);
-        }else{
+        } else {
             return this._filterByGroup(false);
         }
     }
-    _filterByGroup = (isGroup) =>{
+    _filterByGroup = (isGroup) => {
         let data = [];
-        for(var i=0;i<this.props.dependentState.data.length;++i){
-            if(isGroup && this.props.dependentState.data[i].group.length>0){
+        for (var i = 0; i < this.props.dependentState.data.length; ++i) {
+            if (isGroup && this.props.dependentState.data[i].group.length > 0) {
                 data.push(this.props.dependentState.data[i]);
-            }else if(!isGroup && this.props.dependentState.data[i].group.length<1){
+            } else if (!isGroup && this.props.dependentState.data[i].group.length < 1) {
                 data.push(this.props.dependentState.data[i]);
             }
         }
@@ -135,16 +140,25 @@ class DependentView extends React.Component {
                         <div className="row">
                             <div className="col-lg-12" style={{ marginBottom: "30px" }}>
                                 <div className="btn-group" role="group" aria-label="Basic example">
-                                    <button onClick={()=>{this._toggleFilterBy(true)}} type="button" 
-                                        className={"btn "+(this.state.filterBy.all? "btn-primary":"btn-outline-secondary")}>All</button>
-                                    <button onClick={()=>{this._toggleFilterBy(false,true)}} type="button" 
-                                        className={"btn "+(this.state.filterBy.grouped? "btn-primary":"btn-outline-secondary")}>Active ({isGroupLength})</button>
-                                    <button onClick={()=>{this._toggleFilterBy(false,false,true)}} type="button" 
-                                        className={"btn "+(this.state.filterBy.notGrouped? "btn-primary":"btn-outline-secondary")}>Inactive ({notGroupLength})</button>
+                                    <button onClick={() => { this._toggleFilterBy(true) }} type="button"
+                                        className={"btn " + (this.state.filterBy.all ? "btn-primary" : "btn-outline-secondary")}>All</button>
+                                    <button onClick={() => { this._toggleFilterBy(false, true) }} type="button"
+                                        className={"btn " + (this.state.filterBy.grouped ? "btn-primary" : "btn-outline-secondary")}>Active ({isGroupLength})</button>
+                                    <button onClick={() => { this._toggleFilterBy(false, false, true) }} type="button"
+                                        className={"btn " + (this.state.filterBy.notGrouped ? "btn-primary" : "btn-outline-secondary")}>Inactive ({notGroupLength})</button>
                                 </div>
                                 {this._getData().length > 0 ?
-                                    <button onClick={()=>{this._toggleExportData()}} style={{float:'right'}}type="button" className="btn btn-outline-primary btn-fw hover-white">
-                                    <i className="fas fa-download"></i>Export</button>
+                                    <div class="dropdown" style={{float:'right'}}>
+                                    <button class="btn btn-outline-primary dropdown-toggle hover-white" type="button" id="dropdownMenuOutlineButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i className="fas fa-download" style={{paddingRight:'5px'}}></i>Export
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton1">
+                                      <a class="dropdown-item"onClick={()=>{this._toggleExportData()}} style={{color:'#2196f3',cursor:'pointer'}}>Excel</a>
+                                      <a class="dropdown-item"onClick={()=>{this._toggleQRData()}} style={{color:'#2196f3',cursor:'pointer'}}>QR</a>
+                                    </div>
+                                  </div>
+                                    // <button onClick={()=>{this._toggleExportData()}} style={{float:'right'}}type="button" className="btn btn-outline-primary btn-fw hover-white">
+                                    // <i className="fas fa-download"></i>Export</button>
                                     : null}
                             </div>
                         </div>
@@ -167,7 +181,8 @@ DependentView.propTypes = {
     fetchPopulatedDependents: PropTypes.func.isRequired,
     fetchDeleteDependent: PropTypes.func.isRequired,
     togglePopUp: PropTypes.func.isRequired,
-    changeColor: PropTypes.func.isRequired
+    changeColor: PropTypes.func.isRequired,
+    fetchQRData: PropTypes.func.isRequired
 };
 const mapStateToProps = (state) => ({
     auth: state.auth,
@@ -176,6 +191,6 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-    fetchLogin, changeColor, fetchDeleteDependent, togglePopUp,
+    fetchLogin, changeColor, fetchDeleteDependent, fetchQRData,togglePopUp,
     fetchPopulatedDependents
 })(DependentView);

@@ -85,7 +85,6 @@ export function FETCH(type, url, body, jwt, dispatch, isLoading, done) {
     fetch(uri, fetchObj)
         .then(res => {
             if(res.status >= 400 && (!jwt || jwt.length<1)) {
-                alert(true)
                 dispatch({
                     type: CHANGE_CURRENT_URL,
                     payload:String(window.location)
