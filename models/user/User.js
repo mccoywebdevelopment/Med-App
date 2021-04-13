@@ -8,7 +8,7 @@ var UserSchema = new mongoose.Schema({
     isAdmin:{type:Boolean,default:false},
     dateCreated:Date,
     lastLoggon:Date,
-    timeZone:{type:String,default:"America/Phoenix"},
+    timeZone:{type:String,required:true,default:"America/Phoenix"},
     auth:{
         status:{
             statusValue:{type:String,default:"pending"}

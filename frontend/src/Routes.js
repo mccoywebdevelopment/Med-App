@@ -12,6 +12,7 @@ import Login from "./views/shared/Login";
 import Register from './views/shared/Register';
 import Profile from "./views/shared/Profile";
 import Home from "./views/user/mobile/Home";
+import ViewMed from "./views/user/mobile/ViewMed";
 
 import Test from './views/test/Test';
 
@@ -54,7 +55,12 @@ const userRoutes = [
     {
         path: "/user/home",
         component: <Home/>
-    }
+    },
+    {
+        path: "/user/view-med",
+        component: <ViewMed/>
+    },
+
 ];
 
 const authRoutes = [

@@ -5,6 +5,7 @@ const createGuardian = require('./guardian').create;
 const updateGuardianByID = require('./guardian').patchUpdateById;
 const findAllGroups = require('./group').findAll;
 const RxsMedication = require('../models/rxsMedication/RxsMedication');
+const MedicationEvent = require('../models/medicationEvent/MedicationEvent');
 const Rxs = require('../models/rxs/Rxs');
 const Medication = require('../models/medication/Medication');
 const SECRET_KEY = process.env.SECRET_KEY || require('../config/configVars').SECRET_KEY;
@@ -32,7 +33,7 @@ function getDependents(user, callback) {
             if (err) {
               callback(err);
             } else {
-              Medication.populate(res, { path: "dependents.medications" }, function (err, res) {
+              MedicationEvent.populate(res, { path: "dependents.rxs.rxsMedications.events",options:{sort:{'dateTaken':-1}} }, function (err, res) {
                 if (err) {
                   callback(err);
                 } else {
@@ -53,7 +54,6 @@ function getDependents(user, callback) {
           });
         }
       });
-
     }
   });
 }

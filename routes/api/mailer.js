@@ -71,14 +71,6 @@ router.route("/forgot-password")
           res.json({ result: result });
         }
       });
-    // mailQ.sendMail("Forgot Password", "Forgot password? Please click the link below to set a new password.", "Reset Password", req.body.email, true,
-    //   path.join(__dirname, '../..', '/config/email/emailTemplate/welcomeEmail.html'), "auth/reset-password", function (err, result) {
-    //     if (err) {
-    //       res.status(errors.code.BAD_REQUEST).json({ error: err });
-    //     } else {
-    //       res.json({ result: result });
-    //     }
-    //   });
   });
 
 module.exports = router;

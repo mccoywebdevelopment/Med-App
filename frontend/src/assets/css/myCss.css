@@ -409,3 +409,14 @@ div[data-radium]{
   transition: all 0.5s ease-in-out;
   opacity: 1;
 }
+
+.medication-card>.card-body{
+  padding:15px;
+}
+.card-title{
+  font-size: 18px;
+}
+.user-header-fixed{
+  position: fixed;
+  width:100%;
+}
