@@ -173,7 +173,7 @@ function createRxsMedEvent(body, dependent, rxsMedication, guardian, callback) {
         title: dependentName + " took " + rxsMedication.name,
         isAway: body.isAway,
         notes: body.notes,
-        dateTaken: body.dateTaken,
+        dateTaken: new Date(),
         event: eventCreated,
         dependent: dependent,
         createdBy: guardian,

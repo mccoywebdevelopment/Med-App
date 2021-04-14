@@ -2,6 +2,7 @@ const express = require('express');
 const errors = require('../errors');
 const rxsMedicationQ = require('../../queries/rxsMedication');
 const verifyAdmin = require('../../config/globalHelpers').verifyAdmin;
+const verifyUser = require('../../config/globalHelpers').verifyUser
 const router = express.Router();
 
 router.route("/:JWT")
@@ -26,7 +27,7 @@ router.route("/:JWT")
     });
 });
 router.route("/:id/:JWT")
-.get(verifyAdmin,function(req,res){
+.get(verifyUser,function(req,res){
     rxsMedicationQ.findById(req.params.id,function(error,medFound){
         if(error){
             console.log(error);

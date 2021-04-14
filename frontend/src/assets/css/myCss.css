@@ -420,3 +420,16 @@ div[data-radium]{
   position: fixed;
   width:100%;
 }
+.content-content-mobile{
+  height:92%;
+}
+.alert{
+  word-break: break-word;
+}
+.content-content-mobile>div>.alert-container{
+  width:100%;
+  padding:1em;
+}
+.scanner-container>section>section>div{
+  box-shadow: rgb(33 150 243 / 80%) 0px 0px 0px 5px inset!important;
+}

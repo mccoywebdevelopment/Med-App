@@ -13,6 +13,8 @@ import Register from './views/shared/Register';
 import Profile from "./views/shared/Profile";
 import Home from "./views/user/mobile/Home";
 import ViewMed from "./views/user/mobile/ViewMed";
+import AdministerMed from "./views/user/mobile/AdministerMed";
+import Scanner from './views/user/mobile/Scanner';
 
 import Test from './views/test/Test';
 
@@ -57,9 +59,17 @@ const userRoutes = [
         component: <Home/>
     },
     {
+        path: "/user/scanner",
+        component: <Scanner/>
+    },
+    {
         path: "/user/view-med",
         component: <ViewMed/>
     },
+    {
+        path: "/user/administer-med/:medID",
+        component: <AdministerMed/>
+    }
 
 ];
 

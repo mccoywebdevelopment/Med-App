@@ -158,4 +158,16 @@ export const sendTokenViaEmail = (email, done) => (dispatch) => {
   });
 }
 
+export const getRxsMedByID = (id,done) => (dispatch) =>{
+  FETCH('GET', "/rxsMedication/" + id + "/", null, localStorage.getItem('JWT'), dispatch, true, (err, res) => {
+    if (err) {
+      dispatch(createMessage(err, 'danger'));
+    } else{
+      if(done){
+        done(res);
+      }
+    }
+  });
+}
+
 

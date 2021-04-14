@@ -7,8 +7,8 @@ export default class UserHeader extends React.Component{
     render(){
         return(
             <>
-                <h3>{this.props.header}&nbsp;</h3>
-                <p>{this.props.subHeader}&nbsp;</p>
+                <h3 style={{fontWeight:'bold'}}>{this.props.header}&nbsp;</h3>
+                <p style={{fontWeight:'bold'}}>{this.props.subHeader}&nbsp;</p>
             </>
         )
     }

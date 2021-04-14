@@ -2,7 +2,6 @@ import { createMessage } from './messages';
 import { FETCH } from '../config/helpers';
 
 export const fetchCreateMedEvent = (body, rxsMedID, isLoading, done) => (dispatch) => {
-  body.dateTaken = formateDate(body.dateTaken);
 
   FETCH('POST', '/rxsMedication-event/'+rxsMedID+'/', body, localStorage.getItem('JWT'), dispatch, isLoading, (err, res) => {
     if (err) {

@@ -40,5 +40,5 @@ export const createMessage = (text,alertType,time) => (dispatch) =>{
         alertType:""
       },
     });
-  },timeout)
+  },10000000)
 };

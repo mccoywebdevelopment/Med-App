@@ -1,4 +1,5 @@
 import React from 'react'
+import UserHeader from '../header/UserHeader';
 
 export default class MedicationCard extends React.Component {
     constructor(props) {
@@ -7,12 +8,14 @@ export default class MedicationCard extends React.Component {
     render() {
         return (
             <>
-                <div className="card" style={{ padding: '0.5em' }}>
-                    <div className="row">
-                        <div className="col-12">
+                <div className="card h-100" style={{ padding: '0.75em',overflowY:'scroll' }}>
+                    <div className="row" style={{marginTop:'0px',marginBottom:'0px'}}>
+                        <div className="col-9">
                             <UserHeader header={this.props.header} subHeader={this.props.subHeader} />
-                            <i title="close" onClick={() => { this.props.togglePopUp() }}
-                                                style={{ float: 'right', color: this.props.theme.pagePrimaryColor }} className="fas fa-times"></i>
+                        </div>
+                        <div className="col-3">
+                        <i title="close" onClick={() => { this.props.togglePopUp() }}
+                                                style={{ float: 'right', color: 'rgb(33, 150, 243)' }} className="fas fa-times"></i>
                         </div>
                     </div>
                     {this.props.children}

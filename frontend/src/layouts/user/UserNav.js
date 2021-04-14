@@ -38,9 +38,9 @@ class UserNav extends React.Component {
                             {/* <p style={{ fontSize: '0.7em' }}>RXS</p> */}
                         </a>
                     </div>
-                    <div className={"nav-item-mobile " + (this._isCurrentURL("/user/camera") ? "my-nav-selected-mobile" : "")}
+                    <div className={"nav-item-mobile " + (this._isCurrentURL("/user/scanner") ? "my-nav-selected-mobile" : "")}
                         style={{ borderLeftColor: this.props.theme.pagePrimaryColor }}>
-                        <a href="/user/dependents" className="my-nav-item">
+                        <a href="/user/scanner" className="my-nav-item">
                             <i title="Home" className="fas fa-qrcode"
                                 style={{ color: this.props.theme.pagePrimaryColor, fontSize: '20px' }}></i>
                             {/* <p style={{ fontSize: '0.7em' }}>Scan</p> */}

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { formateDate } from "../../../config/helpers";
+import WhenToTake from "../../shared/Misc/WhenToTake";
 
 export default class MedicationTable extends React.Component {
   constructor(props) {
@@ -22,28 +23,28 @@ export default class MedicationTable extends React.Component {
         left: []
       }
     }
-    const whenToTake = (element) =>{
-      return element.values.whenToTake.map((value)=>{
-        let styles = {
-          marginRight:"10px",
-          borderRadius:"2px",
-          padding:"5px"
-        }
-        if(value == "morning"){
-          styles.backgroundColor = "rgba(0,185,251,0.1)"
-          styles.color = "#00b9fb";
-        }else if(value == "afternoon"){
-          styles.backgroundColor = "rgba(255,165,0,0.1)"
-          styles.color = "orange";
-        }else{
-          styles.backgroundColor = "rgba(191,0,255,0.1)";
-          styles.color = "#bf00ff";
-        }
-        return(
-          <span style={styles}>{value}</span>
-        )
-      });
-    }
+    // const whenToTake = (element) =>{
+    //   return element.values.whenToTake.map((value)=>{
+    //     let styles = {
+    //       marginRight:"10px",
+    //       borderRadius:"2px",
+    //       padding:"5px"
+    //     }
+    //     if(value == "morning"){
+    //       styles.backgroundColor = "rgba(0,185,251,0.1)"
+    //       styles.color = "#00b9fb";
+    //     }else if(value == "afternoon"){
+    //       styles.backgroundColor = "rgba(255,165,0,0.1)"
+    //       styles.color = "orange";
+    //     }else{
+    //       styles.backgroundColor = "rgba(191,0,255,0.1)";
+    //       styles.color = "#bf00ff";
+    //     }
+    //     return(
+    //       <span style={styles}>{value}</span>
+    //     )
+    //   });
+    // }
     const list = () => {
       return this.state.list.map((element, index) => {
         let style = {
@@ -66,7 +67,7 @@ export default class MedicationTable extends React.Component {
               <td>{element.values.dosageQuantity} {element.values.dosageUnits}</td>
               {/* <td>{element.values.rxsNumber || "-"}</td> */}
                <td colSpan="3">
-                  {<span>{whenToTake(element)}</span> || "-"}
+                  {<span><WhenToTake data={element.values.whenToTake}/></span> || "-"}
                 </td>
               {/* <td colSpan="2">{formateDate(element.values.datePrescribed) || "-"}</td> */}
               <td style={{ textAlign: 'left' }}>
