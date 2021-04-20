@@ -20,7 +20,6 @@ class TookMed extends React.Component {
     }
     constructor(props) {
         super(props);
-        // alert(JSON.stringify(props));
     }
     _isValid = () =>{
         let newState = this.state;
@@ -93,7 +92,6 @@ class TookMed extends React.Component {
             newState.oldValues = JSON.parse(JSON.stringify(newState.values));
             this.setState(newState);
         }
-        // alert(JSON.stringify(this.state));
     }
     render() {
         return (

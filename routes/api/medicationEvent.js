@@ -3,6 +3,8 @@ const errors = require('../errors');
 const router = express.Router();
 const eventQ = require('../../queries/medicationEvent');
 const verifyUser = require('../../config/globalHelpers').verifyUser;
+const verifyAdmin = require('../../config/globalHelpers').verifyAdmin;
+const verifyRefID = require('../../config/globalHelpers').verifyRefID;
 
 router.route("/:rxsMedicationId/:JWT")
 .get(verifyUser,function(req,res){
@@ -16,11 +18,7 @@ router.route("/:rxsMedicationId/:JWT")
     });
 })
 .post(verifyUser,function(req,res){
-    /*
-    fields:
-        isAway,notes,dateTaken
-    */
-    eventQ.tookMedication(req.params.rxsMedicationId,req.params.JWT,req.body,function(err,result){
+    eventQ.tookMedication(req.params.rxsMedicationId,req.params.JWT,req.body,req.user,function(err,result){
         if(err){
             console.log(err);
             res.status(errors.code.BAD_REQUEST).json({error:err});
@@ -29,9 +27,21 @@ router.route("/:rxsMedicationId/:JWT")
         }
     })
 });
+router.route("/took-event/refID/:refID")
+.post(verifyRefID,function(req,res){
+    eventQ.tookMedicationRefID(req.rxsMedicationRefID,req.body,function(err,result){
+        if(err){
+            console.log(err);
+            res.status(errors.code.BAD_REQUEST).json({error:err});
+        }else{
+            res.send(result);
+        }
+    });
+})
+
 
 router.route("/:id/:JWT")
-.patch(verifyUser,function(req,res){
+.patch(verifyAdmin,function(req,res){
     eventQ.patchUpdateById(req.body,req.params.id,function(err,result){
         if(err){
             console.log(err);

@@ -7,6 +7,22 @@ export const fetchCreateMedEvent = (body, rxsMedID, isLoading, done) => (dispatc
     if (err) {
       dispatch(createMessage(err, 'danger'));
     }else{
+      alert(res);
+      dispatch(createMessage(res.title, "success"));
+      if(done){
+        done(res);
+      }
+    }
+  });
+}
+
+export const fetchCreateMedEventRefID = (body, refID, isLoading, done) => (dispatch) => {
+
+  FETCH('POST', '/rxsMedication-event/took-event/refID/'+refID, body,
+     null, dispatch, isLoading, (err, res) => {
+    if (err) {
+      dispatch(createMessage(err, 'danger'));
+    }else{
       dispatch(createMessage(res.title, "success"));
       if(done){
         done(res);
@@ -22,7 +38,7 @@ export const fetchUpdateMedEvent = (body, rxsMedID, isLoading, done) => (dispatc
     if (err) {
       dispatch(createMessage(err, 'danger'));
     }else{
-      dispatch(createMessage(res.title, "success"));
+      // dispatch(createMessage(res.title, "success"));
       if(done){
         done(res);
       }

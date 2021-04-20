@@ -23,7 +23,7 @@ class ViewMed extends React.Component {
                 <PopUpCard togglePopUp={this.props.togglePopUp} header={this.props.data.rxsMedication.name}
                     subHeader={this.props.data.dependent.name.firstName + " " + this.props.data.dependent.name.lastName}>
                     <div className="row" style={{ paddingTop: '0px',marginTop:'0px',paddingBottom:'1em' }}>
-                        <div className="col-12" style={{fontSize:'1.25em'}}>
+                        <div className="col-12" style={{fontSize:'1em'}}>
                                 <WhenToTake data={this.props.data.rxsMedication.whenToTake}/>
                         </div>
                     </div>
@@ -80,7 +80,7 @@ class ViewMed extends React.Component {
                                 {this.props.isHistory?
                                     null
                                 :
-                                <a href={"/user/administer-med/"+this.props.data.rxsMedication._id} className="btn btn-primary" style={{ fontSize: '1.25em', width: '100%', padding: '0.5em' }}>Administer Medication</a>
+                                <a href={"/user/log-med-ID/"+this.props.data.rxsMedication._id+"/is-local"} className="btn btn-primary" style={{ fontSize: '1.25em', width: '100%', padding: '0.5em' }}>Administer Medication</a>
     }
                             </div>
                         </div>

@@ -67,10 +67,18 @@ const userRoutes = [
         component: <ViewMed/>
     },
     {
-        path: "/user/administer-med/:medID",
-        component: <AdministerMed/>
+        path: "/user/log-med-ID/:medID/is-local",
+        component: <AdministerMed isLocal={true}/>
+    },
+    {
+        path: "/user/log-med/:refID/is-local",
+        component: <AdministerMed isLocal={true} isRefID={true}/>
+    },
+    {
+        path: "/user/log-med/:refID",
+        component: <AdministerMed isRefID={true}/>,
+        nonLocal:true
     }
-
 ];
 
 const authRoutes = [

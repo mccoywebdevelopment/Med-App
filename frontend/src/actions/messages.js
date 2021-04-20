@@ -19,10 +19,15 @@ export const createMessage = (text,alertType,time) => (dispatch) =>{
     timeout = time;
   }
   if(text=="Token expired" || text=="User not found." || text=="Token is undefined."){
+    
     dispatch({
-      type: CHANGE_CURRENT_URL,
-      payload:String(window.location)
+      type: CREATE_MESSAGE,
+      payload: {
+        text:"",
+        alertType:""
+      },
     });
+    
     window.location = '/auth/login';
   }
   dispatch({

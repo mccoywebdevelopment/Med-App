@@ -61,7 +61,7 @@ router.route("/:id/:JWT")
     });
 });
 
-router.route('/get/dependents/:JWT')
+router.route('/get/filtered-medications/:JWT')
 .get(verifyUser,function(req,res){
     userQ.getDependents(req.user,function(err,result){
         if(err){
@@ -96,8 +96,6 @@ router.route('/create-first-user/:secretKey/:username/:password')
         }
     });
 });
-
-
 
 module.exports = router;
 

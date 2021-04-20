@@ -170,4 +170,29 @@ export const getRxsMedByID = (id,done) => (dispatch) =>{
   });
 }
 
+export const getRxsMedByRefID = (id,done) => (dispatch) =>{
+  FETCH('GET', "/rxsMedication/get/medication/refID/" + id, null, null, dispatch, true, (err, res) => {
+    if (err) {
+      dispatch(createMessage(err, 'danger'));
+    } else{
+      if(done){
+        done(res);
+      }
+    }
+  });
+}
+
+export const fetchGetFilteredMedications = (done) => (dispatch) =>{
+  FETCH('GET', "/users/get/filtered-medications/" , null, localStorage.getItem('JWT'), dispatch, true, (err, res) => {
+    if (err) {
+      dispatch(createMessage(err, 'danger'));
+    } else{
+      if(done){
+        done(res);
+      }
+    }
+  });
+}
+
+
 

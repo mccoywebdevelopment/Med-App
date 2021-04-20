@@ -9,22 +9,24 @@ export default class NavItems extends React.Component{
         let selectedIndex = this.props.items.indexSelected;
         let prevIndex = this.props.items.prevSelected;
         let amount = 0;
+        let width = window.screen.width;
+        let calc = width * .315
 
         let diff = selectedIndex - prevIndex;
 
         if(diff == -1){
-            amount = -17;
+            amount = -calc;
         }else if(diff == 1){
-            amount = 17;
+            amount = calc;
         }else if(diff == 2){
-            amount = 35;
+            amount = calc * 2;
         }else if(diff== -2){
-            amount = -35;
+            amount = calc * -2;
         }
 
         let icon = document.getElementById('my-icon');
         icon.style.transform = 'none';
-        icon.style.transform = 'translate('+amount+'vh)';
+        icon.style.transform = 'translate('+amount+'px)';
         icon.style.transition = 'all 0.4s ease-in-out';
 
         setTimeout(()=>{
@@ -73,7 +75,6 @@ export default class NavItems extends React.Component{
                 // if(this.props.items.indexSelected !=index){
                 //     spanStyle.opacity = "0.5";
                 // }
-
                 return (
                     <div className="col-4" style={colStyle} key={"navitem324"+index}>
                         {this.props.items.prevSelected == index?

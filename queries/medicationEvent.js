@@ -5,9 +5,10 @@ const rxsMedicationModel = require('../models/rxsMedication/RxsMedication');
 const Rxs = require('../models/rxs/Rxs');
 const userModel = require('../models/user/User');
 const Dependent = require('../models/dependent/Dependent');
+const findGuardianByID = require('./guardian').findById;
 const createEvent = require('./event').create;
+const { isMedEventValid } = require('../config/globalHelpers');
 const medicationEventModel = require('../models/medicationEvent/MedicationEvent');
-const { forEach } = require('lodash');
 
 function findById(id, callback) {
   eventModel.findById(id, function (err, result) {
@@ -94,12 +95,52 @@ function findGuardianByJWT(jwt, callback) {
     }
   });
 }
-function tookMedication(rxsMedId, jwt, body, callback) {
+function tookMedicationRefID(rxsMed, body, callback) {
+  /*
+  need rxsMed
+  need guardian
+  need dependent
+  
+  */if(!isMedEventValid(rxsMed.events,rxsMed.whenToTake,false)){
+      callback("Don't have access to log this medication.");
+    } else {
+      findGuardianByID(body.guardianID, function (err, guardianFound) {
+        if (err) {
+          callback(err);
+        }else if(!guardianFound){
+          callback("Guardian not found.");
+        } else {
+          getDependentByRxsMedId(rxsMed._id, function (err, dependent) {
+            if (err) {
+              callback(err);
+            } else {
+              createRxsMedEvent(body, dependent, rxsMed, guardianFound, function (err, rxsMedEvent) {
+                if (err) {
+                  callback(err);
+                } else {
+                  attatchRxsMedEventToRxsMed(rxsMedEvent, rxsMed, function (err, result) {
+                    if (err) {
+                      callback(err);
+                    } else {
+                      callback(null, rxsMedEvent);
+                    }
+                  });
+                }
+              });
+            }
+          });
+        }
+      });
+    }
+}
+function tookMedication(rxsMedId, jwt, body, user, callback) {
   rxsMedicationModel.findById(rxsMedId).populate('events').exec(function (err, rxsMedicationFound) {
     if (err) {
       callback(err);
     } else if (!rxsMedicationFound) {
       callback("Rxs medication doesn't exist.");
+    }else if(!isMedEventValid(rxsMedicationFound.events,rxsMedicationFound.whenToTake,user.isAdmin)){
+      callback("Don't have access to log this medication.");
     } else {
       findGuardianByJWT(jwt, function (err, guardianFound) {
         if (err) {
@@ -268,7 +309,8 @@ function updateModifiedFields(oldDoc, updatedFields, callback) {
   if (updatedFields.event && updatedFields.event.timeStamp) {
     var newEvent = event;
     newEvent.timeStamp = updatedFields.event.timeStamp;
-    eventModel.findOneAndUpdate({ _id: obj.event._id }, { timeStamp: updatedFields.event.timeStamp }, function (err, result) {
+    eventModel.findOneAndUpdate({ _id: obj.event._id }, { timeStamp: updatedFields.event.timeStamp },
+       function (err, result) {
       if (err) {
         callback(err);
       } else {
@@ -328,4 +370,5 @@ function create(body, callback) {
 }
 
 
-module.exports = { create, findAll, deleteById, findById, patchUpdateById, tookMedication, getEventByRxsMedID };
+module.exports = { create, findAll, deleteById, findById, patchUpdateById,
+   tookMedication, getEventByRxsMedID, tookMedicationRefID };

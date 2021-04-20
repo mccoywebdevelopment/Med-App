@@ -20,7 +20,6 @@ router.route("/:month/:year/:JWT")
 
 router.route("/qr/generate-svg-code/all/:JWT")
 .get(verifyAdmin,function(req,res){
-    console.log(true)
     let basePath = path.join(__dirname, '../..', '/config/pdf/Dependent-Medications');
     quickRespQ.generateFile(basePath,"all",null,function(err,result){
         if(err){

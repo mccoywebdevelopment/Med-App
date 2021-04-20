@@ -433,3 +433,9 @@ div[data-radium]{
 .scanner-container>section>section>div{
   box-shadow: rgb(33 150 243 / 80%) 0px 0px 0px 5px inset!important;
 }
+.scanner-success>section>section>div{
+  box-shadow: rgb(0 255 0 / 80%) 0px 0px 0px 5px inset!important;
+}
+.btn{
+  font-size: 1.75em;
+}

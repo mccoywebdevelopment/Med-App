@@ -30,14 +30,13 @@ class UserNav extends React.Component {
                             {/* <p style={{ fontSize: '0.7em' }}>Home</p> */}
                         </a>
                     </div>
-                    <div className={"nav-item-mobile " + (this._isCurrentURL("/user/dependents") ? "my-nav-selected-mobile" : "")}
+                    {/* <div className={"nav-item-mobile " + (this._isCurrentURL("/user/dependents") ? "my-nav-selected-mobile" : "")}
                         style={{ borderLeftColor: this.props.theme.pagePrimaryColor }}>
                         <a href="/user/dependents" className="my-nav-item">
                             <i title="Home" className="fas fa-capsules"
                                 style={{ color: this.props.theme.pagePrimaryColor, fontSize: '20px' }}></i>
-                            {/* <p style={{ fontSize: '0.7em' }}>RXS</p> */}
                         </a>
-                    </div>
+                    </div> */}
                     <div className={"nav-item-mobile " + (this._isCurrentURL("/user/scanner") ? "my-nav-selected-mobile" : "")}
                         style={{ borderLeftColor: this.props.theme.pagePrimaryColor }}>
                         <a href="/user/scanner" className="my-nav-item">
@@ -46,14 +45,13 @@ class UserNav extends React.Component {
                             {/* <p style={{ fontSize: '0.7em' }}>Scan</p> */}
                         </a>
                     </div>
-                    <div className={"nav-item-mobile " + (this._isCurrentURL("/user/history") ? "my-nav-selected-mobile" : "")}
+                    {/* <div className={"nav-item-mobile " + (this._isCurrentURL("/user/history") ? "my-nav-selected-mobile" : "")}
                         style={{ borderLeftColor: this.props.theme.pagePrimaryColor }}>
                         <a href="/user/dependents" className="my-nav-item">
                             <i title="Home" className="fas fa-clipboard-list"
                                 style={{ color: this.props.theme.pagePrimaryColor, fontSize: '20px' }}></i>
-                            {/* <p style={{ fontSize: '0.7em' }}>History</p> */}
                         </a>
-                    </div>
+                    </div> */}
                     <div className={"nav-item-mobile " + (this._isCurrentURL("/user/profile") ? "my-nav-selected-mobile" : "")}
                         style={{ borderLeftColor: this.props.theme.pagePrimaryColor }}>
                         <a href="/user/profile" className="my-nav-item">

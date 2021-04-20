@@ -5,7 +5,7 @@ var RxsMedicationSchema = new mongoose.Schema({
     reason: { type: String, required: true },
     datePrescribed: { type: String, required: true },
     base64:{type: String, required: true},
-    refID:{type:String, required: true},
+    refID:{type:String, required: true, unique: true, select: false},
     instructions: String,
     endDate: String,
 

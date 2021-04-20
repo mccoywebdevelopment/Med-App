@@ -7,10 +7,10 @@ const findAllGroups = require('./group').findAll;
 const RxsMedication = require('../models/rxsMedication/RxsMedication');
 const MedicationEvent = require('../models/medicationEvent/MedicationEvent');
 const Rxs = require('../models/rxs/Rxs');
-const Medication = require('../models/medication/Medication');
 const SECRET_KEY = process.env.SECRET_KEY || require('../config/configVars').SECRET_KEY;
 const CAN_DELETE_ADMIN = process.env.CAN_DELETE_ADMIN || require('../config/configVars').CAN_DELETE_ADMIN || "false";
-const { addDetailsToUser } = require('../config/globalHelpers');
+const VALID_TIMES = process.env.VALID_TIMES || require('../config/configVars').VALID_TIMES;
+const { addDetailsToUser, isToday, isBetween, appendTimeToDate } = require('../config/globalHelpers');
 
 function getDependents(user, callback) {
   findAllGroups(function (err, allGroups) {
@@ -33,21 +33,49 @@ function getDependents(user, callback) {
             if (err) {
               callback(err);
             } else {
-              MedicationEvent.populate(res, { path: "dependents.rxs.rxsMedications.events",options:{sort:{'dateTaken':-1}} }, function (err, res) {
+              MedicationEvent.populate(res, { path: "dependents.rxs.rxsMedications.events", options: { sort: { 'dateTaken': -1 } } }, function (err, res) {
                 if (err) {
                   callback(err);
                 } else {
                   var res = JSON.parse(JSON.stringify(res));
-                  var dependents = [];
+                  let activeArr = {
+                    morningMedsActive:[],
+                    afternoonMedsActive:[],
+                    eveningMedsActive:[]
+                  }
+                  let historyArr = {
+                    morningMedsHistory:[],
+                    afternoonMedsHistory:[],
+                    eveningMedsHistory:[]
+                  }
+                  let dependents = [];
                   for (var i = 0; i < res.length; ++i) {
                     var curGroup = res[i];
                     for (var ix = 0; ix < curGroup.dependents.length; ++ix) {
                       var curDep = curGroup.dependents[ix];
                       curDep.group = attatchGroup(curGroup);
                       dependents.push(curDep);
+                      let {active,history} = filterMedications(curDep, VALID_TIMES.morning,
+                        VALID_TIMES.afternoon, VALID_TIMES.evening);
+                      
+                        activeArr.morningMedsActive = activeArr.morningMedsActive.concat(active.morningMedsActive);
+                        activeArr.afternoonMedsActive = activeArr.afternoonMedsActive.concat(active.afternoonMedsActive);
+                        activeArr.eveningMedsActive = activeArr.eveningMedsActive.concat(active.eveningMedsActive);
+
+                        historyArr.morningMedsHistory = historyArr.morningMedsHistory.concat(history.morningMedsHistory);
+                        historyArr.afternoonMedsHistory = historyArr.afternoonMedsHistory.concat(history.afternoonMedsHistory);
+                        historyArr.eveningMedsHistory = historyArr.eveningMedsHistory.concat(history.eveningMedsHistory);
                     }
                   }
-                  callback(null, dependents);
+                  let obj = {
+                    activeArr,
+                    historyArr,
+                    dependents,
+                    morning:VALID_TIMES.morning,
+                    afternoon:VALID_TIMES.afternoon,
+                    evening:VALID_TIMES.evening
+                  }
+                  callback(null, obj);
                 }
               });
             }
@@ -56,6 +84,105 @@ function getDependents(user, callback) {
       });
     }
   });
+}
+function getMedHistory(whenToTake, events, morningStart, morningEnd,
+  afternoonStart, afternoonEnd, eveningStart, eveningEnd, medObj, historyArr) {
+
+  let i = 0;
+  while (events && i < events.length && isToday(events[i].dateTaken)) {
+    if (whenToTake.includes('morning') && isBetween(events[i].dateTaken, morningStart, morningEnd)) {
+      historyArr.morningMedsHistory.push(medObj)
+    }
+    if (whenToTake.includes('afternoon') && isBetween(events[i].dateTaken, afternoonStart, afternoonEnd)) {
+      historyArr.afternoonMedsHistory.push(medObj)
+    }
+    if (whenToTake.includes('evening') && isBetween(events[i].dateTaken, eveningStart, eveningEnd)) {
+      historyArr.eveningMedsHistory.push(medObj)
+    }
+    i++;
+  }
+
+  return historyArr
+}
+function getMedActive(whenToTake, events, morningStart, morningEnd,
+  afternoonStart, afternoonEnd, eveningStart, eveningEnd, medObj, activeArr) {
+
+  let i = 0;
+  let morningFound = false;
+  let afternoonFound = false;
+  let eveningFound = false;
+
+
+  while (events && i < events.length && isToday(events[i].dateTaken)) {
+    if (isBetween(events[i].dateTaken, morningStart, morningEnd)) {
+      morningFound = true;
+    }
+    if (isBetween(events[i].dateTaken, afternoonStart, afternoonEnd)) {
+      afternoonFound = true;
+    }
+    if (isBetween(events[i].dateTaken, eveningStart, eveningEnd)) {
+      eveningFound = true;
+    }
+    i++
+  }
+
+
+  if (whenToTake.includes('morning') && !morningFound) {
+    activeArr.morningMedsActive.push(medObj)
+  }
+  if (whenToTake.includes('afternoon') && !afternoonFound) {
+    activeArr.afternoonMedsActive.push(medObj)
+  }
+  if (whenToTake.includes('evening') && !eveningFound) {
+    activeArr.eveningMedsActive.push(medObj)
+  }
+
+  return activeArr;
+}
+function filterMedications(dep, morning, afternoon, evening) {
+  let today = new Date();
+
+  let morningStart = Date.parse(appendTimeToDate(today) + " " + morning[0]);
+  let morningEnd = Date.parse(appendTimeToDate(today) + " " + morning[1]);
+
+  let afternoonStart = Date.parse(appendTimeToDate(today) + " " + afternoon[0]);
+  let afternoonEnd = Date.parse(appendTimeToDate(today) + " " + afternoon[1]);
+
+  let eveningStart = Date.parse(appendTimeToDate(today) + " " + evening[0]);
+  let eveningEnd = Date.parse(appendTimeToDate(today) + " " + evening[1]);
+
+  let active = {
+    morningMedsActive: [],
+    afternoonMedsActive: [],
+    eveningMedsActive: []
+  };
+  let history = {
+    morningMedsHistory: [],
+    afternoonMedsHistory: [],
+    eveningMedsHistory: []
+  }
+
+    for (var ix = 0; ix < dep.rxs.length; ++ix) {
+      for (var z = 0; z < dep.rxs[ix].rxsMedications.length; ++z) {
+
+        let whenToTake = dep.rxs[ix].rxsMedications[z].whenToTake;
+        let events = dep.rxs[ix].rxsMedications[z].events;
+        let medObj = {
+          dependent: dep,
+          rxs: dep.rxs[ix],
+          rxsMedication: dep.rxs[ix].rxsMedications[z]
+        }
+        history = getMedHistory(whenToTake, events, morningStart, morningEnd,
+          afternoonStart, afternoonEnd, eveningStart, eveningEnd, medObj, history);
+
+        active = getMedActive(whenToTake, events, morningStart, morningEnd,
+          afternoonStart, afternoonEnd, eveningStart, eveningEnd, medObj, active);
+      }
+    }
+  morning = [morningStart, morningEnd];
+  afternoon = [afternoonStart, afternoonEnd];
+  evening = [eveningStart, eveningEnd];
+  return { history, active, morning, afternoon, evening }
 }
 function attatchGroup(group) {
   return _objectWithoutProperties(group, ["dependents"])

@@ -1,4 +1,7 @@
 const User = require('../models/user/User');
+const RxsMedication = require('../models/rxsMedication/RxsMedication');
+const VALID_TIMES = require('./configVars').VALID_TIMES;
+
 
 function verifyUser(req, res, next) {
     var todayDate = new Date();
@@ -24,6 +27,19 @@ function verifyUser(req, res, next) {
             }
         });
     }
+}
+function verifyRefID(req,res,next){
+    let refID = req.params.refID;
+    RxsMedication.findOne({refID:refID}).populate('events').exec(function(err,result){
+        if(err){
+            next({error: err})
+        }else if(!result){
+            next({error:"RefID is invalid or medication no longer exists."})
+        }else{
+            req.rxsMedicationRefID = result;
+            next();
+        }
+    });
 }
 function verifyAdmin(req, res, next) {
     var todayDate = new Date();
@@ -67,7 +83,7 @@ function addDetailsToUser(guardian, user) {
     if (guardian) {
         user = JSON.parse(JSON.stringify(user));
         user.phoneNumber = guardian.phoneNumber || "";
-
+        user.guardianID = guardian._id;
         if (guardian.name && guardian.name.firstName && guardian.name.lastName) {
             user.name = guardian.name.firstName + " " + guardian.name.lastName;
         } else {
@@ -77,4 +93,87 @@ function addDetailsToUser(guardian, user) {
 
     return user;
 }
-module.exports = { verifyUser, verifyAdmin, findUserByJwt, addDetailsToUser };
+function isLessThan(end) {
+    let today = new Date();
+    if (today <= end) {
+      return true
+    }
+    return false;
+  }
+function isToday(someDate) {
+    if (!someDate) {
+        return false;
+    }
+    someDate = new Date(someDate);
+    let today = new Date();
+    return someDate.getDate() == today.getDate() &&
+        someDate.getMonth() == today.getMonth() &&
+        someDate.getFullYear() == today.getFullYear()
+}
+function isBetween(time, start, end) {
+    let today = new Date(time);
+    if (start <= today && today <= end) {
+        return true
+    }
+    return false;
+}
+function appendTimeToDate(date) {
+    var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+  
+    if (month.length < 2)
+      month = '0' + month;
+    if (day.length < 2)
+      day = '0' + day;
+  
+    return [year, month, day].join('-');
+  }
+function isMedEventValid(events, whenToTake, isAdmin) {
+
+    if(isAdmin){
+        return true;
+    }
+
+    let i = 0;
+    let morningFound = false;
+    let afternoonFound = false;
+    let eveningFound = false;
+    let today = new Date();
+
+    let morningStart = Date.parse(appendTimeToDate(today) + " " + VALID_TIMES.morning[0]);
+    let morningEnd = Date.parse(appendTimeToDate(today) + " " + VALID_TIMES.morning[1]);
+
+    let afternoonStart = Date.parse(appendTimeToDate(today) + " " + VALID_TIMES.afternoon[0]);
+    let afternoonEnd = Date.parse(appendTimeToDate(today) + " " + VALID_TIMES.afternoon[1]);
+
+    let eveningStart = Date.parse(appendTimeToDate(today) + " " + VALID_TIMES.evening[0]);
+    let eveningEnd = Date.parse(appendTimeToDate(today) + " " + VALID_TIMES.evening[1]);
+
+
+    while (events && i < events.length && isToday(events[i].dateTaken)) {
+        if (isBetween(events[i].dateTaken, morningStart, morningEnd)) {
+            morningFound = true;
+        }
+        if (isBetween(events[i].dateTaken, afternoonStart, afternoonEnd)) {
+            afternoonFound = true;
+        }
+        if (isBetween(events[i].dateTaken, eveningStart, eveningEnd)) {
+            eveningFound = true;
+        }
+        i++
+    }
+
+    if (whenToTake.includes('morning') && !morningFound && isBetween(today,morningStart,morningEnd)) {
+        return true
+    }else if (whenToTake.includes('afternoon') && !afternoonFound && isBetween(today,afternoonStart,afternoonEnd)) {
+        return true
+    }
+    else if (whenToTake.includes('evening') && !eveningFound && isBetween(today,eveningStart,eveningEnd)) {
+        return true
+    }else{
+        return false
+    }
+}
+module.exports = { verifyUser, verifyAdmin, isMedEventValid, verifyRefID, findUserByJwt, addDetailsToUser, isToday, isBetween, isLessThan, appendTimeToDate };

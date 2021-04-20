@@ -95,19 +95,7 @@ export function FETCH(type, url, body, jwt, dispatch, isLoading, done) {
     }
     fetch(uri, fetchObj)
         .then(res => {
-            if(res.status >= 400 && (!jwt || jwt.length<1)) {
-                dispatch({
-                    type: CHANGE_CURRENT_URL,
-                    payload:String(window.location)
-                  });
-                  dispatch({
-                    type: CHANGE_REDIRECT_URL,
-                    payload:"/auth/login"
-                  });
-                  return false;
-            }else{
-                return res.json();
-            }
+            return res.json();
         })
         .then(res => {
             if (isLoading) {
@@ -122,16 +110,30 @@ export function FETCH(type, url, body, jwt, dispatch, isLoading, done) {
             }
         });
 }
+export function formatDateHome(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
 
-// let options = {
-//     timeZone: 'America/New_York',
-//     year: 'numeric',
-//     month: 'numeric',
-//     day: 'numeric',
-//     hour: 'numeric',
-//     minute: 'numeric',
-//     second: 'numeric',
-//   },
-//   formatter = new Intl.DateTimeFormat([], options);
+    if (month.length < 2)
+        month = '0' + month;
+    if (day.length < 2)
+        day = '0' + day;
 
-// console.log(formatter.format(new Date()));
+    return [year, month, day].join('-');
+}
+export function isBetween(time, start, end) {
+    let today = new Date(time);
+    if (start <= today && today <= end) {
+        return true
+    }
+    return false;
+}
+export function isLessThan(end) {
+    let today = new Date();
+    if (today <= end) {
+        return true
+    }
+    return false;
+}

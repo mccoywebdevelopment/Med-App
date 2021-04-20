@@ -60,5 +60,16 @@ router.route("/:id/:JWT")
     })
 });
 
+router.route("/get/medication/refID/:id")
+.get(function(req,res){
+    rxsMedicationQ.findByRefID(req.params.id,function(err,medFound){
+        if(err){
+            console.log(err);
+            res.status(errors.code.BAD_REQUEST).json({error:err});
+        }else{
+            res.send(medFound);
+        }
+    });
+})
 
 module.exports = router;

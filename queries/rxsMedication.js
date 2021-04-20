@@ -1,8 +1,11 @@
 const RxsMedModel = require('../models/rxsMedication/RxsMedication');
+const RxsModel = require('../models/rxs/Rxs');
+const DependentModel = require('../models/dependent/Dependent');
+const GroupModel = require('../models/group/Group');
 const val = require('./helpers/helper');
 const delMedEvent = require('./medicationEvent').deleteById;
 const QRCode = require('qrcode');
-const {CLIENT_URL} = require('../config/configVars');
+const { CLIENT_URL } = require('../config/configVars');
 const fs = require('fs');
 
 function findAll(callback) {
@@ -14,22 +17,91 @@ function findAll(callback) {
     }
   });
 }
-function base64_encode(qrCode) {
-  return new Buffer(qrCode).toString('base64');
-}
-function createCode(data,callback) {
+
+function createCode(data, callback) {
   let filepath = './config/pdf/QR-codes/current.png';
-  QRCode.toFile(filepath,data,function(err,result){
-    if(err){
+  QRCode.toFile(filepath, data, function (err, result) {
+    if (err) {
       callback(err);
-    }else{
-      const file_buffer  = fs.readFileSync(filepath);
+    } else {
+      const file_buffer = fs.readFileSync(filepath);
       const contents_in_base64 = file_buffer.toString('base64');
-      callback(null,contents_in_base64);
+      callback(null, contents_in_base64);
     }
   });
 }
 
+function findByRefID(refID, callback) {
+  RxsMedModel.findOne({ refID: refID }, function (err, rxsMedication) {
+    if (err) {
+      callback(err);
+    } else if (!rxsMedication) {
+      callback("Medication not found.");
+    } else {
+      getRefIDMetaData(rxsMedication._id, function (err, groups) {
+        if (err) {
+          callback(err);
+        } else {
+          callback(null,{ rxsMedication, groups: groups });
+        }
+      });
+    }
+  });
+}
+function getRefIDMetaData(rxsMedID, callback) {
+  findRxsByRxsMedicationID(rxsMedID, function (err, rxs) {
+    if (err) {
+      callback(err);
+    } else {
+      findDependentByRxsID(rxs._id, function (err, depedent) {
+        if (err) {
+          callback(err);
+        } else {
+          findGroupsByDependentID(depedent._id, function (err, groups) {
+            if (err) {
+              callback(err);
+            } else {
+              callback(null, groups);
+            }
+          });
+        }
+      });
+    }
+  });
+}
+function findGroupsByDependentID(depID, callback) {
+  GroupModel.find({ dependents: depID }).populate('guardians').exec(function (err, result) {
+    if (err) {
+      callback(err);
+    } else if (!result || result.length < 1) {
+      callback("group record not found");
+    } else {
+      callback(null, result);
+    }
+  });
+}
+function findDependentByRxsID(rxsID, callback) {
+  DependentModel.findOne({ rxs: rxsID }, function (err, result) {
+    if (err) {
+      callback(err);
+    } else if (!result) {
+      callback("dep Record not found.");
+    } else {
+      callback(null, result);
+    }
+  });
+}
+function findRxsByRxsMedicationID(rxsMedicationID, callback) {
+  RxsModel.findOne({ 'rxsMedications': rxsMedicationID }).exec(function (err, result) {
+    if (err) {
+      callback(err);
+    } else if (!result) {
+      callback("rxs Record not found.");
+    } else {
+      callback(null, result);
+    }
+  });
+}
 function findById(id, callback) {
   RxsMedModel.findById(id, function (err, result) {
     if (err) {
@@ -221,7 +293,7 @@ function saveToDoc(bodyData, schemaModel, callback) {
   let refID = require("crypto").randomBytes(64).toString('hex');
   let logURL = CLIENT_URL + "/user/log-med/" + refID;
   newDoc.refID = refID;
-  createCode(logURL,function (err, code) {
+  createCode(logURL, function (err, code) {
     if (err) {
       callback(err);
     } else {
@@ -240,14 +312,14 @@ function saveToDoc(bodyData, schemaModel, callback) {
 }
 
 function create(body, callback) {
-      saveToDoc(body, RxsMedModel, function (err, result) {
-        if (err) {
-          callback(err);
-        } else {
-          callback(null, result);
-        }
-      });
+  saveToDoc(body, RxsMedModel, function (err, result) {
+    if (err) {
+      callback(err);
+    } else {
+      callback(null, result);
+    }
+  });
 }
 
 
-module.exports = { findAll, findById, patchUpdateById, deleteById, create }
+module.exports = { findAll, findById, patchUpdateById, deleteById, create, findByRefID }

@@ -9,6 +9,7 @@ import { changeRedirectURL, changeCurrentURL } from "./actions/auth";
 import AdminLayout from "./layouts/admin/AdminLayout";
 import AuthLayout from "./layouts/shared/AuthLayout";
 import UserLayout from "./layouts/user/UserLayout";
+import UserNonlocal from "./layouts/user/UserNonlocal";
 
 import "./assets/css/fontawesome/css/all.min.css";
 
@@ -37,6 +38,9 @@ class App extends React.Component {
   _userRouteList = () => {
     return userRoutes.map((route, key) => {
       let component = <UserLayout>{route.component}</UserLayout>
+      if(route.nonLocal){
+        component = <UserNonlocal>{route.component}</UserNonlocal>
+      }
       return (
         <Route exact path={route.path} key={"userRoute" + key}>
           {component}

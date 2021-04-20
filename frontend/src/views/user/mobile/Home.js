@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchPopulatedDependentsUser } from '../../../actions/dependent';
+import { fetchGetFilteredMedications } from '../../../actions/user';
+import { formatDateHome, isBetween } from '../../../config/helpers';
 
 import UserHeader from "../../../components/user/header/UserHeader";
 import Progress from "../../../components/user/charts/Progress";
@@ -16,9 +17,9 @@ class Home extends React.Component {
             indexSelected: 0,
             prevSelected: 0
         },
-        morning: ["4:00 AM", "11:59 AM"],
-        afternoon: ["12:00 PM", "5:59 PM"],
-        evening: ["5:59 PM", "11:00 PM"],
+        morning: null,
+        afternoon: null,
+        evening: null,
         currentView: "Home",
         currentTime: null,
         medications: [],
@@ -37,14 +38,13 @@ class Home extends React.Component {
         eveningMedsHistory: [],
 
         postPopUp: {
-            data:null,
-            isHistory:false
+            data: null,
+            isHistory: false
         }
     }
     constructor(props) {
         super(props);
         this._selectNav.bind(this);
-        this._filterMedications.bind(this);
     }
     _selectNav = (index) => {
         let newState = this.state;
@@ -53,180 +53,27 @@ class Home extends React.Component {
         this.setState(newState);
         this._setCurrentMeds();
     }
-    _isToday = (someDate) => {
-        if (!someDate) {
-            return false;
-        }
-        someDate = new Date(someDate);
-        let today = new Date();
-        return someDate.getDate() == today.getDate() &&
-            someDate.getMonth() == today.getMonth() &&
-            someDate.getFullYear() == today.getFullYear()
-    }
-    _formatDate(date) {
-        var d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
-
-        if (month.length < 2)
-            month = '0' + month;
-        if (day.length < 2)
-            day = '0' + day;
-
-        return [year, month, day].join('-');
-    }
-    _isBetween(time, start, end) {
-        let today = new Date(time);
-        if (start <= today && today <= end) {
-            return true
-        }
-        return false;
-    }
-    _isLessThan(end) {
-        let today = new Date();
-        if (today <= end) {
-            return true
-        }
-        return false;
-    }
     _setInitNav = () => {
         let morning = this.state.morning;
         let afternoon = this.state.afternoon;
         let today = new Date();
 
-        let morningStart = Date.parse(this._formatDate(today) + " " + morning[0]);
-        let morningEnd = Date.parse(this._formatDate(today) + " " + morning[1]);
+        let morningStart = Date.parse(formatDateHome(today) + " " + morning[0]);
+        let morningEnd = Date.parse(formatDateHome(today) + " " + morning[1]);
 
-        let afternoonStart = Date.parse(this._formatDate(today) + " " + afternoon[0]);
-        let afternoonEnd = Date.parse(this._formatDate(today) + " " + afternoon[1]);
+        let afternoonStart = Date.parse(formatDateHome(today) + " " + afternoon[0]);
+        let afternoonEnd = Date.parse(formatDateHome(today) + " " + afternoon[1]);
 
         let newState = this.state;
-        if (this._isBetween(today, morningStart, morningEnd)) {
+        if (isBetween(today, morningStart, morningEnd)) {
             this._selectNav(0);
-        } else if (this._isBetween(today, afternoonStart, afternoonEnd)) {
+        } else if (isBetween(today, afternoonStart, afternoonEnd)) {
             this._selectNav(1);
         } else {
             this._selectNav(2);
         }
-        this.setState(newState);
-    }
-    _getMedHistory = (whenToTake, events, morningStart, morningEnd,
-        afternoonStart, afternoonEnd, eveningStart, eveningEnd, medObj, historyArr) => {
-
-        let i = 0;
-        while (events && i < events.length && this._isToday(events[i].dateTaken)) {
-            if (whenToTake.includes('morning') && this._isBetween(events[i].dateTaken, morningStart, morningEnd)) {
-                historyArr.morningMedsHistory.push(medObj)
-            }
-            if (whenToTake.includes('afternoon') && this._isBetween(events[i].dateTaken, afternoonStart, afternoonEnd)) {
-                historyArr.afternoonMedsHistory.push(medObj)
-            }
-            if (whenToTake.includes('evening') && this._isBetween(events[i].dateTaken, eveningStart, eveningEnd)) {
-                historyArr.eveningMedsHistory.push(medObj)
-            }
-            i++;
-        }
-        
-        return historyArr
-    }
-    _getMedActive = (whenToTake, events, morningStart, morningEnd,
-        afternoonStart, afternoonEnd, eveningStart, eveningEnd, medObj, activeArr) => {
-
-        let i = 0;
-        let morningFound = false;
-        let afternoonFound = false;
-        let eveningFound = false;
-
-        console.log(events);
-
-        while (events && i < events.length && this._isToday(events[i].dateTaken)) {
-            console.log(events[i].dateTaken)
-            if (this._isBetween(events[i].dateTaken, morningStart, morningEnd)) {
-                morningFound = true;
-            }
-            if (this._isBetween(events[i].dateTaken, afternoonStart, afternoonEnd)) {
-                afternoonFound = true;
-            }
-            if (this._isBetween(events[i].dateTaken, eveningStart, eveningEnd)) {
-                eveningFound = true;
-            }
-            i++
-        }
-
-
-        if (whenToTake.includes('morning') && !morningFound) {
-            activeArr.morningMedsActive.push(medObj)
-        }
-        if (whenToTake.includes('afternoon') && !afternoonFound) {
-            activeArr.afternoonMedsActive.push(medObj)
-        }
-        if (whenToTake.includes('evening') && !eveningFound) {
-            activeArr.eveningMedsActive.push(medObj)
-        }
-
-
-
-        return activeArr;
-    }
-    _filterMedications = () => {
-        let deps = this.props.dependentState.data;
-
-        let morning = this.state.morning;
-        let afternoon = this.state.afternoon;
-        let evening = this.state.evening;
-        let today = new Date();
-
-        let morningStart = Date.parse(this._formatDate(today) + " " + morning[0]);
-        let morningEnd = Date.parse(this._formatDate(today) + " " + morning[1]);
-
-        let afternoonStart = Date.parse(this._formatDate(today) + " " + afternoon[0]);
-        let afternoonEnd = Date.parse(this._formatDate(today) + " " + afternoon[1]);
-
-        let eveningStart = Date.parse(this._formatDate(today) + " " + evening[0]);
-        let eveningEnd = Date.parse(this._formatDate(today) + " " + evening[1]);
-
-        let active = {
-            morningMedsActive:[],
-            afternoonMedsActive:[],
-            eveningMedsActive:[]
-        };
-        let history = {
-            morningMedsHistory:[],
-            afternoonMedsHistory:[],
-            eveningMedsHistory:[]
-        }
-
-        for (var i = 0; i < deps.length; ++i) {
-            for (var ix = 0; ix < deps[i].rxs.length; ++ix) {
-                for (var z = 0; z < deps[i].rxs[ix].rxsMedications.length; ++z) {
-
-                    let whenToTake = deps[i].rxs[ix].rxsMedications[z].whenToTake;
-                    let events = deps[i].rxs[ix].rxsMedications[z].events;
-                    let medObj = {
-                        dependent: deps[i],
-                        rxs: deps[i].rxs[ix],
-                        rxsMedication: deps[i].rxs[ix].rxsMedications[z]
-                    }
-                    history = this._getMedHistory(whenToTake, events, morningStart, morningEnd,
-                         afternoonStart, afternoonEnd, eveningStart, eveningEnd, medObj, history);
-
-                    active = this._getMedActive(whenToTake, events, morningStart, morningEnd,
-                         afternoonStart, afternoonEnd, eveningStart, eveningEnd, medObj, active);
-                }
-            }
-        }
-
-        let newState = this.state;
-        newState.morningMedsActive = active.morningMedsActive;
-        newState.morningMedsHistory = history.morningMedsHistory;
-        newState.afternoonMedsActive = active.afternoonMedsActive;
-        newState.afternoonMedsHistory = history.afternoonMedsHistory;
-        newState.eveningMedsActive = active.eveningMedsActive;
-        newState.eveningMedsHistory = history.afternoonMedsHistory;
 
         this.setState(newState);
-        this._setCurrentMeds();
     }
     _setCurrentMeds = () => {
         let index = this.state.navItems.indexSelected;
@@ -261,25 +108,34 @@ class Home extends React.Component {
             width: (history / total)
         })
     }
-    _selectMedCard = (med,isHistory) => {
+    _selectMedCard = (med, isHistory) => {
         let newState = this.state;
         newState.postPopUp.data = med;
         newState.postPopUp.isHistory = isHistory;
         this.setState(newState);
-        console.log(this.state);
     }
-    
+
     componentDidMount = () => {
         this._setCurrentTime();
-        this.props.fetchPopulatedDependentsUser(true, (data) => {
-            this._filterMedications();
+        this.props.fetchGetFilteredMedications((data) => {
+            let newState = this.state;
+            newState.morning = data.morning;
+            newState.afternoon = data.afternoon;
+            newState.evening = data.evening;
+            newState.morningMedsActive = data.activeArr.morningMedsActive;
+            newState.morningMedsHistory = data.historyArr.morningMedsHistory;
+            newState.afternoonMedsActive = data.activeArr.afternoonMedsActive;
+            newState.afternoonMedsHistory = data.historyArr.afternoonMedsHistory;
+            newState.eveningMedsActive = data.activeArr.eveningMedsActive;
+            newState.eveningMedsHistory = data.historyArr.afternoonMedsHistory;
+            this.setState(newState);
+            this._setCurrentMeds();
             this._setInitNav();
-            console.log(this.state);
         });
     }
     _renderPopUp = () => {
         return (
-            <ViewMed isHistory={this.state.postPopUp.isHistory} data={this.state.postPopUp.data} 
+            <ViewMed isHistory={this.state.postPopUp.isHistory} data={this.state.postPopUp.data}
                 togglePopUp={this._selectMedCard} />
         )
     }
@@ -325,11 +181,11 @@ class Home extends React.Component {
 Home.propTypes = {
     auth: PropTypes.object.isRequired,
     dependentState: PropTypes.object.isRequired,
-    fetchPopulatedDependentsUser: PropTypes.func.isRequired
+    fetchGetFilteredMedications: PropTypes.func.isRequired
 };
 const mapStateToProps = (state) => ({
     auth: state.auth,
     dependentState: state.dependentState,
 });
 
-export default connect(mapStateToProps, { fetchPopulatedDependentsUser })(Home);
+export default connect(mapStateToProps, { fetchGetFilteredMedications })(Home);

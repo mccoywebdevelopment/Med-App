@@ -134,22 +134,22 @@ class DependentView extends React.Component {
                             <div className="col-lg-12" style={{ marginBottom: "30px" }}>
                                 <button type="button"
                                     onClick={() => { this.props.togglePopUp("Create Dependent", <CreateDependent />, "90%") }}
-                                    className="btn btn-primary btn-fw">Create</button>
+                                    className="btn btn-primary btn-fw" style={{fontSize:'0.8em'}}>Create</button>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col-lg-12" style={{ marginBottom: "30px" }}>
                                 <div className="btn-group" role="group" aria-label="Basic example">
                                     <button onClick={() => { this._toggleFilterBy(true) }} type="button"
-                                        className={"btn " + (this.state.filterBy.all ? "btn-primary" : "btn-outline-secondary")}>All</button>
+                                        className={"btn " + (this.state.filterBy.all ? "btn-primary" : "btn-outline-secondary") } style={{fontSize:'0.8em'}}>All</button>
                                     <button onClick={() => { this._toggleFilterBy(false, true) }} type="button"
-                                        className={"btn " + (this.state.filterBy.grouped ? "btn-primary" : "btn-outline-secondary")}>Active ({isGroupLength})</button>
+                                        className={"btn " + (this.state.filterBy.grouped ? "btn-primary" : "btn-outline-secondary")} style={{fontSize:'0.8em'}}>Active ({isGroupLength})</button>
                                     <button onClick={() => { this._toggleFilterBy(false, false, true) }} type="button"
-                                        className={"btn " + (this.state.filterBy.notGrouped ? "btn-primary" : "btn-outline-secondary")}>Inactive ({notGroupLength})</button>
+                                        className={"btn " + (this.state.filterBy.notGrouped ? "btn-primary" : "btn-outline-secondary")} style={{fontSize:'0.8em'}}>Inactive ({notGroupLength})</button>
                                 </div>
                                 {this._getData().length > 0 ?
                                     <div class="dropdown" style={{float:'right'}}>
-                                    <button class="btn btn-outline-primary dropdown-toggle hover-white" type="button" id="dropdownMenuOutlineButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <button class="btn btn-outline-primary dropdown-toggle hover-white" style={{fontSize:'0.8em'}} type="button" id="dropdownMenuOutlineButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i className="fas fa-download" style={{paddingRight:'5px'}}></i>Export
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton1">
