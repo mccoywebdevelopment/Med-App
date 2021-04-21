@@ -133,6 +133,7 @@ function appendTimeToDate(date) {
 function isMedEventValid(events, whenToTake, isAdmin) {
 
     if(isAdmin){
+        console.log('1.0')
         return true;
     }
 
@@ -151,8 +152,8 @@ function isMedEventValid(events, whenToTake, isAdmin) {
     let eveningStart = Date.parse(appendTimeToDate(today) + " " + VALID_TIMES.evening[0]);
     let eveningEnd = Date.parse(appendTimeToDate(today) + " " + VALID_TIMES.evening[1]);
 
-
     while (events && i < events.length && isToday(events[i].dateTaken)) {
+        console.log(isBetween(events[i].dateTaken,morningStart,morningEnd));
         if (isBetween(events[i].dateTaken, morningStart, morningEnd)) {
             morningFound = true;
         }
@@ -166,13 +167,17 @@ function isMedEventValid(events, whenToTake, isAdmin) {
     }
 
     if (whenToTake.includes('morning') && !morningFound && isBetween(today,morningStart,morningEnd)) {
+        console.log('1.1')
         return true
     }else if (whenToTake.includes('afternoon') && !afternoonFound && isBetween(today,afternoonStart,afternoonEnd)) {
+        console.log('1.2')
         return true
     }
     else if (whenToTake.includes('evening') && !eveningFound && isBetween(today,eveningStart,eveningEnd)) {
+        console.log('1.3')
         return true
     }else{
+        console.log('1.4')
         return false
     }
 }

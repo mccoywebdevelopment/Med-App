@@ -7,7 +7,6 @@ export const fetchCreateMedEvent = (body, rxsMedID, isLoading, done) => (dispatc
     if (err) {
       dispatch(createMessage(err, 'danger'));
     }else{
-      alert(res);
       dispatch(createMessage(res.title, "success"));
       if(done){
         done(res);

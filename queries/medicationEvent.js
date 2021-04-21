@@ -34,8 +34,8 @@ function getEventByRxsMedID(rxsMedID, callback) {
       callback(err);
     } else if (!rxsMedFound) {
       callback("Medication not found.");
-    }else if(rxsMedFound.events.length<1){
-      callback(null,rxsMedFound);
+    } else if (rxsMedFound.events.length < 1) {
+      callback(null, rxsMedFound);
     } else {
       let i = 0;
       rxsMedFound.events.forEach((event, index) => {
@@ -96,42 +96,37 @@ function findGuardianByJWT(jwt, callback) {
   });
 }
 function tookMedicationRefID(rxsMed, body, callback) {
-  /*
-  need rxsMed
-  need guardian
-  need dependent
-  
-  */if(!isMedEventValid(rxsMed.events,rxsMed.whenToTake,false)){
-      callback("Don't have access to log this medication.");
-    } else {
-      findGuardianByID(body.guardianID, function (err, guardianFound) {
-        if (err) {
-          callback(err);
-        }else if(!guardianFound){
-          callback("Guardian not found.");
-        } else {
-          getDependentByRxsMedId(rxsMed._id, function (err, dependent) {
-            if (err) {
-              callback(err);
-            } else {
-              createRxsMedEvent(body, dependent, rxsMed, guardianFound, function (err, rxsMedEvent) {
-                if (err) {
-                  callback(err);
-                } else {
-                  attatchRxsMedEventToRxsMed(rxsMedEvent, rxsMed, function (err, result) {
-                    if (err) {
-                      callback(err);
-                    } else {
-                      callback(null, rxsMedEvent);
-                    }
-                  });
-                }
-              });
-            }
-          });
-        }
-      });
-    }
+  if (!isMedEventValid(rxsMed.events, rxsMed.whenToTake, false)) {
+    callback("Don't have access to log this medication.");
+  } else {
+    findGuardianByID(body.guardianID, function (err, guardianFound) {
+      if (err) {
+        callback(err);
+      } else if (!guardianFound) {
+        callback("Guardian not found.");
+      } else {
+        getDependentByRxsMedId(rxsMed._id, function (err, dependent) {
+          if (err) {
+            callback(err);
+          } else {
+            createRxsMedEvent(body, dependent, rxsMed, guardianFound, function (err, rxsMedEvent) {
+              if (err) {
+                callback(err);
+              } else {
+                attatchRxsMedEventToRxsMed(rxsMedEvent, rxsMed, function (err, result) {
+                  if (err) {
+                    callback(err);
+                  } else {
+                    callback(null, rxsMedEvent);
+                  }
+                });
+              }
+            });
+          }
+        });
+      }
+    });
+  }
 }
 function tookMedication(rxsMedId, jwt, body, user, callback) {
   rxsMedicationModel.findById(rxsMedId).populate('events').exec(function (err, rxsMedicationFound) {
@@ -139,7 +134,7 @@ function tookMedication(rxsMedId, jwt, body, user, callback) {
       callback(err);
     } else if (!rxsMedicationFound) {
       callback("Rxs medication doesn't exist.");
-    }else if(!isMedEventValid(rxsMedicationFound.events,rxsMedicationFound.whenToTake,user.isAdmin)){
+    } else if (!isMedEventValid(rxsMedicationFound.events, rxsMedicationFound.whenToTake, user.isAdmin)) {
       callback("Don't have access to log this medication.");
     } else {
       findGuardianByJWT(jwt, function (err, guardianFound) {
@@ -280,7 +275,7 @@ function updateModifiedFields(oldDoc, updatedFields, callback) {
   if (updatedFields.title) {
     title = updatedFields.title;
   }
-  if (typeof(updatedFields.isAway)!=undefined) {
+  if (typeof (updatedFields.isAway) != undefined) {
     isAway = updatedFields.isAway;
   }
   if (typeof (updatedFields.notes) != undefined) {
@@ -310,14 +305,14 @@ function updateModifiedFields(oldDoc, updatedFields, callback) {
     var newEvent = event;
     newEvent.timeStamp = updatedFields.event.timeStamp;
     eventModel.findOneAndUpdate({ _id: obj.event._id }, { timeStamp: updatedFields.event.timeStamp },
-       function (err, result) {
-      if (err) {
-        callback(err);
-      } else {
-        obj.event = result;
-        callback(null, obj);
-      }
-    });
+      function (err, result) {
+        if (err) {
+          callback(err);
+        } else {
+          obj.event = result;
+          callback(null, obj);
+        }
+      });
   } else {
     callback(null, obj);
   }
@@ -328,9 +323,9 @@ function deleteById(id, callback) {
   medicationEventModel.findOneAndDelete({ _id: id }).exec(function (err, deletedDoc) {
     if (err) {
       callback(err);
-    }else if(!deletedDoc){
+    } else if (!deletedDoc) {
       callback("Medication event not found.");
-    }else {
+    } else {
       callback(null, deletedDoc);
     }
   });
@@ -370,5 +365,7 @@ function create(body, callback) {
 }
 
 
-module.exports = { create, findAll, deleteById, findById, patchUpdateById,
-   tookMedication, getEventByRxsMedID, tookMedicationRefID };
+module.exports = {
+  create, findAll, deleteById, findById, patchUpdateById,
+  tookMedication, getEventByRxsMedID, tookMedicationRefID
+};

@@ -52,9 +52,9 @@ class UserNav extends React.Component {
                                 style={{ color: this.props.theme.pagePrimaryColor, fontSize: '20px' }}></i>
                         </a>
                     </div> */}
-                    <div className={"nav-item-mobile " + (this._isCurrentURL("/user/profile") ? "my-nav-selected-mobile" : "")}
+                    <div className={"nav-item-mobile " + (this._isCurrentURL("/user/settings") ? "my-nav-selected-mobile" : "")}
                         style={{ borderLeftColor: this.props.theme.pagePrimaryColor }}>
-                        <a href="/user/profile" className="my-nav-item">
+                        <a href="/user/settings" className="my-nav-item">
                             <i title="Home" className="fas fa-cog"
                                 style={{ color: this.props.theme.pagePrimaryColor, fontSize: '20px' }}></i>
                             {/* <p style={{ fontSize: '0.7em' }}>Profile</p> */}

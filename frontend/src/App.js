@@ -78,17 +78,7 @@ class App extends React.Component {
       );
     });
   }
-  _redirect = () =>{
-
-    // if(this.props.auth.redirectURL){
-    //   let redirect = this.props.auth.redirectURL;
-    //   this.props.changeRedirectURL(false);
-    //   window.location = redirect;
-    // }
-
-  }
   render() {
-    this._redirect();
     return (
       <BrowserRouter>
         <Switch>

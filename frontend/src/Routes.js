@@ -15,6 +15,7 @@ import Home from "./views/user/mobile/Home";
 import ViewMed from "./views/user/mobile/ViewMed";
 import AdministerMed from "./views/user/mobile/AdministerMed";
 import Scanner from './views/user/mobile/Scanner';
+import Settings from './views/user/mobile/Settings';
 
 import Test from './views/test/Test';
 
@@ -61,6 +62,10 @@ const userRoutes = [
     {
         path: "/user/scanner",
         component: <Scanner/>
+    },
+    {
+        path: "/user/settings",
+        component: <Settings/>
     },
     {
         path: "/user/view-med",
