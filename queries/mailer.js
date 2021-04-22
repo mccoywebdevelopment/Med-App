@@ -43,7 +43,6 @@ function readHTMLFile(path, email, emailToken, callback) {
         token = "/" + emailToken;
       }
       // html = html.replace("USERNAME", email);
-      html = replaceAll(html,"USERNAME",email);
       callback(null, html);
     }
   });
@@ -75,7 +74,10 @@ function generateToken(email, callback) {
 }
 function sendMail(subject, messageTitle, messageText, buttonText, imagePath, email,
   emailToken, templatePath, redirectUrl, callback) {
+  
+    if(emailToken){
 
+    }
   generateToken(email, function (err, token) {
     if (err) {
       callback(err);
@@ -93,31 +95,23 @@ function sendMail(subject, messageTitle, messageText, buttonText, imagePath, ema
           if (emailToken) {
             token = emailToken;
           }
-
           let image;
-
           if (imagePath) {
             image = {
               path: imagePath,
               cid: "image"
             }
-            // html = html.replaceAll("EMAIL_IMAGE_PATH", "cid:" + image.cid);
             html = replaceAll(html,"EMAIL_IMAGE_PATH", "cid:"+image.cid);
           }
-
-          // html = html.replaceAll("EMAIL_MSG", messageText);
+          html = replaceAll(html,"USERNAME",email);
           html = replaceAll(html,"EMAIL_MSG", messageText);
-          // html = html.replaceAll("BTN_TEXT", buttonText);
           html = replaceAll(html,"BTN_TEXT", buttonText);
-          // html = html.replaceAll("EMAIL_TITLE", messageTitle);
           html = replaceAll(html,"EMAIL_TITLE", messageTitle);
 
-          if (redirectUrl == "api/auth/email/redirect") {
-            // html = html.replaceAll("EMAIL_URL", BASE_URL + "/" + redirectUrl + "/" + email + "/" + token);
-            html = replaceAll(html,"EMAIL_URL", BASE_URL + "/" + redirectUrl + "/" + email + "/" + token);
-          } else {
-            // html = html.replaceAll("EMAIL_URL", CLIENT_URL + "/auth/reset-password/" + email + "/" + token);
-            html = replaceAll(html,"EMAIL_URL", CLIENT_URL + "/auth/reset-password/" + email + "/" + token);
+          if (emailToken) {
+            html = replaceAll(html,"EMAIL_URL", redirectUrl + "/" + token);
+          } else{
+            html = replaceAll(html,"EMAIL_URL", redirectUrl);
           }
 
           sendNodeMail(html, email, subject, image, function (err, result) {

@@ -25,59 +25,68 @@ function getDependents(user, callback) {
           }
         }
       }
-      Rxs.populate(groups, { path: "dependents.rxs" }, function (err, res) {
+      getDependentsRxs(groups,function(err,result){
+        if(err){
+          callback(err);
+        }else{
+          callback(null,result);
+        }
+      });
+    }
+  });
+}
+function getDependentsRxs(groups,callback){
+  Rxs.populate(groups, { path: "dependents.rxs" }, function (err, res) {
+    if (err) {
+      callback(err);
+    } else {
+      RxsMedication.populate(res, { path: "dependents.rxs.rxsMedications" }, function (err, res) {
         if (err) {
           callback(err);
         } else {
-          RxsMedication.populate(res, { path: "dependents.rxs.rxsMedications" }, function (err, res) {
+          MedicationEvent.populate(res, { path: "dependents.rxs.rxsMedications.events", options: { sort: { 'dateTaken': -1 } } }, function (err, res) {
             if (err) {
               callback(err);
             } else {
-              MedicationEvent.populate(res, { path: "dependents.rxs.rxsMedications.events", options: { sort: { 'dateTaken': -1 } } }, function (err, res) {
-                if (err) {
-                  callback(err);
-                } else {
-                  var res = JSON.parse(JSON.stringify(res));
-                  let activeArr = {
-                    morningMedsActive:[],
-                    afternoonMedsActive:[],
-                    eveningMedsActive:[]
-                  }
-                  let historyArr = {
-                    morningMedsHistory:[],
-                    afternoonMedsHistory:[],
-                    eveningMedsHistory:[]
-                  }
-                  let dependents = [];
-                  for (var i = 0; i < res.length; ++i) {
-                    var curGroup = res[i];
-                    for (var ix = 0; ix < curGroup.dependents.length; ++ix) {
-                      var curDep = curGroup.dependents[ix];
-                      curDep.group = attatchGroup(curGroup);
-                      dependents.push(curDep);
-                      let {active,history} = filterMedications(curDep, VALID_TIMES.morning,
-                        VALID_TIMES.afternoon, VALID_TIMES.evening);
-                      
-                        activeArr.morningMedsActive = activeArr.morningMedsActive.concat(active.morningMedsActive);
-                        activeArr.afternoonMedsActive = activeArr.afternoonMedsActive.concat(active.afternoonMedsActive);
-                        activeArr.eveningMedsActive = activeArr.eveningMedsActive.concat(active.eveningMedsActive);
+              var res = JSON.parse(JSON.stringify(res));
+              let activeArr = {
+                morningMedsActive: [],
+                afternoonMedsActive: [],
+                eveningMedsActive: []
+              }
+              let historyArr = {
+                morningMedsHistory: [],
+                afternoonMedsHistory: [],
+                eveningMedsHistory: []
+              }
+              let dependents = [];
+              for (var i = 0; i < res.length; ++i) {
+                var curGroup = res[i];
+                for (var ix = 0; ix < curGroup.dependents.length; ++ix) {
+                  var curDep = curGroup.dependents[ix];
+                  curDep.group = attatchGroup(curGroup);
+                  dependents.push(curDep);
+                  let { active, history } = filterMedications(curDep, VALID_TIMES.morning,
+                    VALID_TIMES.afternoon, VALID_TIMES.evening);
 
-                        historyArr.morningMedsHistory = historyArr.morningMedsHistory.concat(history.morningMedsHistory);
-                        historyArr.afternoonMedsHistory = historyArr.afternoonMedsHistory.concat(history.afternoonMedsHistory);
-                        historyArr.eveningMedsHistory = historyArr.eveningMedsHistory.concat(history.eveningMedsHistory);
-                    }
-                  }
-                  let obj = {
-                    activeArr,
-                    historyArr,
-                    dependents,
-                    morning:VALID_TIMES.morning,
-                    afternoon:VALID_TIMES.afternoon,
-                    evening:VALID_TIMES.evening
-                  }
-                  callback(null, obj);
+                  activeArr.morningMedsActive = activeArr.morningMedsActive.concat(active.morningMedsActive);
+                  activeArr.afternoonMedsActive = activeArr.afternoonMedsActive.concat(active.afternoonMedsActive);
+                  activeArr.eveningMedsActive = activeArr.eveningMedsActive.concat(active.eveningMedsActive);
+
+                  historyArr.morningMedsHistory = historyArr.morningMedsHistory.concat(history.morningMedsHistory);
+                  historyArr.afternoonMedsHistory = historyArr.afternoonMedsHistory.concat(history.afternoonMedsHistory);
+                  historyArr.eveningMedsHistory = historyArr.eveningMedsHistory.concat(history.eveningMedsHistory);
                 }
-              });
+              }
+              let obj = {
+                activeArr,
+                historyArr,
+                dependents,
+                morning: VALID_TIMES.morning,
+                afternoon: VALID_TIMES.afternoon,
+                evening: VALID_TIMES.evening
+              }
+              callback(null, obj);
             }
           });
         }
@@ -161,24 +170,23 @@ function filterMedications(dep, morning, afternoon, evening) {
     afternoonMedsHistory: [],
     eveningMedsHistory: []
   }
+  for (var ix = 0; ix < dep.rxs.length; ++ix) {
+    for (var z = 0; z < dep.rxs[ix].rxsMedications.length; ++z) {
 
-    for (var ix = 0; ix < dep.rxs.length; ++ix) {
-      for (var z = 0; z < dep.rxs[ix].rxsMedications.length; ++z) {
-
-        let whenToTake = dep.rxs[ix].rxsMedications[z].whenToTake;
-        let events = dep.rxs[ix].rxsMedications[z].events;
-        let medObj = {
-          dependent: dep,
-          rxs: dep.rxs[ix],
-          rxsMedication: dep.rxs[ix].rxsMedications[z]
-        }
-        history = getMedHistory(whenToTake, events, morningStart, morningEnd,
-          afternoonStart, afternoonEnd, eveningStart, eveningEnd, medObj, history);
-
-        active = getMedActive(whenToTake, events, morningStart, morningEnd,
-          afternoonStart, afternoonEnd, eveningStart, eveningEnd, medObj, active);
+      let whenToTake = dep.rxs[ix].rxsMedications[z].whenToTake;
+      let events = dep.rxs[ix].rxsMedications[z].events;
+      let medObj = {
+        dependent: dep,
+        rxs: dep.rxs[ix],
+        rxsMedication: dep.rxs[ix].rxsMedications[z]
       }
+      history = getMedHistory(whenToTake, events, morningStart, morningEnd,
+        afternoonStart, afternoonEnd, eveningStart, eveningEnd, medObj, history);
+
+      active = getMedActive(whenToTake, events, morningStart, morningEnd,
+        afternoonStart, afternoonEnd, eveningStart, eveningEnd, medObj, active);
     }
+  }
   morning = [morningStart, morningEnd];
   afternoon = [afternoonStart, afternoonEnd];
   evening = [eveningStart, eveningEnd];
@@ -278,24 +286,69 @@ function updateProfile(body, callback) {
       let bodyGuard = {
         updatedFields: body
       }
-      Guardian.findOne({ user: userFound._id }, function (err, guardianFound) {
+      if (body.notifications) {
+        updateUserNotification(userFound, body.notifications.type, body.notifications.recieve, function (err, userFound) {
+          if (err) {
+            callback(err);
+          } else {
+            updateGuardian(bodyGuard, userFound, function (err, result) {
+              if (err) {
+                callback(err);
+              } else {
+                callback(null, result);
+              }
+            });
+          }
+        });
+      } else {
+        updateGuardian(bodyGuard, userFound, function (err, result) {
+          if (err) {
+            callback(err);
+          } else {
+            callback(null, result);
+          }
+        });
+      }
+    }
+  });
+}
+
+function updateGuardian(bodyGuard, userFound, callback) {
+  Guardian.findOne({ user: userFound._id }, function (err, guardianFound) {
+    if (err) {
+      callback(err);
+    } else if (!guardianFound) {
+      callback("Guardian not found.");
+    } else {
+      updateGuardianByID(bodyGuard, guardianFound._id, function (err, updatedDoc) {
         if (err) {
           callback(err);
-        } else if (!guardianFound) {
-          callback("Guardian not found.");
         } else {
-          updateGuardianByID(bodyGuard, guardianFound._id, function (err, updatedDoc) {
-            if (err) {
-              callback(err);
-            } else {
-              let userObj = addDetailsToUser(updatedDoc, userFound);
-              callback(null, { result: userObj });
-            }
-          });
+          let userObj = addDetailsToUser(updatedDoc, userFound);
+          callback(null, { result: userObj });
         }
       });
     }
   });
+}
+
+function updateUserNotification(user, notificationType, isNotified, callback) {
+  if (notificationType != 'email') {
+    callback("Notification type not valid expected: email");
+  } else {
+    user.notifications = {
+      type: notificationType,
+      recieve: isNotified
+    }
+
+    user.save(function (err, result) {
+      if (err) {
+        callback(err);
+      } else {
+        callback(null, result);
+      }
+    });
+  }
 }
 
 function deleteById(id, callback) {
@@ -421,4 +474,5 @@ function createFirstUser(secretKey, email, password, callback) {
 }
 
 
-module.exports = { create, findAll, findExceptMe, deleteById, findById, patchUpdateById, getDependents, createFirstUser, updateProfile };
+module.exports = { create, findAll, findExceptMe, deleteById, findById, patchUpdateById,
+   getDependents, createFirstUser, updateProfile, getDependentsRxs };

@@ -4,6 +4,7 @@ const path = require('path');
 const errors = require('../errors');
 const mailQ = require('../../queries/mailer');
 const CLIENT_URL = process.env.CLIENT_URL || require('../../config/configVars').CLIENT_URL;
+const BASE_URL = process.env.BASE_URL || require('../../config/configVars').BASE_URL;
 const verifyAdmin = require('../../config/globalHelpers').verifyAdmin;
 
 router.route("/send-welcome/:email/:JWT")
@@ -15,9 +16,9 @@ router.route("/send-welcome/:email/:JWT")
       btnTxt: "Activate",
       imagePath: path.join(__dirname, '../..', '/config/email/activation_email/images/image.png'),
       to: req.params.email,
-      isEmailToken: true,
+      isEmailToken:true,
       templatePath: path.join(__dirname, '../..', '/config/email/activation_email/index.html'),
-      redirectURL: 'api/auth/email/redirect'
+      redirectURL: BASE_URL + '/api/auth/email/redirect'
     }
 
     mailQ.sendMail(email.subject, email.title, email.msg, email.btnTxt, email.imagePath, email.to, email.isEmailToken,
@@ -48,6 +49,7 @@ router.route("/redirect/:email/:token")
     });
   });
 
+
 router.route("/forgot-password")
   .post(function (req, res) {
     let email = {
@@ -55,11 +57,11 @@ router.route("/forgot-password")
       title: "Reset Your Password:",
       msg: "Forgot password? Please click the button below to set a new password.",
       btnTxt: "Reset",
+      isEmailToken:true,
       imagePath: path.join(__dirname, '../..', '/config/email/activation_email/images/forgot_password.png'),
       to: req.body.email,
-      isEmailToken: true,
       templatePath: path.join(__dirname, '../..', '/config/email/activation_email/index.html'),
-      redirectURL: 'auth/reset-password'
+      redirectURL: CLIENT_URL + '/auth/reset-password/'+req.body.email
     }
 
     mailQ.sendMail(email.subject, email.title, email.msg, email.btnTxt, email.imagePath, email.to, email.isEmailToken,

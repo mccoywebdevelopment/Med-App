@@ -31,6 +31,7 @@ export const fetchResetPassword = (postData,token) => (dispatch) => {
         type: FETCH_RESET_PASSWORD,
         payload: res.result
       });
+      window.location = "/user/home"
     }
   });
 }
@@ -43,7 +44,7 @@ export const fetchUpdateProfile = (body, done) => (dispatch) => {
       dispatch(createMessage(err, 'danger'));
     }else{
       dispatch(toggleLoading(false));
-      dispatch(createMessage("Your account has been successfully updated",'success',20000));
+      dispatch(createMessage("Your account has been successfully updated",'success',2000));
       dispatch({
         type: FETCH_UPDATE_PROFILE,
         payload: res.result
@@ -65,6 +66,7 @@ export const fetchRegister = (email,token,postData) => (dispatch) => {
         type: FETCH_REGISTER,
         payload: res.result
       });
+      window.location = "/user/home";
     }
   });
 }

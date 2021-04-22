@@ -24,7 +24,7 @@ ERRORS:
  - IMPORTANT disable redux dev tools extention in store.js before prod/testing deployment
  - https://www.bootstrapdash.com/demo/star-admin-free/jquery/src/pages/forms/basic_elements.html
  - To find all logs/alerts use: 
-    ./frontend/src/actions,./frontend/src/components,./frontend/src/views,./queries,./routes,./config
+    ./notifications,./frontend/src/actions,./frontend/src/components,./frontend/src/views,./queries,./routes,./config
 
 - To create first users:
    https://med-app-v1.herokuapp.com/api/users/create-first-user/:secretKey/:username/:password

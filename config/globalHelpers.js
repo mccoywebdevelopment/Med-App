@@ -1,6 +1,6 @@
 const User = require('../models/user/User');
 const RxsMedication = require('../models/rxsMedication/RxsMedication');
-const VALID_TIMES = require('./configVars').VALID_TIMES;
+const VALID_TIMES = process.env.VALID_TIMES || require('./configVars').VALID_TIMES;
 
 
 function verifyUser(req, res, next) {
@@ -130,10 +130,21 @@ function appendTimeToDate(date) {
   
     return [year, month, day].join('-');
   }
+  function getPeriods(today){
+    let morningStart = new Date(appendTimeToDate(today) + " " + VALID_TIMES.morning[0]);
+    let morningEnd = new Date(appendTimeToDate(today) + " " + VALID_TIMES.morning[1]);
+
+    let afternoonStart = new Date(appendTimeToDate(today) + " " + VALID_TIMES.afternoon[0]);
+    let afternoonEnd = new Date(appendTimeToDate(today) + " " + VALID_TIMES.afternoon[1]);
+
+    let eveningStart = new Date(appendTimeToDate(today) + " " + VALID_TIMES.evening[0]);
+    let eveningEnd = new Date(appendTimeToDate(today) + " " + VALID_TIMES.evening[1]);
+
+    return{morningStart,morningEnd,afternoonStart,afternoonEnd,eveningStart,eveningEnd}
+  }
 function isMedEventValid(events, whenToTake, isAdmin) {
 
     if(isAdmin){
-        console.log('1.0')
         return true;
     }
 
@@ -143,17 +154,9 @@ function isMedEventValid(events, whenToTake, isAdmin) {
     let eveningFound = false;
     let today = new Date();
 
-    let morningStart = Date.parse(appendTimeToDate(today) + " " + VALID_TIMES.morning[0]);
-    let morningEnd = Date.parse(appendTimeToDate(today) + " " + VALID_TIMES.morning[1]);
-
-    let afternoonStart = Date.parse(appendTimeToDate(today) + " " + VALID_TIMES.afternoon[0]);
-    let afternoonEnd = Date.parse(appendTimeToDate(today) + " " + VALID_TIMES.afternoon[1]);
-
-    let eveningStart = Date.parse(appendTimeToDate(today) + " " + VALID_TIMES.evening[0]);
-    let eveningEnd = Date.parse(appendTimeToDate(today) + " " + VALID_TIMES.evening[1]);
+    let {morningStart,morningEnd,afternoonStart,afternoonEnd,eveningStart,eveningEnd} = getPeriods(today);
 
     while (events && i < events.length && isToday(events[i].dateTaken)) {
-        console.log(isBetween(events[i].dateTaken,morningStart,morningEnd));
         if (isBetween(events[i].dateTaken, morningStart, morningEnd)) {
             morningFound = true;
         }
@@ -167,18 +170,25 @@ function isMedEventValid(events, whenToTake, isAdmin) {
     }
 
     if (whenToTake.includes('morning') && !morningFound && isBetween(today,morningStart,morningEnd)) {
-        console.log('1.1')
         return true
     }else if (whenToTake.includes('afternoon') && !afternoonFound && isBetween(today,afternoonStart,afternoonEnd)) {
-        console.log('1.2')
         return true
     }
     else if (whenToTake.includes('evening') && !eveningFound && isBetween(today,eveningStart,eveningEnd)) {
-        console.log('1.3')
         return true
     }else{
-        console.log('1.4')
         return false
     }
 }
-module.exports = { verifyUser, verifyAdmin, isMedEventValid, verifyRefID, findUserByJwt, addDetailsToUser, isToday, isBetween, isLessThan, appendTimeToDate };
+function formatAMPM(date) {
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+  }
+module.exports = { verifyUser, verifyAdmin, formatAMPM, isMedEventValid, verifyRefID,
+     findUserByJwt, addDetailsToUser, isToday, isBetween, isLessThan, appendTimeToDate, getPeriods };
