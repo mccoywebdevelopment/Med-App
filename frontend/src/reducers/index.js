@@ -9,6 +9,7 @@ import guardians from './guardians';
 import users from './users';
 import theme from './theme';
 import settings from './settings';
+import notifications from './notifications';
 
 const appReducer = combineReducers({
   /* your app’s top-level reducers */
@@ -18,6 +19,7 @@ const appReducer = combineReducers({
   loading,
   theme,
   popUp,
+  notifications,
   groupState:groups,
   dependentState:dependents,
   userState:users,

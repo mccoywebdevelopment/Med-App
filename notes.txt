@@ -1,25 +1,3 @@
-TODO:
-- fix email
-
-OPTIMIZATIONS:
-- add urls to user/dependents in group view
-- when editing rxsMedication allow the user to exit form like click outside or x icon
-- when creating group allow name to display there email if not validated
-- fix importing for bootstrap had to add it twice to make dropdowns work
-- add color coding to all tables
-- add picture to empty tables
-- add filters to all tables
-- add data dashboard
-- add QR codes
-- add mobile view
-
-ERRORS:
-- when editing took on specific date (isAway) sometimes the title of the popUp doesn't show after the user submits
-   the view dates popUp.
-- fetch groups error 404 when admin loads view dependents
-- after updating user isAdmin the adding them to a group via group view the selected group view shows the prevous
-   isAdmin value
-
  TIPS:
  - IMPORTANT disable redux dev tools extention in store.js before prod/testing deployment
  - https://www.bootstrapdash.com/demo/star-admin-free/jquery/src/pages/forms/basic_elements.html
@@ -29,27 +7,6 @@ ERRORS:
 - To create first users:
    https://med-app-v1.herokuapp.com/api/users/create-first-user/:secretKey/:username/:password
 
-   'America/New_York',
-  'America/Detroit',
-  'America/Kentucky/Louisville',
-  'America/Kentucky/Monticello',
-  'America/Indiana/Indianapolis',
-  'America/Indiana/Vincennes',
-  'America/Indiana/Winamac',
-  'America/Indiana/Marengo',
-  'America/Indiana/Petersburg',
-  'America/Indiana/Vevay',
-  'America/Chicago',
-  'America/Indiana/Tell_City',
-  'America/Indiana/Knox',
-  'America/Menominee',
-  'America/North_Dakota/Center',
-  'America/North_Dakota/New_Salem',
-  'America/North_Dakota/Beulah',
-  'America/Denver',
-  'America/Boise',
-  'America/Phoenix',
-  'America/Los_Angeles',
 
 
    

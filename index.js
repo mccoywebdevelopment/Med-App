@@ -13,6 +13,7 @@ const medsRouter = require('./routes/api/medications');
 const calendarRouter = require('./routes/api/calendar');
 const prescriptionsRouter = require('./routes/api/prescriptions');
 const rxsMedicationRouter = require('./routes/api/rxsMedication');
+const notificationRouter = require('./routes/api/notifications');
 const eventRouter = require('./routes/api/event');
 const dataRouter = require('./routes/api/data');
 const medicationEvent = require('./routes/api/medicationEvent');
@@ -59,6 +60,7 @@ app.use("/api/data/", dataRouter);
 app.use("/api/events/", eventRouter);
 app.use("/api/rxsMedication-event/", medicationEvent);
 app.use("/api/calendar/", calendarRouter);
+app.use("/api/notifications/",notificationRouter);
 app.use("/api/export-data/", exportDataRouter);
 
 app.get('/api', function (req, res) {

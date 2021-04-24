@@ -8,6 +8,7 @@ import UserView from "./views/admin/UserView";
 import UserDetails from "./views/admin/UserDetails";
 import ForgotPassword from "./views/shared/ForgotPassword";
 import ResetPassword from "./views/shared/ResetPassword";
+import NotificationsView from "./views/admin/NotificationsView";
 import Login from "./views/shared/Login";
 import Register from './views/shared/Register';
 import Profile from "./views/shared/Profile";
@@ -23,6 +24,10 @@ const adminRoutes = [
     {
         path: "/admin/groups",
         component: <GroupView/>,
+    },
+    {
+        path: "/admin/notifications",
+        component: <NotificationsView/>,
     },
     {
         path: "/admin/users",

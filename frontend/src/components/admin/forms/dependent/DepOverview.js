@@ -23,7 +23,7 @@ export default class DepOverview extends React.Component {
                         <div className="form-group">
                             <label className="label">Name</label>
                             <div className="input-group">
-                                <input Validation={false} type="text" className="form-control is-valid" name="name" placeholder="First & Last Name"
+                                <input Validation={false} type="text" className="form-control" name="name" placeholder="First & Last Name"
                                     value={this.props.data.values.name} 
                                     onChange={(e)=>{this.props.update("overview","name",e.target.value)}} />
                                 <div className="invalid-feedback" style={{ display: 'block' }}>

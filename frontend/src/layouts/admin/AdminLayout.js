@@ -14,7 +14,8 @@ class AdminLayout extends React.Component {
     static propTypes = {
         message: PropTypes.object.isRequired,
         createMessage: PropTypes.func.isRequired,
-        theme: PropTypes.object.isRequired
+        theme: PropTypes.object.isRequired,
+        notifications: PropTypes.object.isRequired
     };
     constructor(props) {
         super(props);
@@ -59,7 +60,7 @@ class AdminLayout extends React.Component {
                         style={{borderLeftColor:this.props.theme.pagePrimaryColor}}>
                         <a href="/admin/notifications" className="my-nav-item">
                             <i title="notification(s)" className="fas fa-bell" style={{color:this.props.theme.pagePrimaryColor}}></i>
-                            <span className="badge badge-light my-badge">9</span>
+        <span className="badge badge-light my-badge">{this.props.notifications.data.length}</span>
                         </a>
                     </div>
                     <div className={"" + (this._isCurrentURL("/admin/profile") ? "my-nav-selected" : "")} 
@@ -108,7 +109,8 @@ class AdminLayout extends React.Component {
 
 const mapStateToProps = (state) => ({
     message: state.message,
-    theme: state.theme
+    theme: state.theme,
+    notifications: state.notifications
 });
 
 export default connect(mapStateToProps, { createMessage })(AdminLayout);

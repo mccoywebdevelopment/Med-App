@@ -5,6 +5,7 @@ import { Route, Switch } from "react-router-dom";
 import { BrowserRouter } from 'react-router-dom'
 import { adminRoutes, authRoutes, userRoutes, auth2Routes } from "./Routes";
 import { changeRedirectURL, changeCurrentURL } from "./actions/auth";
+import { fetchNotifications } from "./actions/notifications";
 
 import AdminLayout from "./layouts/admin/AdminLayout";
 import AuthLayout from "./layouts/shared/AuthLayout";
@@ -24,6 +25,10 @@ class App extends React.Component {
   }
   constructor(props) {
     super(props);
+
+    if(this.props.auth.user.isAdmin){
+      this.props.fetchNotifications();
+    }
   }
   _adminRouteList = () => {
     return adminRoutes.map((route, key) => {
@@ -95,4 +100,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { changeRedirectURL,changeCurrentURL })(App);
+export default connect(mapStateToProps, { changeRedirectURL,changeCurrentURL,fetchNotifications })(App);

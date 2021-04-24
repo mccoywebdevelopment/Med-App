@@ -66,7 +66,7 @@ function getDependentsRxs(groups,callback){
                   var curDep = curGroup.dependents[ix];
                   curDep.group = attatchGroup(curGroup);
                   dependents.push(curDep);
-                  let { active, history } = filterMedications(curDep, VALID_TIMES.morning,
+                  let { active, history } = filterMedications(curGroup, curDep, VALID_TIMES.morning,
                     VALID_TIMES.afternoon, VALID_TIMES.evening);
 
                   activeArr.morningMedsActive = activeArr.morningMedsActive.concat(active.morningMedsActive);
@@ -148,7 +148,7 @@ function getMedActive(whenToTake, events, morningStart, morningEnd,
 
   return activeArr;
 }
-function filterMedications(dep, morning, afternoon, evening) {
+function filterMedications(group, dep, morning, afternoon, evening) {
   let today = new Date();
 
   let morningStart = Date.parse(appendTimeToDate(today) + " " + morning[0]);
@@ -178,6 +178,7 @@ function filterMedications(dep, morning, afternoon, evening) {
       let medObj = {
         dependent: dep,
         rxs: dep.rxs[ix],
+        group: group,
         rxsMedication: dep.rxs[ix].rxsMedications[z]
       }
       history = getMedHistory(whenToTake, events, morningStart, morningEnd,

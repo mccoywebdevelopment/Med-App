@@ -25,3 +25,5 @@ export const RESET = "RESET";
 export const FETCH_USERS = "FETCH_USERS";
 //==================Guardian==============
 export const FETCH_GUARDIANS = "FETCH_GUARDIANS";
+//===============Notifications============
+export const FETCH_NOTIFICATIONS = "FETCH_NOTIFICATIONS";

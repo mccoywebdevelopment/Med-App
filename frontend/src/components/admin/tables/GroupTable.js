@@ -13,11 +13,6 @@ class GroupTable extends React.Component {
   _selectItem = (group) => {
     this.props.changeGroupSel(group)
   }
-  _sendTokenViaEmail = (user) =>{
-    if(window.confirm('Are you sure you want to send user another email?')){
-      this.props.sendTokenViaEmail(user.username);
-    }
-  }
   _getNumberOfAdmins = (guardians) =>{
     let num = 0;
     for(var i=0;i<guardians.length;++i){

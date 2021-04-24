@@ -100,6 +100,13 @@ function isLessThan(end) {
     }
     return false;
   }
+  function isGreatorThan(end) {
+    let today = new Date();
+    if (today >= end) {
+      return true
+    }
+    return false;
+  }
 function isToday(someDate) {
     if (!someDate) {
         return false;
@@ -190,5 +197,5 @@ function formatAMPM(date) {
     var strTime = hours + ':' + minutes + ' ' + ampm;
     return strTime;
   }
-module.exports = { verifyUser, verifyAdmin, formatAMPM, isMedEventValid, verifyRefID,
+module.exports = { verifyUser, verifyAdmin, formatAMPM, isMedEventValid, verifyRefID, isGreatorThan,
      findUserByJwt, addDetailsToUser, isToday, isBetween, isLessThan, appendTimeToDate, getPeriods };

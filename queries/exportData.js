@@ -171,7 +171,7 @@ function createRxsMedicationInfo(ws,wb,x_index,y_index,rxs,rxsMedication){
 
     ws.cell(x_index,y_index).string("Rxs Number:");
     y_index = y_index + 1;
-    ws.cell(x_index,y_index).string(rxs.rxsNumber.toString());
+    ws.cell(x_index,y_index).string(rxs.rxsNumber || "-");
 
     x_index = x_index + 1;
     y_index = y_index - 1;
