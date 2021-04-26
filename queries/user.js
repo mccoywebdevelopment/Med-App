@@ -8,7 +8,7 @@ const RxsMedication = require('../models/rxsMedication/RxsMedication');
 const MedicationEvent = require('../models/medicationEvent/MedicationEvent');
 const Rxs = require('../models/rxs/Rxs');
 const SECRET_KEY = process.env.SECRET_KEY || require('../config/configVars').SECRET_KEY;
-const CAN_DELETE_ADMIN = process.env.CAN_DELETE_ADMIN || "false" || require('../config/configVars').CAN_DELETE_ADMIN;
+const CAN_DELETE_ADMIN = process.env.CAN_DELETE_ADMIN || require('../config/configVars').CAN_DELETE_ADMIN;
 const VALID_TIMES = process.env.VALID_TIMES || require('../config/configVars').VALID_TIMES;
 const { addDetailsToUser, isToday, isBetween, appendTimeToDate } = require('../config/globalHelpers');
 
