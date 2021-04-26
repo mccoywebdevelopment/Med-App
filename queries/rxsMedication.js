@@ -5,7 +5,7 @@ const GroupModel = require('../models/group/Group');
 const val = require('./helpers/helper');
 const delMedEvent = require('./medicationEvent').deleteById;
 const QRCode = require('qrcode');
-const CLIENT_URL  = proccess.env.CLIENT_URL || require('../config/configVars').CLIENT_URL;
+const CLIENT_URL  = process.env.CLIENT_URL || require('../config/configVars').CLIENT_URL;
 const fs = require('fs');
 
 function findAll(callback) {
