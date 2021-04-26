@@ -13,12 +13,15 @@ import UserLayout from "./layouts/user/UserLayout";
 import UserNonlocal from "./layouts/user/UserNonlocal";
 
 import "./assets/css/fontawesome/css/all.min.css";
+import popUp from './reducers/popUp';
 
 class App extends React.Component {
   static propTypes = {
     auth: PropTypes.object.isRequired,
     changeRedirectURL: PropTypes.func.isRequired,
-    changeCurrentURL: PropTypes.func.isRequired
+    changeCurrentURL: PropTypes.func.isRequired,
+    loading: PropTypes.object.isRequired,
+    popUp: PropTypes.object.isRequired
   };
   state = {
     redirect:null
@@ -26,7 +29,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    if(this.props.auth.user.isAdmin){
+    if(this.props.auth.user && this.props.auth.user.isAdmin){
       this.props.fetchNotifications();
     }
   }
@@ -85,6 +88,7 @@ class App extends React.Component {
   }
   render() {
     return (
+      <div className={""+(this.props.loading || this.props.popUp.component?'my-darker':null)}>
       <BrowserRouter>
         <Switch>
           {this._adminRouteList()}
@@ -92,12 +96,15 @@ class App extends React.Component {
           {this._userRouteList()}
         </Switch>
       </BrowserRouter>
+      </div>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
+  loading: state.loading,
+  popUp:state.popUp
 });
 
 export default connect(mapStateToProps, { changeRedirectURL,changeCurrentURL,fetchNotifications })(App);

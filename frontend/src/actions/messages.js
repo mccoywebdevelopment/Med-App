@@ -27,7 +27,7 @@ export const createMessage = (text,alertType,time) => (dispatch) =>{
       },
     });
     
-    window.location = '/auth/login';
+    // window.location = '/auth/login';
   }
   dispatch({
     type: CREATE_MESSAGE,

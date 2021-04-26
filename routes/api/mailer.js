@@ -18,7 +18,7 @@ router.route("/send-welcome/:email/:JWT")
       to: req.params.email,
       isEmailToken:true,
       templatePath: path.join(__dirname, '../..', '/config/email/activation_email/index.html'),
-      redirectURL: BASE_URL + '/api/auth/email/redirect'
+      redirectURL: BASE_URL + '/api/auth/email/redirect/' + req.params.email
     }
 
     mailQ.sendMail(email.subject, email.title, email.msg, email.btnTxt, email.imagePath, email.to, email.isEmailToken,

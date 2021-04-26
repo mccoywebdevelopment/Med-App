@@ -2,18 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { togglePopUp } from '../../actions/popUp';
-import { fetchUsers, fetchDeleteUser } from "../../actions/user";
-import { fetchGroups } from "../../actions/group";
 import { fetchNotifications } from "../../actions/notifications"
-import { fetchGuardians } from "../../actions/guardian";
 import { changeColor } from "../../actions/theme";
+import { isToday, isMonth } from '../../config/helpers';
 
 import NotificationTable from "../../components/admin/tables/NotificationTable";
 import OverviewNotifications from "../../components/admin/Overview/OverviewNotifications";
-import CreateUser from "../../components/admin/forms/user/CreateUser";
-/*
-    Need to update table/this.state after I add a new user like I did in dependents view.
-*/
 
 class NotificationsView extends React.Component {
     static propTypes = {
@@ -45,14 +39,24 @@ class NotificationsView extends React.Component {
         window.location = "/admin/users/" + dep._id
         this.setState(newState);
     }
-    _getNumberUnAuthUsers = () =>{
-        let num = 0;
-        for(var i=0;i<this.props.userState.data.length;++i){
-            if(!this.props.userState.data[i].auth.isVerified){
-                num++;
-            }
+    _getNumberOfMonthlyNotifications = () =>{
+        let i = 0;
+        let data = this.props.notifications.data;
+
+        while(i<data.length && isMonth(data[i].dateCreated)){
+            i++;
         }
-        return num;
+
+        return (i);
+    }
+    _getNumberOfTodayNotifications = () =>{
+        let i = 0;
+        let data = this.props.notifications.data;
+        while(i<data.length && isToday(data[i].dateCreated)){
+            i++;
+        }
+
+        return (i);
     }
     componentDidMount = () =>{
         this.props.changeColor("rgb(33, 150, 243)");
@@ -67,11 +71,11 @@ class NotificationsView extends React.Component {
                     <div className="col-lg-12">
                             <div className="row">
                                 <div className="col-lg-12">
-                                    <h4 className="view-header">Notifications</h4>
+                                    <h4 className="view-header">Missed Medication(s)</h4>
                                 </div>
                                 <div className="col-lg-12" style={{ marginBottom: "30px" }}>
-                                    <OverviewNotifications today={3}
-                                     month={17} total={45}/>
+                                    <OverviewNotifications today={this._getNumberOfTodayNotifications()}
+                                     month={this._getNumberOfMonthlyNotifications()} total={this.props.notifications.data.length}/>
                                 </div>
                                 <div className="col-lg-12" style={{ marginBottom: "30px" }}>
                                 &nbsp;

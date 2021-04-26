@@ -11,6 +11,8 @@ import { createMessage } from '../../actions/messages'
 import { changeColor } from '../../actions/theme';
 
 import UserNav from './UserNav';
+import Loading from "../../components/shared/Loading/Loading";
+import PopUp from "../../components/shared/PopUp/PopUp";
 
 class UserLayout extends React.Component {
     static propTypes = {
@@ -52,6 +54,8 @@ class UserLayout extends React.Component {
                     </div>
                 </div>
                 <UserNav/>
+                <PopUp/>
+                <Loading/>
                 <div className="content-desktop">
                     <h1>Desktop View not supported please login via phone/ipad.</h1>
                 </div>

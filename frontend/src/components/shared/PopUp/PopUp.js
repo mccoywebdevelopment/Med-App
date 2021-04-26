@@ -44,8 +44,8 @@ class PopUp extends React.Component {
                         {this.props.popUp.component ?
                             <div className="z-100 my-popUp-container text-centered" style={styles.bounce}>
                                 <div className="card my-popUp" style={{ padding: '20px', width: this.props.popUp.width || '80%' }}>
-                                    <div className="row">
-                                        <div className="col-lg-12">
+                                    <div className="row" style={{height:'auto'}}>
+                                        <div className="col-lg-12" style={{height:'0%'}}>
                                             <h2 style={{ display: 'inline' }}>{this.props.popUp.title}&nbsp;</h2>
                                             <i title="close" onClick={() => { this.props.togglePopUp() }}
                                                 style={{ float: 'right', color: this.props.theme.pagePrimaryColor }} className="fas fa-times"></i>

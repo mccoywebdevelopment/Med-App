@@ -1,7 +1,7 @@
 import { toggleLoading } from '../actions/loading';
-import { CHANGE_CURRENT_URL, CHANGE_REDIRECT_URL} from '../actions/types';
+import { CHANGE_CURRENT_URL, CHANGE_REDIRECT_URL } from '../actions/types';
 import { API_URI } from '../config/variables';
-import {store} from '../store';
+import { store } from '../store';
 
 let timezone = store.getState().settings.timeZone;
 
@@ -17,11 +17,29 @@ export function formatAMPM(date) {
     var ampm = hours >= 12 ? 'PM' : 'AM';
     hours = hours % 12;
     hours = hours ? hours : 12; // the hour '0' should be '12'
-    minutes = minutes < 10 ? '0'+minutes : minutes;
+    minutes = minutes < 10 ? '0' + minutes : minutes;
     var strTime = hours + ':' + minutes + ' ' + ampm;
     return strTime;
-  }
-  
+}
+export function isMonth(someDate){
+    if (!someDate) {
+        return false;
+    }
+    someDate = new Date(someDate);
+    let today = new Date();
+    return (someDate.getMonth() == today.getMonth() &&
+        someDate.getFullYear() == today.getFullYear())
+}
+export function isToday(someDate) {
+    if (!someDate) {
+        return false;
+    }
+    someDate = new Date(someDate);
+    let today = new Date();
+    return someDate.getDate() == today.getDate() &&
+        someDate.getMonth() == today.getMonth() &&
+        someDate.getFullYear() == today.getFullYear()
+}
 export function formateDate(date) {
     if (date) {
 
@@ -38,11 +56,11 @@ export function formateDate(date) {
         return null;
     }
 }
-export function toInputDate(date){
-    if(typeof(date)=='string'){
+export function toInputDate(date) {
+    if (typeof (date) == 'string') {
         console.log(date);
         let date1 = date.split('-');
-        if(date1[2] && date1[2].length == 4){
+        if (date1[2] && date1[2].length == 4) {
             date = date1[2] + "-" + date1[0] + '-' + date1[1];
         }
     }
@@ -59,7 +77,7 @@ export function getPath(window, index) {
         return arr[index];
     }
 }
-export function getPaths(window){
+export function getPaths(window) {
     return window.location.pathname.split('/');
 }
 export function capitalizeFirstLetter(string) {
@@ -105,8 +123,8 @@ export function FETCH(type, url, body, jwt, dispatch, isLoading, done) {
                 done(res.error);
             } else if (done && res) {
                 done(null, res);
-            }else{
-                done(null,null)
+            } else {
+                done(null, null)
             }
         });
 }

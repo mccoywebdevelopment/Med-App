@@ -26,7 +26,7 @@ function addDay(currentTime) {
 function sendNotification(time, isLast) {
     setTimeout(function () {
         console.log("Admin notification triggered @ " + formatAMPM(new Date()) + " today.");
-        sendMedicalNotificationsAdmin(function (err) {
+        sendMedicalNotificationsAdmin(function (err,done) {
             if (err) {
                 console.log(err);
             }

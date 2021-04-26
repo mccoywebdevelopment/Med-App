@@ -439,3 +439,13 @@ div[data-radium]{
 .btn{
   font-size: .75em;
 }
+.table-no-hover>tbody tr:hover{
+  filter: none;
+  cursor: unset;
+}
+div[data-radium]{
+  height:auto;
+}
+.my-loader{
+  top:10%;
+}

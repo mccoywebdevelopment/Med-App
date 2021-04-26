@@ -726,10 +726,10 @@ class CreateDependent extends React.Component {
 
                 <div className="row" style={{ marginTop: '30px', marginBottom: '30px' }}>
                     {!this.props.isDepSelected ?
-                        <button className="btn btn-primary" onClick={() => { this._submit() }}>Submit</button>
+                        <button className="btn btn-primary" onClick={() => { this._submit() }} style={{height:'fit-content'}}>Submit</button>
                         : this.props.isDepSelected && this._isUpdated() ?
-                            <button className="btn btn-primary" onClick={() => { this._submit() }}>Update</button>
-                            : <button className="btn btn-primary" style={{ visibility: 'hidden' }}>&nbsp;</button>
+                            <button className="btn btn-primary" onClick={() => { this._submit() }} style={{height:'fit-content'}}>Update</button>
+                            : <button className="btn btn-primary" style={{ visibility: 'hidden',height:'fit-content' }}>&nbsp;</button>
                     }
                 </div>
             </>

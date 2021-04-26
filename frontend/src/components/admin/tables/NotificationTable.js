@@ -13,9 +13,6 @@ class NotificationTable extends React.Component {
     super(props);
     console.log(this.props);
   }
-  _selectItem = (notification) => {
-    this.props.changeNotificationSel(notification)
-  }
   render() {
     const list = (notifications) => {
       return notifications.map((notification, index) => {
@@ -26,6 +23,8 @@ class NotificationTable extends React.Component {
         let medName = notification.medicationMissed.rxsMedication.name;
         let group = notification.medicationMissed.group.name;
         let dependent = notification.medicationMissed.dependent.name.firstName + ' ' + notification.medicationMissed.dependent.name.lastName
+        let dependentID = notification.medicationMissed.dependent._id;
+        let groupID = notification.medicationMissed.group._id;
 
         let trStyle = {
         }
@@ -37,28 +36,25 @@ class NotificationTable extends React.Component {
         return (
           <tr style={trStyle} key={"userTable" + index}>
             <th scope="row">{index + 1}</th>
-            <td onClick={() => this._selectItem(notification)}>{formateDate(date)}</td>
-            <td colSpan="1" onClick={() => this._selectItem(notification)}><WhenToTake data={[period]}/></td>
-            <td onClick={() => this._selectItem(notification)}>{medName}</td>
-            <td onClick={() => this._selectItem(notification)}>{dependent}</td>
-            <td onClick={() => this._selectItem(notification)}>{group}</td>
+            <td>{formateDate(date)}</td>
+            <td colSpan="1"><WhenToTake data={[period]}/></td>
+            <td>{medName}</td>
+            <td><a href={"dependents/"+dependentID}>{dependent}</a></td>
+            <td><a href={"groups/"+groupID}>{group}</a></td>
 
 
-            {!this.props.isSmall ?
+            {/* {!this.props.isSmall ?
               <td>
-                <i title="view" onClick={() => this._selectItem(notification)} className="fas fa-eye"
-                  style={{ paddingRight: '20px', color: this.props.theme.pagePrimaryColor }}></i>
-                {/* <i title="edit" className="fas fa-edit" style={{ paddingRight: '20px', color: '#2196F3' }}></i> */}
                 <i title="Delete" onClick={() => { this.props.delete(notification) }} className="fas fa-trash"
-                  style={{ color: this.props.theme.pagePrimaryColor }}></i>
+                  style={{ color: this.props.theme.pagePrimaryColor,paddingLeft:'1em' }}></i>
               </td>
-              : null}
+              : null} */}
           </tr>
         );
       });
     }
     return (
-      <table className="table dependentTable">
+      <table className="table dependentTable table-no-hover">
         <thead>
           <tr>
             <th scope="col">#</th>
@@ -67,7 +63,7 @@ class NotificationTable extends React.Component {
             <th scope="col" colSpan="1">Medication</th>
             <th scope="col" colSpan="1">Dependent</th>
             <th scope="col" colSpan="1">Group</th>
-            {!this.props.isSmall ? <th scope="col">Actions</th> : null}
+            {/* {!this.props.isSmall ? <th scope="col">Actions</th> : null} */}
           </tr>
         </thead>
         <tbody>

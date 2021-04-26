@@ -10,6 +10,9 @@ import { connect } from 'react-redux';
 import { createMessage } from '../../actions/messages'
 import { API_URI } from "../../config/variables";
 
+import Loading from "../../components/shared/Loading/Loading";
+import PopUp from "../../components/shared/PopUp/PopUp";
+
 class AdminLayout extends React.Component {
     static propTypes = {
         message: PropTypes.object.isRequired,
@@ -19,6 +22,10 @@ class AdminLayout extends React.Component {
     };
     constructor(props) {
         super(props);
+    }
+    _getNumberOfNotifications = () =>{
+        let read = localStorage.getItem('NUM_OF_NOTIFICATIONS_READ') || 0;
+        return (this.props.notifications.data.length - read)
     }
     _isCurrentURL = (url) => {
         // alert(url);
@@ -60,7 +67,7 @@ class AdminLayout extends React.Component {
                         style={{borderLeftColor:this.props.theme.pagePrimaryColor}}>
                         <a href="/admin/notifications" className="my-nav-item">
                             <i title="notification(s)" className="fas fa-bell" style={{color:this.props.theme.pagePrimaryColor}}></i>
-        <span className="badge badge-light my-badge">{this.props.notifications.data.length}</span>
+        {this._getNumberOfNotifications()>0?<span className="badge badge-light my-badge">{this._getNumberOfNotifications()}</span>:null}
                         </a>
                     </div>
                     <div className={"" + (this._isCurrentURL("/admin/profile") ? "my-nav-selected" : "")} 
