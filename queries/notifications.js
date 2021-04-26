@@ -1,4 +1,4 @@
-const AdminNotificationModel = require('../models/AdminNotification/AdminNotification');
+const AdminNotificationModel = require('../models/adminNotification/AdminNotification');
 const val = require('./helpers/helper');
 
 function findById(id,callback){
