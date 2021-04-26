@@ -5,7 +5,7 @@ const rxsMedicationModel = require('../models/rxsMedication/RxsMedication');
 const rxsModel = require('../models/rxs/Rxs');
 const ejs = require('ejs');
 const fs = require('fs')
-const {CLIENT_URL} = process.env.CLIENT_URL || require('../config/configVars');
+const CLIENT_URL = process.env.CLIENT_URL || require('../config/configVars').CLIENT_URL;
 
 
 var createCode = function(url, type) {
