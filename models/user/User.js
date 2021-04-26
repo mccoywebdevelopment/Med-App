@@ -8,10 +8,9 @@ var UserSchema = new mongoose.Schema({
     isAdmin:{type:Boolean,default:false},
     dateCreated:Date,
     lastLoggon:Date,
-    // timeZone:{type:String,required:true,default:"America/Phoenix"},
     notifications:{
         type:{type:String,default:"email"},
-        recieve:{type:Boolean,default:false}
+        recieve:{type:Boolean,default:true}
     },
     auth:{
         status:{

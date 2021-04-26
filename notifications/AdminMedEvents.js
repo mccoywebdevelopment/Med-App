@@ -1,6 +1,8 @@
 const { getPeriods, formatAMPM, isGreatorThan } = require('../config/globalHelpers');
 const { getGroups } = require('./shared');
-const VALID_TIMES = process.env.VALID_TIMES || require('../config/configVars').VALID_TIMES;
+const VALID_TIMES_MORNING_END = process.env.VALID_TIMES_MORNING_END || require('../config/configVars').VALID_TIMES_MORNING_END;
+const VALID_TIMES_AFTERNOON_END = process.env.VALID_TIMES_AFTERNOON_END || require('../config/configVars').VALID_TIMES_AFTERNOON_END;
+const VALID_TIMES_EVENING_END = process.env.VALID_TIMES_EVENING_END || require('../config/configVars').VALID_TIMES_EVENING_END;
 let currentTime = new Date();
 let { morningEnd, afternoonEnd, eveningEnd } = getPeriods(currentTime);
 const createAdminNotification = require('../queries/notifications').create;
@@ -48,21 +50,21 @@ function getActiveMedsForPrevPeriods(activeArr, historyArr) {
         arr.push({
             type: 'morning',
             arr: activeArr.morningMedsActive,
-            periodEnd: VALID_TIMES.morning[1]
+            periodEnd: VALID_TIMES_MORNING_END
         })
     }
     if (isGreatorThan(afternoonEnd) && activeArr.afternoonMedsActive.length > 0) {
         arr.push({
             type: 'afternoon',
             arr: activeArr.afternoonMedsActive,
-            periodEnd: VALID_TIMES.afternoon[1]
+            periodEnd: VALID_TIMES_AFTERNOON_END
         })
     }
     if (isGreatorThan(eveningEnd) && activeArr.eveningMedsActive.length > 0) {
         arr.push({
             type: 'evening',
             arr: activeArr.eveningMedsActive,
-            periodEnd: VALID_TIMES.evening[1]
+            periodEnd: VALID_TIMES_EVENING_END
         })
     }
     let newArr = [];

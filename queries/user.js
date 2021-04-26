@@ -9,7 +9,12 @@ const MedicationEvent = require('../models/medicationEvent/MedicationEvent');
 const Rxs = require('../models/rxs/Rxs');
 const SECRET_KEY = process.env.SECRET_KEY || require('../config/configVars').SECRET_KEY;
 const CAN_DELETE_ADMIN = process.env.CAN_DELETE_ADMIN || require('../config/configVars').CAN_DELETE_ADMIN;
-const VALID_TIMES = process.env.VALID_TIMES || require('../config/configVars').VALID_TIMES;
+const VALID_TIMES_MORNING_START = process.env.VALID_TIMES_MORNING_START || require('../config/configVars').VALID_TIMES_MORNING_START;
+const VALID_TIMES_MORNING_END = process.env.VALID_TIMES_MORNING_END || require('../config/configVars').VALID_TIMES_MORNING_END;
+const VALID_TIMES_AFTERNOON_START = process.env.VALID_TIMES_AFTERNOON_START || require('../config/configVars').VALID_TIMES_AFTERNOON_START;
+const VALID_TIMES_AFTERNOON_END = process.env.VALID_TIMES_AFTERNOON_END || require('../config/configVars').VALID_TIMES_AFTERNOON_END;
+const VALID_TIMES_EVENING_START = process.env.VALID_TIMES_EVENING_START || require('../config/configVars').VALID_TIMES_EVENING_START;
+const VALID_TIMES_EVENING_END = process.env.VALID_TIMES_EVENING_END || require('../config/configVars').VALID_TIMES_EVENING_END;
 const { addDetailsToUser, isToday, isBetween, appendTimeToDate } = require('../config/globalHelpers');
 
 function getDependents(user, callback) {
@@ -66,8 +71,8 @@ function getDependentsRxs(groups,callback){
                   var curDep = curGroup.dependents[ix];
                   curDep.group = attatchGroup(curGroup);
                   dependents.push(curDep);
-                  let { active, history } = filterMedications(curGroup, curDep, VALID_TIMES.morning,
-                    VALID_TIMES.afternoon, VALID_TIMES.evening);
+                  let { active, history } = filterMedications(curGroup, curDep, [VALID_TIMES_MORNING_START,VALID_TIMES_MORNING_END],
+                    [VALID_TIMES_AFTERNOON_START,VALID_TIMES_AFTERNOON_END],  [VALID_TIMES_EVENING_START,VALID_TIMES_EVENING_END]);
 
                   activeArr.morningMedsActive = activeArr.morningMedsActive.concat(active.morningMedsActive);
                   activeArr.afternoonMedsActive = activeArr.afternoonMedsActive.concat(active.afternoonMedsActive);
@@ -82,9 +87,9 @@ function getDependentsRxs(groups,callback){
                 activeArr,
                 historyArr,
                 dependents,
-                morning: VALID_TIMES.morning,
-                afternoon: VALID_TIMES.afternoon,
-                evening: VALID_TIMES.evening
+                morning: [VALID_TIMES_MORNING_START,VALID_TIMES_MORNING_END],
+                afternoon: [VALID_TIMES_AFTERNOON_START,VALID_TIMES_AFTERNOON_END],
+                evening: [VALID_TIMES_EVENING_START,VALID_TIMES_EVENING_END]
               }
               callback(null, obj);
             }

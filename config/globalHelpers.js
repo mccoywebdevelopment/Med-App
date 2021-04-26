@@ -1,6 +1,13 @@
 const User = require('../models/user/User');
 const RxsMedication = require('../models/rxsMedication/RxsMedication');
-const VALID_TIMES = process.env.VALID_TIMES || require('./configVars').VALID_TIMES;
+const VALID_TIMES_MORNING_START = process.env.VALID_TIMES_MORNING_START || require('./configVars').VALID_TIMES_MORNING_START;
+const VALID_TIMES_MORNING_END = process.env.VALID_TIMES_MORNING_END || require('./configVars').VALID_TIMES_MORNING_END;
+
+const VALID_TIMES_AFTERNOON_START = process.env.VALID_TIMES_AFTERNOON_START || require('./configVars').VALID_TIMES_AFTERNOON_START;
+const VALID_TIMES_AFTERNOON_END = process.env.VALID_TIMES_AFTERNOON_END || require('./configVars').VALID_TIMES_AFTERNOON_END;
+
+const VALID_TIMES_EVENING_START = process.env.VALID_TIMES_EVENING_START || require('./configVars').VALID_TIMES_EVENING_START;
+const VALID_TIMES_EVENING_END = process.env.VALID_TIMES_EVENING_END || require('./configVars').VALID_TIMES_EVENING_END;
 
 
 function verifyUser(req, res, next) {
@@ -138,14 +145,14 @@ function appendTimeToDate(date) {
     return [year, month, day].join('-');
   }
   function getPeriods(today){
-    let morningStart = new Date(appendTimeToDate(today) + " " + VALID_TIMES.morning[0]);
-    let morningEnd = new Date(appendTimeToDate(today) + " " + VALID_TIMES.morning[1]);
+    let morningStart = new Date(appendTimeToDate(today) + " " + VALID_TIMES_MORNING_START);
+    let morningEnd = new Date(appendTimeToDate(today) + " " + VALID_TIMES_MORNING_END);
 
-    let afternoonStart = new Date(appendTimeToDate(today) + " " + VALID_TIMES.afternoon[0]);
-    let afternoonEnd = new Date(appendTimeToDate(today) + " " + VALID_TIMES.afternoon[1]);
+    let afternoonStart = new Date(appendTimeToDate(today) + " " + VALID_TIMES_AFTERNOON_START);
+    let afternoonEnd = new Date(appendTimeToDate(today) + " " + VALID_TIMES_AFTERNOON_END);
 
-    let eveningStart = new Date(appendTimeToDate(today) + " " + VALID_TIMES.evening[0]);
-    let eveningEnd = new Date(appendTimeToDate(today) + " " + VALID_TIMES.evening[1]);
+    let eveningStart = new Date(appendTimeToDate(today) + " " + VALID_TIMES_EVENING_START);
+    let eveningEnd = new Date(appendTimeToDate(today) + " " + VALID_TIMES_EVENING_END);
 
     return{morningStart,morningEnd,afternoonStart,afternoonEnd,eveningStart,eveningEnd}
   }

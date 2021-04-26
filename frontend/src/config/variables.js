@@ -7,9 +7,3 @@
 
 // prod mode:
 export const API_URI = "https://sunshine-acres-med-app.herokuapp.com/api";
-
-export const validTimes = {
-    morning: ["4:00 AM", "11:59 AM"],
-    afternoon: ["12:00 PM", "5:59 PM"],
-    evening: ["5:59 PM", "11:00 PM"]
-}
