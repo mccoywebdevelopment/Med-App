@@ -7,7 +7,8 @@ let userModel = require('../models/user/User');
 let Dependent = require('../models/dependent/Dependent');
 let findGuardianByID = require('./guardian').findById;
 let createEvent = require('./event').create;
-let { isMedEventValid, getCurrentTime } = require('../config/globalHelpers');
+let { isMedEventValid } = require('../config/globalHelpers');
+let { getCurrentTime } = require('../config/rootHelpers');
 let medicationEventModel = require('../models/medicationEvent/MedicationEvent');
 
 function findById(id, callback) {
