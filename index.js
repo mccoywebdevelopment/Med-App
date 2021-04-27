@@ -1,34 +1,34 @@
 // Setting up express
-const express = require('express');
-const app = express();
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const usersRouter = require('./routes/api/users');
-const emailRouter = require('./routes/api/mailer');
-const guardiansRouter = require('./routes/api/guardians');
-const dependentsRouter = require('./routes/api/dependents');
-const groupsRouter = require('./routes/api/groups');
-const authRouter = require('./routes/api/auth');
-const medsRouter = require('./routes/api/medications');
-const calendarRouter = require('./routes/api/calendar');
-const prescriptionsRouter = require('./routes/api/prescriptions');
-const rxsMedicationRouter = require('./routes/api/rxsMedication');
-const notificationRouter = require('./routes/api/notifications');
-const eventRouter = require('./routes/api/event');
-const dataRouter = require('./routes/api/data');
-const medicationEvent = require('./routes/api/medicationEvent');
-const exportDataRouter = require('./routes/api/exportData');
-const PORT = process.env.PORT || 4000;
-const MONGO_URI = process.env.MONGODB_URI || require('./config/configVars').MONGODB_URI;
+let express = require('express');
+let app = express();
+let bodyParser = require('body-parser');
+let mongoose = require('mongoose');
+let usersRouter = require('./routes/api/users');
+let emailRouter = require('./routes/api/mailer');
+let guardiansRouter = require('./routes/api/guardians');
+let dependentsRouter = require('./routes/api/dependents');
+let groupsRouter = require('./routes/api/groups');
+let authRouter = require('./routes/api/auth');
+let medsRouter = require('./routes/api/medications');
+let calendarRouter = require('./routes/api/calendar');
+let prescriptionsRouter = require('./routes/api/prescriptions');
+let rxsMedicationRouter = require('./routes/api/rxsMedication');
+let notificationRouter = require('./routes/api/notifications');
+let eventRouter = require('./routes/api/event');
+let dataRouter = require('./routes/api/data');
+let medicationEvent = require('./routes/api/medicationEvent');
+let exportDataRouter = require('./routes/api/exportData');
+let PORT = process.env.PORT || 4000;
+let MONGO_URI = process.env.MONGODB_URI || require('./config/configVars').MONGODB_URI;
 
 if (process.env.NODE_ENV != 'production') {
-    const cors = require('cors');
+    let cors = require('cors');
     app.use(cors());
 }
 
 app.use((req, res, next) => {
-    const allowedOrigins = ['https://sunshine-acres-med-app.herokuapp.com','https://med-app-testing.herokuapp.com'];
-    const origin = req.headers.origin;
+    let allowedOrigins = ['https://sunshine-acres-med-app.herokuapp.com','https://med-app-testing.herokuapp.com'];
+    let origin = req.headers.origin;
     if (allowedOrigins.includes(origin)) {
         res.setHeader('Access-Control-Allow-Origin', origin);
     }
@@ -72,7 +72,7 @@ app.use(function (error, req, res, next) {
 });
 
 if (process.env.NODE_ENV === 'production') {
-    const root = require('path').join(__dirname, 'frontend', 'build')
+    let root = require('path').join(__dirname, 'frontend', 'build')
     app.use(express.static(root));
     app.get("*", (req, res) => {
         res.sendFile('index.html', { root });

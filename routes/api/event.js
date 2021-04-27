@@ -1,8 +1,8 @@
-const express = require('express');
-const errors = require('../errors');
-const router = express.Router();
-const eventQ = require('../../queries/event');
-const verifyUser = require('../../config/globalHelpers').verifyUser;
+let express = require('express');
+let errors = require('../errors');
+let router = express.Router();
+let eventQ = require('../../queries/event');
+let verifyUser = require('../../config/globalHelpers').verifyUser;
 
 
 router.route("/:JWT")

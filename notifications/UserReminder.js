@@ -1,20 +1,21 @@
-const { getPeriods, isBetween, formatAMPM } = require('../config/globalHelpers');
-const GroupModel = require('../models/group/Group');
-const UserModel = require('../models/user/User');
-const path = require('path');
-const { sendMail } = require('../queries/mailer');
-const { getDependentsRxs } = require('../queries/user');
-let currentTime = new Date();
-const minutesBefore = process.env.MINUTES_BEFORE || require('../config/configVars').MINUTES_BEFORE;
-const VALID_TIMES_MORNING_END = process.env.VALID_TIMES_MORNING_END || require('../config/configVars').VALID_TIMES_MORNING_END;
-const VALID_TIMES_AFTERNOON_END = process.env.VALID_TIMES_AFTERNOON_END || require('../config/configVars').VALID_TIMES_AFTERNOON_END;
-const VALID_TIMES_EVENING_END = process.env.VALID_TIMES_EVENING_END || require('../config/configVars').VALID_TIMES_EVENING_END;
-const CLIENT_URL = process.env.CLIENT_URL || require('../config/configVars').CLIENT_URL;
-const { getGroups, capitalizeFirstLetter, isDuplicate, addDay, getSeconds } = require('./shared');
+let { getPeriods, isBetween, formatAMPM } = require('../config/globalHelpers');
+let GroupModel = require('../models/group/Group');
+let { getCurrentTime } = require('../config/rootHelpers');
+let UserModel = require('../models/user/User');
+let path = require('path');
+let { sendMail } = require('../queries/mailer');
+let { getDependentsRxs } = require('../queries/user');
+let currentTime = getCurrentTime();
+let minutesBefore = process.env.MINUTES_BEFORE || require('../config/configVars').MINUTES_BEFORE;
+let VALID_TIMES_MORNING_END = process.env.VALID_TIMES_MORNING_END || require('../config/configVars').VALID_TIMES_MORNING_END;
+let VALID_TIMES_AFTERNOON_END = process.env.VALID_TIMES_AFTERNOON_END || require('../config/configVars').VALID_TIMES_AFTERNOON_END;
+let VALID_TIMES_EVENING_END = process.env.VALID_TIMES_EVENING_END || require('../config/configVars').VALID_TIMES_EVENING_END;
+let CLIENT_URL = process.env.CLIENT_URL || require('../config/configVars').CLIENT_URL;
+let { getGroups, capitalizeFirstLetter, isDuplicate, addDay, getSeconds } = require('./shared');
 
 function sendNotification(time, isLast) {
     setTimeout(function () {
-        console.log("User notification triggered @ " + formatAMPM(new Date()) + " today.");
+        console.log("User notification triggered @ " + formatAMPM(getCurrentTime()) + " today.");
         sendMedicalNotificationsEmail(function (err) {
             if (err) {
                 console.log(err);
@@ -22,7 +23,7 @@ function sendNotification(time, isLast) {
             if (isLast) {
                 init();
             }
-            console.log("User notification sent @ " + formatAMPM(new Date()) + " today.");
+            console.log("User notification sent @ " + formatAMPM(getCurrentTime()) + " today.");
         });
     }, time)
 }
@@ -81,7 +82,7 @@ function sendMedNotificationEmail(username, activeMedications, period, periodEnd
 }
 
 function getActiveMedsForCurrentPeriod(activeArr) {
-    let today = new Date();
+    let today = getCurrentTime();
     let { morningStart, morningEnd, afternoonStart, afternoonEnd, eveningStart, eveningEnd } =
         getPeriods(currentTime);
 

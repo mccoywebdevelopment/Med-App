@@ -116,6 +116,7 @@ export function FETCH(type, url, body, jwt, dispatch, isLoading, done) {
             return res.json();
         })
         .then(res => {
+            console.log(res)
             if (isLoading) {
                 dispatch(toggleLoading(false));
             }

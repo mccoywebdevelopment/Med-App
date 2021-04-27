@@ -20,7 +20,6 @@ class App extends React.Component {
     auth: PropTypes.object.isRequired,
     changeRedirectURL: PropTypes.func.isRequired,
     changeCurrentURL: PropTypes.func.isRequired,
-    loading: PropTypes.object.isRequired,
     popUp: PropTypes.object.isRequired
   };
   state = {
@@ -103,7 +102,6 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
-  loading: state.loading,
   popUp:state.popUp
 });
 

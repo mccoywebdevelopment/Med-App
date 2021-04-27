@@ -1,5 +1,6 @@
-const AdminNotificationModel = require('../models/adminNotification/AdminNotification');
-const val = require('./helpers/helper');
+let AdminNotificationModel = require('../models/adminNotification/AdminNotification');
+let val = require('./helpers/helper');
+let { getCurrentTime } = require('../config/rootHelpers');
 
 function findById(id,callback){
   AdminNotificationModel.findById(id,function(err,result){
@@ -73,7 +74,7 @@ function deleteById(id,callback){
 }
 function saveToDoc(bodyData,schemaModel,callback){
   var newDoc = new schemaModel({
-    dateCreated: new Date(),
+    dateCreated: getCurrentTime(),
     type:bodyData.type
   });
   if(typeof(bodyData.medicationMissed)!='undefined'){

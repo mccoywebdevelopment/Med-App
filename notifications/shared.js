@@ -1,7 +1,8 @@
 const { getPeriods, isBetween, formatAMPM } = require('../config/globalHelpers');
+let { getCurrentTime } = require('../config/rootHelpers');
 const GroupModel = require('../models/group/Group');
 const UserModel = require('../models/user/User');
-let currentTime = new Date();
+let currentTime = getCurrentTime();
 let { morningEnd, afternoonEnd, eveningEnd } = getPeriods(currentTime);
 
 function addDay(currentTime) {

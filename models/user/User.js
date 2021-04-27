@@ -1,6 +1,7 @@
-const mongoose = require("mongoose");
-const SALT_WORK_FACTOR = 12;
-const bcrypt   = require('bcrypt-nodejs');
+let mongoose = require("mongoose");
+let SALT_WORK_FACTOR = 12;
+let bcrypt   = require('bcrypt-nodejs');
+let getCurrentTime = require('../../config/rootHelpers').getCurrentTime
 
 var UserSchema = new mongoose.Schema({
     username:{type:String,required:true},
@@ -25,7 +26,7 @@ var UserSchema = new mongoose.Schema({
 
 UserSchema.pre('save',function(next){
     if(!this.dateCreated){
-        this.dateCreated = new Date();
+        this.dateCreated = getCurrentTime();
     }
     if(this.auth.status.statusValue != "pending" && this.auth.status.statusValue != "approved" && this.auth.status.statusValue != "rejected"){
         var err = "Didn't recieve a valid entry for status valid values are: pending, approved, and rejected.";
@@ -46,7 +47,7 @@ UserSchema.pre('save', function(next) {
         next();
     }else{
         // generate a salt
-        user.auth.dateAuthenticated = new Date();
+        user.auth.dateAuthenticated = getCurrentTime();
         user.auth.status.statusValue = "approved";
         bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
             if (err){

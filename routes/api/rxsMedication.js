@@ -1,9 +1,9 @@
-const express = require('express');
-const errors = require('../errors');
-const rxsMedicationQ = require('../../queries/rxsMedication');
-const verifyAdmin = require('../../config/globalHelpers').verifyAdmin;
-const verifyUser = require('../../config/globalHelpers').verifyUser
-const router = express.Router();
+let express = require('express');
+let errors = require('../errors');
+let rxsMedicationQ = require('../../queries/rxsMedication');
+let verifyAdmin = require('../../config/globalHelpers').verifyAdmin;
+let verifyUser = require('../../config/globalHelpers').verifyUser
+let router = express.Router();
 
 router.route("/:JWT")
 .get(verifyAdmin,function(req,res){

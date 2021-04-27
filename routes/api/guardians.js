@@ -1,10 +1,10 @@
-const express = require('express');
-const errors = require('../errors');
-const guardianQ = require('../../queries/guardian');
-const verifyUser = require('../../config/globalHelpers').verifyUser;
-const verifyAdmin = require('../../config/globalHelpers').verifyAdmin;
+let express = require('express');
+let errors = require('../errors');
+let guardianQ = require('../../queries/guardian');
+let verifyUser = require('../../config/globalHelpers').verifyUser;
+let verifyAdmin = require('../../config/globalHelpers').verifyAdmin;
 
-const router = express.Router();
+let router = express.Router();
 
 router.route("/:JWT")
 .get(verifyAdmin,function(req,res){

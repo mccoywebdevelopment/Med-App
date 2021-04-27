@@ -1,11 +1,11 @@
-const BASE_URL = process.env.BASE_URL || require('../config/configVars').BASE_URL;
-const CLIENT_URL = process.env.CLIENT_URL || require('../config/configVars').CLIENT_URL;
-const EMAIL = process.env.EMAIL || require('../config/configVars').EMAIL;
-const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD || require('../config/configVars').EMAIL_PASSWORD;
-const fs = require("fs");
-const nodemailer = require("nodemailer");
-const User = require('../models/user/User');
-const crypto = require('crypto');
+let BASE_URL = process.env.BASE_URL || require('../config/configVars').BASE_URL;
+let CLIENT_URL = process.env.CLIENT_URL || require('../config/configVars').CLIENT_URL;
+let EMAIL = process.env.EMAIL || require('../config/configVars').EMAIL;
+let EMAIL_PASSWORD = process.env.EMAIL_PASSWORD || require('../config/configVars').EMAIL_PASSWORD;
+let fs = require("fs");
+let nodemailer = require("nodemailer");
+let User = require('../models/user/User');
+let crypto = require('crypto');
 
 function authenticateUserEmail(email, token, callback) {
   User.findOne({ username: email }, function (err, userFound) {
@@ -133,7 +133,7 @@ function sendNodeMail(html, email, subject, image, callback) {
       console.error("Failed to create a testing account. " + err.message);
       callback(err);
     }
-    const transporter = nodemailer.createTransport({
+    let transporter = nodemailer.createTransport({
       service: "AOL",
       auth: {
         user: EMAIL,

@@ -310,7 +310,7 @@ class CreateDependent extends React.Component {
         let newState = this.state;
         newState.overview.errors.name = firstAndLastNameValidator(newState.overview.values.name, true).errorMsg;
         newState.overview.errors.dateOfBirth = prevDateValidator(newState.overview.values.dateOfBirth, true).errorMsg;
-        newState.overview.errors.group = this._groupValidation();
+        // newState.overview.errors.group = this._groupValidation();
         this.setState(newState);
     }
     _toggleIsEditOverview = () => {
@@ -505,6 +505,7 @@ class CreateDependent extends React.Component {
         if (this._isOverviewErrors() || this._isRxsMedErrors()) {
             alert("Please fix the errors below:");
         }
+        console.log(this.state);
     }
     _groupRxs = () => {
         let data = JSON.parse(JSON.stringify(this.state.rxsMedList.list));

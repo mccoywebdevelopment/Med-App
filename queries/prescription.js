@@ -1,9 +1,9 @@
-const rxsModel = require('../models/rxs/Rxs');
-const val = require('./helpers/helper');
-const createRxsMedication = require('./rxsMedication').create;
-const updateRxsMedication = require('./rxsMedication').patchUpdateById;
-const RxsMedication = require('../models/rxsMedication/RxsMedication');
-const rxsMedDel = require('./rxsMedication').deleteById;
+let rxsModel = require('../models/rxs/Rxs');
+let val = require('./helpers/helper');
+let createRxsMedication = require('./rxsMedication').create;
+let updateRxsMedication = require('./rxsMedication').patchUpdateById;
+let RxsMedication = require('../models/rxsMedication/RxsMedication');
+let rxsMedDel = require('./rxsMedication').deleteById;
 
 function findById(id,callback){
   rxsModel.findById(id,function(err,result){

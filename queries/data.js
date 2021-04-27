@@ -1,7 +1,8 @@
-const Dependent = require('../models/dependent/Dependent');
-const User = require('../models/user/User');
-const RxsMedications = require('../models/rxsMedication/RxsMedication');
-const Group = require('../models/group/Group');
+let Dependent = require('../models/dependent/Dependent');
+let User = require('../models/user/User');
+let RxsMedications = require('../models/rxsMedication/RxsMedication');
+let Group = require('../models/group/Group');
+let { getCurrentTime } = require('../config/rootHelpers');
 
 function getAll(jwt,callback){
     getNumberOfDependents(function(err,totalDep){
@@ -129,7 +130,7 @@ function getAvgAgeOfDep(dependents){
     }
     for(var i=0;i<dependents.length;++i){
         var year = new Date(dependents[i].dateOfBirth).getFullYear();
-        var curYear = new Date().getFullYear();
+        var curYear = getCurrentTime().getFullYear();
         total = total + curYear - year;
     }
     return(Math.round(total/dependents.length * 100) / 100);

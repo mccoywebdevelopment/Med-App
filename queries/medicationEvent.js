@@ -1,14 +1,14 @@
-const eventModel = require('../models/event/Event');
-const val = require('./helpers/helper');
-const Guardian = require('../models/guardian/Guardian');
-const rxsMedicationModel = require('../models/rxsMedication/RxsMedication');
-const Rxs = require('../models/rxs/Rxs');
-const userModel = require('../models/user/User');
-const Dependent = require('../models/dependent/Dependent');
-const findGuardianByID = require('./guardian').findById;
-const createEvent = require('./event').create;
-const { isMedEventValid } = require('../config/globalHelpers');
-const medicationEventModel = require('../models/medicationEvent/MedicationEvent');
+let eventModel = require('../models/event/Event');
+let val = require('./helpers/helper');
+let Guardian = require('../models/guardian/Guardian');
+let rxsMedicationModel = require('../models/rxsMedication/RxsMedication');
+let Rxs = require('../models/rxs/Rxs');
+let userModel = require('../models/user/User');
+let Dependent = require('../models/dependent/Dependent');
+let findGuardianByID = require('./guardian').findById;
+let createEvent = require('./event').create;
+let { isMedEventValid, getCurrentTime } = require('../config/globalHelpers');
+let medicationEventModel = require('../models/medicationEvent/MedicationEvent');
 
 function findById(id, callback) {
   eventModel.findById(id, function (err, result) {
@@ -63,7 +63,6 @@ function patchUpdateById(body, id, callback) {
     } else if (!foundDoc) {
       callback("Doc not found");
     } else {
-      console.log(body);
       updateModifiedFields(foundDoc, body, function (err, obj) {
         foundDoc.update(obj, function (err, result) {
           if (err) {
@@ -167,7 +166,7 @@ function tookMedication(rxsMedId, jwt, body, user, callback) {
   });
 }
 function getDate() {
-  var today = new Date();
+  var today = getCurrentTime();
   var dd = today.getDate();
   var mm = today.getMonth() + 1; //January is 0!
 
@@ -210,7 +209,7 @@ function createRxsMedEvent(body, dependent, rxsMedication, guardian, callback) {
         title: dependentName + " took " + rxsMedication.name,
         isAway: body.isAway,
         notes: body.notes,
-        dateTaken: new Date(),
+        dateTaken: getCurrentTime(),
         event: eventCreated,
         dependent: dependent,
         createdBy: guardian,

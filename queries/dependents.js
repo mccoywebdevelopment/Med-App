@@ -1,13 +1,13 @@
-const dependentModel = require('../models/dependent/Dependent');
-const val = require('./helpers/helper');
-const createRxs = require('./prescription').create;
-const updateRxs = require('./prescription').patchUpdateById;
-const createMedication = require('./medication').create;
-const rxsMedicationModel = require('../models/rxsMedication/RxsMedication');
-const Medication = require('../models/medication/Medication');
-const rxsDelete = require('./prescription').deleteById;
-const medDelete = require('./medication').deleteById;
-const findAllGroups = require('./group').findAll;
+let dependentModel = require('../models/dependent/Dependent');
+let val = require('./helpers/helper');
+let createRxs = require('./prescription').create;
+let updateRxs = require('./prescription').patchUpdateById;
+let createMedication = require('./medication').create;
+let rxsMedicationModel = require('../models/rxsMedication/RxsMedication');
+let Medication = require('../models/medication/Medication');
+let rxsDelete = require('./prescription').deleteById;
+let medDelete = require('./medication').deleteById;
+let findAllGroups = require('./group').findAll;
 
 function findDependentById(id, callback) {
   dependentModel.findById(id, function (err, result) {

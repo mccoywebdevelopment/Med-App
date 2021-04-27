@@ -1,21 +1,22 @@
-const userModel = require('../models/user/User');
-const val = require('./helpers/helper');
-const Guardian = require('../models/guardian/Guardian');
-const createGuardian = require('./guardian').create;
-const updateGuardianByID = require('./guardian').patchUpdateById;
-const findAllGroups = require('./group').findAll;
-const RxsMedication = require('../models/rxsMedication/RxsMedication');
-const MedicationEvent = require('../models/medicationEvent/MedicationEvent');
-const Rxs = require('../models/rxs/Rxs');
-const SECRET_KEY = process.env.SECRET_KEY || require('../config/configVars').SECRET_KEY;
-const CAN_DELETE_ADMIN = process.env.CAN_DELETE_ADMIN || require('../config/configVars').CAN_DELETE_ADMIN;
-const VALID_TIMES_MORNING_START = process.env.VALID_TIMES_MORNING_START || require('../config/configVars').VALID_TIMES_MORNING_START;
-const VALID_TIMES_MORNING_END = process.env.VALID_TIMES_MORNING_END || require('../config/configVars').VALID_TIMES_MORNING_END;
-const VALID_TIMES_AFTERNOON_START = process.env.VALID_TIMES_AFTERNOON_START || require('../config/configVars').VALID_TIMES_AFTERNOON_START;
-const VALID_TIMES_AFTERNOON_END = process.env.VALID_TIMES_AFTERNOON_END || require('../config/configVars').VALID_TIMES_AFTERNOON_END;
-const VALID_TIMES_EVENING_START = process.env.VALID_TIMES_EVENING_START || require('../config/configVars').VALID_TIMES_EVENING_START;
-const VALID_TIMES_EVENING_END = process.env.VALID_TIMES_EVENING_END || require('../config/configVars').VALID_TIMES_EVENING_END;
-const { addDetailsToUser, isToday, isBetween, appendTimeToDate } = require('../config/globalHelpers');
+let userModel = require('../models/user/User');
+let val = require('./helpers/helper');
+let Guardian = require('../models/guardian/Guardian');
+let createGuardian = require('./guardian').create;
+let updateGuardianByID = require('./guardian').patchUpdateById;
+let findAllGroups = require('./group').findAll;
+let RxsMedication = require('../models/rxsMedication/RxsMedication');
+let MedicationEvent = require('../models/medicationEvent/MedicationEvent');
+let Rxs = require('../models/rxs/Rxs');
+let SECRET_KEY = process.env.SECRET_KEY || require('../config/configVars').SECRET_KEY;
+let CAN_DELETE_ADMIN = process.env.CAN_DELETE_ADMIN || require('../config/configVars').CAN_DELETE_ADMIN;
+let VALID_TIMES_MORNING_START = process.env.VALID_TIMES_MORNING_START || require('../config/configVars').VALID_TIMES_MORNING_START;
+let VALID_TIMES_MORNING_END = process.env.VALID_TIMES_MORNING_END || require('../config/configVars').VALID_TIMES_MORNING_END;
+let VALID_TIMES_AFTERNOON_START = process.env.VALID_TIMES_AFTERNOON_START || require('../config/configVars').VALID_TIMES_AFTERNOON_START;
+let VALID_TIMES_AFTERNOON_END = process.env.VALID_TIMES_AFTERNOON_END || require('../config/configVars').VALID_TIMES_AFTERNOON_END;
+let VALID_TIMES_EVENING_START = process.env.VALID_TIMES_EVENING_START || require('../config/configVars').VALID_TIMES_EVENING_START;
+let VALID_TIMES_EVENING_END = process.env.VALID_TIMES_EVENING_END || require('../config/configVars').VALID_TIMES_EVENING_END;
+let { addDetailsToUser, isToday, isBetween, appendTimeToDate } = require('../config/globalHelpers');
+let { getCurrentTime } = require('../config/rootHelpers');
 
 function getDependents(user, callback) {
   findAllGroups(function (err, allGroups) {
@@ -154,10 +155,12 @@ function getMedActive(whenToTake, events, morningStart, morningEnd,
   return activeArr;
 }
 function filterMedications(group, dep, morning, afternoon, evening) {
-  let today = new Date();
+  let today = getCurrentTime();
 
   let morningStart = Date.parse(appendTimeToDate(today) + " " + morning[0]);
   let morningEnd = Date.parse(appendTimeToDate(today) + " " + morning[1]);
+
+  console.log(morningStart);
 
   let afternoonStart = Date.parse(appendTimeToDate(today) + " " + afternoon[0]);
   let afternoonEnd = Date.parse(appendTimeToDate(today) + " " + afternoon[1]);

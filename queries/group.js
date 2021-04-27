@@ -1,8 +1,8 @@
-const groupModel = require('../models/group/Group');
-const dependentModel = require('../models/dependent/Dependent');
-const guardianModel = require('../models/guardian/Guardian');
-const val = require('./helpers/helper');
-const { forEach } = require('lodash');
+let groupModel = require('../models/group/Group');
+let dependentModel = require('../models/dependent/Dependent');
+let guardianModel = require('../models/guardian/Guardian');
+let val = require('./helpers/helper');
+let { forEach } = require('lodash');
 
 function findById(id, callback) {
   groupModel.findById(id, function (err, result) {

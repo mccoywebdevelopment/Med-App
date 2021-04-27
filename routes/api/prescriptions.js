@@ -1,8 +1,8 @@
-const express = require('express');
-const errors = require('../errors');
-const prescriptionQ = require('../../queries/prescription');
-const verifyAdmin = require('../../config/globalHelpers').verifyAdmin;
-const router = express.Router();
+let express = require('express');
+let errors = require('../errors');
+let prescriptionQ = require('../../queries/prescription');
+let verifyAdmin = require('../../config/globalHelpers').verifyAdmin;
+let router = express.Router();
 
 router.route("/:JWT")
 .get(verifyAdmin,function(req,res){

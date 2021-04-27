@@ -1,6 +1,6 @@
-const eventModel = require('../models/event/Event');
-const medicationEventModel = require('../models/medicationEvent/MedicationEvent');
-const val = require('./helpers/helper');
+let eventModel = require('../models/event/Event');
+let medicationEventModel = require('../models/medicationEvent/MedicationEvent');
+let val = require('./helpers/helper');
 
 function findById(id,callback){
   eventModel.findById(id,function(err,result){

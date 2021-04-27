@@ -114,23 +114,28 @@ class Home extends React.Component {
         newState.postPopUp.isHistory = isHistory;
         this.setState(newState);
     }
-
+    _setFilteredMeds = (data) =>{
+        let newState = this.state;
+        newState.morning = data.morning;
+        newState.afternoon = data.afternoon;
+        newState.evening = data.evening;
+        newState.morningMedsActive = data.activeArr.morningMedsActive;
+        newState.morningMedsHistory = data.historyArr.morningMedsHistory;
+        newState.afternoonMedsActive = data.activeArr.afternoonMedsActive;
+        newState.afternoonMedsHistory = data.historyArr.afternoonMedsHistory;
+        newState.eveningMedsActive = data.activeArr.eveningMedsActive;
+        newState.eveningMedsHistory = data.historyArr.afternoonMedsHistory;
+        this.setState(newState);
+        this._setCurrentMeds();
+        this._setInitNav();
+    }
     componentDidMount = () => {
         this._setCurrentTime();
         this.props.fetchGetFilteredMedications((data) => {
-            let newState = this.state;
-            newState.morning = data.morning;
-            newState.afternoon = data.afternoon;
-            newState.evening = data.evening;
-            newState.morningMedsActive = data.activeArr.morningMedsActive;
-            newState.morningMedsHistory = data.historyArr.morningMedsHistory;
-            newState.afternoonMedsActive = data.activeArr.afternoonMedsActive;
-            newState.afternoonMedsHistory = data.historyArr.afternoonMedsHistory;
-            newState.eveningMedsActive = data.activeArr.eveningMedsActive;
-            newState.eveningMedsHistory = data.historyArr.afternoonMedsHistory;
-            this.setState(newState);
-            this._setCurrentMeds();
-            this._setInitNav();
+            console.log(data);
+            if(data && data.activeArr){
+                this._setFilteredMeds(data);
+            }
         });
     }
     _renderPopUp = () => {

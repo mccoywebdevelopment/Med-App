@@ -1,4 +1,5 @@
 var mongoose = require("mongoose");
+let getCurrentTime = require('../../config/rootHelpers').getCurrentTime
 
 var DependentSchema = new mongoose.Schema({
     name:{
@@ -20,7 +21,7 @@ var DependentSchema = new mongoose.Schema({
 });
 
 DependentSchema.pre('save',function(next){
-    this.dateCreated = new Date();
+    this.dateCreated = getCurrentTime();
     if(this.name.firstName.length<3){
         next("Server Error: First Name must be at least 3 characters.");
     }else if(this.name.lastName.length<3){

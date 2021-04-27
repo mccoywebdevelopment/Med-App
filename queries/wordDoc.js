@@ -1,9 +1,9 @@
-const { Document, Media, Table, TableCell, TableRow, VerticalAlign, HorizontalPositionAlign, Paragraph, Packer } = require('docx');
-const fs = require('fs');
+let { Document, Media, Table, TableCell, TableRow, VerticalAlign, HorizontalPositionAlign, Paragraph, Packer } = require('docx');
+let fs = require('fs');
 
-const doc = new Document();
+let doc = new Document();
 
-const table  = new Table({
+let table  = new Table({
     rows:[
         new TableRow({
             children: [

@@ -1,8 +1,8 @@
-const guardianModel = require('../models/guardian/Guardian');
-const userPatch = require('./user').patchUpdateById;
-const userModel = require('../models/user/User');
-const userCreate = require('./user').create;
-const val = require('./helpers/helper');
+let guardianModel = require('../models/guardian/Guardian');
+let userPatch = require('./user').patchUpdateById;
+let userModel = require('../models/user/User');
+let userCreate = require('./user').create;
+let val = require('./helpers/helper');
 
 function findById(id,callback){
   guardianModel.findById(id,function(err,result){

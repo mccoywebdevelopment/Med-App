@@ -1,12 +1,12 @@
-const RxsMedModel = require('../models/rxsMedication/RxsMedication');
-const RxsModel = require('../models/rxs/Rxs');
-const DependentModel = require('../models/dependent/Dependent');
-const GroupModel = require('../models/group/Group');
-const val = require('./helpers/helper');
-const delMedEvent = require('./medicationEvent').deleteById;
-const QRCode = require('qrcode');
-const CLIENT_URL  = process.env.CLIENT_URL || require('../config/configVars').CLIENT_URL;
-const fs = require('fs');
+let RxsMedModel = require('../models/rxsMedication/RxsMedication');
+let RxsModel = require('../models/rxs/Rxs');
+let DependentModel = require('../models/dependent/Dependent');
+let GroupModel = require('../models/group/Group');
+let val = require('./helpers/helper');
+let delMedEvent = require('./medicationEvent').deleteById;
+let QRCode = require('qrcode');
+let CLIENT_URL  = process.env.CLIENT_URL || require('../config/configVars').CLIENT_URL;
+let fs = require('fs');
 
 function findAll(callback) {
   RxsMedModel.find({}, function (err, result) {
@@ -24,8 +24,8 @@ function createCode(data, callback) {
     if (err) {
       callback(err);
     } else {
-      const file_buffer = fs.readFileSync(filepath);
-      const contents_in_base64 = file_buffer.toString('base64');
+      let file_buffer = fs.readFileSync(filepath);
+      let contents_in_base64 = file_buffer.toString('base64');
       callback(null, contents_in_base64);
     }
   });

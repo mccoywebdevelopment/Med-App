@@ -1,10 +1,11 @@
-const User = require('../models/user/User');
-const crypto = require('crypto');
-const createGuardian = require('./guardian').create;
-const guardianModel = require('../models/guardian/Guardian');
-const updateGuardian = require('./guardian').patchUpdateById;
-const Guardian = require('../models/guardian/Guardian');
-const { addDetailsToUser } = require('../config/globalHelpers');
+let User = require('../models/user/User');
+let crypto = require('crypto');
+let createGuardian = require('./guardian').create;
+let guardianModel = require('../models/guardian/Guardian');
+let updateGuardian = require('./guardian').patchUpdateById;
+let Guardian = require('../models/guardian/Guardian');
+let { addDetailsToUser } = require('../config/globalHelpers');
+let { getCurrentTime } = require('../config/rootHelpers');
 
 function registerUser(body,token,email,callback){
     User.findOne({username:email},function(err,userFound){
@@ -87,7 +88,7 @@ function registerUser(body,token,email,callback){
     });
 }
 function setExpireToken(userFound){
-    var today = new Date();
+    var today = getCurrentTime();
     today.setHours(today.getHours() + 48);
 
     userFound.auth.expiresIn = today;
@@ -123,7 +124,7 @@ function logginUser(body,callback){
                             userFound = setExpireToken(userFound);
                             userFound.password = body.password;
                             userFound.auth.token = token;
-                            userFound.lastLoggon = new Date();
+                            userFound.lastLoggon = getCurrentTime();
                             userFound.save(function(err,userSaved){
                                 if(err){
                                     callback(err);

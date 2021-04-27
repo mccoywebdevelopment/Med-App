@@ -1,5 +1,5 @@
-const UserReminders = require('./UserReminder').init;
-const AdminMedNotifications = require('./AdminMedEvents').init;
+let UserReminders = require('./UserReminder').init;
+let AdminMedNotifications = require('./AdminMedEvents').init;
 
 /*
     User reminders occur 20 minutes before the ending period

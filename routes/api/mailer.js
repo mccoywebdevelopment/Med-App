@@ -1,11 +1,11 @@
-const express = require('express');
-const router = express.Router();
-const path = require('path');
-const errors = require('../errors');
-const mailQ = require('../../queries/mailer');
-const CLIENT_URL = process.env.CLIENT_URL || require('../../config/configVars').CLIENT_URL;
-const BASE_URL = process.env.BASE_URL || require('../../config/configVars').BASE_URL;
-const verifyAdmin = require('../../config/globalHelpers').verifyAdmin;
+let express = require('express');
+let router = express.Router();
+let path = require('path');
+let errors = require('../errors');
+let mailQ = require('../../queries/mailer');
+let CLIENT_URL = process.env.CLIENT_URL || require('../../config/configVars').CLIENT_URL;
+let BASE_URL = process.env.BASE_URL || require('../../config/configVars').BASE_URL;
+let verifyAdmin = require('../../config/globalHelpers').verifyAdmin;
 
 router.route("/send-welcome/:email/:JWT")
   .get(verifyAdmin, function (req, res) {

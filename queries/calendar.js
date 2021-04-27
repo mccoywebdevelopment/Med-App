@@ -1,11 +1,11 @@
 //getDatesOfMeds
-const findUser = require('../config/globalHelpers').findUserByJwt;
-const MedicationEvent = require('../models/medicationEvent/MedicationEvent');
-const Guardian = require('../models/guardian/Guardian');
-const Group = require('../models/group/Group');
-const RxsMedication = require('../models/rxsMedication/RxsMedication');
-const Rxs = require('../models/rxs/Rxs');
-const Event = require('../models/event/Event');
+let findUser = require('../config/globalHelpers').findUserByJwt;
+let MedicationEvent = require('../models/medicationEvent/MedicationEvent');
+let Guardian = require('../models/guardian/Guardian');
+let Group = require('../models/group/Group');
+let RxsMedication = require('../models/rxsMedication/RxsMedication');
+let Rxs = require('../models/rxs/Rxs');
+let Event = require('../models/event/Event');
 function getDatesOfMeds(jwt,callback){
     findUser(jwt,function(err,userFound){
         if(err){

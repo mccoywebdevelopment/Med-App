@@ -1,10 +1,10 @@
-const express = require('express');
-const errors = require('../errors');
-const router = express.Router();
-const eventQ = require('../../queries/medicationEvent');
-const verifyUser = require('../../config/globalHelpers').verifyUser;
-const verifyAdmin = require('../../config/globalHelpers').verifyAdmin;
-const verifyRefID = require('../../config/globalHelpers').verifyRefID;
+let express = require('express');
+let errors = require('../errors');
+let router = express.Router();
+let eventQ = require('../../queries/medicationEvent');
+let verifyUser = require('../../config/globalHelpers').verifyUser;
+let verifyAdmin = require('../../config/globalHelpers').verifyAdmin;
+let verifyRefID = require('../../config/globalHelpers').verifyRefID;
 
 router.route("/:rxsMedicationId/:JWT")
 .get(verifyUser,function(req,res){

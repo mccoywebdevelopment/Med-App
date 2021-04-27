@@ -1,8 +1,8 @@
-const express = require('express');
-const errors = require('../errors');
-const router = express.Router();
-const calendarQ = require('../../queries/calendar');
-const verifyUser = require('../../config/globalHelpers').verifyUser;
+let express = require('express');
+let errors = require('../errors');
+let router = express.Router();
+let calendarQ = require('../../queries/calendar');
+let verifyUser = require('../../config/globalHelpers').verifyUser;
 
 
 router.route("/:JWT/get-dates-medication-taken")

@@ -1,10 +1,10 @@
-const express = require('express');
-const errors = require('../errors');
-const router = express.Router();
-const dataQ = require('../../queries/exportData');
-const quickRespQ = require('../../queries/quickResponseCode');
-const verifyAdmin = require('../../config/globalHelpers').verifyAdmin;
-const path = require('path');
+let express = require('express');
+let errors = require('../errors');
+let router = express.Router();
+let dataQ = require('../../queries/exportData');
+let quickRespQ = require('../../queries/quickResponseCode');
+let verifyAdmin = require('../../config/globalHelpers').verifyAdmin;
+let path = require('path');
 
 router.route("/:month/:year/:JWT")
 .get(verifyAdmin,function(req,res){

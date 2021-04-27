@@ -1,10 +1,10 @@
 var xl = require('excel4node');
-const path = require('path');
-const Dependent = require('../models/dependent/Dependent');
-const RxsMedication = require('../models/rxsMedication/RxsMedication');
-const MedicationEvent = require('../models/medicationEvent/MedicationEvent');
-const Guardian = require('../models/guardian/Guardian');
-const Event = require('../models/event/Event');
+let path = require('path');
+let Dependent = require('../models/dependent/Dependent');
+let RxsMedication = require('../models/rxsMedication/RxsMedication');
+let MedicationEvent = require('../models/medicationEvent/MedicationEvent');
+let Guardian = require('../models/guardian/Guardian');
+let Event = require('../models/event/Event');
 
 
 function exportDataGivenMonthYear(month,year,callback){
@@ -164,7 +164,7 @@ function getDate(date){
     var mm = date.getMonth()+1;
     var yyyy = date.getFullYear();
     var dd = date.getDate();
-    const dateGiven = mm+"/"+dd+"/"+yyyy;
+    let dateGiven = mm+"/"+dd+"/"+yyyy;
     return dateGiven;
 }
 function createRxsMedicationInfo(ws,wb,x_index,y_index,rxs,rxsMedication){
@@ -279,7 +279,7 @@ function createDependentInfo(ws,wb,x_index,y_index,dependent){
     return obj;
 }
 function getNameOfCurrentMonth(index){
-    const monthNames = ["January", "February", "March", "April", "May", "June",
+    let monthNames = ["January", "February", "March", "April", "May", "June",
                         "July", "August", "September", "October", "November", "December"
                         ];
 

@@ -1,11 +1,11 @@
-const QRCode = require('qrcode');
-const puppeteer = require('puppeteer');
-const groupModel = require('../models/group/Group');
-const rxsMedicationModel = require('../models/rxsMedication/RxsMedication');
-const rxsModel = require('../models/rxs/Rxs');
-const ejs = require('ejs');
-const fs = require('fs')
-const CLIENT_URL = process.env.CLIENT_URL || require('../config/configVars').CLIENT_URL;
+let QRCode = require('qrcode');
+let puppeteer = require('puppeteer');
+let groupModel = require('../models/group/Group');
+let rxsMedicationModel = require('../models/rxsMedication/RxsMedication');
+let rxsModel = require('../models/rxs/Rxs');
+let ejs = require('ejs');
+let fs = require('fs')
+let CLIENT_URL = process.env.CLIENT_URL || require('../config/configVars').CLIENT_URL;
 
 
 var createCode = function(url, type) {
@@ -43,13 +43,13 @@ function render(basePath, data, callback) {
                     callback("Can't save template file.");
                 } else {
                     (async () => {
-                        const browser = await puppeteer.launch({
+                        let browser = await puppeteer.launch({
                             args: [
                               '--no-sandbox',
                               '--disable-setuid-sandbox',
                             ],
                           });
-                        const page = await browser.newPage();
+                        let page = await browser.newPage();
                         await page.goto("file://" + handlebarsLocation);
                         await page.pdf({ path: resultLocation, printBackground: true });
                         await browser.close();

@@ -1,5 +1,5 @@
-const MedModel = require('../models/medication/Medication');
-const val = require('./helpers/helper');
+let MedModel = require('../models/medication/Medication');
+let val = require('./helpers/helper');
 
 function findAll(callback){
   MedModel.find({},function(err,result){

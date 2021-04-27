@@ -3,7 +3,7 @@ import { FETCH_LOGIN , CHANGE_REDIRECT_URL, CHANGE_CURRENT_URL, FETCH_REGISTER, 
 const initialState = {
     user:null,
     redirectURL:null,
-    currentURL: "http://localhost:3000/admin/groups"
+    currentURL: null
 }
 
 export default function(state = initialState, action){

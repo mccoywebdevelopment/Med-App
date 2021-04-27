@@ -1,22 +1,23 @@
-const { getPeriods, formatAMPM, isGreatorThan } = require('../config/globalHelpers');
-const { getGroups } = require('./shared');
-const VALID_TIMES_MORNING_END = process.env.VALID_TIMES_MORNING_END || require('../config/configVars').VALID_TIMES_MORNING_END;
-const VALID_TIMES_AFTERNOON_END = process.env.VALID_TIMES_AFTERNOON_END || require('../config/configVars').VALID_TIMES_AFTERNOON_END;
-const VALID_TIMES_EVENING_END = process.env.VALID_TIMES_EVENING_END || require('../config/configVars').VALID_TIMES_EVENING_END;
-let currentTime = new Date();
+let { getPeriods, formatAMPM, isGreatorThan } = require('../config/globalHelpers');
+let { getCurrentTime } = require('../config/rootHelpers');
+let { getGroups } = require('./shared');
+let VALID_TIMES_MORNING_END = process.env.VALID_TIMES_MORNING_END || require('../config/configVars').VALID_TIMES_MORNING_END;
+let VALID_TIMES_AFTERNOON_END = process.env.VALID_TIMES_AFTERNOON_END || require('../config/configVars').VALID_TIMES_AFTERNOON_END;
+let VALID_TIMES_EVENING_END = process.env.VALID_TIMES_EVENING_END || require('../config/configVars').VALID_TIMES_EVENING_END;
+let currentTime = getCurrentTime();
 let { morningEnd, afternoonEnd, eveningEnd } = getPeriods(currentTime);
-const createAdminNotification = require('../queries/notifications').create;
-const { getDependentsRxs } = require('../queries/user');
+let createAdminNotification = require('../queries/notifications').create;
+let { getDependentsRxs } = require('../queries/user');
 
 function getSeconds(currentTime) {
 
-    let beforeEndMorning = new Date(morningEnd.getTime() + 500);
-    let beforeEndAfternoon = new Date(afternoonEnd.getTime() + 500);
-    let beforeEndEvening = new Date(eveningEnd.getTime() + 500);
+    let beforeEndMorning = new Date(morningEnd + 500);
+    let beforeEndAfternoon = new Date(afternoonEnd + 500);
+    let beforeEndEvening = new Date(eveningEnd + 500);
 
-    let diffMorning = beforeEndMorning.getTime() - currentTime.getTime();
-    let diffAfternoon = beforeEndAfternoon.getTime() - currentTime.getTime();
-    let diffEvening = beforeEndEvening.getTime() - currentTime.getTime();
+    let diffMorning = beforeEndMorning - currentTime;
+    let diffAfternoon = beforeEndAfternoon - currentTime;
+    let diffEvening = beforeEndEvening - currentTime;
 
     return [diffMorning, diffAfternoon, diffEvening]
 }
@@ -27,7 +28,7 @@ function addDay(currentTime) {
 
 function sendNotification(time, isLast) {
     setTimeout(function () {
-        console.log("Admin notification triggered @ " + formatAMPM(new Date()) + " today.");
+        console.log("Admin notification triggered @ " + formatAMPM(getCurrentTime()) + " today.");
         sendMedicalNotificationsAdmin(function (err,done) {
             if (err) {
                 console.log(err);
@@ -35,7 +36,7 @@ function sendNotification(time, isLast) {
             if (isLast) {
                 init();
             }
-            console.log("Admin notification sent @ " + formatAMPM(new Date()) + " today.");
+            console.log("Admin notification sent @ " + formatAMPM(getCurrentTime()) + " today.");
         });
     }, time)
 }
