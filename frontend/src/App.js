@@ -18,6 +18,7 @@ import popUp from './reducers/popUp';
 class App extends React.Component {
   static propTypes = {
     auth: PropTypes.object.isRequired,
+    loading: PropTypes.object.isRequired,
     changeRedirectURL: PropTypes.func.isRequired,
     changeCurrentURL: PropTypes.func.isRequired,
     popUp: PropTypes.object.isRequired
@@ -87,7 +88,7 @@ class App extends React.Component {
   }
   render() {
     return (
-      <div className={""+(this.props.loading || this.props.popUp.component?'my-darker':null)}>
+      <div className={""+(this.props.loading || this.props.popUp.component?'my-darker':'')}>
       <BrowserRouter>
         <Switch>
           {this._adminRouteList()}
@@ -102,7 +103,8 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
-  popUp:state.popUp
+  popUp:state.popUp,
+  loading:state.loading
 });
 
 export default connect(mapStateToProps, { changeRedirectURL,changeCurrentURL,fetchNotifications })(App);

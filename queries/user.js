@@ -88,6 +88,7 @@ function getDependentsRxs(groups,callback){
                 activeArr,
                 historyArr,
                 dependents,
+                res,
                 morning: [VALID_TIMES_MORNING_START,VALID_TIMES_MORNING_END],
                 afternoon: [VALID_TIMES_AFTERNOON_START,VALID_TIMES_AFTERNOON_END],
                 evening: [VALID_TIMES_EVENING_START,VALID_TIMES_EVENING_END]
