@@ -75,9 +75,6 @@ function generateToken(email, callback) {
 function sendMail(subject, messageTitle, messageText, buttonText, imagePath, email,
   emailToken, templatePath, redirectUrl, callback) {
   
-    if(emailToken){
-
-    }
   generateToken(email, function (err, token) {
     if (err) {
       callback(err);
