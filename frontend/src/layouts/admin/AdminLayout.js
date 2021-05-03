@@ -28,7 +28,6 @@ class AdminLayout extends React.Component {
         return (this.props.notifications.data.length - read)
     }
     _isCurrentURL = (url) => {
-        // alert(url);
         if (window.location.href.includes(url)) {
             return true;
         }

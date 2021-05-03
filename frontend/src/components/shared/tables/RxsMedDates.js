@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchMedEvents, fetchDeleteMedEvent} from '../../../actions/event';
 import { togglePopUp } from '../../../actions/popUp';
-import { formateDate } from "../../../config/helpers";
+import { formateDate, formatAMPM } from "../../../config/helpers";
 
 import TookMed from "../../user/forms/TookMed";
+import WhenToTake from "../../shared/Misc/WhenToTake";
 
 class RxsMedDates extends React.Component {
     state = {
@@ -41,7 +42,7 @@ class RxsMedDates extends React.Component {
             notes:event.notes,
             isAway:event.isAway,
         }
-        this.props.togglePopUp(title, <TookMed eventID={event._id} medName={this.props.medName} isEdit={isEdit} medID={this.props.rxsMedID} />);
+        this.props.togglePopUp(title, <TookMed eventID={event._id} medName={this.props.medName} isEdit={isEdit} medID={this.props.rxsMedID} data={this.props.data} />);
     }
     _toggleShowMore = () =>{
         let newState = this.state;
@@ -105,6 +106,7 @@ class RxsMedDates extends React.Component {
                                 </p>
                             </th>
                             <td>{formateDate(element.dateTaken) || "-"}</td>
+                            <td>{formatAMPM(element.dateTaken) || "-"}</td>
                             <td>{element.createdByStr || "-"}</td>
                             <td>{element.isAway.toString() || "-"}</td>
                             <td>
@@ -136,12 +138,16 @@ class RxsMedDates extends React.Component {
         }
         return (
             <div style={{ minHeight: '30em', width: '100%' }}>
+                <div style={{padding:'1em',marginBottom:'2em'}}>
+                    <WhenToTake data={this.props.data.whenToTake}/>
+                </div>  
                 {this.state.rxsMedEvents && this.state.rxsMedEvents.length > 0 ?
                     <table className="table my-med-table">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Date Given</th>
+                                <th scope="col">Time</th>
                                 <th scope="col">Administer By</th>
                                 <th scrop="col">Is Away</th>
                                 <th scope="col">Actions</th>

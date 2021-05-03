@@ -10,7 +10,6 @@ class UserNav extends React.Component {
         super(props);
     }
     _isCurrentURL = (url) => {
-        // alert(url);
         if (window.location.href.includes(url)) {
             return true;
         }

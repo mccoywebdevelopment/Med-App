@@ -505,7 +505,6 @@ class CreateDependent extends React.Component {
         if (this._isOverviewErrors() || this._isRxsMedErrors()) {
             alert("Please fix the errors below:");
         }
-        console.log(this.state);
     }
     _groupRxs = () => {
         let data = JSON.parse(JSON.stringify(this.state.rxsMedList.list));
@@ -530,12 +529,12 @@ class CreateDependent extends React.Component {
     _tookMed = (index) => {
         let med = this.state.rxsMedList.list[index].values;
         // let name = this.props.isDepSelected.name.firstName + " " + this.props.isDepSelected.name.lastName;
-        this.props.togglePopUp(med.name, <TookMed medName={med.name} medID={med._rxsMedID} />);
+        this.props.togglePopUp(med.name, <TookMed medName={med.name} medID={med._rxsMedID} data={med} />);
     }
     _viewDates = (index) => {
         let med = this.state.rxsMedList.list[index].values;
         // let name = this.props.isDepSelected.name.firstName + " " + this.props.isDepSelected.name.lastName;
-        this.props.togglePopUp(med.name, <RxsMedDates medName={med.name} rxsMedID={med._rxsMedID} />);
+        this.props.togglePopUp(med.name, <RxsMedDates medName={med.name} rxsMedID={med._rxsMedID} data={med} />);
     }
     _formatRxs = (arr) => {
         let rxsArr = [];

@@ -38,7 +38,7 @@ class Loading extends React.Component{
         }
         return(
              <StyleRoot>
-                <div className={"my-loader "+(this.props.loading?'z-100':'')}>
+                <div className={"my-loader "+(this.props.loading?'z-101':'')}>
                     {this.props.loading?
                     <div className={"card my-loader-card"} style={styles.bounce}>
                         <BounceLoader

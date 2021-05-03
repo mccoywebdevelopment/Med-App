@@ -71,11 +71,11 @@ export default class SearchList extends React.Component {
                                 <th>
                                     {!this.props.isReadOnly?
                                         <>
-                                            {this.props.itemObj.selectedValues.length == 
-                                                (this.props.itemObj.values.length - this.props.itemObj.hiddenValues.length) && this.props.itemObj.selectedValues.length >0 ?
+                                            {this.props.itemObj.selectedValues.length == (this.props.itemObj.values.length - this.props.itemObj.hiddenValues.length) && this.props.itemObj.selectedValues.length >0 && !this.props.isSingleSelect ?
                                                 <i style={checkBoxStyle} className="fas fa-check-square" onClick={()=>this.props.toggleAll()}></i>
-                                                :
+                                                :!this.props.isSingleSelect?
                                                 <i style={checkBoxStyle} className="far fa-square" onClick={()=>this.props.toggleAll()}></i>
+                                                :null
                                             }
                                         </>
                                     :null}

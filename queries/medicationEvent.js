@@ -63,7 +63,26 @@ function patchUpdateById(body, id, callback) {
       callback(err);
     } else if (!foundDoc) {
       callback("Doc not found");
-    } else {
+    } else if(body.guardianID){
+      findGuardianByID(body.guardianID,function(err,guardianFound){
+        if(err){
+          callback(err);
+        }else if(!guardianFound){
+          callback("Guardian not found.");
+        }else{
+          body.guardian = guardianFound;
+          updateModifiedFields(foundDoc, body, function (err, obj) {
+            foundDoc.update(obj, function (err, result) {
+              if (err) {
+                callback(err);
+              } else {
+                callback(null, result);
+              }
+            });
+          });
+        }
+      });
+    }else{
       updateModifiedFields(foundDoc, body, function (err, obj) {
         foundDoc.update(obj, function (err, result) {
           if (err) {
@@ -137,8 +156,35 @@ function tookMedication(rxsMedId, jwt, body, user, callback) {
       callback("Rxs medication doesn't exist.");
     } else if (!isMedEventValid(rxsMedicationFound.events, rxsMedicationFound.whenToTake, user.isAdmin)) {
       callback("Don't have access to log this medication.");
-    } else {
+    } else if(!body.guardianID){
+
       findGuardianByJWT(jwt, function (err, guardianFound) {
+        if (err) {
+          callback(err);
+        } else {
+          getDependentByRxsMedId(rxsMedicationFound, function (err, dependent) {
+            if (err) {
+              callback(err);
+            } else {
+              createRxsMedEvent(body, dependent, rxsMedicationFound, guardianFound, function (err, rxsMedEvent) {
+                if (err) {
+                  callback(err);
+                } else {
+                  attatchRxsMedEventToRxsMed(rxsMedEvent, rxsMedicationFound, function (err, result) {
+                    if (err) {
+                      callback(err);
+                    } else {
+                      callback(null, rxsMedEvent);
+                    }
+                  });
+                }
+              });
+            }
+          });
+        }
+      });
+    }else{
+      findGuardianByID(body.guardianID, function (err, guardianFound) {
         if (err) {
           callback(err);
         } else {
@@ -285,12 +331,12 @@ function updateModifiedFields(oldDoc, updatedFields, callback) {
   if (updatedFields.dependent) {
     dependent = updatedFields.dependent;
   }
-  if (updatedFields.createdBy) {
-    createdBy = updatedFields.createdBy;
-    createdByStr = createdBy.name.firstName + " " + createdByStr.name.lastName;
+  if (updatedFields.guardian) {
+    createdBy = updatedFields.guardian;
+    createdByStr = updatedFields.guardian.name.firstName + " " + updatedFields.guardian.name.lastName;
   }
   if (updatedFields.dateTaken) {
-    dateTaken = updatedFields.dateTaken;
+    dateTaken = getCurrentTime(updatedFields.dateTaken);
   }
   var obj = {
     title: title,

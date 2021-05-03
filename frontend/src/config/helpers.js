@@ -12,6 +12,7 @@ export function getAge(date) {
     return date;
 }
 export function formatAMPM(date) {
+    date = new Date(date);
     var hours = date.getHours();
     var minutes = date.getMinutes();
     var ampm = hours >= 12 ? 'PM' : 'AM';
@@ -58,7 +59,6 @@ export function formateDate(date) {
 }
 export function toInputDate(date) {
     if (typeof (date) == 'string') {
-        console.log(date);
         let date1 = date.split('-');
         if (date1[2] && date1[2].length == 4) {
             date = date1[2] + "-" + date1[0] + '-' + date1[1];
@@ -116,7 +116,6 @@ export function FETCH(type, url, body, jwt, dispatch, isLoading, done) {
             return res.json();
         })
         .then(res => {
-            console.log(res)
             if (isLoading) {
                 dispatch(toggleLoading(false));
             }

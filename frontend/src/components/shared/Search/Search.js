@@ -70,7 +70,10 @@ export default class Search extends React.Component {
                 if (index > -1) {
                     newState.items[this.state.headerSelected].data.selectedValues.splice(index, 1);
                 }
-            } else {
+            }else if(this.props.isSingleSelect){
+                newState.items[this.state.headerSelected].data.selectedValues = [];
+                newState.items[this.state.headerSelected].data.selectedValues.push(item);
+            }else {
                 newState.items[this.state.headerSelected].data.selectedValues.push(item);
             }
         }
@@ -125,7 +128,7 @@ export default class Search extends React.Component {
                         <>
                             {itemHeaders()}
                             {this.state.items[this.state.headerSelected] ?
-                                <SearchList isReadOnly={this.props.isReadOnly} color={this.props.color} itemObj={this.state.items[this.state.headerSelected].data}
+                                <SearchList isSingleSelect={this.props.isSingleSelect} isReadOnly={this.props.isReadOnly} color={this.props.color} itemObj={this.state.items[this.state.headerSelected].data}
                                     toggleAll={this._toggleAll} />
                                 : null}
                         </>

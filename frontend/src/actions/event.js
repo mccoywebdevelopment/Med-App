@@ -31,7 +31,6 @@ export const fetchCreateMedEventRefID = (body, refID, isLoading, done) => (dispa
 }
 
 export const fetchUpdateMedEvent = (body, rxsMedID, isLoading, done) => (dispatch) => {
-  body.dateTaken = formateDate(body.dateTaken);
 
   FETCH('PATCH', '/rxsMedication-event/'+rxsMedID+'/', body, localStorage.getItem('JWT'), dispatch, isLoading, (err, res) => {
     if (err) {

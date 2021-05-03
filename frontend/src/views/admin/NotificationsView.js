@@ -61,7 +61,6 @@ class NotificationsView extends React.Component {
     componentDidMount = () =>{
         this.props.changeColor("rgb(33, 150, 243)");
         this.props.fetchNotifications(true,(res)=>{
-            console.log(res);
         });
     }
     render() {

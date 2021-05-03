@@ -11,12 +11,10 @@ class NotificationTable extends React.Component {
   };
   constructor(props) {
     super(props);
-    console.log(this.props);
   }
   render() {
     const list = (notifications) => {
       return notifications.map((notification, index) => {
-        console.log(notification);
         let date = notification.dateCreated
         let period = notification.medicationMissed.period;
         let medName = "-"

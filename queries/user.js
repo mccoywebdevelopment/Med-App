@@ -161,8 +161,6 @@ function filterMedications(group, dep, morning, afternoon, evening) {
   let morningStart = Date.parse(appendTimeToDate(today) + " " + morning[0]);
   let morningEnd = Date.parse(appendTimeToDate(today) + " " + morning[1]);
 
-  console.log(morningStart);
-
   let afternoonStart = Date.parse(appendTimeToDate(today) + " " + afternoon[0]);
   let afternoonEnd = Date.parse(appendTimeToDate(today) + " " + afternoon[1]);
 
