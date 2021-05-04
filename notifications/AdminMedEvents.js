@@ -9,38 +9,6 @@ let { morningEnd, afternoonEnd, eveningEnd } = getPeriods(currentTime);
 let createAdminNotification = require('../queries/notifications').create;
 let { getDependentsRxs } = require('../queries/user');
 
-function getSeconds(currentTime) {
-
-    let beforeEndMorning = new Date(morningEnd + 500);
-    let beforeEndAfternoon = new Date(afternoonEnd + 500);
-    let beforeEndEvening = new Date(eveningEnd + 500);
-
-    let diffMorning = beforeEndMorning - currentTime;
-    let diffAfternoon = beforeEndAfternoon - currentTime;
-    let diffEvening = beforeEndEvening - currentTime;
-
-    return [diffMorning, diffAfternoon, diffEvening]
-}
-
-function addDay(currentTime) {
-    return (currentTime.getDate() + 1);
-}
-
-function sendNotification(time, isLast) {
-    setTimeout(function () {
-        console.log("Admin notification triggered @ " + formatAMPM(getCurrentTime()) + " today.");
-        sendMedicalNotificationsAdmin(function (err,done) {
-            if (err) {
-                console.log(err);
-            }
-            if (isLast) {
-                init();
-            }
-            console.log("Admin notification sent @ " + formatAMPM(getCurrentTime()) + " today.");
-        });
-    }, time)
-}
-
 function getActiveMedsForPrevPeriods(activeArr, historyArr) {
     let arr = [];
     let { morningEnd, afternoonEnd, eveningEnd } = getPeriods(currentTime);
@@ -118,27 +86,4 @@ function sendMedicalNotificationsAdmin(callback) {
     });
 }
 
-function init() {
-    let seconds = getSeconds(currentTime, 500);
-    let isTimeAhead = false;
-    for (var i = 0; i < seconds.length; ++i) {
-        if (seconds[i] > 0) {
-            let isLast = false;
-            if (i == seconds.length - 1) {
-                isLast = true;
-            }
-            sendNotification(seconds[i], isLast);
-            isTimeAhead = true;
-        }
-    }
-    //Meaning time is after evening or before morning ends
-    //need to get diff for time for tommorow
-    if (!isTimeAhead) {
-        currentTime = addDay(currentTime);
-        init();
-    }
-}
-
-// sendMedicalNotificationsAdmin(()=>{});
-
-module.exports = { init }
+module.exports = { sendMedicalNotificationsAdmin }

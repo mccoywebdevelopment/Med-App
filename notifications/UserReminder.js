@@ -13,43 +13,6 @@ let VALID_TIMES_EVENING_END = process.env.VALID_TIMES_EVENING_END || require('..
 let CLIENT_URL = process.env.CLIENT_URL || require('../config/configVars').CLIENT_URL;
 let { getGroups, capitalizeFirstLetter, isDuplicate, addDay, getSeconds } = require('./shared');
 
-function sendNotification(time, isLast) {
-    setTimeout(function () {
-        console.log("User notification triggered @ " + formatAMPM(getCurrentTime()) + " today.");
-        sendMedicalNotificationsEmail(function (err) {
-            if (err) {
-                console.log(err);
-            }
-            if (isLast) {
-                init();
-            }
-            console.log("User notification sent @ " + formatAMPM(getCurrentTime()) + " today.");
-        });
-    }, time)
-}
-
-function init() {
-    let diffSec = minutesBefore * 60000 * -1;
-
-    let seconds = getSeconds(currentTime, diffSec);
-    let isTimeAhead = false;
-    for (var i = 0; i < seconds.length; ++i) {
-        if (seconds[i] > 0) {
-            let isLast = false;
-            if (i == seconds.length - 1) {
-                isLast = true;
-            }
-            sendNotification(seconds[i], isLast);
-            isTimeAhead = true;
-        }
-    }
-    //Meaning time is after evening or before morning ends
-    //need to get diff for time for tommorow
-    if (!isTimeAhead) {
-        currentTime = addDay(currentTime);
-        init();
-    }
-}
 
 function sendMedNotificationEmail(username, activeMedications, period, periodEnd, callback) {
     let str = "";
@@ -164,4 +127,4 @@ function sendMedicalNotificationsEmail(callback) {
     });
 }
 
-module.exports = { init }
+module.exports = { sendMedicalNotificationsEmail }
