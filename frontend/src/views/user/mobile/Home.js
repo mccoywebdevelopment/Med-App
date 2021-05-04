@@ -17,6 +17,7 @@ class Home extends React.Component {
             indexSelected: 0,
             prevSelected: 0
         },
+        groupNavItems:[],
         morning: null,
         afternoon: null,
         evening: null,
@@ -114,7 +115,7 @@ class Home extends React.Component {
         newState.postPopUp.isHistory = isHistory;
         this.setState(newState);
     }
-    _setFilteredMeds = (data) =>{
+    _setFilteredMeds = (data) => {
         let newState = this.state;
         newState.morning = data.morning;
         newState.afternoon = data.afternoon;
@@ -129,11 +130,41 @@ class Home extends React.Component {
         this._setCurrentMeds();
         this._setInitNav();
     }
+    _formatGroupNav=(groups)=>{
+        let arr = [{
+            title:"All",
+            ids:[]
+        }]
+        for(var i=0;i<groups.length;++i){
+            arr[0].ids.push(groups[i]._id);
+            arr.push({
+                title:groups[i].name,
+                ids:[groups[i]._id]
+            })
+        }
+
+        let newState = this.state;
+        newState.groupNavItems = arr;
+        this.setState(newState);
+    }
+    _filterGroupHandler = (id) =>{
+        let newState = this.state;
+        let active = newState.currentMeds.active;
+        let history = newState.currentMeds.history;
+        let groupNavItems = newState.groupNavItems;
+
+        for(var i=0;i<groupNavItems.length;++i){
+
+        }
+    }
     componentDidMount = () => {
         this._setCurrentTime();
         this.props.fetchGetFilteredMedications((data) => {
-            if(data && data.activeArr){
+            if (data && data.activeArr) {
                 this._setFilteredMeds(data);
+                this._formatGroupNav(data.res);
+                console.log(data)
+                console.log(this.state);
             }
         });
     }
@@ -159,6 +190,16 @@ class Home extends React.Component {
                     <NavItems toggle={this._selectNav} items={this.state.navItems} />
                 </div>
                 <div className="row" style={{ paddingTop: '20px' }}>
+                    {/* <div className="col-lg-12">
+                        <div className="btn-group" role="group" aria-label="Basic example">
+                            <button onClick={() => { this._toggleFilterBy(true) }} type="button"
+                                className={"btn " + (this.state.filterBy.all ? "btn-primary" : "btn-outline-secondary")} style={{ fontSize: '0.8em' }}>All</button>
+                            <button onClick={() => { this._toggleFilterBy(false, true) }} type="button"
+                                className={"btn " + (this.state.filterBy.grouped ? "btn-primary" : "btn-outline-secondary")} style={{ fontSize: '0.8em' }}>Active ({isGroupLength})</button>
+                            <button onClick={() => { this._toggleFilterBy(false, false, true) }} type="button"
+                                className={"btn " + (this.state.filterBy.notGrouped ? "btn-primary" : "btn-outline-secondary")} style={{ fontSize: '0.8em' }}>Inactive ({notGroupLength})</button>
+                        </div>
+                    </div> */}
                     {this.state.currentMeds.active.length > 0 || this.state.currentMeds.history.length > 0 ?
                         <MedicationCardList activeMeds={this.state.currentMeds.active}
                             historyMeds={this.state.currentMeds.history}
