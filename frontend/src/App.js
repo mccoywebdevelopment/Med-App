@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import { BrowserRouter } from 'react-router-dom'
 import { adminRoutes, authRoutes, userRoutes, auth2Routes } from "./Routes";
 import { changeRedirectURL, changeCurrentURL } from "./actions/auth";
 import { fetchNotifications } from "./actions/notifications";
+import {CLIENT_URL} from "./config/variables"
 
 import AdminLayout from "./layouts/admin/AdminLayout";
 import AuthLayout from "./layouts/shared/AuthLayout";
@@ -13,7 +14,6 @@ import UserLayout from "./layouts/user/UserLayout";
 import UserNonlocal from "./layouts/user/UserNonlocal";
 
 import "./assets/css/fontawesome/css/all.min.css";
-import popUp from './reducers/popUp';
 
 class App extends React.Component {
   static propTypes = {
@@ -94,6 +94,7 @@ class App extends React.Component {
           {this._adminRouteList()}
           {this._authRouteList()}
           {this._userRouteList()}
+          <Redirect from="*" to={"/auth/login"}/>
         </Switch>
       </BrowserRouter>
       </div>

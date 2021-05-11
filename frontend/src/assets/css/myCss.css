@@ -137,9 +137,23 @@ td {
 }
 .auth.auth-bg-1 {
   background: url("../images/auth/login_pic.svg");
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center; 
+  background-size: cover;
+}
+.fail-feedback{
+  background: url("../images/user/fail_feedback.svg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center; 
+  background-size: cover;
+}
+.success-feedback{
+  background: url("../images/user/success_feedback.svg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center; 
   background-size: cover;
 }
 .my-loader {
@@ -180,6 +194,9 @@ td {
 .auth.theme-one .auto-form-wrapper .form-group .input-group .form-control {
   border-right: 1px solid #cfd5db;
   border-radius: 6px;
+}
+.theme-one{
+  padding:0px;
 }
 .my-popUp-container {
   width: 100%;

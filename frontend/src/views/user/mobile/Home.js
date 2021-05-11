@@ -7,6 +7,7 @@ import { formatDateHome, isBetween } from '../../../config/helpers';
 import UserHeader from "../../../components/user/header/UserHeader";
 import Progress from "../../../components/user/charts/Progress";
 import NavItems from "../../../components/user/nav/NavItems";
+import GroupNav from "../../../components/user/nav/GroupNav";
 import MedicationCardList from "../../../components/user/cards/MedicationCardList";
 import ViewMed from './ViewMed';
 
@@ -46,6 +47,7 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
         this._selectNav.bind(this);
+        this._filterGroupHandler.bind(this);
     }
     _selectNav = (index) => {
         let newState = this.state;
@@ -133,13 +135,15 @@ class Home extends React.Component {
     _formatGroupNav=(groups)=>{
         let arr = [{
             title:"All",
-            ids:[]
+            isSelected:true,
+            active:this.state.currentMeds.active,
+            history:this.state.currentMeds.history,
+            id:"all"
         }]
         for(var i=0;i<groups.length;++i){
-            arr[0].ids.push(groups[i]._id);
             arr.push({
                 title:groups[i].name,
-                ids:[groups[i]._id]
+                id:[groups[i]._id]
             })
         }
 
@@ -149,13 +153,38 @@ class Home extends React.Component {
     }
     _filterGroupHandler = (id) =>{
         let newState = this.state;
-        let active = newState.currentMeds.active;
-        let history = newState.currentMeds.history;
+        let active = newState.groupNavItems[0].active;
+        let history = newState.groupNavItems[0].history;
         let groupNavItems = newState.groupNavItems;
-
+        let newActive = [];
+        let newHistory = [];
         for(var i=0;i<groupNavItems.length;++i){
-
+            for(var ix=0;ix<active.length;++ix){
+                if(active[ix].group._id == groupNavItems[i].id && groupNavItems[i].id == id){
+                    newActive.push(active[ix]);
+                }
+            }
+            for(var z=0;z<history.length;++z){
+                if(history[z].group._id == groupNavItems[i].id && groupNavItems[i].id == id){
+                    newHistory.push(history[z]);
+                }
+            }
+            newState.groupNavItems[i].isSelected = false;
+            if(id==groupNavItems[i].id){
+                newState.groupNavItems[i].isSelected = true;
+            }
+            if(id=="all"){
+                newActive = active;
+                newHistory = history;
+            }
+            if(i==groupNavItems.length - 1){
+                newState.currentMeds.active = newActive;
+                newState.currentMeds.history = newHistory;
+                console.log(newActive);
+                this.setState(newState);
+            }
         }
+        // console.log(this.state)
     }
     componentDidMount = () => {
         this._setCurrentTime();
@@ -190,16 +219,7 @@ class Home extends React.Component {
                     <NavItems toggle={this._selectNav} items={this.state.navItems} />
                 </div>
                 <div className="row" style={{ paddingTop: '20px' }}>
-                    {/* <div className="col-lg-12">
-                        <div className="btn-group" role="group" aria-label="Basic example">
-                            <button onClick={() => { this._toggleFilterBy(true) }} type="button"
-                                className={"btn " + (this.state.filterBy.all ? "btn-primary" : "btn-outline-secondary")} style={{ fontSize: '0.8em' }}>All</button>
-                            <button onClick={() => { this._toggleFilterBy(false, true) }} type="button"
-                                className={"btn " + (this.state.filterBy.grouped ? "btn-primary" : "btn-outline-secondary")} style={{ fontSize: '0.8em' }}>Active ({isGroupLength})</button>
-                            <button onClick={() => { this._toggleFilterBy(false, false, true) }} type="button"
-                                className={"btn " + (this.state.filterBy.notGrouped ? "btn-primary" : "btn-outline-secondary")} style={{ fontSize: '0.8em' }}>Inactive ({notGroupLength})</button>
-                        </div>
-                    </div> */}
+                    <GroupNav items={this.state.groupNavItems} filter={this._filterGroupHandler}/>
                     {this.state.currentMeds.active.length > 0 || this.state.currentMeds.history.length > 0 ?
                         <MedicationCardList activeMeds={this.state.currentMeds.active}
                             historyMeds={this.state.currentMeds.history}

@@ -16,6 +16,8 @@ class AdministerMed extends React.Component {
             notes: "",
             guardian: ""
         },
+        showFeedBackValid:false,
+        showFeedBackInvalid:false,
         showGuardians: false,
         isValid: false,
         medication: null,
@@ -192,7 +194,11 @@ class AdministerMed extends React.Component {
                             <button className="btn btn-success w-100" onClick={() => { this._submit() }}>Submit</button>
                         </div>
                     </PopUpCard>
-                    : <h3>User does not have access to log this med at this time</h3>}
+                    : 
+                    <div className="fail-feedback">
+                        <h3>User does not have access to log this med at this time</h3>
+                    </div>
+                    }
             </>
         );
     }

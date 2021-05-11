@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchLogin, changeRedirectURL, changeCurrentURL } from "../../actions/auth";
 import { resetRoot } from "../../actions/root";
-import { Redirect } from 'react-router-dom';
-import { getPath, getPaths} from '../../config/helpers';
+import { getPaths} from '../../config/helpers';
 import { emailValidator,passwordValidator } from '../../config/validators';
 
 class Login extends React.Component{
@@ -74,7 +73,7 @@ class Login extends React.Component{
     return (
       <div className="container-scroller" style={{ height: 'auto', minHeight: 'initial' }} style={{marginTop:'100px'}}>
         <div className="container-fluid page-body-wrapper full-page-wrapper" style={{ height: 'auto', minHeight: 'initial' }}>
-          <div className="content-wrapper d-flex align-items-center auth  theme-one" style={{ background: 'transparent', height: 'auto', minHeight: 'initial' }}>
+          <div className="content-wrapper d-flex align-items-center auth theme-one" style={{ background: 'transparent', height: 'auto', minHeight: 'initial',width:'100%',padding:'0px' }}>
             <div className="row w-100">
               <div className="col-lg-4 mx-auto">
                 <div className="auto-form-wrapper">
@@ -103,10 +102,6 @@ class Login extends React.Component{
                     <div className="form-group d-flex justify-content-between">
                       <a href="/auth/forgot-password" className="text-small forgot-password text-black">Forgot Password</a>
                     </div>
-                    {/* <div className="text-block text-center my-3">
-                      <p style={{marginBottom:'0px'}} className="text-small font-weight-semibold">Not a member?</p>
-                      <a href="register.html" className="text-black text-small">Create new account</a>
-                    </div> */}
                   </form>
                 </div>
               </div>
@@ -116,24 +111,11 @@ class Login extends React.Component{
       </div>
     );
   }
-  // _renderRedirect =()=>{
-  //   const redirectURL = this.props.auth.redirectURL;
-  //   return(
-  //     <Redirect push to={redirectURL}/>
-  //   )
-  // }
   render(){
     return(
       <>
       {this._renderForm()}
       </>
-    // <>
-    //   {this.props.auth.redirectURL?
-    //     this._renderRedirect()
-    //     :
-    //     this._renderForm()
-    //   }
-    // </>
     );
   }
 }

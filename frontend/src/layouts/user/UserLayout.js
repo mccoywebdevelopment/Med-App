@@ -55,7 +55,6 @@ class UserLayout extends React.Component {
                 </div>
                 <UserNav/>
                 <PopUp/>
-                <Loading/>
                 <div className="content-desktop">
                     <h1>Desktop View not supported please login via phone/ipad.</h1>
                 </div>
