@@ -9,6 +9,9 @@ import { togglePopUp } from '../../../actions/popUp';
 
 import PopUpCard from '../../../components/user/cards/PopUpCard';
 
+import failImage from "../../../assets/images/user/fail_feedback.svg"
+import successImage from "../../../assets/images/user/success_feedback.svg"
+
 class AdministerMed extends React.Component {
     state = {
         values: {
@@ -17,7 +20,6 @@ class AdministerMed extends React.Component {
             guardian: ""
         },
         showFeedBackValid:false,
-        showFeedBackInvalid:false,
         showGuardians: false,
         isValid: false,
         medication: null,
@@ -59,7 +61,9 @@ class AdministerMed extends React.Component {
             }
     
             this.props.fetchCreateMedEventRefID(body, refID, true, (res) => {
-                alert('done')
+                let newState = this.state;
+                newState.showFeedBackValid = true;
+                this.setState(newState);
             });
         }
     }
@@ -134,7 +138,7 @@ class AdministerMed extends React.Component {
         }
         return (
             <>
-                {this.state.medication ?
+                {this.state.medication && !this.state.showFeedBackValid?
                     <PopUpCard togglePopUp={!this.props.isLocal || this._togglePopUp.bind(this)} header={this.state.medication.name}
                         subHeader={"Administer Medication"}>
                         <div className="row h-100">
@@ -194,9 +198,15 @@ class AdministerMed extends React.Component {
                             <button className="btn btn-success w-100" onClick={() => { this._submit() }}>Submit</button>
                         </div>
                     </PopUpCard>
+                    :this.state.showFeedBackValid?
+                    <div style={{paddingTop:'5em',textAlign:'center'}}>
+                        <span style={{fontSize:'1.25em'}}>You have successfully logged a medication</span>
+                        <img src={successImage} className="img-fluid" style={{marginTop:'3em'}}/>
+                    </div>
                     : 
-                    <div className="fail-feedback">
-                        <h3>User does not have access to log this med at this time</h3>
+                    <div style={{paddingTop:'5em',textAlign:'center'}}>
+                        <span style={{fontSize:'1.25em'}}>User does not have access to log this med at this time</span>
+                        <img src={failImage} className="img-fluid" style={{marginTop:'3em'}}/>
                     </div>
                     }
             </>
