@@ -56,7 +56,7 @@ export const fetchUpdateProfile = (body, done) => (dispatch) => {
   });
 }
 
-export const fetchRegister = (email,token,postData) => (dispatch) => {
+export const fetchRegister = (email,token,postData,callback) => (dispatch) => {
   FETCH('POST','/auth/register/'+email+'/'+token,postData,null,dispatch,true,(err,res)=>{
     if(err){
       dispatch(createMessage(err, 'danger',20000));
@@ -66,7 +66,11 @@ export const fetchRegister = (email,token,postData) => (dispatch) => {
         type: FETCH_REGISTER,
         payload: res.result
       });
-      window.location = "/user/home";
+
+      if(callback){
+        callback(res);
+      }
+      
     }
   });
 }
