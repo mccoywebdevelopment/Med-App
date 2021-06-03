@@ -5,8 +5,8 @@ let currentTime = getCurrentTime();
 let TIME_ZONE = process.env.TIME_ZONE || require('./config/configVars').TIME_ZONE;
 let { morningEnd, afternoonEnd, eveningEnd } = getPeriods(currentTime);
 let minutesBefore = process.env.MINUTES_BEFORE || require('./config/configVars').MINUTES_BEFORE;
-const { sendMedicalNotificationsEmail } = require('./notifications/UserReminder');
-const { sendMedicalNotificationsAdmin } = require('./notifications/AdminMedEvents');
+const sendMedicalNotificationsEmail  = require('./notifications/UserReminder').sendMedicalNotificationsEmail;
+const sendMedicalNotificationsAdmin = require('./notifications/AdminMedEvents').sendMedicalNotificationsAdmin;
 
 /*
 # ┌────────────── second (optional)

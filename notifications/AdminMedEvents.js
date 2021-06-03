@@ -1,11 +1,10 @@
-let { getPeriods, formatAMPM, isGreatorThan } = require('../config/globalHelpers');
+let { getPeriods, isGreatorThan } = require('../config/globalHelpers');
 let { getCurrentTime } = require('../config/rootHelpers');
 let { getGroups } = require('./shared');
 let VALID_TIMES_MORNING_END = process.env.VALID_TIMES_MORNING_END || require('../config/configVars').VALID_TIMES_MORNING_END;
 let VALID_TIMES_AFTERNOON_END = process.env.VALID_TIMES_AFTERNOON_END || require('../config/configVars').VALID_TIMES_AFTERNOON_END;
 let VALID_TIMES_EVENING_END = process.env.VALID_TIMES_EVENING_END || require('../config/configVars').VALID_TIMES_EVENING_END;
 let currentTime = getCurrentTime();
-let { morningEnd, afternoonEnd, eveningEnd } = getPeriods(currentTime);
 let createAdminNotification = require('../queries/notifications').create;
 let { getDependentsRxs } = require('../queries/user');
 
