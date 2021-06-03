@@ -20,47 +20,47 @@ class NotificationsView extends React.Component {
         super(props);
         this._deleteUser = this._deleteUser.bind(this);
     }
-    _deleteUser = (user) =>{
-        if(window.confirm("Are you sure you want to delete "+user.username+" profile and all their data?")){
+    _deleteUser = (user) => {
+        if (window.confirm("Are you sure you want to delete " + user.username + " profile and all their data?")) {
             this.props.fetchDeleteUser(user._id);
         }
     }
-    _getNumberOfAdmins = () =>{
+    _getNumberOfAdmins = () => {
         let num = 0;
-        for(var i=0;i<this.props.userState.data.length;++i){
-            if(this.props.userState.data[i].isAdmin){
+        for (var i = 0; i < this.props.userState.data.length; ++i) {
+            if (this.props.userState.data[i].isAdmin) {
                 num++;
             }
         }
         return num;
     }
-    _toggleRedirect = (dep) =>{
+    _toggleRedirect = (dep) => {
         let newState = this.state;
         window.location = "/admin/users/" + dep._id
         this.setState(newState);
     }
-    _getNumberOfMonthlyNotifications = () =>{
+    _getNumberOfMonthlyNotifications = () => {
         let i = 0;
         let data = this.props.notifications.data;
 
-        while(i<data.length && isMonth(data[i].dateCreated)){
+        while (i < data.length && isMonth(data[i].dateCreated)) {
             i++;
         }
 
         return (i);
     }
-    _getNumberOfTodayNotifications = () =>{
+    _getNumberOfTodayNotifications = () => {
         let i = 0;
         let data = this.props.notifications.data;
-        while(i<data.length && isToday(data[i].dateCreated)){
+        while (i < data.length && isToday(data[i].dateCreated)) {
             i++;
         }
 
         return (i);
     }
-    componentDidMount = () =>{
+    componentDidMount = () => {
         this.props.changeColor("rgb(33, 150, 243)");
-        this.props.fetchNotifications(true,(res)=>{
+        this.props.fetchNotifications(true, (res) => {
         });
     }
     render() {
@@ -68,24 +68,24 @@ class NotificationsView extends React.Component {
             <>
                 <div className="row">
                     <div className="col-lg-12">
-                            <div className="row">
-                                <div className="col-lg-12">
-                                    <h4 className="view-header">Missed Medication(s)</h4>
-                                </div>
-                                <div className="col-lg-12" style={{ marginBottom: "30px" }}>
-                                    <OverviewNotifications today={this._getNumberOfTodayNotifications()}
-                                     month={this._getNumberOfMonthlyNotifications()} total={this.props.notifications.data.length}/>
-                                </div>
-                                <div className="col-lg-12" style={{ marginBottom: "30px" }}>
-                                &nbsp;
-                                </div>
-                            </div>
                         <div className="row">
                             <div className="col-lg-12">
-                                {this.props.notifications.data.length>0?
-                                <NotificationTable notifications={this.props.notifications.data}
-                                 delete={this._deleteUser} changeUserSel={this._toggleRedirect}/>
-                                 :null}
+                                <h4 className="view-header">Missed Medication(s)</h4>
+                            </div>
+                            <div className="col-lg-12" style={{ marginBottom: "30px" }}>
+                                <OverviewNotifications today={this._getNumberOfTodayNotifications()}
+                                    month={this._getNumberOfMonthlyNotifications()} total={this.props.notifications.data.length} />
+                            </div>
+                            <div className="col-lg-12" style={{ marginBottom: "30px" }}>
+                                &nbsp;
+</div>
+                        </div>
+                        <div className="row">
+                            <div className="col-lg-12">
+                                {this.props.notifications.data.length > 0 ?
+                                    <NotificationTable notifications={this.props.notifications.data}
+                                        delete={this._deleteUser} changeUserSel={this._toggleRedirect} />
+                                    : null}
                             </div>
                         </div>
                     </div>
@@ -109,4 +109,4 @@ const mapStateToProps = (state) => ({
     notifications: state.notifications
 });
 
-export default connect(mapStateToProps, {changeColor, togglePopUp, fetchNotifications})(NotificationsView);
+export default connect(mapStateToProps, { changeColor, togglePopUp, fetchNotifications })(NotificationsView);

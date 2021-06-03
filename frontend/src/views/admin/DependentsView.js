@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchLogin } from "../../actions/auth";
+import {fetchNotifications } from "../../actions/notifications";
 import { togglePopUp } from '../../actions/popUp';
 import { fetchPopulatedDependents, fetchDeleteDependent } from "../../actions/dependent";
 import { changeColor } from "../../actions/theme";
@@ -115,6 +116,7 @@ class DependentView extends React.Component {
     componentDidMount = () => {
         this.props.changeColor("#2196f3");
         this.props.fetchPopulatedDependents(() => { });
+        this.props.fetchNotifications(false);
     }
     render() {
         let isGroupLength = this._filterByGroup(true).length;
@@ -192,5 +194,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
     fetchLogin, changeColor, fetchDeleteDependent, fetchQRData,togglePopUp,
-    fetchPopulatedDependents
+    fetchPopulatedDependents, fetchNotifications
 })(DependentView);

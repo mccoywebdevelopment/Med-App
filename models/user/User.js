@@ -1,79 +1,85 @@
 let mongoose = require("mongoose");
 let SALT_WORK_FACTOR = 12;
-let bcrypt   = require('bcrypt-nodejs');
+let bcrypt = require('bcrypt-nodejs');
+let zxcvbn = require('zxcvbn');
 let getCurrentTime = require('../../config/rootHelpers').getCurrentTime
 
 var UserSchema = new mongoose.Schema({
-    username:{type:String,required:true},
-    password:{type:String,min:8,select: false},
-    isAdmin:{type:Boolean,default:false},
-    dateCreated:Date,
-    lastLoggon:Date,
-    notifications:{
-        type:{type:String,default:"email"},
-        recieve:{type:Boolean,default:true}
+    username: { type: String, required: true },
+    password: { type: String, min: 8, select: false },
+    isAdmin: { type: Boolean, default: false },
+    dateCreated: Date,
+    lastLoggon: Date,
+    notifications: {
+        type: { type: String, default: "email" },
+        recieve: { type: Boolean, default: true }
     },
-    auth:{
-        status:{
-            statusValue:{type:String,default:"pending"}
+    auth: {
+        status: {
+            statusValue: { type: String, default: "pending" }
         },
-        isVerified:{type:Boolean,default:false},
-        dateAuthenticated:Date,
-        token:String,
-        expiresIn:Date
+        isVerified: { type: Boolean, default: false },
+        dateAuthenticated: Date,
+        token: String,
+        expiresIn: Date
     }
 });
 
-UserSchema.pre('save',function(next){
-    if(!this.dateCreated){
+
+UserSchema.pre('save', function (next) {
+    if (!this.dateCreated) {
         this.dateCreated = getCurrentTime();
     }
-    if(this.auth.status.statusValue != "pending" && this.auth.status.statusValue != "approved" && this.auth.status.statusValue != "rejected"){
+    if (this.auth.status.statusValue != "pending" && this.auth.status.statusValue != "approved" && this.auth.status.statusValue != "rejected") {
         var err = "Didn't recieve a valid entry for status valid values are: pending, approved, and rejected.";
         next(err);
-    }else{
+    } else {
         next();
     }
-   
+
 });
 
-UserSchema.pre('save', function(next) {
+UserSchema.pre('save', function (next) {
     var user = this;
 
     // only hash the password if it has been modified (or is new)
-    if (!user.isModified('password') ){
+    if (!user.isModified('password')) {
         next();
-    }else if(typeof(user.password)=='undefined' || user.password.length<8){
+    } else if (typeof (user.password) == 'undefined' || user.password.length < 8) {
         next();
-    }else{
-        // generate a salt
-        user.auth.dateAuthenticated = getCurrentTime();
-        user.auth.status.statusValue = "approved";
-        bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-            if (err){
-                next(err);
-            }else{
-                // hash the password using our new salt
-            bcrypt.hash(user.password, salt,null,function(err, hash) {
-                if (err){
+    } else {
+            bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
+                if (err) {
                     next(err);
-                }else{
-                    // override the cleartext password with the hashed one
-                    user.password = hash;
-                    next();
+                } else {
+                    // hash the password using our new salt
+                    bcrypt.hash(user.password, salt, null, function (err, hash) {
+                        if (err) {
+                            next(err);
+                        } else {
+                            user.password = hash;
+                            let passwordStrength = zxcvbn(user.password);
+
+                            if (passwordStrength.result == 4) {
+                                user.auth.dateAuthenticated = getCurrentTime();
+                                user.auth.status.statusValue = "approved";
+                                next();
+                            }else{
+                                next(passwordStrength.feedback.warning);
+                            }
+                        }
+                    });
                 }
             });
-            }
-        });
     }
 });
 
-UserSchema.methods.comparePassword = function(candidatePassword, cb) {
-    bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+UserSchema.methods.comparePassword = function (candidatePassword, cb) {
+    bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
         if (err) return cb(err);
-        if(!isMatch){
+        if (!isMatch) {
             cb("Invalid password");
-        }else{
+        } else {
             cb(null, isMatch);
         }
     });

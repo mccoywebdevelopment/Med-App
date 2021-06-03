@@ -138,17 +138,13 @@ class CreateGroup extends React.Component {
         this.setState(newState);
     }
     _groupValidation = () => {
-        var error = "";
-        var found = false;
-        for (var i = 0; i < this.props.groupState.data.length; ++i) {
-            if (this.props.groupState.data[i]._id == this.state.overview.values.group.value) {
-                found = true;
-            }
+        let error = "";
+        if(this.state.overview.values.name.length<1){
+            error = "This field is required.";
         }
-        if (!found) {
-            error = "This field is required";
-        }
-        return error;
+        let newState = this.state;
+        newState.overview.errors.name = error;
+        this.setState(newState);
     }
     _isOverviewErrors = () => {
         for (var errProp in this.state.overview.errors) {
@@ -159,6 +155,7 @@ class CreateGroup extends React.Component {
         return false;
     }
     _validation = () => {
+        this._groupValidation();
         let isErrors = this._isOverviewErrors();
 
         if(isErrors){

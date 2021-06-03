@@ -8,7 +8,7 @@ import "../../assets/css/myCss.css";
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createMessage } from '../../actions/messages'
-import { API_URI } from "../../config/variables";
+import { API_URI, CLIENT_URL } from "../../config/variables";
 
 import Loading from "../../components/shared/Loading/Loading";
 import PopUp from "../../components/shared/PopUp/PopUp";
@@ -34,7 +34,11 @@ class AdminLayout extends React.Component {
         return false;
     }
     render() {
-        let logoutPath = API_URI + "/auth/logout/" + localStorage.getItem('JWT');
+        let jwt = localStorage.getItem('JWT');
+        let logoutPath = API_URI + "/auth/logout/" + jwt;
+        if(!jwt){
+            logoutPath = CLIENT_URL + "/auth/login";
+        }
         return (
             <>
                 <div className="my-side-bar">
@@ -92,7 +96,7 @@ class AdminLayout extends React.Component {
                                 <div className={"alert alert-dismissible alert-" + this.props.message.alertType} role="alert">
                                     {this.props.message.text}
                                     {this.props.message.text.length>0?
-                                    <button type="button" onClick={()=>{this.props.createMessage("",null)}} className="close" data-dismiss="alert" aria-label="Close">
+                                    <button type="button" onClick={()=>{this.props.createMessage("","")}} className="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                     :null}

@@ -27,7 +27,7 @@ if (process.env.NODE_ENV != 'production') {
 }
 
 app.use((req, res, next) => {
-    let allowedOrigins = ['https://sunshine-acres-med-app.herokuapp.com','https://med-app-testing.herokuapp.com'];
+    let allowedOrigins = ['https://sach-medapp.herokuapp.com','https://med-app-testing.herokuapp.com'];
     let origin = req.headers.origin;
     if (allowedOrigins.includes(origin)) {
         res.setHeader('Access-Control-Allow-Origin', origin);

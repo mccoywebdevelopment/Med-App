@@ -17,13 +17,25 @@ const persistConfig = {
 // Middleware: Redux Persist Persisted Reducer
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-const store = createStore(
-  persistedReducer,
-  compose(
-    applyMiddleware(...middleware),
-    // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-  )
-);
+let store;
+
+if(window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()){
+  store = createStore(
+    persistedReducer,
+    compose(
+      applyMiddleware(...middleware),
+      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    )
+  );
+}else{
+  store = createStore(
+    persistedReducer,
+    compose(
+      applyMiddleware(...middleware),
+    )
+  );
+}
+
 
 let persistor = persistStore(store);
 
