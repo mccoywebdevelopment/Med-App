@@ -4,9 +4,14 @@ const { getPeriods, isBetween, formatAMPM } = require('./config/globalHelpers');
 let currentTime = getCurrentTime();
 let TIME_ZONE = process.env.TIME_ZONE || require('./config/configVars').TIME_ZONE;
 let { morningEnd, afternoonEnd, eveningEnd } = getPeriods(currentTime);
-let minutesBefore = process.env.MINUTES_BEFORE || require('./config/configVars').MINUTES_BEFORE;
 const sendMedicalNotificationsEmail  = require('./notifications/UserReminder').sendMedicalNotificationsEmail;
 const sendMedicalNotificationsAdmin = require('./notifications/AdminMedEvents').sendMedicalNotificationsAdmin;
+let MONGO_URI = process.env.MONGODB_URI || require('./config/configVars').MONGODB_URI;
+let mongoose = require('mongoose');
+
+mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true }, function (err) {
+    if (err) throw err;
+});
 
 /*
 # ┌────────────── second (optional)

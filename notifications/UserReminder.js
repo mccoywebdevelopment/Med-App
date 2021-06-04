@@ -1,17 +1,14 @@
-let { getPeriods, isBetween, formatAMPM } = require('../config/globalHelpers');
-let GroupModel = require('../models/group/Group');
+let { getPeriods, isBetween } = require('../config/globalHelpers');
 let { getCurrentTime } = require('../config/rootHelpers');
-let UserModel = require('../models/user/User');
 let path = require('path');
 let { sendMail } = require('../queries/mailer');
 let { getDependentsRxs } = require('../queries/user');
 let currentTime = getCurrentTime();
-let minutesBefore = process.env.MINUTES_BEFORE || require('../config/configVars').MINUTES_BEFORE;
 let VALID_TIMES_MORNING_END = process.env.VALID_TIMES_MORNING_END || require('../config/configVars').VALID_TIMES_MORNING_END;
 let VALID_TIMES_AFTERNOON_END = process.env.VALID_TIMES_AFTERNOON_END || require('../config/configVars').VALID_TIMES_AFTERNOON_END;
 let VALID_TIMES_EVENING_END = process.env.VALID_TIMES_EVENING_END || require('../config/configVars').VALID_TIMES_EVENING_END;
 let CLIENT_URL = process.env.CLIENT_URL || require('../config/configVars').CLIENT_URL;
-let { getGroups, capitalizeFirstLetter, isDuplicate, addDay, getSeconds } = require('./shared');
+let { getGroups, capitalizeFirstLetter, isDuplicate } = require('./shared');
 
 
 function sendMedNotificationEmail(username, activeMedications, period, periodEnd, callback) {
@@ -72,10 +69,12 @@ function getActiveMedsForCurrentPeriod(activeArr) {
     }
 }
 function sendMedicalNotificationsEmail(callback) {
+    console.log(1)
     getGroups(function (err, groups) {
         if (err) {
             callback(err);
         } else {
+            console.log(groups);
             let notifiedUsers = [];
             for (i = 0; i < groups.length; ++i) {
                 for (var ix = 0; ix < groups[i].guardians.length; ++ix) {

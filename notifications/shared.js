@@ -1,4 +1,4 @@
-const { getPeriods, isBetween, formatAMPM } = require('../config/globalHelpers');
+const { getPeriods } = require('../config/globalHelpers');
 let { getCurrentTime } = require('../config/rootHelpers');
 const GroupModel = require('../models/group/Group');
 const UserModel = require('../models/user/User');
@@ -30,6 +30,7 @@ function getGroups(callback){
         if (err) {
             callback(err);
         } else {
+            console.log(groups)
             UserModel.populate(groups, { path: "guardians.user" }, function (err, groups) {
                 if (err) {
                     callback(err);
@@ -55,5 +56,6 @@ function getSeconds(currentTime,additional) {
 
     return [diffMorning, diffAfternoon, diffEvening]
 }
+
 
 module.exports = { getGroups, capitalizeFirstLetter, isDuplicate, addDay, getSeconds }
