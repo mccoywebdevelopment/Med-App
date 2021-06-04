@@ -47,8 +47,8 @@ class DependentTable extends React.Component{
             <tr style={trStyle} key={"depTable"+index}>
               <th scope="row" onClick={()=>{this._selectItem(dep._id)}}>{index + 1}</th>
               <td colSpan="2" onClick={()=>this._selectItem(dep)}>{dep.name.firstName + " " + dep.name.lastName}</td>
+              <td colSpan="2" onClick={()=>this._selectItem(dep)}>{dateOfBirth}</td>
               {!this.props.isSmall?<td>{age}</td>:null}
-              <td onClick={()=>this._selectItem(dep)}>{dateOfBirth}</td>
               <td onClick={()=>this._selectItem(dep)}>{rxsMeds}</td>
               {/* <td>Ventrent</td> */}
               {!this.props.isUserView?
@@ -73,9 +73,9 @@ class DependentTable extends React.Component{
           <tr>
             <th scope="col">#</th>
             <th colSpan="2" scope="col">Name</th>
+            <th colSpan="2" scope="col">DOB</th>
             {!this.props.isSmall?<th scope="col">Age</th>:null}
-            <th scope="col">DOB</th>
-            <th scope="col"># Medication(s)</th>
+            <th scope="col"># Med(s)</th>
             {/* <th scope="col">Last Med Taken</th> */}
             {!this.props.isUserView?<th scope="col">Active</th>:null}
             {!this.props.isSmall && !this.props.isUserView?<th scope="col">Actions</th>:null}

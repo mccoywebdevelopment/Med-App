@@ -6,7 +6,7 @@ export default class WhenToTake extends React.Component {
   }
   render() {
     const list = () => {
-      return this.props.data.map((value) => {
+      return this.props.data.map((value,index) => {
         let styles = {
           ...this.props.styles,
           marginRight: "10px",
@@ -24,7 +24,7 @@ export default class WhenToTake extends React.Component {
           styles.color = "#bf00ff";
         }
         return (
-          <span style={styles}>{value}</span>
+          <span style={styles} key={"whenToTake"+index}>{value}</span>
         )
       });
     }
