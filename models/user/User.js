@@ -40,37 +40,38 @@ UserSchema.pre('save', function (next) {
 });
 
 UserSchema.pre('save', function (next) {
-    var user = this;
+    let user = this;
 
     // only hash the password if it has been modified (or is new)
     if (!user.isModified('password')) {
         next();
-    } else if (typeof (user.password) == 'undefined' || user.password.length < 1) {
+    } else if (typeof (user.password) == 'undefined') {
         next();
     }else if(user.password < 8){
         next("Password must have 8 charactors or more");
-    }else if(zxcvbn(user.password).score<4){
+    }else if(zxcvbn(user.password).score < 4){
         next("Password is too guessable. Please change password with registration or forgot password.");
     }else {
+        console.log("user model");
+        console.log(user);
+        console.log(user.auth)
             bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
                 if (err) {
                     next(err);
                 } else {
+                    console.log(1)
                     // hash the password using our new salt
                     bcrypt.hash(user.password, salt, null, function (err, hash) {
+                        console.log(2)
                         if (err) {
                             next(err);
                         } else {
                             user.password = hash;
-                            let passwordStrength = zxcvbn(user.password);
-
-                            if (passwordStrength.result == 4) {
-                                user.auth.dateAuthenticated = getCurrentTime();
-                                user.auth.status.statusValue = "approved";
-                                next();
-                            }else{
-                                next(passwordStrength.feedback.warning);
-                            }
+                            console.log(user);
+                            console.log(user.auth)
+                            user.auth.dateAuthenticated = getCurrentTime();
+                            user.auth.status.statusValue = "approved";
+                            next();
                         }
                     });
                 }

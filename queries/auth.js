@@ -33,6 +33,7 @@ function registerUser(body,token,email,callback){
                         if(err){
                             callback(err);
                         }else{
+                            console.log(userSaved);
                             var redirect = "/user/home";
                             if(userFound.isAdmin){
                                 redirect = "/admin/dependents";
