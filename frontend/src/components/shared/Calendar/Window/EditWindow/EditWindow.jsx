@@ -129,7 +129,7 @@ class EditWindow extends React.Component{
                     </Col>
                     {typeof(this.props.event.event.createdBy)!='undefined' && typeof(this.props.event.event.createdBy.name)!='undefined'?
                         <Col lg="12">
-                            <p style={{fontSize:'15px'}}>Given By:   {this.props.event.event.createdBy.name.firstName+" "+this.props.event.event.createdBy.name.lastName}</p>
+                            <p style={{fontSize:'15px'}}>Given By:   {this.props.event.event.createdBy.name.firstName+" "+(this.props.event.event.createdBy.name.lastName || "")}</p>
                         </Col>
                     :null}
                     <Col lg="12">

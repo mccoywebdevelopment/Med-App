@@ -132,7 +132,7 @@ class AdministerMed extends React.Component {
         const guardianList = () =>{
             return this.state.guardians.map((guardian,index)=>{
                 return(
-                <option id={"guardianList"+indexedDB} value={guardian._id}>{guardian.name.firstName + " "+ guardian.name.lastName}</option>
+                <option id={"guardianList"+indexedDB} value={guardian._id}>{guardian.name.firstName + " "+ (guardian.name.lastName || "")}</option>
                 )
             });
         }

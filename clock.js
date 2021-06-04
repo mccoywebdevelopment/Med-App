@@ -30,7 +30,7 @@ user notifications
 */
 
 let morningHour = morningEnd.getHours();
-new CronJob("* 39 " + morningHour + " * * 0-6", function () {
+new CronJob("00 39 " + morningHour + " * * 0-6", function () {
     console.log("User morning notification triggered @ " + formatAMPM(getCurrentTime()) + " today.");
     sendMedicalNotificationsEmail(function (err, res) {
         if (err) {
@@ -42,7 +42,7 @@ new CronJob("* 39 " + morningHour + " * * 0-6", function () {
 }, undefined, true, TIME_ZONE);
 
 let afternoonHour = afternoonEnd.getHours();
-new CronJob("* 39 " + afternoonHour + " * * 0-6", function () {
+new CronJob("00 39 " + afternoonHour + " * * 0-6", function () {
     console.log("User afternoon notification triggered @ " + formatAMPM(getCurrentTime()) + " today.");
     sendMedicalNotificationsEmail(function (err, res) {
         if (err) {
@@ -54,7 +54,7 @@ new CronJob("* 39 " + afternoonHour + " * * 0-6", function () {
 }, undefined, true, TIME_ZONE);
 
 let eveningHour = eveningEnd.getHours();
-new CronJob("* 39 " + eveningHour + " * * 0-6", function () {
+new CronJob("00 39 " + eveningHour + " * * 0-6", function () {
     console.log("User evening notification triggered @ " + formatAMPM(getCurrentTime()) + " today.");
     sendMedicalNotificationsEmail(function (err, res) {
         if (err) {
@@ -70,7 +70,7 @@ admin notifications
 */
 
 morningHour = morningEnd.getHours() + 1;
-new CronJob("* 2 " + morningHour + " * * 0-6", function () {
+new CronJob("00 02 " + morningHour + " * * 0-6", function () {
     console.log("Admin morning notification triggered @ " + formatAMPM(getCurrentTime()) + " today.");
     sendMedicalNotificationsAdmin(function (err, res) {
         if (err) {
@@ -82,7 +82,7 @@ new CronJob("* 2 " + morningHour + " * * 0-6", function () {
 }, undefined, true, TIME_ZONE);
 
 afternoonHour = afternoonEnd.getHours() + 1;
-new CronJob("* 2 " + afternoonHour + " * * 0-6", function () {
+new CronJob("00 02 " + afternoonHour + " * * 0-6", function () {
     console.log("Admin afternoon notification triggered @ " + formatAMPM(getCurrentTime()) + " today.");
     sendMedicalNotificationsAdmin(function (err, res) {
         if (err) {
@@ -94,7 +94,7 @@ new CronJob("* 2 " + afternoonHour + " * * 0-6", function () {
 }, undefined, true, TIME_ZONE);
 
 eveningHour = eveningEnd.getHours() + 1;
-new CronJob("* 2 " + eveningHour + " * * 0-6", function () {
+new CronJob("00 02 " + eveningHour + " * * 0-6", function () {
     console.log("Admin evening notification triggered @ " + formatAMPM(getCurrentTime()) + " today.");
     sendMedicalNotificationsAdmin(function (err, res) {
         if (err) {

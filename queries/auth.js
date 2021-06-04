@@ -28,6 +28,7 @@ function registerUser(body,token,email,callback){
                     userFound.password = body.password;
                     userFound.auth.token = token;
                     userFound.auth.isVerified = true;
+                    userFound.auth.statusValue = "Approved";
                     userFound.save(function(err,userSaved){
                         if(err){
                             callback(err);

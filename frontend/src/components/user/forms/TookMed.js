@@ -129,7 +129,7 @@ class TookMed extends React.Component {
             let name = "-"
             if (this.props.guardianState.data[i].name) {
                 name = this.props.guardianState.data[i].name.firstName + " "
-                    + this.props.guardianState.data[i].name.lastName;
+                    + (this.props.guardianState.data[i].name.lastName || "");
             }
             tableBody.push(name);
             tableBody.push(this.props.guardianState.data[i].groups.length);

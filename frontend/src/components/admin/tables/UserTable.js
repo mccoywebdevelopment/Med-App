@@ -26,7 +26,7 @@ class UserTable extends React.Component {
       return users.map((user, index) => {
         let name = "-"
         if (user.guardian && user.guardian.name) {
-          name = user.guardian.name.firstName + " " + user.guardian.name.lastName;
+          name = user.guardian.name.firstName + " " + (user.guardian.name.lastName || "") ;
         }
         let isAdmin = "No";
         let isAdminStyles = {
@@ -80,7 +80,7 @@ class UserTable extends React.Component {
               <td>
                 <i title="view" onClick={() => this._selectItem(user)} className="fas fa-eye"
                   style={{ paddingRight: '20px', color: this.props.theme.pagePrimaryColor }}></i>
-                  {!user.auth.isVerified || user.auth.statusValue == 'pending'?
+                  {!user.auth.isVerified || user.auth.status.statusValue == 'pending'?
                     <i title="Send Invite" onClick={() => { this._sendTokenViaEmail(user) }} className="fas fa-envelope"
                       style={{ paddingRight: '20px',color: this.props.theme.pagePrimaryColor }}></i>
                   :null}

@@ -42,7 +42,7 @@ export const fetchCreateUser = (body, groupIDs, done) => (dispatch) => {
     if (err) {
       dispatch(createMessage(err, 'danger'));
     }else{
-      dispatch(fetchCreateGuardian({user:res._id},false,function(guardianCreated){
+      dispatch(fetchCreateGuardian({user:res._id,firstName:body.username},false,function(guardianCreated){
         if(err){
           dispatch(createMessage(err, 'danger'));
         }else if (groupIDs.length > 0) {

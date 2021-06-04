@@ -45,9 +45,13 @@ UserSchema.pre('save', function (next) {
     // only hash the password if it has been modified (or is new)
     if (!user.isModified('password')) {
         next();
-    } else if (typeof (user.password) == 'undefined' || user.password.length < 8) {
+    } else if (typeof (user.password) == 'undefined' || user.password.length < 1) {
         next();
-    } else {
+    }else if(user.password < 8){
+        next("Password must have 8 charactors or more");
+    }else if(zxcvbn(user.password).score<4){
+        next("Password is too guessable. Please change password with registration or forgot password.");
+    }else {
             bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
                 if (err) {
                     next(err);

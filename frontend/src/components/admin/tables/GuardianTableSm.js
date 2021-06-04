@@ -28,7 +28,7 @@ export default class GuardianTableSm extends React.Component {
           url = "/admin/users/" + user._id;
         }
         if(guardian.name && guardian.name.firstName){
-            name = guardian.name.firstName + " " + guardian.name.lastName;
+            name = guardian.name.firstName + " " + (guardian.name.lastName || "");
         }
         if(user){
             isAdmin = user.isAdmin;

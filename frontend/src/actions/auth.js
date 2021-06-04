@@ -21,7 +21,7 @@ export const fetchLogin = (postData,callback) => dispatch => {
   });
 }
 
-export const fetchResetPassword = (postData,token) => (dispatch) => {
+export const fetchResetPassword = (postData,token,callback) => (dispatch) => {
   FETCH('POST','/auth/reset-password/',postData,token,dispatch,true,(err,res)=>{
     if(err){
       dispatch(createMessage(err, 'danger'));
@@ -32,6 +32,9 @@ export const fetchResetPassword = (postData,token) => (dispatch) => {
         payload: res.result
       });
       window.location = "/user/home"
+      if(callback){
+        callback(res);
+      }
     }
   });
 }
