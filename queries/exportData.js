@@ -5,8 +5,8 @@ let MedicationEvent = require('../models/medicationEvent/MedicationEvent');
 let Guardian = require('../models/guardian/Guardian');
 let Event = require('../models/event/Event');
 
-
 function exportDataGivenMonthYear(month,year,callback){
+    console.log(0);
     if(typeof(month)=='undefined' || month<0 || month>11){
         callback("Please enter a valid month");
     }
@@ -15,18 +15,16 @@ function exportDataGivenMonthYear(month,year,callback){
             callback(err);
         }else if(res.length<1){
             callback("No dependents found.");
-        }else if(!res.rxsMedications || res.rxsMedications.length<1){
-            callback("No medications found,");
         }else{
-            MedicationEvent.populate(res,{path:'rxs.rxsMedications.events'},function(err,res){
+            MedicationEvent.populate(res,{path:'rxsMedications.events'},function(err,res){
                 if(err){
                     callback(err);
                 }else{
-                    Guardian.populate(res,{path:'rxs.rxsMedications.events.createdBy'},function(err,res){
+                    Guardian.populate(res,{path:'rxsMedications.events.createdBy'},function(err,res){
                         if(err){
                             callback(err);
                         }else{
-                            Event.populate(res,{path:'rxs.rxsMedications.events.event'},function(err,res){
+                            Event.populate(res,{path:'rxsMedications.events.event'},function(err,res){
                                 if(err){
                                     callback(err);
                                 }else{
@@ -102,7 +100,8 @@ function createWorkSheet(wb,dependent,month,year){
             y_index = 1;
             x_index = x_index + 1;
             for(var j=0;j<dependent.rxsMedications[i].events.length;++j){
-                obj = createRxsMedDates(ws,wb,x_index,y_index,dependentrxsMedications[i].events[j],month,year);
+                console.log(dependent.rxsMedications[i]);
+                obj = createRxsMedDates(ws,wb,x_index,y_index,dependent.rxsMedications[i].events[j],month,year);
                 x_index = obj.x_index;
                 y_index = obj.y_index;
             }
@@ -111,6 +110,7 @@ function createWorkSheet(wb,dependent,month,year){
     return ws;
 }
 function createRxsMedDates(ws,wb,x_index,y_index,event,month,year){
+    console.log(event)
     var obj = {
         x_index:x_index,
         y_index:y_index,
@@ -122,7 +122,7 @@ function createRxsMedDates(ws,wb,x_index,y_index,event,month,year){
         y_index = y_index + 1;
         ws.cell(x_index,y_index).string(event.isAway.toString());
         y_index = y_index + 1;
-        ws.cell(x_index,y_index).string(getTime(event.event.timeStamp));
+        ws.cell(x_index,y_index).string(getTime(date));
         y_index = y_index + 1;
         var guardianName = "";
         if(typeof(event.createdByStr)!='undefined'){

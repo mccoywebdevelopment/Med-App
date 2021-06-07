@@ -81,8 +81,6 @@ function updateModifiedFields(oldDoc, updatedFields, callback) {
       if(err){
         callback(err)
       }else{
-        console.log("sldjfkslak");
-        console.log(rxsMedications)
         obj.rxsMedications = rxsMedications;
         callback(null,obj);
       }

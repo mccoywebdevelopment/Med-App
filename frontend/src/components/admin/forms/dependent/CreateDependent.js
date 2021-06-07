@@ -418,23 +418,6 @@ class CreateDependent extends React.Component {
             this.setState(newState);
             return "";
         }
-        // if(this.state.overview.values.group == "empty"){
-        //     let newState = this.state;
-        //     newState.overview.values.group = "";
-        //     alert("Please create group first in the group menu to activate dependent.");
-        //     error="Error no groups/no group selected"
-        //     this.setState(newState);
-        //     return error;
-        // }
-        // for (var i = 0; i < this.props.groupState.data.length; ++i) {
-        //     if (this.props.groupState.data[i]._id == this.state.overview.values.group) {
-        //         found = true;
-        //     }
-        // }
-        // if (!found) {
-        //     error = "This field is required";
-        // }
-        // return error;
     }
     _isRxsMedErrors = () => {
         if (this.state.rxsMedList.isAdd && this.state.rxsMedList.list.length > 0) {

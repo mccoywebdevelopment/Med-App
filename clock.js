@@ -28,6 +28,14 @@ mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true },
 /*
 user notifications
 */
+console.log("User morning notification triggered @ " + formatAMPM(getCurrentTime()) + " today.");
+sendMedicalNotificationsEmail(function (err, res) {
+    if (err) {
+        console.log(err);
+    } else {
+        console.log("User morning notification sent @ " + formatAMPM(getCurrentTime()) + " today.");
+    }
+});
 
 let morningHour = morningEnd.getHours();
 new CronJob("00 39 " + morningHour + " * * 0-6", function () {

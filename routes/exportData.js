@@ -13,14 +13,14 @@ router.route("/:month/:year/:JWT")
             console.log(err);
             res.status(400).json({error:err});
         }else{
-            res.download(path.join(__dirname,'../..','/config/excel/data.xlsx'));
+            res.download(path.join(__dirname,'..','/config/excel/data.xlsx'));
         }
     });
 });
 
 router.route("/qr/generate-svg-code/all/:JWT")
 .get(verifyAdmin,function(req,res){
-    let basePath = path.join(__dirname, '../..', '/config/pdf/Dependent-Medications');
+    let basePath = path.join(__dirname, '..', '/config/pdf/Dependent-Medications');
     quickRespQ.generateFile(basePath,"all",null,function(err,result){
         if(err){
             console.log(err);
