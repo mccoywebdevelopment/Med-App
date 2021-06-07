@@ -19,8 +19,6 @@ export default class MedList extends React.Component{
         this.setState(newState);
     }
     render(){
-        console.log("test");
-        console.log(this.props);
         let rxsList = [];
         for(var i=this.props.data.list.length-1;i>-1;--i){
             if(!this.props.data.isAdd || i!=this.props.data.list.length-1){

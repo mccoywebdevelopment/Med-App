@@ -52,23 +52,16 @@ UserSchema.pre('save', function (next) {
     }else if(zxcvbn(user.password).score < 4){
         next("Password is too guessable. Please change password with registration or forgot password.");
     }else {
-        console.log("user model");
-        console.log(user);
-        console.log(user.auth)
             bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
                 if (err) {
                     next(err);
                 } else {
-                    console.log(1)
                     // hash the password using our new salt
                     bcrypt.hash(user.password, salt, null, function (err, hash) {
-                        console.log(2)
                         if (err) {
                             next(err);
                         } else {
                             user.password = hash;
-                            console.log(user);
-                            console.log(user.auth)
                             user.auth.dateAuthenticated = getCurrentTime();
                             user.auth.status.statusValue = "approved";
                             next();

@@ -61,18 +61,9 @@ export const fetchDeleteMedEvent = (rxsMedID,isLoading,done) => (dispatch) => {
     if (err) {
       dispatch(createMessage(err, 'danger'));
     }else{
-      // dispatch(createMessage("Successfully deteted " + res.title, 'info'));
       if(done){
         done(res);
       }
     }
   });
-}
-
-function formateDate(date){
-  let dates = date.split('-');
-  let yyyy = dates[0];
-  let mm = dates[1];
-  let dd = dates[2];
-  return(mm+"-"+dd+"-"+yyyy);
 }

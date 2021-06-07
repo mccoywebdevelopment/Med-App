@@ -1,8 +1,8 @@
 let express = require('express');
-let errors = require('../errors');
+
 let router = express.Router();
-let calendarQ = require('../../queries/calendar');
-let verifyUser = require('../../config/globalHelpers').verifyUser;
+let calendarQ = require('../queries/calendar');
+let verifyUser = require('../config/globalHelpers').verifyUser;
 
 
 router.route("/:JWT/get-dates-medication-taken")
@@ -10,7 +10,7 @@ router.route("/:JWT/get-dates-medication-taken")
     calendarQ.getDatesOfMeds(req.params.JWT,function(err,result){
         if(err){
             console.log(err);
-            res.status(errors.code.BAD_REQUEST).json({error:err});
+            res.status(400).json({error:err});
         }else{
             res.send(result);
         }

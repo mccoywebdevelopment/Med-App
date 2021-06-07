@@ -31,13 +31,13 @@ export default class UserOverviewReadOnly extends React.Component {
                             {this.props.user.guardian && this.props.user.guardian.name?
                                 <>
                                      <div className="col-lg-6" style={{marginTop: '10px' }}>
-                                        <span>Date Verified:</span><span style={{ paddingLeft: '10px' }}>{formateDate(this.props.user.auth.dateAuthenticated)}</span>
+                                        <span>Date Verified:</span><span style={{ paddingLeft: '10px' }}>{(formateDate(this.props.user.auth.dateAuthenticated) || "-")}</span>
                                     </div>
                                     <div className="col-lg-6" style={{marginTop: '10px' }}>
                                         <span>Name</span><span style={{paddingLeft:'10px'}}>{this.props.user.guardian.name.firstName + " " + (this.props.user.guardian.name.lastName || "")}</span>
                                     </div>
                                     <div className="col-lg-6" style={{marginTop: '10px' }}>
-                                        <span>Phone Number:</span><span style={{paddingLeft:'10px'}}>{this.props.user.guardian.phoneNumber}</span>
+                                        <span>Phone Number:</span><span style={{paddingLeft:'10px'}}>{(this.props.user.guardian.phoneNumber || "-")}</span>
                                     </div>
                                 </>
                                 :null

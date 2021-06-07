@@ -180,11 +180,9 @@ class Home extends React.Component {
             if(i==groupNavItems.length - 1){
                 newState.currentMeds.active = newActive;
                 newState.currentMeds.history = newHistory;
-                console.log(newActive);
                 this.setState(newState);
             }
         }
-        // console.log(this.state)
     }
     componentDidMount = () => {
         this._setCurrentTime();
@@ -192,8 +190,6 @@ class Home extends React.Component {
             if (data && data.activeArr) {
                 this._setFilteredMeds(data);
                 this._formatGroupNav(data.res);
-                console.log(data)
-                console.log(this.state);
             }
         });
     }

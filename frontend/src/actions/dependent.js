@@ -47,6 +47,7 @@ export const fetchCreateDependent = (postData, groupID, done) => (dispatch) => {
     if (err) {
       dispatch(createMessage(err, 'danger'));
     } else if (groupID.length > 0) {
+      alert(groupID)
       dispatch(addDependent(groupID,res._id,false,(depAdded)=>{
         createDependentAfter(res,dispatch,postData,done);
       }));

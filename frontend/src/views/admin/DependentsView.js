@@ -75,8 +75,8 @@ class DependentView extends React.Component {
             return 0;
         }
         for (var i = 0; i < this.props.dependentState.data.length; ++i) {
-            for (var ix = 0; ix < this.props.dependentState.data[i].rxs.length; ++ix) {
-                meds = meds + this.props.dependentState.data[i].rxs[ix].rxsMedications.length;
+            if(this.props.dependentState.data[i].rxsMedications){
+                meds = meds + this.props.dependentState.data[i].rxsMedications.length;
             }
         }
         return (meds / this.props.dependentState.data.length);

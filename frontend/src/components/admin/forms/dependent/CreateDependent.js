@@ -139,42 +139,39 @@ class CreateDependent extends React.Component {
     _getRxsSelDep = (dep) => {
         let list = [];
         let index = 0;
-        for (var i = 0; i < dep.rxs.length; ++i) {
-            for (var ix = 0; ix < dep.rxs[i].rxsMedications.length; ++ix) {
-                list.push({
-                    index: index,
-                    errors: {
-                        name: "",
-                        reason: "",
-                        datePrescribed: "",
-                        instructions: "",
-                        endDate: "",
-                        dosageQuantity: "",
-                        dosageUnits: "",
-                        doctorName: "",
-                        doctorPhone: "",
-                        rxsNumber: "",
-                        whenToTake: ""
-                    },
-                    values: {
-                        _rxsID: dep.rxs[i]._id,
-                        _rxsMedID: dep.rxs[i].rxsMedications[ix]._id,
-                        name: dep.rxs[i].rxsMedications[ix].name,
-                        reason: dep.rxs[i].rxsMedications[ix].reason,
-                        datePrescribed: dep.rxs[i].rxsMedications[ix].datePrescribed,
-                        instructions: dep.rxs[i].rxsMedications[ix].instructions || "",
-                        endDate: dep.rxs[i].rxsMedications[ix].endDate || "",
-                        dosageQuantity: dep.rxs[i].rxsMedications[ix].dosage.quantity,
-                        dosageUnits: dep.rxs[i].rxsMedications[ix].dosage.unit,
-                        doctorName: dep.rxs[i].doctorContacts.name.firstName + " " + dep.rxs[i].doctorContacts.name.lastName,
-                        doctorPhone: dep.rxs[i].doctorContacts.phoneNumber,
-                        rxsNumber: dep.rxs[i].rxsNumber || "",
-                        whenToTake: dep.rxs[i].rxsMedications[ix].whenToTake || ""
-                    },
-                    body: null
-                });
-                index = index + 1;
-            }
+        for (var i = 0; i < dep.rxsMedications.length; ++i) {
+            list.push({
+                index: index,
+                errors: {
+                    name: "",
+                    reason: "",
+                    datePrescribed: "",
+                    instructions: "",
+                    endDate: "",
+                    dosageQuantity: "",
+                    dosageUnits: "",
+                    doctorName: "",
+                    doctorPhone: "",
+                    rxsNumber: "",
+                    whenToTake: ""
+                },
+                values: {
+                    _rxsMedID: dep.rxsMedications[i]._id,
+                    name: dep.rxsMedications[i].name,
+                    reason: dep.rxsMedications[i].reason,
+                    datePrescribed: dep.rxsMedications[i].datePrescribed,
+                    instructions: dep.rxsMedications[i].instructions || "",
+                    endDate: dep.rxsMedications[i].endDate || "",
+                    dosageQuantity: dep.rxsMedications[i].dosage.quantity,
+                    dosageUnits: dep.rxsMedications[i].dosage.unit,
+                    doctorName: dep.rxsMedications[i].doctorContacts.name.firstName + " " + dep.rxsMedications[i].doctorContacts.name.lastName,
+                    doctorPhone: dep.rxsMedications[i].doctorContacts.phoneNumber,
+                    rxsNumber: dep.rxsMedications[i].rxsNumber || "",
+                    whenToTake: dep.rxsMedications[i].whenToTake || ""
+                },
+                body: null
+            });
+            index = index + 1;
         }
         return list;
     }
@@ -310,7 +307,7 @@ class CreateDependent extends React.Component {
         let newState = this.state;
         newState.overview.errors.name = firstAndLastNameValidator(newState.overview.values.name, true).errorMsg;
         newState.overview.errors.dateOfBirth = prevDateValidator(newState.overview.values.dateOfBirth, true).errorMsg;
-        // newState.overview.errors.group = this._groupValidation();
+        newState.overview.errors.group = this._groupValidation();
         this.setState(newState);
     }
     _toggleIsEditOverview = () => {
@@ -358,66 +355,6 @@ class CreateDependent extends React.Component {
             },
             body: null
         });
-        // newState.rxsMedList.list.push({
-        //     index: 1,
-        //     errors: {
-        //         name: "",
-        //         reason: "",
-        //         datePrescribed: "",
-        //         instructions: "",
-        //         endDate: "",
-        //         dosageQuantity: "",
-        //         dosageUnits: "",
-        //         doctorName: "",
-        //         doctorPhone: "",
-        //         rxsNumber: "",
-        //         whenToTake: ""
-        //     },
-        //     values: {
-        //         name: "Tyfoid",
-        //         reason: "For medical reasons",
-        //         datePrescribed: "2020-08-04",
-        //         instructions: "None",
-        //         endDate: "",
-        //         dosageQuantity: "1",
-        //         dosageUnits: "pills",
-        //         doctorName: "Dr. Kendle",
-        //         doctorPhone: "48089016789",
-        //         rxsNumber: "111",
-        //         whenToTake: ["morning","afternoon"]
-        //     },
-        //     body: null
-        // });
-        // newState.rxsMedList.list.push({
-        //     index: 2,
-        //     errors: {
-        //         name: "",
-        //         reason: "",
-        //         datePrescribed: "",
-        //         instructions: "",
-        //         endDate: "",
-        //         dosageQuantity: "",
-        //         dosageUnits: "",
-        //         doctorName: "",
-        //         doctorPhone: "",
-        //         rxsNumber: "",
-        //         whenToTake: ""
-        //     },
-        //     values: {
-        //         name: "Selium",
-        //         reason: "For aging dynosoum",
-        //         datePrescribed: "2020-02-12",
-        //         instructions: "Take yearly.",
-        //         endDate: "",
-        //         dosageQuantity: "8",
-        //         dosageUnits: "pills",
-        //         doctorName: "Dr. Morgan",
-        //         doctorPhone: "4808901678",
-        //         rxsNumber: "13467",
-        //         whenToTake: ["morning","afternoon","evening"]
-        //     },
-        //     body: null
-        // });
         newState.rxsMedList.indexSelected = newState.rxsMedList.list.length - 1;
         this.setState(newState);
     }
@@ -462,24 +399,42 @@ class CreateDependent extends React.Component {
             this.setState(newState);
         }
     }
+    _findGroupByID = (id) =>{
+        for (var i = 0; i < this.props.groupState.data.length; ++i) {
+            if (this.props.groupState.data[i]._id == id) {
+                return this.props.groupState.data[i];
+            }
+        }
+        return false;
+    }
     _groupValidation = () => {
         var error = "";
         var found = false;
-        if(this.state.overview.values.group == "empty"){
+        if(this._findGroupByID(this.state.overview.values.group)){
+            return "";
+        }else{
             let newState = this.state;
             newState.overview.values.group = "";
             this.setState(newState);
-            return error;
+            return "";
         }
-        for (var i = 0; i < this.props.groupState.data.length; ++i) {
-            if (this.props.groupState.data[i]._id == this.state.overview.values.group) {
-                found = true;
-            }
-        }
-        if (!found) {
-            error = "This field is required";
-        }
-        return error;
+        // if(this.state.overview.values.group == "empty"){
+        //     let newState = this.state;
+        //     newState.overview.values.group = "";
+        //     alert("Please create group first in the group menu to activate dependent.");
+        //     error="Error no groups/no group selected"
+        //     this.setState(newState);
+        //     return error;
+        // }
+        // for (var i = 0; i < this.props.groupState.data.length; ++i) {
+        //     if (this.props.groupState.data[i]._id == this.state.overview.values.group) {
+        //         found = true;
+        //     }
+        // }
+        // if (!found) {
+        //     error = "This field is required";
+        // }
+        // return error;
     }
     _isRxsMedErrors = () => {
         if (this.state.rxsMedList.isAdd && this.state.rxsMedList.list.length > 0) {
@@ -506,26 +461,6 @@ class CreateDependent extends React.Component {
             alert("Please fix the errors below:");
         }
     }
-    _groupRxs = () => {
-        let data = JSON.parse(JSON.stringify(this.state.rxsMedList.list));
-        let arr = [];
-
-        while (data.length > 0) {
-            let items = [data[0]];
-            data.splice(0, 1);
-            for (var i = 0; i < data.length; ++i) {
-                if ((items[0].values.rxsNumber && items[0].values.rxsNumber.length>0 && (items[0].values.rxsNumber == data[i].values.rxsNumber)) &&
-                    items[0].values.doctorPhone == data[i].values.doctorPhone &&
-                    items[0].values.doctorName == data[i].values.doctorName) {
-                    items.push(data[i]);
-                    data.splice(i, 1);
-                    i = -1;
-                }
-            }
-            arr.push(items);
-        }
-        return arr;
-    }
     _tookMed = (index) => {
         let med = this.state.rxsMedList.list[index].values;
         // let name = this.props.isDepSelected.name.firstName + " " + this.props.isDepSelected.name.lastName;
@@ -536,57 +471,44 @@ class CreateDependent extends React.Component {
         // let name = this.props.isDepSelected.name.firstName + " " + this.props.isDepSelected.name.lastName;
         this.props.togglePopUp(med.name, <RxsMedDates medName={med.name} rxsMedID={med._rxsMedID} data={med} />);
     }
-    _formatRxs = (arr) => {
-        let rxsArr = [];
+    _formatRxsMedication = () => {
+        let arr = this.state.rxsMedList.list;
+        let rxsMedication = [];
         for (var i = 0; i < arr.length; ++i) {
-            let rxs = {
-                rxsNumber: arr[i][0].values.rxsNumber,
-                firstName: arr[i][0].values.doctorName.split(' ')[0],
-                lastName: arr[i][0].values.doctorName.split(' ')[1],
-                phoneNumber: arr[i][0].values.doctorPhone,
-            }
-            /*
-            if isDepSelected && original _rxs & _rxsMed is valid, 
-            meaning if updating then we will assign
-            */
-            if (arr[i][0].values._rxsID) {
-                rxs._id = arr[i][0].values._rxsID
-            }
-            let rxsMedication = [];
-            for (var ix = 0; ix < arr[i].length; ++ix) {
                 rxsMedication.push({
-                    name: arr[i][ix].values.name,
-                    quantity: arr[i][ix].values.dosageQuantity,
-                    unit: arr[i][ix].values.dosageUnits,
-                    reason: arr[i][ix].values.reason,
-                    datePrescribed: toInputDate(arr[i][ix].values.datePrescribed)
+                    name: arr[i].values.name,
+                    quantity: arr[i].values.dosageQuantity,
+                    unit: arr[i].values.dosageUnits,
+                    reason: arr[i].values.reason,
+                    datePrescribed: toInputDate(arr[i].values.datePrescribed),
+                    doctorPhoneNumber: arr[i].values.doctorPhone,
+                    doctorFirstName: arr[i].values.doctorName.split(" ")[0],
+                    doctorLastName: arr[i].values.doctorName.split(" ")[1],
                 });
                 /* optional fields for RxsMedication Model */
-                if (arr[i][ix].values._rxsMedID) {
-                    rxsMedication[rxsMedication.length - 1]._id = arr[i][ix].values._rxsMedID;
+                if (arr[i].values._rxsMedID) {
+                    rxsMedication[rxsMedication.length - 1]._id = arr[i].values._rxsMedID;
                 }
-                if (arr[i][ix].values.instructions) {
-                    rxsMedication[rxsMedication.length - 1].instructions = arr[i][ix].values.instructions;
+                if (arr[i].values.instructions) {
+                    rxsMedication[rxsMedication.length - 1].instructions = arr[i].values.instructions;
                 }
-                if (arr[i][ix].values.endDate) {
-                    rxsMedication[rxsMedication.length - 1].endDate = toInputDate(arr[i][ix].values.endDate);
+                if (arr[i].values.endDate) {
+                    rxsMedication[rxsMedication.length - 1].endDate = toInputDate(arr[i].values.endDate);
                 }
-                if (arr[i][ix].values.whenToTake) {
-                    rxsMedication[rxsMedication.length - 1].whenToTake = arr[i][ix].values.whenToTake;
+                if (arr[i].values.whenToTake) {
+                    rxsMedication[rxsMedication.length - 1].whenToTake = arr[i].values.whenToTake;
                 }
 
             }
-            rxs.rxsMedication = rxsMedication;
-            rxsArr.push(rxs);
-        }
-        return rxsArr;
+        
+            return rxsMedication;
     }
     _formatBody = () => {
         let body = {
             firstName: this.state.overview.values.name.split(' ')[0],
             lastName: this.state.overview.values.name.split(' ')[1],
             dateOfBirth: this.state.overview.values.dateOfBirth,
-            rxs: this._formatRxs(this._groupRxs())
+            rxsMedications: this._formatRxsMedication()
         }
         return body;
     }

@@ -30,7 +30,6 @@ function getGroups(callback){
         if (err) {
             callback(err);
         } else {
-            console.log(groups)
             UserModel.populate(groups, { path: "guardians.user" }, function (err, groups) {
                 if (err) {
                     callback(err);

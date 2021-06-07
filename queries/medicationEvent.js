@@ -1,8 +1,6 @@
 let eventModel = require('../models/event/Event');
-let val = require('./helpers/helper');
 let Guardian = require('../models/guardian/Guardian');
 let rxsMedicationModel = require('../models/rxsMedication/RxsMedication');
-let Rxs = require('../models/rxs/Rxs');
 let userModel = require('../models/user/User');
 let Dependent = require('../models/dependent/Dependent');
 let findGuardianByID = require('./guardian').findById;
@@ -63,13 +61,13 @@ function patchUpdateById(body, id, callback) {
       callback(err);
     } else if (!foundDoc) {
       callback("Doc not found");
-    } else if(body.guardianID){
-      findGuardianByID(body.guardianID,function(err,guardianFound){
-        if(err){
+    } else if (body.guardianID) {
+      findGuardianByID(body.guardianID, function (err, guardianFound) {
+        if (err) {
           callback(err);
-        }else if(!guardianFound){
+        } else if (!guardianFound) {
           callback("Guardian not found.");
-        }else{
+        } else {
           body.guardian = guardianFound;
           updateModifiedFields(foundDoc, body, function (err, obj) {
             foundDoc.update(obj, function (err, result) {
@@ -82,7 +80,7 @@ function patchUpdateById(body, id, callback) {
           });
         }
       });
-    }else{
+    } else {
       updateModifiedFields(foundDoc, body, function (err, obj) {
         foundDoc.update(obj, function (err, result) {
           if (err) {
@@ -125,7 +123,7 @@ function tookMedicationRefID(rxsMed, body, callback) {
       } else if (!guardianFound) {
         callback("Guardian not found.");
       } else {
-        getDependentByRxsMedId(rxsMed._id, function (err, dependent) {
+        getDependentByRxsMedication(rxsMed._id, function (err, dependent) {
           if (err) {
             callback(err);
           } else {
@@ -156,13 +154,13 @@ function tookMedication(rxsMedId, jwt, body, user, callback) {
       callback("Rxs medication doesn't exist.");
     } else if (!isMedEventValid(rxsMedicationFound.events, rxsMedicationFound.whenToTake, user.isAdmin)) {
       callback("Don't have access to log this medication.");
-    } else if(!body.guardianID){
+    } else if (!body.guardianID) {
 
       findGuardianByJWT(jwt, function (err, guardianFound) {
         if (err) {
           callback(err);
         } else {
-          getDependentByRxsMedId(rxsMedicationFound, function (err, dependent) {
+          getDependentByRxsMedication(rxsMedicationFound, function (err, dependent) {
             if (err) {
               callback(err);
             } else {
@@ -183,12 +181,12 @@ function tookMedication(rxsMedId, jwt, body, user, callback) {
           });
         }
       });
-    }else{
+    } else {
       findGuardianByID(body.guardianID, function (err, guardianFound) {
         if (err) {
           callback(err);
         } else {
-          getDependentByRxsMedId(rxsMedicationFound, function (err, dependent) {
+          getDependentByRxsMedication(rxsMedicationFound, function (err, dependent) {
             if (err) {
               callback(err);
             } else {
@@ -272,40 +270,23 @@ function createRxsMedEvent(body, dependent, rxsMedication, guardian, callback) {
     }
   });
 }
-function getDependentByRxsMedId(rxsMedication, callback) {
-  getRxsByRxsMed(rxsMedication, function (err, rxsFound) {
-    if (err) {
-      callback(err);
-    } else if (!rxsFound) {
-      callback("rxs not found");
-    } else {
-      getDependentByRxs(rxsFound, function (err, result) {
-        if (err) {
-          callback(err);
-        } else {
-          callback(null, result);
-        }
-      });
-    }
-  });
-}
-function getDependentByRxs(rxs, callback) {
-  Dependent.findOne({ rxs: rxs }, function (err, dependentFound) {
+// function getDependentByRxsMedication(rxsMedication, callback) {
+//       getDependentByRxsMedication(rxsFound, function (err, result) {
+//         if (err) {
+//           callback(err);
+//         } else {
+//           callback(null, result);
+//         }
+//       });
+// }
+function getDependentByRxsMedication(rxsMedication, callback) {
+  Dependent.findOne({ rxsMedications: rxsMedication }, function (err, dependentFound) {
     if (err) {
       callback(err);
     } else if (!dependentFound) {
       callback("Dependent not found.");
     } else {
       callback(null, dependentFound);
-    }
-  });
-}
-function getRxsByRxsMed(rxsMedication, callback) {
-  Rxs.findOne({ rxsMedications: rxsMedication }, function (err, rxsFound) {
-    if (err) {
-      callback(err);
-    } else {
-      callback(null, rxsFound);
     }
   });
 }

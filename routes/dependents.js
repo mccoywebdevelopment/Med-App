@@ -1,8 +1,8 @@
 let express = require('express');
-let errors = require('../errors');
-let dependentQ = require('../../queries/dependents');
-let verifyAdmin = require('../../config/globalHelpers').verifyAdmin;
-let verifyUser = require('../../config/globalHelpers').verifyUser;
+
+let dependentQ = require('../queries/dependents');
+let verifyAdmin = require('../config/globalHelpers').verifyAdmin;
+let verifyUser = require('../config/globalHelpers').verifyUser;
 let router = express.Router();
 
 router.route("/:JWT")
@@ -10,7 +10,7 @@ router.route("/:JWT")
         dependentQ.findDependents(function (error, allDependents) {
             if (error) {
                 console.log(err);
-                res.status(errors.code.BAD_REQUEST).json({ error: error });
+                res.status(400).json({ error: error });
             } else {
                 res.send(allDependents);
             }
@@ -20,7 +20,7 @@ router.route("/:JWT")
         dependentQ.createDependent(req.body, function (error, result) {
             if (error) {
                 console.log(error);
-                res.status(errors.code.BAD_REQUEST).json({ error: error });
+                res.status(400).json({ error: error });
             } else {
                 res.send(result);
             }
@@ -32,7 +32,7 @@ router.route("/:id/:JWT")
         dependentQ.findDependentById(req.params.id, function (error, dependentFound) {
             if (error) {
                 console.log(error);
-                res.status(errors.code.BAD_REQUEST).json({ error: error });
+                res.status(400).json({ error: error });
             } else {
                 res.send(dependentFound);
             }
@@ -43,7 +43,7 @@ router.route("/:id/:JWT")
         dependentQ.patchUpdateDependentById(obj, req.params.id, function (err, updatedObj) {
             if (err) {
                 console.log(err);
-                res.status(errors.code.BAD_REQUEST).json({ error: err });
+                res.status(400).json({ error: err });
             } else {
                 updatedObj._id = req.params.id;
                 res.send(updatedObj);
@@ -54,7 +54,7 @@ router.route("/:id/:JWT")
         dependentQ.deleteDependentById(req.params.id, function (err, deletedDoc) {
             if (err) {
                 console.log(err);
-                res.status(errors.code.BAD_REQUEST).json({ error: err });
+                res.status(400).json({ error: err });
             } else {
                 res.send({ deletedDoc: deletedDoc });
             }
@@ -66,7 +66,7 @@ router.route('/dependents-medication/medication/:JWT')
         dependentQ.getDependentsWithMeds(function (err, result) {
             if (err) {
                 console.log(err);
-                res.status(errors.code.BAD_REQUEST).json({ error: err });
+                res.status(400).json({ error: err });
             } else {
                 res.send(result);
             }

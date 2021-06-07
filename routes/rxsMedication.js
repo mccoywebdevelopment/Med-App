@@ -1,8 +1,8 @@
 let express = require('express');
-let errors = require('../errors');
-let rxsMedicationQ = require('../../queries/rxsMedication');
-let verifyAdmin = require('../../config/globalHelpers').verifyAdmin;
-let verifyUser = require('../../config/globalHelpers').verifyUser
+
+let rxsMedicationQ = require('../queries/rxsMedication');
+let verifyAdmin = require('../config/globalHelpers').verifyAdmin;
+let verifyUser = require('../config/globalHelpers').verifyUser
 let router = express.Router();
 
 router.route("/:JWT")
@@ -10,7 +10,7 @@ router.route("/:JWT")
     rxsMedicationQ.findAll(function(error,allmedications){
         if(error){
             console.log(error);
-            res.status(errors.code.BAD_REQUEST).json({error:error});
+            res.status(400).json({error:error});
         }else{
             res.send(allmedications);
         }
@@ -20,7 +20,7 @@ router.route("/:JWT")
     rxsMedicationQ.create(req.body,function(error,result){
         if(error){
             console.log(error);
-            res.status(errors.code.BAD_REQUEST).json({error:error});
+            res.status(400).json({error:error});
         }else{
             res.send(result);
         }
@@ -31,7 +31,7 @@ router.route("/:id/:JWT")
     rxsMedicationQ.findById(req.params.id,function(error,medFound){
         if(error){
             console.log(error);
-            res.status(errors.code.BAD_REQUEST).json({error:error});
+            res.status(400).json({error:error});
         }else{
             res.send(medFound);
         }
@@ -42,7 +42,7 @@ router.route("/:id/:JWT")
     rxsMedicationQ.patchUpdateById(obj,req.params.id,function(err,updatedObj){
         if(err){
             console.log(err);
-            res.status(errors.code.BAD_REQUEST).json({error:err});
+            res.status(400).json({error:err});
         }else{
             updatedObj._id = req.params.id;
             res.send(updatedObj);
@@ -53,7 +53,7 @@ router.route("/:id/:JWT")
     rxsMedicationQ.deleteById(req.params.id,function(err,deletedDoc){
         if(err){
             console.log(err);
-            res.status(errors.code.BAD_REQUEST).json({error:err});
+            res.status(400).json({error:err});
         }else{
             res.send({deletedDoc:deletedDoc});
         }
@@ -65,7 +65,7 @@ router.route("/get/medication/refID/:id")
     rxsMedicationQ.findByRefID(req.params.id,function(err,medFound){
         if(err){
             console.log(err);
-            res.status(errors.code.BAD_REQUEST).json({error:err});
+            res.status(400).json({error:err});
         }else{
             res.send(medFound);
         }

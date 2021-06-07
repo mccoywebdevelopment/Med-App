@@ -23,8 +23,8 @@ class DependentTable extends React.Component{
         let age = ~~((Date.now() - birthday) / (31557600000));
 
         let rxsMeds = 0;
-        for(var i=0;i<dep.rxs.length;++i){
-          rxsMeds = rxsMeds + dep.rxs[i].rxsMedications.length;
+        if(dep.rxsMedications){
+          rxsMeds = dep.rxsMedications.length;
         }
 
         let group = {

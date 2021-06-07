@@ -15,9 +15,10 @@ class DependentTableSm extends React.Component {
     let len = 0;
     for(var i=0;i<this.props.populatedDeps.length;++i){
       if(this.props.populatedDeps[i]._id == dep._id){
-        for(var ix=0;ix<this.props.populatedDeps[i].rxs.length;++ix){
-          len = len + this.props.populatedDeps[i].rxs[ix].rxsMedications.length;
-        }
+        len = len + this.props.populatedDeps[i].rxsMedications.length;
+        // for(var ix=0;ix<this.props.populatedDeps[i].rxs.length;++ix){
+        //   len = len + this.props.populatedDeps[i].rxs[ix].rxsMedications.length;
+        // }
       }
     }
     return len;

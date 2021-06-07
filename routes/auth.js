@@ -1,15 +1,15 @@
 let express = require('express');
-let errors = require('../errors');
+
 let router = express.Router();
-let authQ = require('../../queries/auth');
-let CLIENT_URL = process.env.CLIENT_URL || require('../../config/configVars').CLIENT_URL
+let authQ = require('../queries/auth');
+let CLIENT_URL = process.env.CLIENT_URL || require('../config/configVars').CLIENT_URL
 
 router.route("/register/:email/:token")
 .post(function(req,res){
     authQ.registerUser(req.body,req.params.token,req.params.email,function(err,result){
         if(err){
             console.log(err);
-            res.status(errors.code.BAD_REQUEST).json({error:err});
+            res.status(400).json({error:err});
         }else{
             res.send({"result":result});
         }
@@ -21,7 +21,7 @@ router.route("/login")
     authQ.logginUser(req.body,function(err,result){
         if(err){
             console.log(err);
-            res.status(errors.code.BAD_REQUEST).json({error:err});
+            res.status(400).json({error:err});
         }else{
             res.send({"result":result});
         }
@@ -33,7 +33,7 @@ router.route("/reset-password/:JWT")
     authQ.resetUserPassword(req.body,function(err,result){
         if(err){
             console.log(err);
-            res.status(errors.code.BAD_REQUEST).json({error:err});
+            res.status(400).json({error:err});
         }else{
             res.send({"result":result});
         }
@@ -45,7 +45,7 @@ router.route("/logout/:token")
     authQ.logoutUser(req.params.token,function(err,result){
         if(err){
             console.log(err);
-            res.status(errors.code.BAD_REQUEST).json({error:err});
+            res.status(400).json({error:err});
         }else{
             res.redirect(CLIENT_URL +'/auth/login');
         }
@@ -57,7 +57,7 @@ router.route("/delete-account/:token")
     authQ.deleteAccount(req.params.token,function(err,result){
         if(err){
             console.log(err);
-            res.status(errors.code.BAD_REQUEST).json({error:err});
+            res.status(400).json({error:err});
         }else{
             res.send({"result":result});
         }

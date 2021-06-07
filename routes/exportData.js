@@ -1,9 +1,9 @@
 let express = require('express');
-let errors = require('../errors');
+
 let router = express.Router();
-let dataQ = require('../../queries/exportData');
-let quickRespQ = require('../../queries/quickResponseCode');
-let verifyAdmin = require('../../config/globalHelpers').verifyAdmin;
+let dataQ = require('../queries/exportData');
+let quickRespQ = require('../queries/quickResponseCode');
+let verifyAdmin = require('../config/globalHelpers').verifyAdmin;
 let path = require('path');
 
 router.route("/:month/:year/:JWT")
@@ -11,7 +11,7 @@ router.route("/:month/:year/:JWT")
     dataQ.exportDataGivenMonthYear(req.params.month,req.params.year,function(err,result){
         if(err){
             console.log(err);
-            res.status(errors.code.BAD_REQUEST).json({error:err});
+            res.status(400).json({error:err});
         }else{
             res.download(path.join(__dirname,'../..','/config/excel/data.xlsx'));
         }
@@ -24,7 +24,7 @@ router.route("/qr/generate-svg-code/all/:JWT")
     quickRespQ.generateFile(basePath,"all",null,function(err,result){
         if(err){
             console.log(err);
-            res.status(errors.code.BAD_REQUEST).json({error:err});
+            res.status(400).json({error:err});
         }else{
             res.download(basePath+"/result/index.pdf");
         }

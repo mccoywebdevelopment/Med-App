@@ -1,7 +1,6 @@
 var xl = require('excel4node');
 let path = require('path');
 let Dependent = require('../models/dependent/Dependent');
-let RxsMedication = require('../models/rxsMedication/RxsMedication');
 let MedicationEvent = require('../models/medicationEvent/MedicationEvent');
 let Guardian = require('../models/guardian/Guardian');
 let Event = require('../models/event/Event');
@@ -11,37 +10,31 @@ function exportDataGivenMonthYear(month,year,callback){
     if(typeof(month)=='undefined' || month<0 || month>11){
         callback("Please enter a valid month");
     }
-    Dependent.find({}).populate('rxs').populate('rxs.rxsMedications').exec(function(err,res){
+    Dependent.find({}).populate('rxsMedications').exec(function(err,res){
         if(err){
             callback(err);
         }else if(res.length<1){
             callback("No dependents found.");
+        }else if(!res.rxsMedications || res.rxsMedications.length<1){
+            callback("No medications found,");
         }else{
-            RxsMedication.populate(res,{path:"rxs.rxsMedications"},function(err,res){
+            MedicationEvent.populate(res,{path:'rxs.rxsMedications.events'},function(err,res){
                 if(err){
                     callback(err);
-                }else if(!res){
-                    callback("No rxsMedication found.");
                 }else{
-                    MedicationEvent.populate(res,{path:'rxs.rxsMedications.events'},function(err,res){
+                    Guardian.populate(res,{path:'rxs.rxsMedications.events.createdBy'},function(err,res){
                         if(err){
                             callback(err);
                         }else{
-                            Guardian.populate(res,{path:'rxs.rxsMedications.events.createdBy'},function(err,res){
+                            Event.populate(res,{path:'rxs.rxsMedications.events.event'},function(err,res){
                                 if(err){
                                     callback(err);
                                 }else{
-                                    Event.populate(res,{path:'rxs.rxsMedications.events.event'},function(err,res){
+                                    writeData(month,year,res,function(err,result){
                                         if(err){
                                             callback(err);
                                         }else{
-                                            writeData(month,year,res,function(err,result){
-                                                if(err){
-                                                    callback(err);
-                                                }else{
-                                                    callback(null,result);
-                                                }
-                                            });
+                                            callback(null,result);
                                         }
                                     });
                                 }
@@ -49,7 +42,7 @@ function exportDataGivenMonthYear(month,year,callback){
                         }
                     });
                 }
-            })
+            });
         }
     });
 }
@@ -90,12 +83,10 @@ function createWorkSheet(wb,dependent,month,year){
     var x_index = obj.x_index+1;
     var y_index = obj.y_index;
     var medCounter = 1;
-    for(var i=0;i<dependent.rxs.length;++i){
-        var rxsMedications = dependent.rxs[i].rxsMedications;
-        for(var ix=0;ix<rxsMedications.length;++ix){
+    for(var i=0;i<dependent.rxsMedications.length;++i){
             ws = createSubHeader(ws,wb,x_index,y_index,"Medication #"+medCounter);
             x_index = x_index + 1
-            obj = createRxsMedicationInfo(ws,wb,x_index,y_index,dependent.rxs[i],rxsMedications[ix]);
+            obj = createRxsMedicationInfo(ws,wb,x_index,y_index,dependent.rxsMedications[i]);
             x_index = obj.x_index+1;
             y_index = obj.y_index;
             medCounter++;
@@ -110,13 +101,12 @@ function createWorkSheet(wb,dependent,month,year){
             ws.cell(x_index,y_index).string("Notes:");
             y_index = 1;
             x_index = x_index + 1;
-            for(var j=0;j<rxsMedications[ix].events.length;++j){
-                obj = createRxsMedDates(ws,wb,x_index,y_index,rxsMedications[ix].events[j],month,year);
+            for(var j=0;j<dependent.rxsMedications[i].events.length;++j){
+                obj = createRxsMedDates(ws,wb,x_index,y_index,dependentrxsMedications[i].events[j],month,year);
                 x_index = obj.x_index;
                 y_index = obj.y_index;
             }
             x_index = x_index + 1;
-        }
     }
     return ws;
 }
@@ -167,11 +157,11 @@ function getDate(date){
     let dateGiven = mm+"/"+dd+"/"+yyyy;
     return dateGiven;
 }
-function createRxsMedicationInfo(ws,wb,x_index,y_index,rxs,rxsMedication){
+function createRxsMedicationInfo(ws,wb,x_index,y_index,rxsMedication){
 
     ws.cell(x_index,y_index).string("Rxs Number:");
     y_index = y_index + 1;
-    ws.cell(x_index,y_index).string(rxs.rxsNumber || "-");
+    ws.cell(x_index,y_index).string(rxsMedication.rxsNumber || "-");
 
     x_index = x_index + 1;
     y_index = y_index - 1;
@@ -183,13 +173,13 @@ function createRxsMedicationInfo(ws,wb,x_index,y_index,rxs,rxsMedication){
     y_index = y_index - 1;
     ws.cell(x_index,y_index).string("Doctor's Name:");
     y_index = y_index + 1;
-    ws.cell(x_index,y_index).string(rxs.doctorContacts.name.firstName+" "+rxs.doctorContacts.name.lastName);
+    ws.cell(x_index,y_index).string(rxsMedication.doctorContacts.name.firstName+" "+rxsMedication.doctorContacts.name.lastName);
 
     x_index = x_index + 1;
     y_index = y_index - 1;
     ws.cell(x_index,y_index).string("Doctor's Contact:");
     y_index = y_index + 1;
-    ws.cell(x_index,y_index).string(rxs.doctorContacts.phoneNumber);
+    ws.cell(x_index,y_index).string(rxsMedication.doctorContacts.phoneNumber);
 
     x_index = x_index + 1;
     y_index = y_index - 1;

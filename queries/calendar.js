@@ -4,7 +4,6 @@ let MedicationEvent = require('../models/medicationEvent/MedicationEvent');
 let Guardian = require('../models/guardian/Guardian');
 let Group = require('../models/group/Group');
 let RxsMedication = require('../models/rxsMedication/RxsMedication');
-let Rxs = require('../models/rxs/Rxs');
 let Event = require('../models/event/Event');
 function getDatesOfMeds(jwt,callback){
     findUser(jwt,function(err,userFound){
@@ -38,20 +37,16 @@ function getAllMedEvents(callback){
         }else if(!groupsFound){
           callback("No groups listed");
         }else{
-          Rxs.populate(groupsFound,{path:"dependents.rxs"},function(err,res){
-            if(err){
-               callback(err);
-            }else{
-                RxsMedication.populate(res,{path:"dependents.rxs.rxsMedications"},function(err,res){
+                RxsMedication.populate(groupsFound,{path:"dependents.rxsMedications"},function(err,res){
                     if(err){
                         callback(err);
                     }else{
-                        MedicationEvent.populate(res,{path:'dependents.rxs.rxsMedications.events'},function(err,res){
+                        MedicationEvent.populate(res,{path:'dependents.rxsMedications.events'},function(err,res){
                             if(err){
                                 callback(err);
                             }else{
-                                Guardian.populate(res,{path:'dependents.rxs.rxsMedications.events.createdBy'},function(err,res){
-                                    Event.populate(res,{path:'dependents.rxs.rxsMedications.events.event'},function(err,res){
+                                Guardian.populate(res,{path:'dependents.rxsMedications.events.createdBy'},function(err,res){
+                                    Event.populate(res,{path:'dependents.rxsMedications.events.event'},function(err,res){
                                         if(err){
                                             callback(err);
                                         }else{
@@ -64,8 +59,7 @@ function getAllMedEvents(callback){
                         });
                     }
                 })
-            }
-          })
+
         }
     });
 }
@@ -91,19 +85,15 @@ function getMedEventsByUser(user,callback){
                 }else if(!groupsFound){
                   callback("No groups listed");
                 }else{
-                  Rxs.populate(groupsFound,{path:"dependents.rxs"},function(err,res){
-                    if(err){
-                       callback(err);
-                    }else{
-                        RxsMedication.populate(res,{path:"dependents.rxs.rxsMedications"},function(err,res){
+                        RxsMedication.populate(groupsFound,{path:"dependents.rxsMedications"},function(err,res){
                             if(err){
                                 callback(err);
                             }else{
-                                MedicationEvent.populate(res,{path:'dependents.rxs.rxsMedications.events'},function(err,res){
+                                MedicationEvent.populate(res,{path:'dependents.rxsMedications.events'},function(err,res){
                                     if(err){
                                         callback(err);
                                     }else{
-                                        Event.populate(res,{path:'dependents.rxs.rxsMedications.events.event'},function(err,res){
+                                        Event.populate(res,{path:'dependents.rxsMedications.events.event'},function(err,res){
                                             if(err){
                                                 callback(err);
                                             }else{
@@ -115,8 +105,6 @@ function getMedEventsByUser(user,callback){
                                 });
                             }
                         })
-                    }
-                  })
                 }
             });
         }
@@ -128,21 +116,19 @@ function filterMedEvents(groups){
         var dependents = groups[i].dependents;
         for(var ix=0;ix<dependents.length;++ix){
             var rxs = dependents[ix].rxs;
-            for(var ixx=0;ixx<rxs.length;++ixx){
-                var rxsMedications = rxs[ixx].rxsMedications;
+                var rxsMedications = dependents.rxsMedications;
                 for(var j=0;j<rxsMedications.length;++j){
                     var events = rxsMedications[j].events;
                     for(var z=0;z<events.length;++z){
                         var obj = {
                             dependent:dependents[ix],
-                            rxs:rxs[ixx],
                             rxsMedication:rxsMedications[j],
                             event:events[z]
                         }
                         eventArr.push(obj);
                     }
                 }
-            }
+            
         }
     }
     return eventArr;

@@ -1,5 +1,4 @@
 let RxsMedModel = require('../models/rxsMedication/RxsMedication');
-let RxsModel = require('../models/rxs/Rxs');
 let DependentModel = require('../models/dependent/Dependent');
 let GroupModel = require('../models/group/Group');
 let val = require('./helpers/helper');
@@ -49,11 +48,7 @@ function findByRefID(refID, callback) {
   });
 }
 function getRefIDMetaData(rxsMedID, callback) {
-  findRxsByRxsMedicationID(rxsMedID, function (err, rxs) {
-    if (err) {
-      callback(err);
-    } else {
-      findDependentByRxsID(rxs._id, function (err, depedent) {
+      findDependentByRxsMedID(rxsMedID, function (err, depedent) {
         if (err) {
           callback(err);
         } else {
@@ -66,8 +61,6 @@ function getRefIDMetaData(rxsMedID, callback) {
           });
         }
       });
-    }
-  });
 }
 function findGroupsByDependentID(depID, callback) {
   GroupModel.find({ dependents: depID }).populate('guardians').exec(function (err, result) {
@@ -80,23 +73,12 @@ function findGroupsByDependentID(depID, callback) {
     }
   });
 }
-function findDependentByRxsID(rxsID, callback) {
-  DependentModel.findOne({ rxs: rxsID }, function (err, result) {
+function findDependentByRxsMedID(rxsMedID, callback) {
+  DependentModel.findOne({ rxsMedication: rxsMedID }, function (err, result) {
     if (err) {
       callback(err);
     } else if (!result) {
       callback("dep Record not found.");
-    } else {
-      callback(null, result);
-    }
-  });
-}
-function findRxsByRxsMedicationID(rxsMedicationID, callback) {
-  RxsModel.findOne({ 'rxsMedications': rxsMedicationID }).exec(function (err, result) {
-    if (err) {
-      callback(err);
-    } else if (!result) {
-      callback("rxs Record not found.");
     } else {
       callback(null, result);
     }
@@ -112,6 +94,7 @@ function findById(id, callback) {
   });
 }
 function patchUpdateById(body, id, callback) {
+
   RxsMedModel.findById(id, function (err, foundDoc) {
     if (err) {
       callback(err);
@@ -121,7 +104,7 @@ function patchUpdateById(body, id, callback) {
         if (err) {
           callback(err);
         } else {
-          callback(null, obj);
+          callback(null, foundDoc._id);
         }
       });
     }
@@ -144,6 +127,10 @@ function updateModifiedFields(oldDoc, updatedFields) {
   var endDate = oldDoc.endDate;
   var whenToTake = oldDoc.whenToTake;
   var events = oldDoc.events;
+  var rxsNumber = oldDoc.rxsNumber;
+  var doctorFirstName = oldDoc.doctorContacts.name.firstName;
+  var doctorLastName = oldDoc.doctorContacts.name.lastName;
+  var doctorPhoneNumber = oldDoc.doctorContacts.phoneNumber;
 
   if (updatedFields.name) {
     name = updatedFields.name;
@@ -169,6 +156,19 @@ function updateModifiedFields(oldDoc, updatedFields) {
   if (updatedFields.event) {
     callback("EVENT NOT IMPLEMENTED");
   }
+  if(updatedFields.rxsNumber){
+    rxsNumber = updatedFields.rxsNumber;
+  }
+  if(updatedFields.doctorPhoneNumber){
+    phoneNumber = updatedFields.doctorPhoneNumber;
+  }
+  if(updatedFields.doctorFirstName){
+    doctorFirstName = updatedFields.doctorFirstName;
+  }
+  if(updatedFields.doctorLastName){
+    doctorLastName = updatedFields.doctorLastName;
+  }
+
   if (updatedFields.whenToTake) {
 
     let whenToTakearr = [];
@@ -203,7 +203,15 @@ function updateModifiedFields(oldDoc, updatedFields) {
     instructions: instructions,
     endDate: endDate,
     whenToTake: whenToTake,
-    events: events
+    events: events,
+    rxsNumber: rxsNumber,
+    doctorContacts:{
+      name:{
+        firstName:doctorFirstName,
+        lastName:doctorLastName
+      },
+      phoneNumber:doctorPhoneNumber
+    }
   }
   return obj;
 }
@@ -254,9 +262,20 @@ function saveToDoc(bodyData, schemaModel, callback) {
       quantity: bodyData.quantity,
       unit: bodyData.unit
     },
+    doctorContacts:{
+      name:{
+        firstName:bodyData.doctorFirstName,
+        lastName:bodyData.doctorLastName
+      },
+      phoneNumber:bodyData.doctorPhoneNumber
+    },
     reason: bodyData.reason,
     datePrescribed: formateDate(bodyData.datePrescribed)
   });
+  
+  if (typeof (bodyData.rxsNumber) != 'undefined') {
+    newDoc.rxsNumber = bodyData.rxsNumber
+  }
   if (typeof (bodyData.instructions) != 'undefined') {
     newDoc.instructions = bodyData.instructions
   }

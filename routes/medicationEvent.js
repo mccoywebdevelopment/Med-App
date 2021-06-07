@@ -1,17 +1,17 @@
 let express = require('express');
-let errors = require('../errors');
+
 let router = express.Router();
-let eventQ = require('../../queries/medicationEvent');
-let verifyUser = require('../../config/globalHelpers').verifyUser;
-let verifyAdmin = require('../../config/globalHelpers').verifyAdmin;
-let verifyRefID = require('../../config/globalHelpers').verifyRefID;
+let eventQ = require('../queries/medicationEvent');
+let verifyUser = require('../config/globalHelpers').verifyUser;
+let verifyAdmin = require('../config/globalHelpers').verifyAdmin;
+let verifyRefID = require('../config/globalHelpers').verifyRefID;
 
 router.route("/:rxsMedicationId/:JWT")
 .get(verifyUser,function(req,res){
     eventQ.getEventByRxsMedID(req.params.rxsMedicationId,function(err,result){
         if(err){
             console.log(err);
-            res.status(errors.code.BAD_REQUEST).json({error:err});
+            res.status(400).json({error:err});
         }else{
             res.send(result);
         }
@@ -21,7 +21,7 @@ router.route("/:rxsMedicationId/:JWT")
     eventQ.tookMedication(req.params.rxsMedicationId,req.params.JWT,req.body,req.user,function(err,result){
         if(err){
             console.log(err);
-            res.status(errors.code.BAD_REQUEST).json({error:err});
+            res.status(400).json({error:err});
         }else{
             res.send(result);
         }
@@ -32,7 +32,7 @@ router.route("/took-event/refID/:refID")
     eventQ.tookMedicationRefID(req.rxsMedicationRefID,req.body,function(err,result){
         if(err){
             console.log(err);
-            res.status(errors.code.BAD_REQUEST).json({error:err});
+            res.status(400).json({error:err});
         }else{
             res.send(result);
         }
@@ -45,7 +45,7 @@ router.route("/:id/:JWT")
     eventQ.patchUpdateById(req.body,req.params.id,function(err,result){
         if(err){
             console.log(err);
-            res.status(errors.code.BAD_REQUEST).json({error:err});
+            res.status(400).json({error:err});
         }else{
             result._id = req.params.id;
             res.send(result);
@@ -56,7 +56,7 @@ router.route("/:id/:JWT")
     eventQ.deleteById(req.params.id,function(err,result){
         if(err){
             console.log(err);
-            res.status(errors.code.BAD_REQUEST).json({error:err});
+            res.status(400).json({error:err});
         }else{
             res.send(result);
         }

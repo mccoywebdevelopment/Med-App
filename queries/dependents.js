@@ -1,13 +1,8 @@
 let dependentModel = require('../models/dependent/Dependent');
 let val = require('./helpers/helper');
-let createRxs = require('./prescription').create;
-let updateRxs = require('./prescription').patchUpdateById;
-let createMedication = require('./medication').create;
-let rxsMedicationModel = require('../models/rxsMedication/RxsMedication');
-let Medication = require('../models/medication/Medication');
-let rxsDelete = require('./prescription').deleteById;
-let medDelete = require('./medication').deleteById;
-let findAllGroups = require('./group').findAll;
+let createRxsMedication = require('./rxsMedication').create;
+let updateRxsMedication = require('./rxsMedication').patchUpdateById;
+let rxsMedicationDelete = require('./rxsMedication').deleteById;
 
 function findDependentById(id, callback) {
   dependentModel.findById(id, function (err, result) {
@@ -58,8 +53,7 @@ function updateModifiedFields(oldDoc, updatedFields, callback) {
   var lastName = oldDoc.name.lastName;
   var dateOfBirth = oldDoc.dateOfBirth;
   var pictureUrl = oldDoc.pictureUrl;
-  var rxs = oldDoc.rxs;
-  var medications = oldDoc.medications;
+  var rxsMedications = oldDoc.rxsMedications;
 
   if (updatedFields.firstName) {
     firstName = updatedFields.firstName;
@@ -80,15 +74,16 @@ function updateModifiedFields(oldDoc, updatedFields, callback) {
     },
     dateOfBirth: dateOfBirth,
     pictureUrl: pictureUrl,
-    rxs: rxs,
-    medications: medications
+    rxsMedications: rxsMedications,
   }
-  if(updatedFields.rxs){
-    getRxs(updatedFields,function(err,rxs){
+  if(updatedFields.rxsMedications){
+    getRxsMedication(updatedFields,function(err,rxsMedications){
       if(err){
         callback(err)
       }else{
-        obj.rxs = rxs;
+        console.log("sldjfkslak");
+        console.log(rxsMedications)
+        obj.rxsMedications = rxsMedications;
         callback(null,obj);
       }
     });
@@ -97,38 +92,38 @@ function updateModifiedFields(oldDoc, updatedFields, callback) {
   }
 }
 
-function getRxs(dep,callback){
+function getRxsMedication(dep,callback){
   let i = 0;
-  let rxsArr = [];
-  if(!dep.rxs || dep.rxs.length<1){
+  let rxsMedicationArr = [];
+  if(!dep.rxsMedications || dep.rxsMedications.length<1){
     callback(null,[]);
     return;
   }
-  dep.rxs.forEach(rxs => {
-  if(rxs._id){
-      //update rxs
-      updateRxs(rxs,rxs._id,function(err,rxsUpdated){
+  dep.rxsMedications.forEach(rxsMedication => {
+  if(rxsMedication._id){
+      //update rxsMedication
+      updateRxsMedication(rxsMedication,rxsMedication._id,function(err,rxsMedicationUpdated){
         i++;
         if(err){
           console.log(err);
         }else{
-          rxsArr.push(rxsUpdated);
+          rxsMedicationArr.push(rxsMedicationUpdated);
         }
-        if(i == dep.rxs.length){
-          callback(null,rxsArr);
+        if(i == dep.rxsMedications.length){
+          callback(null,rxsMedicationArr);
           return;
         }
       });
     }else{
-      createRxs(rxs,function(err,rxsCreated){
+      createRxsMedication(rxsMedication,function(err,rxsMedicationCreated){
         i++;
         if(err){
           console.log(err);
         }else{
-          rxsArr.push(rxsCreated);
+          rxsMedicationArr.push(rxsMedicationCreated);
         }
-        if(i == dep.rxs.length){
-          callback(null,rxsArr);
+        if(i == dep.rxsMedications.length){
+          callback(null,rxsMedicationArr);
           return;
         }
       });
@@ -136,70 +131,19 @@ function getRxs(dep,callback){
 
   });
 }
-function createMedicationAndAttactch(obj, medication, callback) {
-  if (medication.length < 1) {
-    callback(null, obj);
-  }
-  if (Array.isArray(medication)) {
-    var i = 0;
-
-    medication.forEach(element => {
-      createMedication(element, function (err, medicationCreated) {
-        obj.medications.push(medicationCreated);
-        if (err) {
-          callback(err);
-          return;
-        } else if (i == medication.length - 1) {
-          callback(null, obj);
-          return;
-        }
-        i++;
-      });
-    });
-  } else {
-    createMedication(medication, function (err, medCreated) {
-      if (err) {
-        callback(err);
-      } else {
-        obj.medications.push(medCreated);
-        callback(null, obj);
-      }
-    });
-  }
-}
-function deleteAllRxs(rxs, callback) {
-  if (rxs.length < 1) {
+function deleteAllRxsMedication(rxsMedications, callback) {
+  if (rxsMedications.length < 1) {
     callback(null, "None");
     return;
   }
   var i = 0;
   var error = false;
-  rxs.forEach(element => {
-    rxsDelete(element._id.toString(), function (err, deletedDoc) {
+  rxsMedications.forEach(element => {
+    rxsMedicationDelete(element._id.toString(), function (err, deletedDoc) {
       if (err) {
         callback(error);
         return;
-      } else if (i == rxs.length - 1) {
-        callback(null, "All deleted");
-        return;
-      }
-      i++;
-    });
-  });
-}
-function deleteAllOTC(otcMeds, callback) {
-  if (otcMeds.length < 1) {
-    callback(null, "None");
-    return;
-  }
-  var i = 0;
-  var error = false;
-  otcMeds.forEach(element => {
-    medDelete(element._id.toString(), function (err, deletedDoc) {
-      if (err) {
-        callback(error);
-        return;
-      } else if (i == otcMeds.length - 1) {
+      } else if (i == rxsMedications.length - 1) {
         callback(null, "All deleted");
         return;
       }
@@ -208,23 +152,17 @@ function deleteAllOTC(otcMeds, callback) {
   });
 }
 function deleteDependentById(id, callback) {
-  dependentModel.findOneAndDelete({ _id: id }).populate('rxs').populate('medications').exec(function (err, dependentFound) {
+  dependentModel.findOneAndDelete({ _id: id }).populate('rxsMedications').exec(function (err, dependentFound) {
     if (err) {
       callback(err);
     } else if (!dependentFound) {
       callback("Dependent not found.");
     } else {
-      deleteAllRxs(dependentFound.rxs, function (err, result) {
+      deleteAllRxsMedication(dependentFound.rxsMedications, function (err, result) {
         if (err) {
           callback(err);
         } else {
-          deleteAllOTC(dependentFound.medications, function (err, result) {
-            if (err) {
-              callback(err);
-            } else {
-              callback(null, dependentFound);
-            }
-          });
+          callback(null,dependentFound);
         }
       });
     }
@@ -246,26 +184,12 @@ function saveToDoc(bodyData, schemaModel, callback) {
   }
 
 
-  if (typeof (bodyData.rxs) != 'undefined') {
-    getRxs(bodyData,function (err, rxs) {
+  if (typeof (bodyData.rxsMedications) != 'undefined') {
+    getRxsMedication(bodyData,function (err, rxsMedications) {
       if (err) {
         callback(err);
       }else{
-        newDoc.rxs = rxs;
-        newDoc.save(function (err, result) {
-          if (err) {
-            callback(err);
-          } else {
-            callback(null, result);
-          }
-        });
-      }
-    });
-  } else if (bodyData.medication) {
-    createMedicationAndAttactch(newDoc, bodyData.medication, function (err, newDoc) {
-      if (err) {
-        callback(err);
-      } else {
+        newDoc.rxsMedications = rxsMedications;
         newDoc.save(function (err, result) {
           if (err) {
             callback(err);
@@ -304,33 +228,16 @@ function createDependent(body, callback) {
 
 
 function getDependentsWithMeds(callback) {
-    dependentModel.find({}).populate('rxs').populate('medications').exec(function (err, result) {
+    dependentModel.find({}).populate('rxsMedications').exec(function (err, result) {
       if (err) {
         callback(err);
       } else {
-        rxsMedicationModel.populate(result, { path: 'rxs.rxsMedications' }, function (err, finalResult) {
-          if (err) {
-            callback(err)
-          } else {
-            callback(null, finalResult);
-          }
-        });
+        callback(null,result);
       }
     });
 }
 
-function removeOTCMedsFromDep(depId, medId, callback) {
-  Medication.findByIdAndDelete(medId, function (err, result) {
-    if (err) {
-      callback(err);
-    } else if (!result) {
-      callback('Medication not found.');
-    } else {
-      callback(null, result);
-    }
-  })
-}
 
 
 
-module.exports = { findDependentById, findDependents, createDependent, deleteDependentById, patchUpdateDependentById, getDependentsWithMeds, removeOTCMedsFromDep };
+module.exports = { findDependentById, findDependents, createDependent, deleteDependentById, patchUpdateDependentById, getDependentsWithMeds };

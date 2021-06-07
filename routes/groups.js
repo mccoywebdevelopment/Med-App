@@ -1,7 +1,7 @@
 let express = require('express');
-let errors = require('../errors');
-let groupQ = require('../../queries/group');
-let verifyAdmin = require('../../config/globalHelpers').verifyAdmin;
+
+let groupQ = require('../queries/group');
+let verifyAdmin = require('../config/globalHelpers').verifyAdmin;
 
 let router = express.Router();
 
@@ -10,7 +10,7 @@ router.route("/:JWT")
     groupQ.findAll(function(error,allgroups){
         if(error){
             console.log(error);
-            res.status(errors.code.BAD_REQUEST).json({error:error});
+            res.status(400).json({error:error});
         }else{
             res.send(allgroups);
         }
@@ -20,7 +20,7 @@ router.route("/:JWT")
     groupQ.create(req.body,function(error,result){
         if(error){
             console.log(error);
-            res.status(errors.code.BAD_REQUEST).json({error:error});
+            res.status(400).json({error:error});
         }else{
             res.send(result);
         }
@@ -31,7 +31,7 @@ router.route("/:id/:JWT")
     groupQ.findById(req.params.id,function(error,medFound){
         if(error){
             console.log(error);
-            res.status(errors.code.BAD_REQUEST).json({error:error});
+            res.status(400).json({error:error});
         }else{
             res.send(medFound);
         }
@@ -42,7 +42,7 @@ router.route("/:id/:JWT")
     groupQ.patchUpdateById(obj,req.params.id,function(err,updatedObj){
         if(err){
             console.log(err);
-            res.status(errors.code.BAD_REQUEST).json({error:err});
+            res.status(400).json({error:err});
         }else{
             updatedObj._id = req.params.id;
             res.send(updatedObj);
@@ -53,7 +53,7 @@ router.route("/:id/:JWT")
     groupQ.deleteById(req.params.id,function(err,deletedDoc){
         if(err){
             console.log(err);
-            res.status(errors.code.BAD_REQUEST).json({error:err});
+            res.status(400).json({error:err});
         }else{
             res.send(deletedDoc);
         }

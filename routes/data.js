@@ -1,8 +1,8 @@
 let express = require('express');
-let errors = require('../errors');
+
 let router = express.Router();
-let dataQ = require('../../queries/data');
-let verifyAdmin = require('../../config/globalHelpers').verifyAdmin;
+let dataQ = require('../queries/data');
+let verifyAdmin = require('../config/globalHelpers').verifyAdmin;
 
 
 router.route("/:JWT")
@@ -10,7 +10,7 @@ router.route("/:JWT")
     dataQ.getAll(req.params.JWT,function(err,result){
         if(err){
             console.log(err);
-            res.status(errors.code.BAD_REQUEST).json({error:err});
+            res.status(400).json({error:err});
         }else{
             res.send(result);
         }

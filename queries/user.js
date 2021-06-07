@@ -6,7 +6,6 @@ let updateGuardianByID = require('./guardian').patchUpdateById;
 let findAllGroups = require('./group').findAll;
 let RxsMedication = require('../models/rxsMedication/RxsMedication');
 let MedicationEvent = require('../models/medicationEvent/MedicationEvent');
-let Rxs = require('../models/rxs/Rxs');
 let SECRET_KEY = process.env.SECRET_KEY || require('../config/configVars').SECRET_KEY;
 let CAN_DELETE_ADMIN = process.env.CAN_DELETE_ADMIN || require('../config/configVars').CAN_DELETE_ADMIN;
 let VALID_TIMES_MORNING_START = process.env.VALID_TIMES_MORNING_START || require('../config/configVars').VALID_TIMES_MORNING_START;
@@ -42,15 +41,12 @@ function getDependents(user, callback) {
   });
 }
 function getDependentsRxs(groups,callback){
-  Rxs.populate(groups, { path: "dependents.rxs" }, function (err, res) {
-    if (err) {
-      callback(err);
-    } else {
-      RxsMedication.populate(res, { path: "dependents.rxs.rxsMedications" }, function (err, res) {
+
+      RxsMedication.populate(groups, { path: "dependents.rxsMedications" }, function (err, res) {
         if (err) {
           callback(err);
         } else {
-          MedicationEvent.populate(res, { path: "dependents.rxs.rxsMedications.events", options: { sort: { 'dateTaken': -1 } } }, function (err, res) {
+          MedicationEvent.populate(res, { path: "dependents.rxsMedications.events", options: { sort: { 'dateTaken': -1 } } }, function (err, res) {
             if (err) {
               callback(err);
             } else {
@@ -98,8 +94,6 @@ function getDependentsRxs(groups,callback){
           });
         }
       });
-    }
-  });
 }
 function getMedHistory(whenToTake, events, morningStart, morningEnd,
   afternoonStart, afternoonEnd, eveningStart, eveningEnd, medObj, historyArr) {
@@ -177,16 +171,14 @@ function filterMedications(group, dep, morning, afternoon, evening) {
     afternoonMedsHistory: [],
     eveningMedsHistory: []
   }
-  for (var ix = 0; ix < dep.rxs.length; ++ix) {
-    for (var z = 0; z < dep.rxs[ix].rxsMedications.length; ++z) {
+    for (var z = 0; z < dep.rxsMedications.length; ++z) {
 
-      let whenToTake = dep.rxs[ix].rxsMedications[z].whenToTake;
-      let events = dep.rxs[ix].rxsMedications[z].events;
+      let whenToTake = dep.rxsMedications[z].whenToTake;
+      let events = dep.rxsMedications[z].events;
       let medObj = {
         dependent: dep,
-        rxs: dep.rxs[ix],
         group: group,
-        rxsMedication: dep.rxs[ix].rxsMedications[z]
+        rxsMedication: dep.rxsMedications[z]
       }
       history = getMedHistory(whenToTake, events, morningStart, morningEnd,
         afternoonStart, afternoonEnd, eveningStart, eveningEnd, medObj, history);
@@ -194,7 +186,6 @@ function filterMedications(group, dep, morning, afternoon, evening) {
       active = getMedActive(whenToTake, events, morningStart, morningEnd,
         afternoonStart, afternoonEnd, eveningStart, eveningEnd, medObj, active);
     }
-  }
   morning = [morningStart, morningEnd];
   afternoon = [afternoonStart, afternoonEnd];
   evening = [eveningStart, eveningEnd];

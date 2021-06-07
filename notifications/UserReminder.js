@@ -69,12 +69,10 @@ function getActiveMedsForCurrentPeriod(activeArr) {
     }
 }
 function sendMedicalNotificationsEmail(callback) {
-    console.log(1)
     getGroups(function (err, groups) {
         if (err) {
             callback(err);
         } else {
-            console.log(groups);
             let notifiedUsers = [];
             for (i = 0; i < groups.length; ++i) {
                 for (var ix = 0; ix < groups[i].guardians.length; ++ix) {

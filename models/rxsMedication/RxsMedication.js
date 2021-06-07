@@ -8,7 +8,14 @@ var RxsMedicationSchema = new mongoose.Schema({
     refID:{type:String, required: true, unique: true, select: false},
     instructions: String,
     endDate: String,
-
+    rxsNumber:Number,
+    doctorContacts:{
+        name:{
+            firstName:{type:String,required:true},
+            lastName:{type:String,required:true}
+        },
+        phoneNumber:{type:String,required:true}
+    },
     dosage: {
         quantity: { type: Number, required: true },
         unit: { type: String, required: true }

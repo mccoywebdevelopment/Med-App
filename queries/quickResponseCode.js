@@ -2,7 +2,6 @@ let QRCode = require('qrcode');
 let puppeteer = require('puppeteer');
 let groupModel = require('../models/group/Group');
 let rxsMedicationModel = require('../models/rxsMedication/RxsMedication');
-let rxsModel = require('../models/rxs/Rxs');
 let ejs = require('ejs');
 let fs = require('fs')
 let CLIENT_URL = process.env.CLIENT_URL || require('../config/configVars').CLIENT_URL;
@@ -85,13 +84,7 @@ function formatData(groups){
     return pages;
 }
 function getDependentsMeds(dep){
-    let meds = [];
-    for(var i=0;i<dep.rxs.length;++i){
-        for(var ix=0;ix<dep.rxs[i].rxsMedications.length;++ix){
-            meds.push(dep.rxs[i].rxsMedications[ix]);
-        }
-    }
-    return meds;
+    return dep.rxsMedications;
 }
 function getData(depID,medID,callback){
     if(depID == "all"){
@@ -101,11 +94,7 @@ function getData(depID,medID,callback){
               }else if(!groupsFound){
                 callback("No groups listed");
               }else{
-                rxsModel.populate(groupsFound,{path:"dependents.rxs"},function(err,res){
-                  if(err){
-                     callback(err);
-                  }else{
-                      rxsMedicationModel.populate(res,{path:"dependents.rxs.rxsMedications"},function(err,res){
+                      rxsMedicationModel.populate(res,{path:"dependents.rxsMedications"},function(err,res){
                           if(err){
                               callback(err);
                           }else{
@@ -113,8 +102,6 @@ function getData(depID,medID,callback){
                               callback(null,res);
                           }
                         });
-                    }
-                });
             }
           });
     }else{

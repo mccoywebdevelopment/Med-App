@@ -20,7 +20,6 @@ function findAll(callback) {
     if (err) {
       callback(err);
     } else {
-      console.log(res[0].guardians);
       callback(null, res);
     }
   });
