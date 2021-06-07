@@ -460,6 +460,7 @@ class CreateDependent extends React.Component {
         for (var i = 0; i < arr.length; ++i) {
                 rxsMedication.push({
                     name: arr[i].values.name,
+                    rxsNumber: arr[i].values.rxsNumber,
                     quantity: arr[i].values.dosageQuantity,
                     unit: arr[i].values.dosageUnits,
                     reason: arr[i].values.reason,

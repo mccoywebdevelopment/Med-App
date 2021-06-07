@@ -4,7 +4,7 @@ const { getPeriods, isBetween, formatAMPM } = require('./config/globalHelpers');
 let currentTime = getCurrentTime();
 let TIME_ZONE = process.env.TIME_ZONE || require('./config/configVars').TIME_ZONE;
 let { morningEnd, afternoonEnd, eveningEnd } = getPeriods(currentTime);
-const sendMedicalNotificationsEmail  = require('./notifications/UserReminder').sendMedicalNotificationsEmail;
+const sendMedicalNotificationsEmail = require('./notifications/UserReminder').sendMedicalNotificationsEmail;
 const sendMedicalNotificationsAdmin = require('./notifications/AdminMedEvents').sendMedicalNotificationsAdmin;
 let MONGO_URI = process.env.MONGODB_URI || require('./config/configVars').MONGODB_URI;
 let mongoose = require('mongoose');
@@ -28,14 +28,6 @@ mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true },
 /*
 user notifications
 */
-console.log("User morning notification triggered @ " + formatAMPM(getCurrentTime()) + " today.");
-sendMedicalNotificationsEmail(function (err, res) {
-    if (err) {
-        console.log(err);
-    } else {
-        console.log("User morning notification sent @ " + formatAMPM(getCurrentTime()) + " today.");
-    }
-});
 
 let morningHour = morningEnd.getHours();
 new CronJob("00 39 " + morningHour + " * * 0-6", function () {
