@@ -294,5 +294,5 @@ function create(body, callback) {
 
 module.exports = {
   create, deleteById, patchUpdateById,
-  tookMedication, getEventByRxsMedID, tookMedicationRefID
+  tookMedication, tookMedicationRefID
 };
