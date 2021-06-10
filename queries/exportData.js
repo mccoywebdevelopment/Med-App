@@ -110,7 +110,7 @@ function createRxsMedDates(ws,wb,x_index,y_index,event,month,year){
         y_index:y_index,
         ws:ws
     }
-    if(event.event.timeStamp.getFullYear()==year && event.event.timeStamp.getMonth()==month){
+    if(event.dateTaken.getFullYear()==year && event.dateTaken.getMonth()==month){
         var date = event.dateTaken;
         ws.cell(x_index,y_index).string(getDate(date));
         y_index = y_index + 1;

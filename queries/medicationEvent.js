@@ -7,6 +7,18 @@ let { isMedEventValid } = require('../config/globalHelpers');
 let { getCurrentTime } = require('../config/rootHelpers');
 let medicationEventModel = require('../models/medicationEvent/MedicationEvent');
 
+function getEventByRxsMedID(rxsMedID, callback) {
+  rxsMedicationModel.findById(rxsMedID).populate("events").exec(function (err, rxsMedFound) {
+    if (err) {
+      callback(err);
+    } else if (!rxsMedFound) {
+      callback("Medication not found.");
+    } else{
+      callback(null,rxsMedFound)
+    }
+  });
+}
+
 function patchUpdateById(body, id, callback) {
   medicationEventModel.findById(id, function (err, foundDoc) {
     if (err) {
@@ -294,5 +306,5 @@ function create(body, callback) {
 
 module.exports = {
   create, deleteById, patchUpdateById,
-  tookMedication, tookMedicationRefID
+  tookMedication, tookMedicationRefID, getEventByRxsMedID
 };
