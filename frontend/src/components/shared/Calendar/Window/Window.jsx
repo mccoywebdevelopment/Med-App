@@ -20,6 +20,7 @@ class Window extends React.Component{
         newState.notesSelected = notes;
         this.setState(newState);
     }
+    
     constructor(props){
         super(props);
         this.fillState(this.props.event.rxsMedication,this.props.event.event.event.timeStamp,this.props.event.event.isAway,

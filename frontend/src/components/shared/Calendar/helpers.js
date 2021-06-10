@@ -83,29 +83,3 @@ function getColor(event,index){
 
     return colorArray[index]
 }
-export function filterEvents(eventsArr,month,year,day,colorIndex){
-    var events = [];
-    var newEventsArr = eventsArr;
-    var obj = {
-        events:null,
-        eventsArr:null
-    }
-    var counter = 0;
-    for(var i=0;i<eventsArr.length;++i){
-        if(eventsArr[i]){
-            var date = new Date(eventsArr[i].event.event.timeStamp);
-            var mm = date.getMonth()+1;
-            var yyyy = date.getFullYear();
-            var dd = date.getDate();
-            if(yyyy == year && mm == month && dd == day){
-                events.push(eventsArr[i]);
-            }
-        }
-
-
-    }
-    obj.events = events;
-    obj.eventsArr = newEventsArr;
-
-    return obj;
-}

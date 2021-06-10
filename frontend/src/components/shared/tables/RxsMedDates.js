@@ -17,6 +17,7 @@ class RxsMedDates extends React.Component {
     }
     constructor(props) {
         super(props);
+        console.log(this.props)
     }
     _formatList = (list, left) => {
         let newState = this.state;

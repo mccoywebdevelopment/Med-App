@@ -7,6 +7,7 @@ class EditWindow extends React.Component{
         isAway:null,
         notes:null
     }
+    
     constructor(props){
         super(props);
         let newState = this.state;
