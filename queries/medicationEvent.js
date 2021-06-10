@@ -7,34 +7,6 @@ let { isMedEventValid } = require('../config/globalHelpers');
 let { getCurrentTime } = require('../config/rootHelpers');
 let medicationEventModel = require('../models/medicationEvent/MedicationEvent');
 
-function getEventByRxsMedID(rxsMedID, callback) {
-  rxsMedicationModel.findById(rxsMedID).populate("events").exec(function (err, rxsMedFound) {
-    if (err) {
-      callback(err);
-    } else if (!rxsMedFound) {
-      callback("Medication not found.");
-    } else if (rxsMedFound.events.length < 1) {
-      callback(null, rxsMedFound);
-    } else {
-      let i = 0;
-      rxsMedFound.events.forEach((event, index) => {
-        Guardian.findById(event.createdBy, function (err, guardian) {
-          if (err) {
-            callback(err);
-            return;
-          } else if (guardian) {
-            rxsMedFound.events[index].createdBy = guardian;
-          }
-          if (i == rxsMedFound.events.length - 1) {
-            callback(null, rxsMedFound);
-            return;
-          }
-          i++;
-        });
-      });
-    }
-  });
-}
 function patchUpdateById(body, id, callback) {
   medicationEventModel.findById(id, function (err, foundDoc) {
     if (err) {
@@ -190,21 +162,6 @@ function tookMedication(rxsMedId, jwt, body, user, callback) {
     }
   });
 }
-function getDate() {
-  var today = getCurrentTime();
-  var dd = today.getDate();
-  var mm = today.getMonth() + 1; //January is 0!
-
-  var yyyy = today.getFullYear();
-  if (dd < 10) {
-    dd = '0' + dd;
-  }
-  if (mm < 10) {
-    mm = '0' + mm;
-  }
-  var today = mm + '/' + dd + '/' + yyyy;
-  return today;
-}
 function attatchRxsMedEventToRxsMed(rxsMedEvent, rxsMed, callback) {
   rxsMed.events.push(rxsMedEvent);
   rxsMed.save(function (err, result) {
@@ -218,30 +175,23 @@ function attatchRxsMedEventToRxsMed(rxsMedEvent, rxsMed, callback) {
 function createRxsMedEvent(body, dependent, rxsMedication, guardian, callback) {
   var guardianName = guardian.name.firstName + " " + guardian.name.lastName;
   var dependentName = dependent.name.firstName + " " + dependent.name.lastName;
-  var message = rxsMedication.name + " was taken by " + dependentName + " recorded at " + getDate() + "."
 
-
-  var eventBody = {
-    name: guardianName + " recorded Medication.",
-    message: message
+  var medicationEventBody = {
+    title: dependentName + " took " + rxsMedication.name,
+    isAway: body.isAway,
+    notes: body.notes,
+    dateTaken: getCurrentTime(),
+    dependent: dependent,
+    createdBy: guardian,
+    createdByStr: guardianName
   }
-
-      var medicationEventBody = {
-        title: dependentName + " took " + rxsMedication.name,
-        isAway: body.isAway,
-        notes: body.notes,
-        dateTaken: getCurrentTime(),
-        dependent: dependent,
-        createdBy: guardian,
-        createdByStr: guardianName
-      }
-      create(medicationEventBody, function (err, medEventCreated) {
-        if (err) {
-          callback(err);
-        } else {
-          callback(null, medEventCreated);
-        }
-      });
+  create(medicationEventBody, function (err, medEventCreated) {
+    if (err) {
+      callback(err);
+    } else {
+      callback(null, medEventCreated);
+    }
+  });
 }
 function getDependentByRxsMedication(rxsMedication, callback) {
   Dependent.findOne({ rxsMedications: rxsMedication }, function (err, dependentFound) {
@@ -261,7 +211,7 @@ function updateModifiedFields(oldDoc, updatedFields, callback) {
   var dependent = oldDoc.dependent;
   var createdBy = oldDoc.createdBy;
   var createdByStr = oldDoc.createdByStr;
-  var dateTaken = oldDoc.dateTaken;
+  var dateTaken = getCurrentTime(oldDoc.dateTaken);
 
   if (updatedFields.title) {
     title = updatedFields.title;
@@ -292,7 +242,7 @@ function updateModifiedFields(oldDoc, updatedFields, callback) {
     createdByStr: createdByStr
   }
 
-  callback(null,obj);
+  callback(null, obj);
 }
 
 
@@ -312,7 +262,7 @@ function saveToDoc(bodyData, schemaModel, callback) {
     title: bodyData.title,
     event: bodyData.event,
     isAway: bodyData.isAway,
-    dateTaken: bodyData.dateTaken,
+    dateTaken: getCurrentTime(bodyData.dateTaken),
     dependent: bodyData.dependent,
     createdBy: bodyData.createdBy,
     createdByStr: bodyData.createdBy.name.firstName + " " + bodyData.createdBy.name.lastName
