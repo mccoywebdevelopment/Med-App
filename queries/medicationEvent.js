@@ -1,32 +1,12 @@
-let eventModel = require('../models/event/Event');
 let Guardian = require('../models/guardian/Guardian');
 let rxsMedicationModel = require('../models/rxsMedication/RxsMedication');
 let userModel = require('../models/user/User');
 let Dependent = require('../models/dependent/Dependent');
 let findGuardianByID = require('./guardian').findById;
-let createEvent = require('./event').create;
 let { isMedEventValid } = require('../config/globalHelpers');
 let { getCurrentTime } = require('../config/rootHelpers');
 let medicationEventModel = require('../models/medicationEvent/MedicationEvent');
 
-function findById(id, callback) {
-  eventModel.findById(id, function (err, result) {
-    if (err) {
-      callback(err);
-    } else {
-      callback(null, result);
-    }
-  });
-}
-function findAll(callback) {
-  eventModel.find({}, function (err, dependentFound) {
-    if (err) {
-      callback(err);
-    } else {
-      callback(null, dependentFound);
-    }
-  });
-}
 function getEventByRxsMedID(rxsMedID, callback) {
   rxsMedicationModel.findById(rxsMedID).populate("events").exec(function (err, rxsMedFound) {
     if (err) {
@@ -246,16 +226,11 @@ function createRxsMedEvent(body, dependent, rxsMedication, guardian, callback) {
     message: message
   }
 
-  createEvent(eventBody, function (err, eventCreated) {
-    if (err) {
-      callback(err);
-    } else {
       var medicationEventBody = {
         title: dependentName + " took " + rxsMedication.name,
         isAway: body.isAway,
         notes: body.notes,
         dateTaken: getCurrentTime(),
-        event: eventCreated,
         dependent: dependent,
         createdBy: guardian,
         createdByStr: guardianName
@@ -267,18 +242,7 @@ function createRxsMedEvent(body, dependent, rxsMedication, guardian, callback) {
           callback(null, medEventCreated);
         }
       });
-    }
-  });
 }
-// function getDependentByRxsMedication(rxsMedication, callback) {
-//       getDependentByRxsMedication(rxsFound, function (err, result) {
-//         if (err) {
-//           callback(err);
-//         } else {
-//           callback(null, result);
-//         }
-//       });
-// }
 function getDependentByRxsMedication(rxsMedication, callback) {
   Dependent.findOne({ rxsMedications: rxsMedication }, function (err, dependentFound) {
     if (err) {
@@ -294,7 +258,6 @@ function updateModifiedFields(oldDoc, updatedFields, callback) {
   var title = oldDoc.title;
   var isAway = oldDoc.isAway;
   var notes = oldDoc.notes;
-  var event = oldDoc.event;
   var dependent = oldDoc.dependent;
   var createdBy = oldDoc.createdBy;
   var createdByStr = oldDoc.createdByStr;
@@ -323,27 +286,13 @@ function updateModifiedFields(oldDoc, updatedFields, callback) {
     title: title,
     isAway: isAway,
     notes: notes,
-    event: event,
     dateTaken: dateTaken,
     dependent: dependent,
     createdBy: createdBy,
     createdByStr: createdByStr
   }
-  if (updatedFields.event && updatedFields.event.timeStamp) {
-    var newEvent = event;
-    newEvent.timeStamp = updatedFields.event.timeStamp;
-    eventModel.findOneAndUpdate({ _id: obj.event._id }, { timeStamp: updatedFields.event.timeStamp },
-      function (err, result) {
-        if (err) {
-          callback(err);
-        } else {
-          obj.event = result;
-          callback(null, obj);
-        }
-      });
-  } else {
-    callback(null, obj);
-  }
+
+  callback(null,obj);
 }
 
 
@@ -394,6 +343,6 @@ function create(body, callback) {
 
 
 module.exports = {
-  create, findAll, deleteById, findById, patchUpdateById,
+  create, deleteById, patchUpdateById,
   tookMedication, getEventByRxsMedID, tookMedicationRefID
 };

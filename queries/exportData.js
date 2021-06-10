@@ -3,7 +3,6 @@ let path = require('path');
 let Dependent = require('../models/dependent/Dependent');
 let MedicationEvent = require('../models/medicationEvent/MedicationEvent');
 let Guardian = require('../models/guardian/Guardian');
-let Event = require('../models/event/Event');
 
 function exportDataGivenMonthYear(month,year,callback){
     console.log(0);
@@ -24,17 +23,11 @@ function exportDataGivenMonthYear(month,year,callback){
                         if(err){
                             callback(err);
                         }else{
-                            Event.populate(res,{path:'rxsMedications.events.event'},function(err,res){
+                            writeData(month,year,res,function(err,result){
                                 if(err){
                                     callback(err);
                                 }else{
-                                    writeData(month,year,res,function(err,result){
-                                        if(err){
-                                            callback(err);
-                                        }else{
-                                            callback(null,result);
-                                        }
-                                    });
+                                    callback(null,result);
                                 }
                             });
                         }
@@ -109,6 +102,7 @@ function createWorkSheet(wb,dependent,month,year){
     }
     return ws;
 }
+
 function createRxsMedDates(ws,wb,x_index,y_index,event,month,year){
     console.log(event)
     var obj = {
