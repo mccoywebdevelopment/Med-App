@@ -223,7 +223,7 @@ function updateModifiedFields(oldDoc, updatedFields, callback) {
   var dependent = oldDoc.dependent;
   var createdBy = oldDoc.createdBy;
   var createdByStr = oldDoc.createdByStr;
-  var dateTaken = getCurrentTime(oldDoc.dateTaken);
+  var dateTaken = oldDoc.dateTaken;
 
   if (updatedFields.title) {
     title = updatedFields.title;
@@ -242,7 +242,7 @@ function updateModifiedFields(oldDoc, updatedFields, callback) {
     createdByStr = updatedFields.guardian.name.firstName + " " + updatedFields.guardian.name.lastName;
   }
   if (updatedFields.dateTaken) {
-    dateTaken = getCurrentTime(updatedFields.dateTaken);
+    dateTaken = updatedFields.dateTaken;
   }
   var obj = {
     title: title,
@@ -274,7 +274,7 @@ function saveToDoc(bodyData, schemaModel, callback) {
     title: bodyData.title,
     event: bodyData.event,
     isAway: bodyData.isAway,
-    dateTaken: getCurrentTime(bodyData.dateTaken),
+    dateTaken: bodyData.dateTaken,
     dependent: bodyData.dependent,
     createdBy: bodyData.createdBy,
     createdByStr: bodyData.createdBy.name.firstName + " " + bodyData.createdBy.name.lastName

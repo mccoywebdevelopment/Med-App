@@ -5,7 +5,6 @@ let MedicationEvent = require('../models/medicationEvent/MedicationEvent');
 let Guardian = require('../models/guardian/Guardian');
 
 function exportDataGivenMonthYear(month,year,callback){
-    console.log(0);
     if(typeof(month)=='undefined' || month<0 || month>11){
         callback("Please enter a valid month");
     }
@@ -93,7 +92,6 @@ function createWorkSheet(wb,dependent,month,year){
             y_index = 1;
             x_index = x_index + 1;
             for(var j=0;j<dependent.rxsMedications[i].events.length;++j){
-                console.log(dependent.rxsMedications[i]);
                 obj = createRxsMedDates(ws,wb,x_index,y_index,dependent.rxsMedications[i].events[j],month,year);
                 x_index = obj.x_index;
                 y_index = obj.y_index;
