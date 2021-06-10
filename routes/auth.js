@@ -45,7 +45,7 @@ router.route("/logout/:token")
     authQ.logoutUser(req.params.token,function(err,result){
         if(err){
             console.log(err);
-            res.status(400).json({error:err});
+            res.redirect(CLIENT_URL + '/auth/login');
         }else{
             res.redirect(CLIENT_URL +'/auth/login');
         }

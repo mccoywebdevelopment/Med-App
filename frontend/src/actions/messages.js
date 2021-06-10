@@ -1,4 +1,5 @@
 import { CREATE_MESSAGE, CHANGE_REDIRECT_URL, CHANGE_CURRENT_URL } from './types';
+import { CLIENT_URL } from '../config/variables'
 import { togglePopUp } from './popUp';
 import { toggleLoading } from './loading';
 
@@ -27,7 +28,7 @@ export const createMessage = (text,alertType,time) => (dispatch) =>{
       },
     });
     
-    // window.location = '/auth/login';
+    window.location = CLIENT_URL + '/auth/login';
   }
   dispatch({
     type: CREATE_MESSAGE,

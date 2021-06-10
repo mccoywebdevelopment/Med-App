@@ -1,6 +1,6 @@
 import { toggleLoading } from '../actions/loading';
 import { CHANGE_CURRENT_URL, CHANGE_REDIRECT_URL } from '../actions/types';
-import { API_URI } from '../config/variables';
+import { API_URI, CLIENT_URL } from '../config/variables';
 import { store } from '../store';
 
 let timezone = store.getState().settings.timeZone;
