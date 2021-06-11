@@ -5,7 +5,7 @@ import { fetchCreateMedEvent, fetchUpdateMedEvent } from '../../../actions/event
 import { fetchGuardians } from '../../../actions/guardian';
 import { fetchUsers } from '../../../actions/user';
 import { togglePopUp } from '../../../actions/popUp';
-import { capitalizeFirstLetter } from '../../../config/helpers';
+import { capitalizeFirstLetter, convertLocalToUTC } from '../../../config/helpers';
 
 import RxsMedDates from "../../shared/tables/RxsMedDates";
 import Search from "../../shared/Search/Search";
@@ -63,10 +63,11 @@ class TookMed extends React.Component {
         return {
             isAway: this.state.values.isAway,
             notes: this.state.values.notes,
-            dateTaken: this.state.values.dateTaken,
+            dateTaken:  convertLocalToUTC(this.state.values.dateTaken),
             guardianID: this.state.values.guardian
         }
     }
+
     _getSelectedValues = (values) => {
         let newState = this.state;
         newState.values.guardian= values[0][0];

@@ -188,11 +188,13 @@ function createRxsMedEvent(body, dependent, rxsMedication, guardian, callback) {
   var guardianName = guardian.name.firstName + " " + guardian.name.lastName;
   var dependentName = dependent.name.firstName + " " + dependent.name.lastName;
 
+  console.log(body.dateTaken);
+  
   var medicationEventBody = {
     title: dependentName + " took " + rxsMedication.name,
     isAway: body.isAway,
     notes: body.notes,
-    dateTaken: getCurrentTime(),
+    dateTaken: new Date(body.dateTaken) || getCurrentTime(),
     dependent: dependent,
     createdBy: guardian,
     createdByStr: guardianName

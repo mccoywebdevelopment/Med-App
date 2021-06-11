@@ -1,6 +1,7 @@
 import { toggleLoading } from '../actions/loading';
-import { CHANGE_CURRENT_URL, CHANGE_REDIRECT_URL } from '../actions/types';
-import { API_URI, CLIENT_URL } from '../config/variables';
+import { API_URI } from '../config/variables';
+import moment from 'moment';
+import 'moment-timezone';
 import { store } from '../store';
 
 let timezone = store.getState().settings.timeZone;
@@ -12,15 +13,20 @@ export function getAge(date) {
     return date;
 }
 export function formatAMPM(date) {
-    date = new Date(date);
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
-    var ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
-    minutes = minutes < 10 ? '0' + minutes : minutes;
-    var strTime = hours + ':' + minutes + ' ' + ampm;
-    return strTime;
+    // date = new Date(date);
+    // var hours = date.getHours();
+    // var minutes = date.getMinutes();
+    // var ampm = hours >= 12 ? 'PM' : 'AM';
+    // hours = hours % 12;
+    // hours = hours ? hours : 12; // the hour '0' should be '12'
+    // minutes = minutes < 10 ? '0' + minutes : minutes;
+    // var strTime = hours + ':' + minutes + ' ' + ampm;
+    // return strTime;
+    let str = "";
+    str = str + date.toString();
+    console.log(str);
+    console.log(moment("2021-06-11T13:31:00.000").format("hh:mm a"))
+    return moment(str).tz('America/Phoenix').format("hh:mm a")
 }
 export function isMonth(someDate){
     if (!someDate) {
@@ -57,16 +63,10 @@ export function formateDate(date) {
         return null;
     }
 }
-export function toInputDate(date) {
-    if (typeof (date) == 'string') {
-        let date1 = date.split('-');
-        if (date1[2] && date1[2].length == 4) {
-            date = date1[2] + "-" + date1[0] + '-' + date1[1];
-        }
-    }
-
-    return date;
+export function convertLocalToUTC(dateTimeLocal){
+    return moment.tz(dateTimeLocal,"America/Phoenix").format();
 }
+
 export function getPath(window, index) {
     let arr = window.location.pathname.split('/');
     if (!index) {

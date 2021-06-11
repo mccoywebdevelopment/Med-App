@@ -9,7 +9,6 @@ import {
     numberValidator, phoneNumberValidator
 } from '../../../../config/validators';
 import BelongsToGroupV2 from './BelongsToGroupV2';
-import { toInputDate } from "../../../../config/helpers";
 
 import DepOverview from './DepOverview';
 import MedList from './MedList';
@@ -81,7 +80,7 @@ class CreateDependent extends React.Component {
         let newState = this.state;
 
         newState.overview.values.name = dep.name.firstName + " " + dep.name.lastName;
-        newState.overview.values.dateOfBirth = dep.dateOfBirth;
+        newState.overview.values.dateOfBirth = new Date(dep.dateOfBirth);
         newState.overview.values.group = this._getGroupSelDep(dep);
 
         newState.rxsMedList.list = this._getRxsSelDep(dep);
@@ -159,7 +158,7 @@ class CreateDependent extends React.Component {
                     _rxsMedID: dep.rxsMedications[i]._id,
                     name: dep.rxsMedications[i].name,
                     reason: dep.rxsMedications[i].reason,
-                    datePrescribed: dep.rxsMedications[i].datePrescribed,
+                    datePrescribed: new Date(dep.rxsMedications[i].datePrescribed),
                     instructions: dep.rxsMedications[i].instructions || "",
                     endDate: dep.rxsMedications[i].endDate || "",
                     dosageQuantity: dep.rxsMedications[i].dosage.quantity,
@@ -464,7 +463,7 @@ class CreateDependent extends React.Component {
                     quantity: arr[i].values.dosageQuantity,
                     unit: arr[i].values.dosageUnits,
                     reason: arr[i].values.reason,
-                    datePrescribed: toInputDate(arr[i].values.datePrescribed),
+                    datePrescribed: new Date(arr[i].values.datePrescribed),
                     doctorPhoneNumber: arr[i].values.doctorPhone,
                     doctorFirstName: arr[i].values.doctorName.split(" ")[0],
                     doctorLastName: arr[i].values.doctorName.split(" ")[1],
@@ -477,7 +476,7 @@ class CreateDependent extends React.Component {
                     rxsMedication[rxsMedication.length - 1].instructions = arr[i].values.instructions;
                 }
                 if (arr[i].values.endDate) {
-                    rxsMedication[rxsMedication.length - 1].endDate = toInputDate(arr[i].values.endDate);
+                    rxsMedication[rxsMedication.length - 1].endDate = new Date(arr[i].values.endDate);
                 }
                 if (arr[i].values.whenToTake) {
                     rxsMedication[rxsMedication.length - 1].whenToTake = arr[i].values.whenToTake;
@@ -491,7 +490,7 @@ class CreateDependent extends React.Component {
         let body = {
             firstName: this.state.overview.values.name.split(' ')[0],
             lastName: this.state.overview.values.name.split(' ')[1],
-            dateOfBirth: this.state.overview.values.dateOfBirth,
+            dateOfBirth: new Date(this.state.overview.values.dateOfBirth),
             rxsMedications: this._formatRxsMedication()
         }
         return body;
