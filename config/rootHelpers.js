@@ -4,8 +4,8 @@ function getCurrentTime(date){
     if(date){
         here = new Date(date);
     }
-    var there = changeTimezone(here,TIME_ZONE);
-    return there;
+    // var there = changeTimezone(here,TIME_ZONE);
+    return here;
 }
 function changeTimezone(date, ianatz) {
 

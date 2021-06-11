@@ -45,7 +45,7 @@ class DependentTable extends React.Component{
       
         return(
             <tr style={trStyle} key={"depTable"+index}>
-              <th scope="row" onClick={()=>{this._selectItem(dep._id)}}>{index + 1}</th>
+              <th scope="row" onClick={()=>{this._selectItem(dep)}}>{index + 1}</th>
               <td colSpan="2" onClick={()=>this._selectItem(dep)}>{dep.name.firstName + " " + dep.name.lastName}</td>
               <td colSpan="2" onClick={()=>this._selectItem(dep)}>{dateOfBirth}</td>
               {!this.props.isSmall?<td>{age}</td>:null}
@@ -53,7 +53,7 @@ class DependentTable extends React.Component{
               {/* <td>Ventrent</td> */}
               {!this.props.isUserView?
               <>
-              <td style={group.style} onClick={()=>this._selectItem(dep._id)}>{group.text}</td>
+              <td style={group.style} onClick={()=>this._selectItem(dep)}>{group.text}</td>
               {!this.props.isSmall?
               <td>
                 <i title="view" onClick={()=>this._selectItem(dep)} className="fas fa-eye" style={{ paddingRight: '20px', color: '#2196F3' }}></i>
