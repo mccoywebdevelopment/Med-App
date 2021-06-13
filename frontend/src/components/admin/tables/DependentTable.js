@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import { formateDate } from '../../../config/helpers';
 
 class DependentTable extends React.Component{
   constructor(props){
@@ -13,11 +13,12 @@ class DependentTable extends React.Component{
   render(){
     const list=() =>{
       return this.props.dependents.map((dep,index)=>{
-        let dateOfBirth = dep.dateOfBirth.split('-');
-        let mm = dateOfBirth[1];
-        let yyyy = dateOfBirth[0];
-        let dd = dateOfBirth[2];
-        dateOfBirth = mm + "-" + dd + "-" + yyyy;
+        // let dateOfBirth = dep.dateOfBirth.split('-');
+        // let mm = dateOfBirth[1];
+        // let yyyy = dateOfBirth[0];
+        // let dd = dateOfBirth[2];
+        // dateOfBirth = mm + "-" + dd + "-" + yyyy;
+        let dateOfBirth = formateDate(dep.dateOfBirth);
 
         let birthday = +new Date(dateOfBirth);
         let age = ~~((Date.now() - birthday) / (31557600000));

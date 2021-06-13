@@ -1,5 +1,5 @@
 import React from 'react';
-import { getAge, formateDate} from '../../../../config/helpers'
+import { getAge, formateDate, convertToDateInput} from '../../../../config/helpers'
 
 export default class DepOverview extends React.Component {
     constructor(props){
@@ -37,7 +37,7 @@ export default class DepOverview extends React.Component {
                             <label className="label">Date of Bith</label>
                             <div className="input-group">
                                 <input type="date" className="form-control" name="dateOfBirth" placeholder="mm/dd/yyyy"
-                                    value={this.props.data.values.dateOfBirth} 
+                                    value={convertToDateInput(this.props.data.values.dateOfBirth)} 
                                     onChange={(e)=>{this.props.update("overview","dateOfBirth",e.target.value)}} />
                                 <div className="invalid-feedback" style={{ display: 'block' }}>
                                     {this.props.data.errors.dateOfBirth}&nbsp;

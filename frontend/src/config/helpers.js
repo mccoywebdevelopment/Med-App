@@ -7,28 +7,26 @@ import { store } from '../store';
 let timezone = store.getState().settings.timeZone;
 
 export function getAge(date) {
-    let birthday = +new Date(date);
-    date = ~~((Date.now() - birthday) / (31557600000));
+    if (date) {
+        let birthday = +new Date(date);
+        date = ~~((Date.now() - birthday) / (31557600000));
 
-    return date;
+        return date;
+    } else {
+        return "";
+    }
 }
 export function formatAMPM(date) {
-    // date = new Date(date);
-    // var hours = date.getHours();
-    // var minutes = date.getMinutes();
-    // var ampm = hours >= 12 ? 'PM' : 'AM';
-    // hours = hours % 12;
-    // hours = hours ? hours : 12; // the hour '0' should be '12'
-    // minutes = minutes < 10 ? '0' + minutes : minutes;
-    // var strTime = hours + ':' + minutes + ' ' + ampm;
-    // return strTime;
-    let str = "";
-    str = str + date.toString();
-    console.log(str);
-    console.log(moment("2021-06-11T13:31:00.000").format("hh:mm a"))
-    return moment(str).tz('America/Phoenix').format("hh:mm a")
+    if (date) {
+        date = new Date(date);
+        let str = "";
+        str = str + date.toISOString();
+        return moment(str).tz('America/Phoenix').format("hh:mm a")
+    } else {
+        return ""
+    }
 }
-export function isMonth(someDate){
+export function isMonth(someDate) {
     if (!someDate) {
         return false;
     }
@@ -49,22 +47,41 @@ export function isToday(someDate) {
 }
 export function formateDate(date) {
     if (date) {
-
-        let d = new Date(date);
-        d = d.getMonth() + 1 + '/' + (d.getDate()) + '/' + d.getFullYear();
-
-        if (d.toString().includes('T')) {
-            d = d.toString().split('T')[0];
+        date = new Date(date);
+        let d = date.toISOString();
+        if (d.includes('T')) {
+            d = d.split('T')[0];
         }
-        return d;
+        d = d.split('-');
+        let mm = d[1];
+        let dd = d[2];
+        let yyyy = d[0];
 
-
+        return (mm + "/" + dd + "/" + yyyy);
     } else {
         return null;
     }
 }
-export function convertLocalToUTC(dateTimeLocal){
-    return moment.tz(dateTimeLocal,"America/Phoenix").format();
+export function convertLocalToUTC(dateTimeLocal) {
+    return moment.tz(dateTimeLocal, "America/Phoenix").format();
+}
+
+export function convertToDateInput(date) {
+    if (date) {
+        let d = new Date(date);
+        d = d.toISOString();
+        if (d.includes('T')) {
+            d = d.split('T')[0];
+        }
+        d = d.split('-');
+        let mm = d[1];
+        let dd = d[2];
+        let yyyy = d[0];
+        let str = yyyy + "-" + mm + "-" + dd
+        return (str)
+    } else {
+        return "";
+    }
 }
 
 export function getPath(window, index) {

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchGroups } from '../../../../actions/group';
-import { togglePopUp } from "../../../../actions/popUp"
+import { togglePopUp } from "../../../../actions/popUp";
 import { fetchCreateDependent, fetchPopulatedDependents, fetchUpdateDependent } from '../../../../actions/dependent';
 import {
     firstAndLastNameValidator, prevDateValidator, nameValidator,
@@ -445,12 +445,10 @@ class CreateDependent extends React.Component {
     }
     _tookMed = (index) => {
         let med = this.state.rxsMedList.list[index].values;
-        // let name = this.props.isDepSelected.name.firstName + " " + this.props.isDepSelected.name.lastName;
         this.props.togglePopUp(med.name, <TookMed medName={med.name} medID={med._rxsMedID} data={med} />);
     }
     _viewDates = (index) => {
         let med = this.state.rxsMedList.list[index].values;
-        // let name = this.props.isDepSelected.name.firstName + " " + this.props.isDepSelected.name.lastName;
         this.props.togglePopUp(med.name, <RxsMedDates medName={med.name} rxsMedID={med._rxsMedID} data={med} />);
     }
     _formatRxsMedication = () => {
@@ -483,6 +481,7 @@ class CreateDependent extends React.Component {
                 }
 
             }
+            console.log(rxsMedication);
         
             return rxsMedication;
     }

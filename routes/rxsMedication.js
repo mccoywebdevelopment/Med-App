@@ -39,6 +39,7 @@ router.route("/:id/:JWT")
 })
 .patch(verifyAdmin,function(req,res){
     var obj = req.body;
+    console.log(obj);
     rxsMedicationQ.patchUpdateById(obj,req.params.id,function(err,updatedObj){
         if(err){
             console.log(err);

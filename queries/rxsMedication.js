@@ -111,14 +111,8 @@ function patchUpdateById(body, id, callback) {
   });
 
 }
-function formateDate(date) {
-  let dates = date.split('-');
-  let yyyy = dates[0];
-  let mm = dates[1];
-  let dd = dates[2];
-  return (mm + "-" + dd + "-" + yyyy);
-}
 function updateModifiedFields(oldDoc, updatedFields) {
+  console.log(updatedFields);
   var name = oldDoc.name;
   var dosage = oldDoc.dosage;
   var reason = oldDoc.reason;
@@ -145,13 +139,13 @@ function updateModifiedFields(oldDoc, updatedFields) {
     reason = updatedFields.reason;
   }
   if (updatedFields.datePrescribed) {
-    datePrescribed = formateDate(updatedFields.datePrescribed);
+    datePrescribed = new Date(updatedFields.datePrescribed);
   }
   if (updatedFields.instructions) {
     instructions = updatedFields.instructions;
   }
   if (updatedFields.endDate) {
-    endDate = formateDate(updatedFields.endDate);
+    endDate = new Date(updatedFields.endDate);
   }
   if (updatedFields.event) {
     callback("EVENT NOT IMPLEMENTED");
@@ -160,7 +154,7 @@ function updateModifiedFields(oldDoc, updatedFields) {
     rxsNumber = updatedFields.rxsNumber;
   }
   if(updatedFields.doctorPhoneNumber){
-    phoneNumber = updatedFields.doctorPhoneNumber;
+    doctorPhoneNumber = updatedFields.doctorPhoneNumber;
   }
   if(updatedFields.doctorFirstName){
     doctorFirstName = updatedFields.doctorFirstName;
@@ -194,7 +188,7 @@ function updateModifiedFields(oldDoc, updatedFields) {
     callback("Need multiple values for when to take option");
   }
 
-
+console.log()
   var obj = {
     name: name,
     dosage: dosage,
@@ -213,6 +207,7 @@ function updateModifiedFields(oldDoc, updatedFields) {
       phoneNumber:doctorPhoneNumber
     }
   }
+  console.log(obj)
   return obj;
 }
 
@@ -270,7 +265,7 @@ function saveToDoc(bodyData, schemaModel, callback) {
       phoneNumber:bodyData.doctorPhoneNumber
     },
     reason: bodyData.reason,
-    datePrescribed: formateDate(bodyData.datePrescribed)
+    datePrescribed: new Date(bodyData.datePrescribed)
   });
   
   if (typeof (bodyData.rxsNumber) != 'undefined') {
@@ -280,7 +275,7 @@ function saveToDoc(bodyData, schemaModel, callback) {
     newDoc.instructions = bodyData.instructions
   }
   if (typeof (bodyData.endDate) != 'undefined') {
-    newDoc.endDate = formateDate(bodyData.endDate);
+    newDoc.endDate = new Date(bodyData.endDate);
   }
   if (typeof (bodyData.whenToTake) != 'undefined' && bodyData.whenToTake.length > 0) {
     let whenToTake = [];

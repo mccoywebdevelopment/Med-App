@@ -1,6 +1,8 @@
 import React from "react";
 import Select from 'react-select';
 import chroma from 'chroma-js';
+import { convertToDateInput } from '../../../../config/helpers';
+
 
 export default class RxsMedForm extends React.Component {
     constructor(props) {
@@ -172,7 +174,7 @@ export default class RxsMedForm extends React.Component {
                         <label className="label">Date Prescribed</label>
                         <div className="input-group">
                             <input id="datePscb321" type="date" className="form-control" name="datePscb321"
-                                value={this.props.data.values.datePrescribed} onChange={(e) => { this.props.update(this.props.index, "datePrescribed", e.target.value) }} />
+                                value={convertToDateInput(this.props.data.values.datePrescribed)} onChange={(e) => { this.props.update(this.props.index, "datePrescribed", e.target.value) }} />
                             <div className="invalid-feedback" style={{ display: 'block' }}>
                                 {this.props.data.errors.datePrescribed}&nbsp;
 </div>
@@ -207,7 +209,7 @@ export default class RxsMedForm extends React.Component {
                         <label className="label">End Date (optional)</label>
                         <div className="input-group">
                             <input id="endDate321" type="date" className="form-control" name="endDate321" placeholder="mm/dd/yyyy"
-                                value={this.props.data.values.endDate} onChange={(e) => { this.props.update(this.props.index, "endDate", e.target.value) }} />
+                                value={convertToDateInput(this.props.data.values.endDate)} onChange={(e) => { this.props.update(this.props.index, "endDate", e.target.value) }} />
                             <div className="invalid-feedback" style={{ display: 'block' }}>
                                 {this.props.data.errors.endDate}&nbsp;
 </div>
