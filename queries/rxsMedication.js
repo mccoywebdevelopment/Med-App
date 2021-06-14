@@ -112,7 +112,6 @@ function patchUpdateById(body, id, callback) {
 
 }
 function updateModifiedFields(oldDoc, updatedFields) {
-  console.log(updatedFields);
   var name = oldDoc.name;
   var dosage = oldDoc.dosage;
   var reason = oldDoc.reason;
@@ -188,7 +187,6 @@ function updateModifiedFields(oldDoc, updatedFields) {
     callback("Need multiple values for when to take option");
   }
 
-console.log()
   var obj = {
     name: name,
     dosage: dosage,
@@ -207,7 +205,7 @@ console.log()
       phoneNumber:doctorPhoneNumber
     }
   }
-  console.log(obj)
+
   return obj;
 }
 

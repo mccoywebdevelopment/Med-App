@@ -9,21 +9,21 @@ class Window extends React.Component{
         isEdit:false,
         medicationSelected:null,
         dateSelected:null,
-        isAwaySelected:null,
+        wasAdministeredSelected:null,
         notesSelected:null
     }
-    fillState = (medication,date,isAway,notes) =>{
+    fillState = (medication,date,wasAdministered,notes) =>{
         let newState = this.state;
         newState.medicationSelected = medication;
         newState.dateSelected = date;
-        newState.isAwaySelected = isAway;
+        newState.wasAdministeredSelected = wasAdministered;
         newState.notesSelected = notes;
         this.setState(newState);
     }
     
     constructor(props){
         super(props);
-        this.fillState(this.props.event.rxsMedication,this.props.event.event.event.timeStamp,this.props.event.event.isAway,
+        this.fillState(this.props.event.rxsMedication,this.props.event.event.event.timeStamp,this.props.event.event.wasAdministered,
             this.props.event.event.notes);
 
     }
@@ -59,7 +59,7 @@ class Window extends React.Component{
         var month = dob.substr(8,2);
         dob = day+"-"+month+"-"+year;
 
-        const isAway = this.props.event.event.isAway.toString();
+        const wasAdministered = this.props.event.event.wasAdministered.toString();
         const medicationName = this.props.event.rxsMedication.name;
 
         var date = new Date(this.props.event.event.event.timeStamp);
@@ -122,7 +122,7 @@ class Window extends React.Component{
                         <p style={{fontSize:'15px'}}>Date Given:   {dateGiven}</p>
                     </Col>
                     <Col lg="12">
-                        <p style={{fontSize:'15px'}}>Is Away:   {isAway}</p>
+                        <p style={{fontSize:'15px'}}>Is Away:   {wasAdministered}</p>
                     </Col>
                     <Col lg="12">
                         <p style={{fontSize:'15px'}}>Notes:   <span style={{fontSize:'13px'}}>{notes}</span></p>

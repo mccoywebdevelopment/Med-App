@@ -18,7 +18,6 @@ router.route("/:rxsMedicationId/:JWT")
     });
 })
 .post(verifyUser,function(req,res){
-    console.log(req.body);
     eventQ.tookMedication(req.params.rxsMedicationId,req.params.JWT,req.body,req.user,function(err,result){
         if(err){
             console.log(err);

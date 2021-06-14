@@ -4,7 +4,7 @@ import {Row,Col,Button,Input,Label} from 'reactstrap';
 class EditWindow extends React.Component{
     state = {
         dateGiven:null,
-        isAway:null,
+        wasAdministered:null,
         notes:null
     }
     
@@ -19,7 +19,7 @@ class EditWindow extends React.Component{
         var dateGiven = yyyy+"-"+mm+"-"+dd;
         newState.dateGiven = dateGiven;
 
-        newState.isAway = this.props.event.event.isAway.toString();
+        newState.wasAdministered = this.props.event.event.wasAdministered.toString();
         newState.notes = this.props.event.event.notes;
         this.setState(newState);
     }
@@ -28,9 +28,9 @@ class EditWindow extends React.Component{
         newState.dateGiven = e.target.value
         this.setState(newState)
     }
-    isAwayHandler = (e) =>{
+    wasAdministeredHandler = (e) =>{
         let newState = this.state;
-        newState.isAway = e.target.value
+        newState.wasAdministered = e.target.value
         this.setState(newState)
     }
     noteHandler = (e) =>{
@@ -43,7 +43,7 @@ class EditWindow extends React.Component{
         var date = new Date(dtstr);
         date.setDate(date.getDate()+1);
         var obj = {
-            isAway:this.state.isAway,
+            wasAdministered:this.state.wasAdministered,
             notes:this.state.notes,
             event:{
                 timeStamp:date
@@ -75,9 +75,9 @@ class EditWindow extends React.Component{
         var month = dob.substr(8,2);
         dob = day+"-"+month+"-"+year;
 
-        const isAway = this.props.event.event.isAway.toString();
+        const wasAdministered = this.props.event.event.wasAdministered.toString();
         var otherOption = true;
-        if(isAway == "true"){
+        if(wasAdministered == "true"){
             otherOption = false;
         }
         const medicationName = this.props.event.rxsMedication.name;
@@ -139,10 +139,10 @@ class EditWindow extends React.Component{
                         {/* <p style={{fontSize:'15px'}}>Date Given:   {dateGiven}</p> */}
                     </Col>
                     <Col lg="12">
-                        {/* <p style={{fontSize:'15px'}}>Is Away:   {isAway}</p> */}
+                        {/* <p style={{fontSize:'15px'}}>Is Away:   {wasAdministered}</p> */}
                         <Label>Is Away:</Label>
-                        <Input type="select" onChange={this.isAwayHandler}>
-                            <option value={isAway}>{this.state.isAway}</option>
+                        <Input type="select" onChange={this.wasAdministeredHandler}>
+                            <option value={wasAdministered}>{this.state.wasAdministered}</option>
                             <option value={otherOption}>{otherOption.toString()}</option>
                         </Input>
                     </Col>

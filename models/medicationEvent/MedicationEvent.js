@@ -2,7 +2,8 @@ var mongoose = require("mongoose");
 
 var MedicationEventSchema = new mongoose.Schema({
         title:{type:String,required:true},
-        isAway:{type:Boolean,required:true},
+        wasAdministered:{type:Boolean,required:true},
+        reason:String,
         dateTaken:{type:Date,required:true},
         notes:String,
         event:{

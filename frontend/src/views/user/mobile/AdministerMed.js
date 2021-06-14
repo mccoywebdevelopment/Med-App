@@ -15,11 +15,12 @@ import successImage from "../../../assets/images/user/success_feedback.svg"
 class AdministerMed extends React.Component {
     state = {
         values: {
-            isAway: false,
+            wasAdministered: false,
             notes: "",
-            guardian: ""
+            guardian: "",
+            reason: ""
         },
-        showFeedBackValid:false,
+        showFeedBackValid: false,
         showGuardians: false,
         isValid: false,
         medication: null,
@@ -36,8 +37,9 @@ class AdministerMed extends React.Component {
     }
     _getBody = () => {
         return {
-            isAway: this.state.values.isAway,
+            wasAdministered: this.state.values.wasAdministered,
             notes: this.state.values.notes,
+            reason: this.state.values.reason,
             dateTaken: this.state.values.dateTaken
         }
     }
@@ -49,17 +51,17 @@ class AdministerMed extends React.Component {
         }
         return false;
     }
-    _submitNonLocalRefID = () =>{
+    _submitNonLocalRefID = () => {
         let length = getPaths(window).length;
         let refID = getPath(window, length - 1);
-        if(this.state.values.guardian.length<1){
-            this.props.createMessage('Guardian field is required.','danger',12000);
-        }else{
+        if (this.state.values.guardian.length < 1) {
+            this.props.createMessage('Guardian field is required.', 'danger', 12000);
+        } else {
             let body = {
                 ...this._getBody(),
-                guardianID:this.state.values.guardian
+                guardianID: this.state.values.guardian
             }
-    
+
             this.props.fetchCreateMedEventRefID(body, refID, true, (res) => {
                 let newState = this.state;
                 newState.showFeedBackValid = true;
@@ -67,17 +69,17 @@ class AdministerMed extends React.Component {
             });
         }
     }
-    _submitLocal = () =>{
+    _submitLocal = () => {
         this.props.fetchCreateMedEvent(this._getBody(), this.state.medication._id, true, (res) => {
             this._togglePopUp()
         });
     }
-    _submitLocalRefID = () =>{
+    _submitLocalRefID = () => {
         let length = getPaths(window).length;
         let refID = getPath(window, length - 2);
         let body = {
             ...this._getBody(),
-            guardianID:this.props.auth.user.guardianID
+            guardianID: this.props.auth.user.guardianID
         }
 
         this.props.fetchCreateMedEventRefID(body, refID, true, (res) => {
@@ -85,11 +87,15 @@ class AdministerMed extends React.Component {
         });
     }
     _submit = () => {
-        if(this.props.isRefID && this.props.isLocal){
+        if(!this.state.values.wasAdministered && !this.state.values.reason){
+            alert("Please select a reason why medication was not administered.");
+        }else if(this.state.values.reason.toLowerCase() == 'other' && !this.state.values.notes){
+            alert("Please explain why the medication was not administered in the notes section.")
+        }else if (this.props.isRefID && this.props.isLocal) {
             this._submitLocalRefID();
-        }else if(this.props.isRefID){
+        } else if (this.props.isRefID) {
             this._submitNonLocalRefID();
-        }else{
+        } else {
             this._submitLocal();
         }
     }
@@ -129,22 +135,22 @@ class AdministerMed extends React.Component {
         window.location = "/user/home"
     }
     render() {
-        const guardianList = () =>{
-            return this.state.guardians.map((guardian,index)=>{
-                return(
-                <option id={"guardianList"+indexedDB} value={guardian._id}>{guardian.name.firstName + " "+ (guardian.name.lastName || "")}</option>
+        const guardianList = () => {
+            return this.state.guardians.map((guardian, index) => {
+                return (
+                    <option id={"guardianList" + indexedDB} value={guardian._id}>{guardian.name.firstName + " " + (guardian.name.lastName || "")}</option>
                 )
             });
         }
         return (
             <>
-                {this.state.medication && !this.state.showFeedBackValid?
+                {this.state.medication && !this.state.showFeedBackValid ?
                     <PopUpCard togglePopUp={!this.props.isLocal || this._togglePopUp.bind(this)} header={this.state.medication.name}
                         subHeader={"Administer Medication"}>
                         <div className="row h-100">
                             <div className="col-12">
                                 <div className="form-group" style={{ marginBottom: '0px' }}>
-                                    <label className="label">Is away?</label>
+                                    <label className="label">Was Administered?</label>
                                 </div>
                                 <div className="form-group row">
                                     <div className="col-6" style={{ paddingLeft: '0px' }}>
@@ -152,10 +158,10 @@ class AdministerMed extends React.Component {
                                             <label className="form-check-label">
                                                 <input readOnly={true} type="radio" className="form-check-input"
                                                     name="membershipRadios" id="membershipRadios1" value="Yes"
-                                                    onClick={() => { this._update("isAway", true) }}
-                                                    checked={this.state.values.isAway} aria-describedby="passwordHelpBlock" />
-                                                    Yes
-                                                    <i className="input-helper"></i>
+                                                    onClick={() => { this._update("wasAdministered", true) }}
+                                                    checked={this.state.values.wasAdministered} aria-describedby="passwordHelpBlock" />
+Yes
+<i className="input-helper"></i>
                                             </label>
                                         </div>
                                     </div>
@@ -163,27 +169,49 @@ class AdministerMed extends React.Component {
                                         <div className="form-radio">
                                             <label className="form-check-label">
                                                 <input readOnly={true} type="radio" className="form-check-input" name="membershipRadios"
-                                                    id="membershipRadios2" value="no" onClick={() => { this._update("isAway", false) }}
-                                                    checked={!this.state.values.isAway} />
-                                                     No <i className="input-helper"></i>
+                                                    id="membershipRadios2" value="no" onClick={() => { this._update("wasAdministered", false) }}
+                                                    checked={!this.state.values.wasAdministered} />
+    No <i className="input-helper"></i>
                                             </label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            {this.state.showGuardians && this.state.guardians.length>0?
-                            <div className="col-12">
-                                <div className="form-group">
-                                    <label className="label">Guardian</label>
-                                    <div className="input-group">
-                                        <select class="form-control form-control-lg" id="exampleFormControlSelect1" value={this.state.values.guardian} onChange={(e) => { this._update("guardian", e.target.value) }}>
-                                            <option value=""></option>
-                                            {guardianList()}
-                                        </select>
+                            {!this.state.values.wasAdministered ?
+                                <div className="col-lg-6">
+                                    <div className="form-group">
+                                        <label className="label">Reason why not administered</label>
+                                        <div className="input-group">
+                                            <select class="form-select form-control" aria-label="Default select example" name="reason" onChange={(e) => { this._update("reason", e.target.value) }}>
+                                                <option selected>--------select reason--------</option>
+                                                <option value="refused">Refused</option>
+                                                <option value="missed">Missed</option>
+                                                <option value="hospital">Hospital</option>
+                                                <option value="school">School</option>
+                                                <option value="on pass">On Pass</option>
+                                                <option value="not needed">Not Needed</option>
+                                                <option value="other">Other (explain in notes)</option>
+                                            </select>
+                                            {/* <div className="invalid-feedback" style={{ display: 'block' }}>
+                                                {this.state.errors.reason}&nbsp;
+                                            </div> */}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            :null}
+                                : null}
+                            {this.state.showGuardians && this.state.guardians.length > 0 ?
+                                <div className="col-12">
+                                    <div className="form-group">
+                                        <label className="label">Guardian</label>
+                                        <div className="input-group">
+                                            <select class="form-control form-control-lg" id="exampleFormControlSelect1" value={this.state.values.guardian} onChange={(e) => { this._update("guardian", e.target.value) }}>
+                                                <option value=""></option>
+                                                {guardianList()}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                : null}
                             <div className="col-12">
                                 <div className="form-group">
                                     <label className="label">Notes (optional)</label>
@@ -198,17 +226,17 @@ class AdministerMed extends React.Component {
                             <button className="btn btn-success w-100" onClick={() => { this._submit() }}>Submit</button>
                         </div>
                     </PopUpCard>
-                    :this.state.showFeedBackValid?
-                    <div style={{paddingTop:'5em',textAlign:'center'}}>
-                        <span style={{fontSize:'1.25em'}}>You have successfully logged a medication</span>
-                        <img src={successImage} className="img-fluid" style={{marginTop:'3em'}}/>
-                    </div>
-                    : 
-                    <div style={{paddingTop:'5em',textAlign:'center'}}>
-                        <span style={{fontSize:'1.25em'}}>User does not have access to log this med at this time</span>
-                        <img src={failImage} className="img-fluid" style={{marginTop:'3em'}}/>
-                    </div>
-                    }
+                    : this.state.showFeedBackValid ?
+                        <div style={{ paddingTop: '5em', textAlign: 'center' }}>
+                            <span style={{ fontSize: '1.25em' }}>You have successfully logged a medication</span>
+                            <img src={successImage} className="img-fluid" style={{ marginTop: '3em' }} />
+                        </div>
+                        :
+                        <div style={{ paddingTop: '5em', textAlign: 'center' }}>
+                            <span style={{ fontSize: '1.25em' }}>User does not have access to log this med at this time</span>
+                            <img src={failImage} className="img-fluid" style={{ marginTop: '3em' }} />
+                        </div>
+                }
             </>
         );
     }
@@ -223,4 +251,4 @@ const mapStateToProps = (state) => ({
 });
 
 
-export default connect(mapStateToProps, { fetchCreateMedEvent, togglePopUp, getRxsMedByID, getRxsMedByRefID, fetchCreateMedEventRefID,createMessage })(AdministerMed);
+export default connect(mapStateToProps, { fetchCreateMedEvent, togglePopUp, getRxsMedByID, getRxsMedByRefID, fetchCreateMedEventRefID, createMessage })(AdministerMed);

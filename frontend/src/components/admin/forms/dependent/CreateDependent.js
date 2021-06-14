@@ -481,8 +481,6 @@ class CreateDependent extends React.Component {
                 }
 
             }
-            console.log(rxsMedication);
-        
             return rxsMedication;
     }
     _formatBody = () => {

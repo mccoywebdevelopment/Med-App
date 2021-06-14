@@ -117,9 +117,9 @@ function tookMedication(rxsMedId, jwt, body, user, callback) {
     } else if (!rxsMedicationFound) {
       callback("Rxs medication doesn't exist.");
     } else if (!isMedEventValid(rxsMedicationFound.events, rxsMedicationFound.whenToTake, user.isAdmin)) {
+      
       callback("Don't have access to log this medication.");
     } else if (!body.guardianID) {
-
       findGuardianByJWT(jwt, function (err, guardianFound) {
         if (err) {
           callback(err);
@@ -187,15 +187,14 @@ function attatchRxsMedEventToRxsMed(rxsMedEvent, rxsMed, callback) {
 function createRxsMedEvent(body, dependent, rxsMedication, guardian, callback) {
   var guardianName = guardian.name.firstName + " " + guardian.name.lastName;
   var dependentName = dependent.name.firstName + " " + dependent.name.lastName;
-
-  console.log(body.dateTaken);
   
   var medicationEventBody = {
     title: dependentName + " took " + rxsMedication.name,
-    isAway: body.isAway,
+    wasAdministered: body.wasAdministered,
     notes: body.notes,
     dateTaken: new Date(body.dateTaken) || getCurrentTime(),
     dependent: dependent,
+    reason: body.reason,
     createdBy: guardian,
     createdByStr: guardianName
   }
@@ -219,10 +218,12 @@ function getDependentByRxsMedication(rxsMedication, callback) {
   });
 }
 function updateModifiedFields(oldDoc, updatedFields, callback) {
+  console.log(updatedFields)
   var title = oldDoc.title;
-  var isAway = oldDoc.isAway;
+  var wasAdministered = oldDoc.wasAdministered;
   var notes = oldDoc.notes;
   var dependent = oldDoc.dependent;
+  var reason = oldDoc.reason;
   var createdBy = oldDoc.createdBy;
   var createdByStr = oldDoc.createdByStr;
   var dateTaken = oldDoc.dateTaken;
@@ -230,8 +231,19 @@ function updateModifiedFields(oldDoc, updatedFields, callback) {
   if (updatedFields.title) {
     title = updatedFields.title;
   }
-  if (typeof (updatedFields.isAway) != undefined) {
-    isAway = updatedFields.isAway;
+  if (typeof (updatedFields.wasAdministered) != undefined) {
+    wasAdministered = updatedFields.wasAdministered;
+
+    if(!updatedFields.reason && !wasAdministered){
+      callback("Need to provide reason why the med was not taken.")
+      return;
+    }else if(updatedFields.reason && updatedFields.reason.toLowerCase() == 'other' && !updatedFields.notes){
+      callback("Please provide the reason in the notes section when select 'other'.")
+      return;
+    }
+  }
+  if (typeof (updatedFields.reason) != undefined) {
+    reason = updatedFields.reason;
   }
   if (typeof (updatedFields.notes) != undefined) {
     notes = updatedFields.notes;
@@ -248,14 +260,15 @@ function updateModifiedFields(oldDoc, updatedFields, callback) {
   }
   var obj = {
     title: title,
-    isAway: isAway,
+    wasAdministered: wasAdministered,
     notes: notes,
+    reason: reason,
     dateTaken: dateTaken,
     dependent: dependent,
     createdBy: createdBy,
     createdByStr: createdByStr
   }
-
+  console.log(obj)
   callback(null, obj);
 }
 
@@ -272,17 +285,26 @@ function deleteById(id, callback) {
   });
 }
 function saveToDoc(bodyData, schemaModel, callback) {
+
   var newDoc = new schemaModel({
     title: bodyData.title,
     event: bodyData.event,
-    isAway: bodyData.isAway,
+    wasAdministered: bodyData.wasAdministered,
     dateTaken: bodyData.dateTaken,
     dependent: bodyData.dependent,
+    reason: bodyData.reason,
     createdBy: bodyData.createdBy,
     createdByStr: bodyData.createdBy.name.firstName + " " + bodyData.createdBy.name.lastName
   });
   if (typeof (bodyData.notes) != 'undefined') {
     newDoc.notes = bodyData.notes;
+  }
+  if(!newDoc.wasAdministered && !newDoc.reason){
+    callback("Need to provide reason why the med was not taken.")
+    return;
+  }else if(newDoc.reason && newDoc.reason.toLowerCase() == 'other' && !newDoc.notes){
+    callback("Please provide the reason in the notes section when select 'other'.")
+    return
   }
   newDoc.save(function (err, result) {
     if (err) {

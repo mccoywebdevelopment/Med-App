@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchMedEvents, fetchDeleteMedEvent} from '../../../actions/event';
+import { fetchMedEvents, fetchDeleteMedEvent } from '../../../actions/event';
 import { togglePopUp } from '../../../actions/popUp';
 import { formateDate, formatAMPM } from "../../../config/helpers";
 
@@ -24,27 +24,30 @@ class RxsMedDates extends React.Component {
         newState.left = left;
         this.setState(newState);
     }
-    _delete = (index) =>{
+    _delete = (index) => {
         let event = this.state.list[index];
-        if (window.confirm("Are you sure you want to delete " + event.title + " on " +formateDate(event.dateTaken))) {
-            this.props.fetchDeleteMedEvent(event._id,true,(res)=>{
+        if (window.confirm("Are you sure you want to delete " + event.title + " on " + formateDate(event.dateTaken))) {
+            this.props.fetchDeleteMedEvent(event._id, true, (res) => {
                 this.props.fetchMedEvents(this.props.rxsMedID, true, (res) => {
                     this._init(res);
                 });
             });
         }
     }
-    _edit = (index) =>{
+    _edit = (index) => {
         let event = this.state.list[index];
         let title = "Edit " + event.title + " on " + formateDate(event.dateTaken);
+        console.log(event)
         let isEdit = {
-            dateTaken:formateDate(event.dateTaken),
-            notes:event.notes,
-            isAway:event.isAway,
+            dateTaken: event.dateTaken,
+            notes: event.notes,
+            reason: event.reason,
+            guardian: event.createdBy,
+            wasAdministered: event.wasAdministered,
         }
         this.props.togglePopUp(title, <TookMed eventID={event._id} medName={this.props.medName} isEdit={isEdit} medID={this.props.rxsMedID} data={this.props.data} />);
     }
-    _toggleShowMore = () =>{
+    _toggleShowMore = () => {
         let newState = this.state;
         newState.showMore = !newState.showMore;
         this.setState(newState);
@@ -62,18 +65,18 @@ class RxsMedDates extends React.Component {
         }
         this._formatList(list, left);
     }
-    _expandItem = (index,value) =>{
+    _expandItem = (index, value) => {
         let newState = this.state;
         newState.list[index].isExpand = value;
         this.setState(newState);
     }
-    _sortRxsMedEvents = (medEvents) =>{
-        medEvents.sort(function(a,b){
+    _sortRxsMedEvents = (medEvents) => {
+        medEvents.sort(function (a, b) {
             return new Date(b.dateTaken) - new Date(a.dateTaken);
         });
         return medEvents;
     }
-    _init = (res) =>{
+    _init = (res) => {
         let newState = this.state;
         newState.rxsMedEvents = res.events;
         newState.rxsMedEvents = this._sortRxsMedEvents(newState.rxsMedEvents);
@@ -100,32 +103,38 @@ class RxsMedDates extends React.Component {
                         <tr index={"medTable^&*&^" + index} style={style}>
                             <th scope="row" style={{ paddingBottom: '0', paddingTop: '0' }}>
                                 <p style={{ marginBottom: '0px', paddingTop: '10px' }}>{index + 1}</p>
-                                <p onClick={() => { this._expandItem(index,true) }} title="view rest of med"
+                                <p onClick={() => { this._expandItem(index, true) }} title="view rest of med"
                                     style={{ color: '#2196F3', paddingTop: "5px", marginBottom: '10px', cursor: "pointer" }}>
                                     {!element.isExpand ? "More" : ""}&nbsp;
-                                </p>
+</p>
                             </th>
                             <td>{formateDate(element.dateTaken) || "-"}</td>
                             <td>{formatAMPM(element.dateTaken) || "-"}</td>
                             <td>{element.createdByStr || "-"}</td>
-                            <td>{element.isAway.toString() || "-"}</td>
+                            <td>{element.wasAdministered.toString() || "-"}</td>
                             <td>
-                                <i title="edit" onClick={()=>{this._edit(index)}} className="fas fa-edit" style={{ paddingRight: '20px', color: '#2196F3' }}></i>
-                                <i title="Delete" onClick={()=>{this._delete(index)}} className="fas fa-trash" style={{ color: '#2196F3' }}></i>
+                                <i title="edit" onClick={() => { this._edit(index) }} className="fas fa-edit" style={{ paddingRight: '20px', color: '#2196F3' }}></i>
+                                <i title="Delete" onClick={() => { this._delete(index) }} className="fas fa-trash" style={{ color: '#2196F3' }}></i>
                             </td>
                         </tr>
                         {element.isExpand ?
                             <React.Fragment key={"slk3(((" + index}>
                                 <tr index={"lkjmedTableInside^sdf&*&^" + index} className="no-border" style={style}>
-                                <td></td>
-                                <td colSpan="4">
-                                    <span className="inner-title">Notes:</span><br /><br />{element.notes || "-"}
-                                </td>
+                                    <td></td>
+                                    <td colSpan="4">
+                                        <span className="inner-title">Notes:</span><br /><br />{element.notes || "-"}
+                                    </td>
+                                </tr>
+                                <tr index={"lkjmedTableInsidfdfe^sdf&*&^" + index} className="no-border" style={style}>
+                                    <td></td>
+                                    <td colSpan="4">
+                                        <span className="inner-title">Reason:</span><br /><br />{element.reason || "-"}
+                                    </td>
                                 </tr>
                                 <tr index={"mAedTableInhjkhkhside^&*&^" + index} className="no-border-top" style={style}>
                                     <th scope="row" style={{ paddingBottom: '0', paddingTop: '0', borderTop: 'none' }}>
                                         <p style={{ marginBottom: '0px', paddingTop: '28px' }}></p>
-                                        <p onClick={() => { this._expandItem(index,false) }} title="view rest of med"
+                                        <p onClick={() => { this._expandItem(index, false) }} title="view rest of med"
                                             style={{ color: '#2196F3', paddingTop: "5px", marginBottom: '10px', cursor: "pointer" }}>{element.isExpand ? "Less" : ""}&nbsp;</p>
                                     </th>
                                 </tr>
@@ -138,9 +147,9 @@ class RxsMedDates extends React.Component {
         }
         return (
             <div style={{ minHeight: '30em', width: '100%' }}>
-                <div style={{padding:'1em',marginBottom:'2em'}}>
-                    <WhenToTake data={this.props.data.whenToTake}/>
-                </div>  
+                <div style={{ padding: '1em', marginBottom: '2em' }}>
+                    <WhenToTake data={this.props.data.whenToTake} />
+                </div>
                 {this.state.rxsMedEvents && this.state.rxsMedEvents.length > 0 ?
                     <table className="table my-med-table">
                         <thead>
@@ -149,7 +158,7 @@ class RxsMedDates extends React.Component {
                                 <th scope="col">Date Given</th>
                                 <th scope="col">Time</th>
                                 <th scope="col">Administer By</th>
-                                <th scrop="col">Is Away</th>
+                                <th scrop="col">Was Administered</th>
                                 <th scope="col">Actions</th>
                             </tr>
                         </thead>
@@ -157,7 +166,7 @@ class RxsMedDates extends React.Component {
                             {listTable()}
                         </tbody>
                     </table>
-                    : 
+                    :
                     <h1 style={{ textAlign: 'center', marginTop: '10%' }}>No Events Registered.</h1>
                 }
 
@@ -165,12 +174,12 @@ class RxsMedDates extends React.Component {
                     <p onClick={this._toggleShowMore} title="view" style={{ marginTop: '15px', marginLeft: '5px', cursor: 'pointer', color: '#2196F3', marginBottom: '0' }}>
                         <i className="fas fa-plus" style={{ paddingRight: '10px' }}></i>
                         {this.state.left.length} More Events
-                    </p>
+</p>
                     : this.state.showMore && this.state.list.length > 2 ?
                         <p onClick={this._toggleShowMore} title="view" style={{ marginTop: '15px', marginLeft: '5px', cursor: 'pointer', color: '#2196F3', marginBottom: '0' }}>
                             <i className="fas fa-minus" style={{ paddingRight: '10px' }}></i>
-                        Show Less
-                        </p>
+Show Less
+</p>
                         : null
                 }
             </div>

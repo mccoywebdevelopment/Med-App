@@ -2,9 +2,6 @@ import { toggleLoading } from '../actions/loading';
 import { API_URI } from '../config/variables';
 import moment from 'moment';
 import 'moment-timezone';
-import { store } from '../store';
-
-let timezone = store.getState().settings.timeZone;
 
 export function getAge(date) {
     if (date) {
@@ -22,6 +19,20 @@ export function formatAMPM(date) {
         let str = "";
         str = str + date.toISOString();
         return moment(str).tz('America/Phoenix').format("hh:mm a")
+    } else {
+        return ""
+    }
+}
+export function getTime(date) {
+    console.log(date)
+    if (date) {
+        date = new Date(date);
+        let str = "";
+        str = str + date.toISOString();
+        console.log(str)
+        date = moment(str).tz('America/Phoenix').format("HH:mm")
+        console.log(date)
+        return date
     } else {
         return ""
     }

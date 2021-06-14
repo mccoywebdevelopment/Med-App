@@ -5,7 +5,7 @@ import { fetchCreateMedEvent, fetchUpdateMedEvent } from '../../../actions/event
 import { fetchGuardians } from '../../../actions/guardian';
 import { fetchUsers } from '../../../actions/user';
 import { togglePopUp } from '../../../actions/popUp';
-import { capitalizeFirstLetter, convertLocalToUTC } from '../../../config/helpers';
+import { capitalizeFirstLetter, convertLocalToUTC, getTime, formateDate } from '../../../config/helpers';
 
 import RxsMedDates from "../../shared/tables/RxsMedDates";
 import Search from "../../shared/Search/Search";
@@ -13,17 +13,20 @@ import WhenToTake from "../../shared/Misc/WhenToTake";
 
 class TookMed extends React.Component {
     state = {
-        itemList:[],
+        itemList: [],
         isLoaded: false,
         values: {
-            isAway: false,
+            wasAdministered: false,
             notes: "",
-            guardian:"",
-            dateTaken: ""
+            guardian: "",
+            dateTaken: "",
+            reason:""
         },
         errors: {
             dateTaken: "",
-            guardian:""
+            guardian: "",
+            reason:"",
+            notes:""
         },
         body: null
     }
@@ -36,15 +39,29 @@ class TookMed extends React.Component {
         if (this.state.values.dateTaken.length < 1) {
             newState.errors.dateTaken = "This field is required";
             valid = false;
-        }else {
+        } else {
             newState.errors.dateTaken = "";
         }
 
         if (this.state.values.guardian.length < 1) {
             newState.errors.guardian = "This field is required";
             valid = false;
-        }else {
+        } else {
             newState.errors.guardian = "";
+        }
+
+        if(!this.state.values.wasAdministered && this.state.values.reason.length < 1){
+            newState.errors.reason = "This field is required";
+            valid = false;
+        }else{
+            newState.errors.reason = "";
+        }
+
+        if(!this.state.values.wasAdministered && this.state.values.reason == 'other' && this.state.values.notes.length<1){
+            newState.errors.notes = "Please enter why the medication was not taken";
+            valid = false;
+        }else{
+            newState.errors.notes = "";
         }
 
 
@@ -60,17 +77,21 @@ class TookMed extends React.Component {
         this.setState(newState);
     }
     _getBody = () => {
+        let reason = "";
+        if(!this.state.values.wasAdministered){
+            reason = this.state.values.reason;
+        }
         return {
-            isAway: this.state.values.isAway,
+            wasAdministered: this.state.values.wasAdministered,
             notes: this.state.values.notes,
-            dateTaken:  convertLocalToUTC(this.state.values.dateTaken),
+            reason: reason,
+            dateTaken: convertLocalToUTC(this.state.values.dateTaken),
             guardianID: this.state.values.guardian
         }
     }
-
     _getSelectedValues = (values) => {
         let newState = this.state;
-        newState.values.guardian= values[0][0];
+        newState.values.guardian = values[0][0];
         this.setState(newState);
     }
     _submit = () => {
@@ -91,15 +112,17 @@ class TookMed extends React.Component {
         if (!disableWindow && window.confirm("Are you sure you want to go back all changes made will not be saved.")) {
             this.props.togglePopUp(this.props.medName, <RxsMedDates rxsMedID={this.props.medID} medName={this.props.medName} data={this.props.data} />);
         } else if (disableWindow) {
-            this.props.togglePopUp(this.props.medName, <RxsMedDates rxsMedID={this.props.medID} medName={this.props.medName} data={this.props.data}/>);
+            this.props.togglePopUp(this.props.medName, <RxsMedDates rxsMedID={this.props.medID} medName={this.props.medName} data={this.props.data} />);
         }
     }
     _formateDateIsEdit = (date) => {
-        let dates = date.split('/');
-        let yyyy = dates[2];
-        let mm = dates[0];
-        let dd = dates[1];
-        return (yyyy + "-" + mm + "-" + dd);
+        let time = getTime(date);
+        date = formateDate(date).split('/');
+        let yyyy = date[2];
+        let mm = date[0];
+        let dd = date[1];
+    
+        return (yyyy + '-' + mm + '-' + dd + "T" + time);
     }
     _isUpdated = () => {
         if (JSON.stringify(this.state.values) != JSON.stringify(this.state.oldValues)) {
@@ -116,13 +139,17 @@ class TookMed extends React.Component {
         }
         return null;
     }
-    _formatGroupInputsGuardian = () => {
+    _formatGroupInputsGuardian = (selectedValue) => {
         let tableHeader = [{ value: "Name", colSpan: 2 }, { value: "# of Groups", colSpan: 1 },
         { value: "is Admin", colSpan: 1 }, { value: "Validation", colSpan: 1 }];
         let values = [];
         let tableBody = [];
         let selectedValues = [];
         let hiddenValues = [];
+
+        if(selectedValue){
+            selectedValues.push(selectedValue);
+        }
 
         for (var i = 0; i < this.props.guardianState.data.length; ++i) {
             let user = this._getUserByID(this.props.guardianState.data[i].user);
@@ -160,23 +187,27 @@ class TookMed extends React.Component {
         }
     }
     componentDidMount = () => {
+        let selGuardian = null;
         if (this.props.isEdit) {
             let newState = this.state;
-            newState.values.isAway = this.props.isEdit.isAway;
+            newState.values.wasAdministered = this.props.isEdit.wasAdministered;
+            newState.values.reason = this.props.isEdit.reason;
+            newState.values.guardian = this.props.isEdit.guardian;
+            selGuardian = newState.values.guardian;
             newState.values.dateTaken = this._formateDateIsEdit(this.props.isEdit.dateTaken);
             newState.values.notes = this.props.isEdit.notes;
             newState.oldValues = JSON.parse(JSON.stringify(newState.values));
             this.setState(newState);
         }
         this.props.fetchGuardians(true, (guardians) => {
-            if(guardians.length<1){
+            if (guardians.length < 1) {
                 alert("There are no guardians that can log this medication. Please create a guardian then add it to dependent's group.");
                 this._back(true);
-            }else{
+            } else {
                 this.props.fetchUsers(true, (users) => {
                     let newState = this.state;
                     newState.isLoaded = true;
-                    newState.itemList = [this._formatGroupInputsGuardian()];
+                    newState.itemList = [this._formatGroupInputsGuardian(selGuardian)];
                     this.setState(newState);
                 });
             }
@@ -186,26 +217,27 @@ class TookMed extends React.Component {
     render() {
         return (
             <>
-            <div style={{padding:'1em',marginBottom:'2em'}}>
-                    <WhenToTake data={this.props.data.whenToTake}/>
-                </div>  
+                <div style={{ padding: '1em', marginBottom: '2em' }}>
+                    <WhenToTake data={this.props.data.whenToTake} />
+                </div>
                 <div className="row">
                     <div className="col-lg-6">
                         <div className="form-group">
                             <label className="label">Date Taken</label>
                             <div className="input-group">
-                                <input type="datetime-local" className="form-control" name="dateOfBirth" placeholder="mm/dd/yyyy"
+                                <input type="datetime-local" className="form-control" id="datetime1" name="dateOfBirth" placeholder="mm/dd/yyyy"
                                     value={this.state.values.dateTaken}
                                     onChange={(e) => { this._update("dateTaken", e.target.value) }} />
                                 <div className="invalid-feedback" style={{ display: 'block' }}>
-                                    {this.state.errors.dateTaken}&nbsp;
+                                    {this.state.errors.dateTaken}
+&nbsp;
 </div>
                             </div>
                         </div>
                     </div>
                     <div className="col-lg-6">
                         <div className="form-group" style={{ marginBottom: '0px' }}>
-                            <label className="label">Is away?</label>
+                            <label className="label">Was Administered?</label>
                         </div>
                         <div className="form-group row">
                             <div className="col-sm-6" style={{ paddingLeft: '0px' }}>
@@ -213,8 +245,8 @@ class TookMed extends React.Component {
                                     <label className="form-check-label">
                                         <input readOnly={true} type="radio" className="form-check-input"
                                             name="membershipRadios" id="membershipRadios1" value="Yes"
-                                            onClick={() => { this._update("isAway", true) }}
-                                            checked={this.state.values.isAway} aria-describedby="passwordHelpBlock" />
+                                            onClick={() => { this._update("wasAdministered", true) }}
+                                            checked={this.state.values.wasAdministered} aria-describedby="passwordHelpBlock" />
 Yes
 <i className="input-helper"></i>
                                     </label>
@@ -224,14 +256,36 @@ Yes
                                 <div className="form-radio">
                                     <label className="form-check-label">
                                         <input readOnly={true} type="radio" className="form-check-input" name="membershipRadios"
-                                            id="membershipRadios2" value="no" onClick={() => { this._update("isAway", false) }}
-                                            checked={!this.state.values.isAway} />
+                                            id="membershipRadios2" value="no" onClick={() => { this._update("wasAdministered", false) }}
+                                            checked={!this.state.values.wasAdministered} />
 No <i className="input-helper"></i>
                                     </label>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    {!this.state.values.wasAdministered?
+                    <div className="col-lg-6">
+                        <div className="form-group">
+                            <label className="label">Reason why not administered</label>
+                            <div className="input-group">
+                                <select class="form-select form-control" aria-label="Default select example" name="reason" onChange={(e) => { this._update("reason", e.target.value) }} value={this.state.values.reason}>
+                                    <option selected>--------select reason--------</option>
+                                    <option value="refused">Refused</option>
+                                    <option value="missed">Missed</option>
+                                    <option value="hospital">Hospital</option>
+                                    <option value="school">School</option>
+                                    <option value="on pass">On Pass</option>
+                                    <option value="not needed">Not Needed</option>
+                                    <option value="other">Other (explain in notes)</option>
+                                </select>
+                                <div className="invalid-feedback" style={{ display: 'block' }}>
+                                    {this.state.errors.reason}&nbsp;
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    :null}
                     <div className="col-lg-6">
                         <div className="form-group">
                             <label className="label">Notes (optional)</label>
@@ -239,19 +293,19 @@ No <i className="input-helper"></i>
                                 <textarea type="text" className="form-control" name="name" placeholder="Take two..."
                                     value={this.state.values.notes} onChange={(e) => { this._update("notes", e.target.value) }} />
                                 <div className="invalid-feedback" style={{ display: 'block' }}>
-                                    {/*this.props.data.errors.instructions*/}&nbsp;
-</div>
+                                {this.state.errors.notes} &nbsp;
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div className="col-lg-6">
+                    <div className="col-lg-12">
                         {this.state.isLoaded ?
-                        <>
-                            <Search isSingleSelect={true} isReadOnly={false} color={"#ffaf00"} placeholder="Search & Select Items" items={this.state.itemList}
-                                updateParentStateAll={this._getSelectedValues} dataSel={0} label={"Guardian(s)"} updateParentStateAll={this._getSelectedValues}/>
+                            <>
+                                <Search isSingleSelect={true} isReadOnly={false} color={"#ffaf00"} placeholder="Search & Select Items" items={this.state.itemList}
+                                    updateParentStateAll={this._getSelectedValues} dataSel={0} label={"Guardian(s)"} updateParentStateAll={this._getSelectedValues} />
                                 <div className="invalid-feedback" style={{ display: 'block' }}>
-                                {this.state.errors.guardian}&nbsp;</div>
-                                </>
+                                    {this.state.errors.guardian}&nbsp;</div>
+                            </>
                             : null}
                     </div>
                 </div>
@@ -282,4 +336,7 @@ const mapStateToProps = (state) => ({
     userState: state.userState
 });
 
-export default connect(mapStateToProps, { fetchCreateMedEvent, fetchUsers, togglePopUp, fetchUpdateMedEvent, fetchGuardians })(TookMed);
+export default connect(mapStateToProps, {
+    fetchCreateMedEvent, fetchUsers, togglePopUp,
+    fetchUpdateMedEvent, fetchGuardians
+})(TookMed);

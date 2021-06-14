@@ -82,8 +82,8 @@ function createWorkSheet(wb,dependent,month,year){
             medCounter++;
             ws = createSubHeader(ws,wb,x_index,y_index,"Dates Taken:");
             y_index = y_index + 1;
-            ws.cell(x_index,y_index).string("Is Away:");
-            y_index = y_index + 1;
+            // ws.cell(x_index,y_index).string("Is Away:");
+            // y_index = y_index + 1;
             ws.cell(x_index,y_index).string("Date Submitted:");
             y_index = y_index + 1;
             ws.cell(x_index,y_index).string("Given By:");
@@ -102,7 +102,6 @@ function createWorkSheet(wb,dependent,month,year){
 }
 
 function createRxsMedDates(ws,wb,x_index,y_index,event,month,year){
-    console.log(event)
     var obj = {
         x_index:x_index,
         y_index:y_index,
@@ -112,8 +111,8 @@ function createRxsMedDates(ws,wb,x_index,y_index,event,month,year){
         var date = event.dateTaken;
         ws.cell(x_index,y_index).string(getDate(date));
         y_index = y_index + 1;
-        ws.cell(x_index,y_index).string(event.isAway.toString());
-        y_index = y_index + 1;
+        // ws.cell(x_index,y_index).string(event.wasAdministered.toString());
+        // y_index = y_index + 1;
         ws.cell(x_index,y_index).string(getTime(date));
         y_index = y_index + 1;
         var guardianName = "";
