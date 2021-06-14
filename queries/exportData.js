@@ -131,6 +131,7 @@ function createRxsMedDates(ws,wb,x_index,y_index,event,month,year){
     return obj;
 }
 function getTime(date){
+    date = new Date(date);
     var hours = date.getHours();
     var minutes = date.getMinutes();
     var ampm = hours >= 12 ? 'pm' : 'am';
@@ -143,6 +144,7 @@ function getTime(date){
     return (strDate + " @ " + strTime);
 }
 function getDate(date){
+    date = new Date(date);
     var mm = date.getMonth()+1;
     var yyyy = date.getFullYear();
     var dd = date.getDate();
@@ -189,7 +191,7 @@ function createRxsMedicationInfo(ws,wb,x_index,y_index,rxsMedication){
     y_index = y_index - 1;
     ws.cell(x_index,y_index).string("Date Prescribed:");
     y_index = y_index + 1;
-    ws.cell(x_index,y_index).string(getDate(new Date(rxsMedication.datePrescribed.toString())));
+    ws.cell(x_index,y_index).string(getDate(rxsMedication.datePrescribed));
 
     x_index = x_index + 1;
     y_index = y_index - 1;
@@ -201,7 +203,7 @@ function createRxsMedicationInfo(ws,wb,x_index,y_index,rxsMedication){
     y_index = y_index - 1;
     ws.cell(x_index,y_index).string("End Date:");
     y_index = y_index + 1;
-    ws.cell(x_index,y_index).string(rxsMedication.endDate || "-");
+    ws.cell(x_index,y_index).string(getDate(rxsMedication.endDate) || "-");
 
     var obj = {
         x_index:x_index+1,

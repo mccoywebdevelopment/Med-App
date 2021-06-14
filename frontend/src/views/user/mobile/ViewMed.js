@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { formateDate } from '../../../config/helpers';
 
 import PopUpCard from "../../../components/user/cards/PopUpCard";
 import WhenToTake from "../../../components/shared/Misc/WhenToTake";
@@ -39,10 +40,10 @@ class ViewMed extends React.Component {
                     <div className="row" style={{ paddingTop: '0px',paddingBottom:'1em' }}>
                         <div className="col-6" style={{fontSize:'1.25em'}}>
                             <span style={{ fontWeight: 'bold' }}> Date PSCR:</span>
-                            <br />{this.props.data.rxsMedication.datePrescribed}
+                            <br />{formateDate(this.props.data.rxsMedication.datePrescribed)}
                         </div>
                         <div className="col-6" style={{fontSize:'1.25em'}}>
-                            <span style={{ fontWeight: 'bold' }}>End Date:</span><br />{this.props.data.rxsMedication.endDate || '-'}
+                            <span style={{ fontWeight: 'bold' }}>End Date:</span><br />{formateDate(this.props.data.rxsMedication.endDate) || '-'}
                         </div>
                     </div>
                     <div className="row" style={{ paddingTop: '0px',paddingBottom:'1em' }}>
