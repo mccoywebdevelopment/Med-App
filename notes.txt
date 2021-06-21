@@ -9,11 +9,10 @@
 
 
 - Backend Files:
-./queries,./routes,./config,./models,./index.js,./notifications,./clock
+./queries,./routes,./config,./models,./index.js,./notifications,./clock.js
 - Frontend Files:
 ./frontend/src/actions,./frontend/src/components,./frontend/src/views,./frontend/src/reducers,./frontend/src/layouts,./frontend/src/config,./frontend/src/App.js,./frontend/src/index.js,./frontend/src/store.js
 - All Files:
-./queries,./routes,./config,./models,./index.js,./notifications,./clock,./frontend/src/actions,./frontend/src/components,./frontend/src/views,./frontend/src/reducers,./frontend/src/layouts,./frontend/src/config,./frontend/src/App.js,./frontend/src/index.js,./frontend/src/store.js
 
 var aryIannaTimeZones = [
   'Europe/Andorra',

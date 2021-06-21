@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { fetchCreateMedEvent, fetchCreateMedEventRefID } from '../../../actions/event';
 import { createMessage } from '../../../actions/messages';
 import { getRxsMedByID, getRxsMedByRefID } from '../../../actions/user';
-import { getPath, getPaths } from '../../../config/helpers'
+import { getPath, getPaths, getBodyForRxsMedEvent } from '../../../config/helpers'
 import { togglePopUp } from '../../../actions/popUp';
 
 import PopUpCard from '../../../components/user/cards/PopUpCard';
@@ -36,12 +36,7 @@ class AdministerMed extends React.Component {
         this.setState(newState);
     }
     _getBody = () => {
-        return {
-            wasAdministered: this.state.values.wasAdministered,
-            notes: this.state.values.notes,
-            reason: this.state.values.reason,
-            dateTaken: this.state.values.dateTaken
-        }
+        return getBodyForRxsMedEvent(this.state.values.wasAdministered,this.state.values.notes,this.state.values.reason);
     }
     _isActive = (activeMeds, medID) => {
         for (var i = 0; i < activeMeds.length; ++i) {
@@ -89,7 +84,7 @@ class AdministerMed extends React.Component {
     _submit = () => {
         if(!this.state.values.wasAdministered && !this.state.values.reason){
             alert("Please select a reason why medication was not administered.");
-        }else if(this.state.values.reason.toLowerCase() == 'other' && !this.state.values.notes){
+        }else if(!this.state.values.wasAdministered && this.state.values.reason.toLowerCase() == 'other' && !this.state.values.notes){
             alert("Please explain why the medication was not administered in the notes section.")
         }else if (this.props.isRefID && this.props.isLocal) {
             this._submitLocalRefID();

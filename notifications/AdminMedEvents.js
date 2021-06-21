@@ -1,16 +1,12 @@
 let { getPeriods, isGreatorThan } = require('../config/globalHelpers');
 let { getCurrentTime } = require('../config/rootHelpers');
 let { getGroups } = require('./shared');
-let VALID_TIMES_MORNING_END = process.env.VALID_TIMES_MORNING_END || require('../config/configVars').VALID_TIMES_MORNING_END;
-let VALID_TIMES_AFTERNOON_END = process.env.VALID_TIMES_AFTERNOON_END || require('../config/configVars').VALID_TIMES_AFTERNOON_END;
-let VALID_TIMES_EVENING_END = process.env.VALID_TIMES_EVENING_END || require('../config/configVars').VALID_TIMES_EVENING_END;
-let currentTime = getCurrentTime();
 let createAdminNotification = require('../queries/notifications').create;
 let { getDependentsRxs } = require('../queries/user');
 
-function getActiveMedsForPrevPeriods(activeArr, historyArr) {
+function getActiveMedsForPrevPeriods(activeArr) {
+    let { morningEnd, afternoonEnd, eveningEnd } = getPeriods(getCurrentTime());
     let arr = [];
-    let { morningEnd, afternoonEnd, eveningEnd } = getPeriods(currentTime);
     /*
     Need to loop through and check if 
     */
@@ -18,21 +14,21 @@ function getActiveMedsForPrevPeriods(activeArr, historyArr) {
         arr.push({
             type: 'morning',
             arr: activeArr.morningMedsActive,
-            periodEnd: VALID_TIMES_MORNING_END
+            periodEnd: morningEnd.format('hh:mm A')
         })
     }
     if (isGreatorThan(afternoonEnd) && activeArr.afternoonMedsActive.length > 0) {
         arr.push({
             type: 'afternoon',
             arr: activeArr.afternoonMedsActive,
-            periodEnd: VALID_TIMES_AFTERNOON_END
+            periodEnd: afternoonEnd.format('hh:mm A')
         })
     }
     if (isGreatorThan(eveningEnd) && activeArr.eveningMedsActive.length > 0) {
         arr.push({
             type: 'evening',
             arr: activeArr.eveningMedsActive,
-            periodEnd: VALID_TIMES_EVENING_END
+            periodEnd: eveningEnd.format('hh:mm A')
         })
     }
     let newArr = [];

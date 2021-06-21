@@ -1,7 +1,15 @@
 import { toggleLoading } from '../actions/loading';
-import { API_URI } from '../config/variables';
+import { API_URI, TIME_ZONE } from '../config/variables';
 import moment from 'moment';
 import 'moment-timezone';
+
+export function getCurrentTime(date) {
+    if (date) {
+        return moment(date).tz(TIME_ZONE)
+    } else {
+        return moment().tz(TIME_ZONE)
+    }
+}
 
 export function getAge(date) {
     if (date) {
@@ -18,7 +26,7 @@ export function formatAMPM(date) {
         date = new Date(date);
         let str = "";
         str = str + date.toISOString();
-        return moment(str).tz('America/Phoenix').format("hh:mm a")
+        return moment(str).tz(TIME_ZONE).format("hh:mm a")
     } else {
         return ""
     }
@@ -45,16 +53,6 @@ export function isMonth(someDate) {
     let today = new Date();
     return (someDate.getMonth() == today.getMonth() &&
         someDate.getFullYear() == today.getFullYear())
-}
-export function isToday(someDate) {
-    if (!someDate) {
-        return false;
-    }
-    someDate = new Date(someDate);
-    let today = new Date();
-    return someDate.getDate() == today.getDate() &&
-        someDate.getMonth() == today.getMonth() &&
-        someDate.getFullYear() == today.getFullYear()
 }
 export function formateDate(date) {
     if (date) {
@@ -169,16 +167,65 @@ export function formatDateHome(date) {
 
     return [year, month, day].join('-');
 }
-export function isBetween(time, start, end) {
-    let today = new Date(time);
-    if (start <= today && today <= end) {
+export function convertDateHandler(date) {
+    if (date) {
+        date = new Date(date);
+    } else {
+        date = new Date();
+    }
+    let str = "";
+    str = str + date.toISOString();
+    return moment(str).tz('America/Phoenix').format()
+}
+export function getBodyForRxsMedEvent(wasAdministered, notes, reason, dateTaken, guardianID) {
+    let reasonbod = "";
+    let body = {};
+    if (!wasAdministered) {
+        reasonbod = reason;
+    }
+    if (guardianID) {
+        body.guardianID = guardianID;
+    }
+    if (dateTaken) {
+        body.dateTaken = dateTaken;
+    }
+    body.notes = notes;
+    body.wasAdministered = wasAdministered
+    body.reason = reasonbod;
+    return body;
+}
+
+export function isLessThan(end) {
+    let today = getCurrentTime();
+    end = getCurrentTime(end)
+    if (today <= end) {
         return true
     }
     return false;
 }
-export function isLessThan(end) {
-    let today = new Date();
-    if (today <= end) {
+export function isGreatorThan(end) {
+    let today = getCurrentTime();
+    end = getCurrentTime(end)
+    if (today >= end) {
+        return true
+    }
+    return false;
+}
+export function isToday(someDate) {
+    if (!someDate) {
+        return false;
+    }
+    someDate = getCurrentTime(someDate);
+    let today = getCurrentTime();
+    let bool = someDate.isSame(today, "day");
+    return bool
+}
+export function isBetween(time, start, end) {
+    let today = getCurrentTime(time);
+    end = getCurrentTime(end);
+    start = getCurrentTime(start);
+
+    if (start <= today && today <= end) {
         return true
     }
     return false;

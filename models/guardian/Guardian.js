@@ -9,7 +9,7 @@ var GuardianSchema = new mongoose.Schema({
         firstName:String,
         lastName:String
     },
-    phoneNumber:Number,
+    phoneNumber:String,
     pictureUrl:String
 });
 

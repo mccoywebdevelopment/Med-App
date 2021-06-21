@@ -28,7 +28,7 @@ var UserSchema = new mongoose.Schema({
 
 UserSchema.pre('save', function (next) {
     if (!this.dateCreated) {
-        this.dateCreated = getCurrentTime();
+        this.dateCreated = getCurrentTime().format();
     }
     if (this.auth.status.statusValue != "pending" && this.auth.status.statusValue != "approved" && this.auth.status.statusValue != "rejected") {
         var err = "Didn't recieve a valid entry for status valid values are: pending, approved, and rejected.";
@@ -62,7 +62,7 @@ UserSchema.pre('save', function (next) {
                             next(err);
                         } else {
                             user.password = hash;
-                            user.auth.dateAuthenticated = getCurrentTime();
+                            user.auth.dateAuthenticated = getCurrentTime().format();
                             user.auth.status.statusValue = "approved";
                             next();
                         }

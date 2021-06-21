@@ -10,3 +10,5 @@ export const CLIENT_URL = "http://localhost:3000"
 // prod mode:
 // export const API_URI = "https://sach-medapp.herokuapp.com/api"
 // export const CLIENT_URL = "https://sach-medapp.herokuapp.com"
+
+export const TIME_ZONE = "America/Phoenix"

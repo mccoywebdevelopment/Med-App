@@ -74,7 +74,7 @@ function deleteById(id,callback){
 }
 function saveToDoc(bodyData,schemaModel,callback){
   var newDoc = new schemaModel({
-    dateCreated: getCurrentTime(),
+    dateCreated: getCurrentTime().format(),
     type:bodyData.type
   });
   if(typeof(bodyData.medicationMissed)!='undefined'){

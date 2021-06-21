@@ -1,7 +1,7 @@
 let RxsMedModel = require('../models/rxsMedication/RxsMedication');
 let DependentModel = require('../models/dependent/Dependent');
 let GroupModel = require('../models/group/Group');
-let val = require('./helpers/helper');
+let { getCurrentTime } = require('../config/rootHelpers')
 let delMedEvent = require('./medicationEvent').deleteById;
 let QRCode = require('qrcode');
 let CLIENT_URL  = process.env.CLIENT_URL || require('../config/configVars').CLIENT_URL;
@@ -138,13 +138,13 @@ function updateModifiedFields(oldDoc, updatedFields) {
     reason = updatedFields.reason;
   }
   if (updatedFields.datePrescribed) {
-    datePrescribed = new Date(updatedFields.datePrescribed);
+    datePrescribed = getCurrentTime(updatedFields.datePrescribed).format();
   }
   if (updatedFields.instructions) {
     instructions = updatedFields.instructions;
   }
   if (updatedFields.endDate) {
-    endDate = new Date(updatedFields.endDate);
+    endDate = getCurrentTime(updatedFields.endDate).format();
   }
   if (updatedFields.event) {
     callback("EVENT NOT IMPLEMENTED");
@@ -263,7 +263,7 @@ function saveToDoc(bodyData, schemaModel, callback) {
       phoneNumber:bodyData.doctorPhoneNumber
     },
     reason: bodyData.reason,
-    datePrescribed: new Date(bodyData.datePrescribed)
+    datePrescribed: getCurrentTime(bodyData.datePrescribed).format()
   });
   
   if (typeof (bodyData.rxsNumber) != 'undefined') {
@@ -273,7 +273,7 @@ function saveToDoc(bodyData, schemaModel, callback) {
     newDoc.instructions = bodyData.instructions
   }
   if (typeof (bodyData.endDate) != 'undefined') {
-    newDoc.endDate = new Date(bodyData.endDate);
+    newDoc.endDate = getCurrentTime(bodyData.endDate).format();
   }
   if (typeof (bodyData.whenToTake) != 'undefined' && bodyData.whenToTake.length > 0) {
     let whenToTake = [];

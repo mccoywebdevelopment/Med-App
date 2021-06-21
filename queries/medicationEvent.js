@@ -187,17 +187,23 @@ function attatchRxsMedEventToRxsMed(rxsMedEvent, rxsMed, callback) {
 function createRxsMedEvent(body, dependent, rxsMedication, guardian, callback) {
   var guardianName = guardian.name.firstName + " " + guardian.name.lastName;
   var dependentName = dependent.name.firstName + " " + dependent.name.lastName;
+
+  let dateTaken = getCurrentTime().format();
+  if(body.dateTaken){
+    dateTaken = body.dateTaken;
+  }
   
   var medicationEventBody = {
     title: dependentName + " took " + rxsMedication.name,
     wasAdministered: body.wasAdministered,
     notes: body.notes,
-    dateTaken: new Date(body.dateTaken) || getCurrentTime(),
+    dateTaken: dateTaken,
     dependent: dependent,
     reason: body.reason,
     createdBy: guardian,
     createdByStr: guardianName
   }
+  console.log(medicationEventBody)
   create(medicationEventBody, function (err, medEventCreated) {
     if (err) {
       callback(err);

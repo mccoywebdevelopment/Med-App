@@ -90,9 +90,9 @@ function registerUser(body,token,email,callback){
 }
 function setExpireToken(userFound){
     var today = getCurrentTime();
-    today.setHours(today.getHours() + 48);
+    let futureDate = today.add(12, 'hours');
 
-    userFound.auth.expiresIn = today;
+    userFound.auth.expiresIn = futureDate;
     return userFound;
 }
 function signToken(callback){
@@ -125,7 +125,7 @@ function logginUser(body,callback){
                             userFound = setExpireToken(userFound);
                             userFound.password = body.password;
                             userFound.auth.token = token;
-                            userFound.lastLoggon = getCurrentTime();
+                            userFound.lastLoggon = getCurrentTime().format();
                             userFound.save(function(err,userSaved){
                                 if(err){
                                     callback(err);

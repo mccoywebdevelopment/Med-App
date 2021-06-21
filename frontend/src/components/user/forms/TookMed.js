@@ -5,7 +5,7 @@ import { fetchCreateMedEvent, fetchUpdateMedEvent } from '../../../actions/event
 import { fetchGuardians } from '../../../actions/guardian';
 import { fetchUsers } from '../../../actions/user';
 import { togglePopUp } from '../../../actions/popUp';
-import { capitalizeFirstLetter, convertLocalToUTC, getTime, formateDate } from '../../../config/helpers';
+import { capitalizeFirstLetter, getTime, formateDate, getBodyForRxsMedEvent } from '../../../config/helpers';
 
 import RxsMedDates from "../../shared/tables/RxsMedDates";
 import Search from "../../shared/Search/Search";
@@ -77,17 +77,8 @@ class TookMed extends React.Component {
         this.setState(newState);
     }
     _getBody = () => {
-        let reason = "";
-        if(!this.state.values.wasAdministered){
-            reason = this.state.values.reason;
-        }
-        return {
-            wasAdministered: this.state.values.wasAdministered,
-            notes: this.state.values.notes,
-            reason: reason,
-            dateTaken: convertLocalToUTC(this.state.values.dateTaken),
-            guardianID: this.state.values.guardian
-        }
+        return getBodyForRxsMedEvent(this.state.values.wasAdministered,this.state.values.notes,
+            this.state.values.reason,this.state.values.dateTaken,this.state.values.guardianID);
     }
     _getSelectedValues = (values) => {
         let newState = this.state;

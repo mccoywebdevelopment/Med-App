@@ -17,7 +17,7 @@ var DependentSchema = new mongoose.Schema({
 });
 
 DependentSchema.pre('save',function(next){
-    this.dateCreated = getCurrentTime();
+    this.dateCreated = getCurrentTime().format();
     if(this.name.firstName.length<3){
         next("Server Error: First Name must be at least 3 characters.");
     }else if(this.name.lastName.length<3){

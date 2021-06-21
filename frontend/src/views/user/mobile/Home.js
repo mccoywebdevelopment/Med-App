@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchGetFilteredMedications } from '../../../actions/user';
-import { formatDateHome, isBetween } from '../../../config/helpers';
+import { formatDateHome, isBetween} from '../../../config/helpers';
 
 import UserHeader from "../../../components/user/header/UserHeader";
 import Progress from "../../../components/user/charts/Progress";
@@ -61,11 +61,11 @@ class Home extends React.Component {
         let afternoon = this.state.afternoon;
         let today = new Date();
 
-        let morningStart = Date.parse(formatDateHome(today) + " " + morning[0]);
-        let morningEnd = Date.parse(formatDateHome(today) + " " + morning[1]);
+        let morningStart = morning[0]
+        let morningEnd = morning[1]
 
-        let afternoonStart = Date.parse(formatDateHome(today) + " " + afternoon[0]);
-        let afternoonEnd = Date.parse(formatDateHome(today) + " " + afternoon[1]);
+        let afternoonStart = afternoon[0]
+        let afternoonEnd = afternoon[1]
 
         let newState = this.state;
         if (isBetween(today, morningStart, morningEnd)) {

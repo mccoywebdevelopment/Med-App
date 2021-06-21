@@ -1,14 +1,14 @@
 let User = require('../models/user/User');
 let RxsMedication = require('../models/rxsMedication/RxsMedication');
 let { getCurrentTime } = require('./rootHelpers'); 
-let VALID_TIMES_MORNING_START = process.env.VALID_TIMES_MORNING_START || require('./configVars').VALID_TIMES_MORNING_START;
-let VALID_TIMES_MORNING_END = process.env.VALID_TIMES_MORNING_END || require('./configVars').VALID_TIMES_MORNING_END;
+const VALID_TIMES_MORNING_START = process.env.VALID_TIMES_MORNING_START || require('./configVars').VALID_TIMES_MORNING_START;
+const VALID_TIMES_MORNING_END = process.env.VALID_TIMES_MORNING_END || require('./configVars').VALID_TIMES_MORNING_END;
 
-let VALID_TIMES_AFTERNOON_START = process.env.VALID_TIMES_AFTERNOON_START || require('./configVars').VALID_TIMES_AFTERNOON_START;
-let VALID_TIMES_AFTERNOON_END = process.env.VALID_TIMES_AFTERNOON_END || require('./configVars').VALID_TIMES_AFTERNOON_END;
+const VALID_TIMES_AFTERNOON_START = process.env.VALID_TIMES_AFTERNOON_START || require('./configVars').VALID_TIMES_AFTERNOON_START;
+const VALID_TIMES_AFTERNOON_END = process.env.VALID_TIMES_AFTERNOON_END || require('./configVars').VALID_TIMES_AFTERNOON_END;
 
-let VALID_TIMES_EVENING_START = process.env.VALID_TIMES_EVENING_START || require('./configVars').VALID_TIMES_EVENING_START;
-let VALID_TIMES_EVENING_END = process.env.VALID_TIMES_EVENING_END || require('./configVars').VALID_TIMES_EVENING_END;
+const VALID_TIMES_EVENING_START = process.env.VALID_TIMES_EVENING_START || require('./configVars').VALID_TIMES_EVENING_START;
+const VALID_TIMES_EVENING_END = process.env.VALID_TIMES_EVENING_END || require('./configVars').VALID_TIMES_EVENING_END;
 
 function verifyUser(req, res, next) {
     var todayDate = getCurrentTime();
@@ -102,6 +102,7 @@ function addDetailsToUser(guardian, user) {
 }
 function isLessThan(end) {
     let today = getCurrentTime();
+    end =  getCurrentTime(end)
     if (today <= end) {
         return true
     }
@@ -109,6 +110,7 @@ function isLessThan(end) {
 }
 function isGreatorThan(end) {
     let today = getCurrentTime();
+    end = getCurrentTime(end)
     if (today >= end) {
         return true
     }
@@ -118,41 +120,37 @@ function isToday(someDate) {
     if (!someDate) {
         return false;
     }
-    someDate = new Date(someDate);
+    someDate = getCurrentTime(someDate);
     let today = getCurrentTime();
-    return someDate.getDate() == today.getDate() &&
-        someDate.getMonth() == today.getMonth() &&
-        someDate.getFullYear() == today.getFullYear()
+    let bool = someDate.isSame(today,"day");
+    return bool
 }
 function isBetween(time, start, end) {
-    let today = new Date(time);
+    let today = getCurrentTime(time);
+    end = getCurrentTime(end);
+    start = getCurrentTime(start);
+
     if (start <= today && today <= end) {
         return true
     }
     return false;
 }
-function appendTimeToDate(date) {
-    var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
-
-    if (month.length < 2)
-        month = '0' + month;
-    if (day.length < 2)
-        day = '0' + day;
-
-    return [year, month, day].join('-');
-}
 function getPeriods(today) {
-    let morningStart = new Date(appendTimeToDate(today) + " " + VALID_TIMES_MORNING_START);
-    let morningEnd = new Date(appendTimeToDate(today) + " " + VALID_TIMES_MORNING_END);
+    let morningStartArr = VALID_TIMES_MORNING_START.split(':');
+    let morningEndArr = VALID_TIMES_MORNING_END.split(':');
+    let afternoonStartArr = VALID_TIMES_AFTERNOON_START.split(':');
+    let afternoonEndArr = VALID_TIMES_AFTERNOON_END.split(':');
+    let eveningStartArr = VALID_TIMES_EVENING_START.split(':');
+    let eveningEndArr = VALID_TIMES_EVENING_END.split(':');
 
-    let afternoonStart = new Date(appendTimeToDate(today) + " " + VALID_TIMES_AFTERNOON_START);
-    let afternoonEnd = new Date(appendTimeToDate(today) + " " + VALID_TIMES_AFTERNOON_END);
+    let morningStart = getCurrentTime(today).set({'hour': morningStartArr[0], 'minute': morningStartArr[1]});
+    let morningEnd =  getCurrentTime(today).set({'hour': morningEndArr[0], 'minute': morningEndArr[1]});
 
-    let eveningStart = new Date(appendTimeToDate(today) + " " + VALID_TIMES_EVENING_START);
-    let eveningEnd = new Date(appendTimeToDate(today) + " " + VALID_TIMES_EVENING_END);
+    let afternoonStart = getCurrentTime(today).set({'hour': afternoonStartArr[0], 'minute':  afternoonStartArr[1]});
+    let afternoonEnd = getCurrentTime(today).set({'hour':  afternoonEndArr[0], 'minute':  afternoonEndArr[1]});
+
+    let eveningStart = getCurrentTime(today).set({'hour': eveningStartArr[0], 'minute': eveningStartArr[1]});
+    let eveningEnd = getCurrentTime(today).set({'hour': eveningEndArr[0], 'minute': eveningEndArr[1]});
 
     return { morningStart, morningEnd, afternoonStart, afternoonEnd, eveningStart, eveningEnd }
 }
@@ -195,16 +193,14 @@ function isMedEventValid(events, whenToTake, isAdmin) {
     }
 }
 function formatAMPM(date) {
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
-    var ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
-    minutes = minutes < 10 ? '0' + minutes : minutes;
-    var strTime = hours + ':' + minutes + ' ' + ampm;
-    return strTime;
+    date = getCurrentTime(date);
+    date.format('hh:mm a')
+}
+function formatMMDDYYYY(date){
+    date = getCurrentTime(date);
+    return date.format('MM/DD/YYYY')
 }
 module.exports = {
     verifyUser, verifyAdmin, formatAMPM, isMedEventValid, verifyRefID, isGreatorThan,
-    findUserByJwt, addDetailsToUser, isToday, isBetween, isLessThan, appendTimeToDate, getPeriods
+    findUserByJwt, addDetailsToUser, isToday, isBetween, isLessThan, getPeriods, formatMMDDYYYY
 };

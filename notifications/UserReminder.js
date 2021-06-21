@@ -3,10 +3,6 @@ let { getCurrentTime } = require('../config/rootHelpers');
 let path = require('path');
 let { sendMail } = require('../queries/mailer');
 let { getDependentsRxs } = require('../queries/user');
-let currentTime = getCurrentTime();
-let VALID_TIMES_MORNING_END = process.env.VALID_TIMES_MORNING_END || require('../config/configVars').VALID_TIMES_MORNING_END;
-let VALID_TIMES_AFTERNOON_END = process.env.VALID_TIMES_AFTERNOON_END || require('../config/configVars').VALID_TIMES_AFTERNOON_END;
-let VALID_TIMES_EVENING_END = process.env.VALID_TIMES_EVENING_END || require('../config/configVars').VALID_TIMES_EVENING_END;
 let CLIENT_URL = process.env.CLIENT_URL || require('../config/configVars').CLIENT_URL;
 let { getGroups, capitalizeFirstLetter, isDuplicate } = require('./shared');
 
@@ -42,27 +38,26 @@ function sendMedNotificationEmail(username, activeMedications, period, periodEnd
 }
 
 function getActiveMedsForCurrentPeriod(activeArr) {
-    let today = getCurrentTime();
-    let { morningStart, morningEnd, afternoonStart, afternoonEnd, eveningStart, eveningEnd } =
-        getPeriods(currentTime);
+    let today = getCurrentTime()
+    let { morningEnd, afternoonEnd, eveningEnd } = getPeriods(today);
 
     if (isBetween(today, morningStart, morningEnd) && activeArr.morningMedsActive.length > 0) {
         return {
             type: 'morning',
             arr: activeArr.morningMedsActive,
-            periodEnd: VALID_TIMES_MORNING_END
+            periodEnd: morningEnd.format('hh:mm A')
         }
     } else if (isBetween(today, afternoonStart, afternoonEnd) && activeArr.afternoonMedsActive.length > 0) {
         return {
             type: 'afternoon',
             arr: activeArr.afternoonMedsActive,
-            periodEnd: VALID_TIMES_AFTERNOON_END
+            periodEnd: afternoonEnd.format('hh:mm A')
         }
     } else if (isBetween(today, eveningStart, eveningEnd) && activeArr.eveningMedsActive.length > 0) {
         return {
             type: 'evening',
             arr: activeArr.eveningMedsActive,
-            periodEnd: VALID_TIMES_EVENING_END
+            periodEnd: eveningEnd.format('hh:mm A')
         }
     } else {
         return null;

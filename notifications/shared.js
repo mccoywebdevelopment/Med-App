@@ -1,12 +1,10 @@
-const { getPeriods } = require('../config/globalHelpers');
 let { getCurrentTime } = require('../config/rootHelpers');
 const GroupModel = require('../models/group/Group');
 const UserModel = require('../models/user/User');
 let currentTime = getCurrentTime();
-let { morningEnd, afternoonEnd, eveningEnd } = getPeriods(currentTime);
 
 function addDay(currentTime) {
-    return (currentTime.getDate() + 1);
+    return (currentTime.format('D') + 1);
 }
 
 function isDuplicate(objs, user) {
@@ -41,20 +39,5 @@ function getGroups(callback){
     });
 }
 
-function getSeconds(currentTime,additional) {
-    // let diff = minutesBefore; //20 minutes so twenty minutes before end
 
-    let beforeEndMorning = new Date(morningEnd.getTime() + additional);
-    let beforeEndAfternoon = new Date(afternoonEnd.getTime() + additional);
-    // let beforeEndAfternoon = new Date(afternoonEnd.getTime() - diff * 60000);
-    let beforeEndEvening = new Date(eveningEnd.getTime() + additional);
-
-    let diffMorning = beforeEndMorning.getTime() - currentTime.getTime();
-    let diffAfternoon = beforeEndAfternoon.getTime() - currentTime.getTime();
-    let diffEvening = beforeEndEvening.getTime() - currentTime.getTime();
-
-    return [diffMorning, diffAfternoon, diffEvening]
-}
-
-
-module.exports = { getGroups, capitalizeFirstLetter, isDuplicate, addDay, getSeconds }
+module.exports = { getGroups, capitalizeFirstLetter, isDuplicate, addDay}

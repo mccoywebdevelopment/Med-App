@@ -3,6 +3,7 @@ let path = require('path');
 let Dependent = require('../models/dependent/Dependent');
 let MedicationEvent = require('../models/medicationEvent/MedicationEvent');
 let Guardian = require('../models/guardian/Guardian');
+let { formatAMPM, formatMMDDYYYY } = require('../config/globalHelpers');
 
 function exportDataGivenMonthYear(month,year,callback){
     if(typeof(month)=='undefined' || month<0 || month>11){
@@ -130,25 +131,10 @@ function createRxsMedDates(ws,wb,x_index,y_index,event,month,year){
     return obj;
 }
 function getTime(date){
-    date = new Date(date);
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
-    var ampm = hours >= 12 ? 'pm' : 'am';
-    hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
-    minutes = minutes < 10 ? '0'+minutes : minutes;
-    var strDate = getDate(date);
-    var strTime = hours + ':' + minutes + ' ' + ampm;
-
-    return (strDate + " @ " + strTime);
+    return formatAMPM(date);
 }
 function getDate(date){
-    date = new Date(date);
-    var mm = date.getMonth()+1;
-    var yyyy = date.getFullYear();
-    var dd = date.getDate();
-    let dateGiven = mm+"/"+dd+"/"+yyyy;
-    return dateGiven;
+   return formatMMDDYYYY(date);
 }
 function createRxsMedicationInfo(ws,wb,x_index,y_index,rxsMedication){
 

@@ -1,11 +1,12 @@
 let TIME_ZONE = process.env.TIME_ZONE || require('./configVars').TIME_ZONE;
+const moment = require('moment-timezone');
+
 function getCurrentTime(date){
-    var here = new Date();
     if(date){
-        here = new Date(date);
+        return moment(date).tz(TIME_ZONE)
+    }else{
+        return moment().tz(TIME_ZONE)
     }
-    // var there = changeTimezone(here,TIME_ZONE);
-    return here;
 }
 
 module.exports = { getCurrentTime }
