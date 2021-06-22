@@ -219,6 +219,10 @@ export function isToday(someDate) {
     return bool
 }
 export function isBetween(time, start, end) {
+    console.log(time);
+    console.log(start);
+    console.log(end);
+    
     let today = getCurrentTime(time);
     end = getCurrentTime(end);
     start = getCurrentTime(start);
