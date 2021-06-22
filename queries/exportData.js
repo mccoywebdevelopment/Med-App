@@ -4,6 +4,7 @@ let Dependent = require('../models/dependent/Dependent');
 let MedicationEvent = require('../models/medicationEvent/MedicationEvent');
 let Guardian = require('../models/guardian/Guardian');
 let { formatAMPM, formatMMDDYYYY } = require('../config/globalHelpers');
+let { getCurrentTime } = require('../config/rootHelpers');
 
 function exportDataGivenMonthYear(month,year,callback){
     if(typeof(month)=='undefined' || month<0 || month>11){
@@ -78,19 +79,17 @@ function createWorkSheet(wb,dependent,month,year){
             ws = createSubHeader(ws,wb,x_index,y_index,"Medication #"+medCounter);
             x_index = x_index + 1
             obj = createRxsMedicationInfo(ws,wb,x_index,y_index,dependent.rxsMedications[i]);
-            x_index = obj.x_index+1;
+            x_index = obj.x_index + 1;
             y_index = obj.y_index;
             medCounter++;
             ws = createSubHeader(ws,wb,x_index,y_index,"Dates Taken:");
             y_index = y_index + 1;
-            // ws.cell(x_index,y_index).string("Is Away:");
-            // y_index = y_index + 1;
-            ws.cell(x_index,y_index).string("Date Submitted:");
+            ws.cell(x_index,y_index).string("Time:");
             y_index = y_index + 1;
             ws.cell(x_index,y_index).string("Given By:");
-            y_index = y_index + 1;
-            ws.cell(x_index,y_index).string("Notes:");
             y_index = 1;
+            // ws.cell(x_index,y_index).string("Notes:");
+            // y_index = 1;
             x_index = x_index + 1;
             for(var j=0;j<dependent.rxsMedications[i].events.length;++j){
                 obj = createRxsMedDates(ws,wb,x_index,y_index,dependent.rxsMedications[i].events[j],month,year);
@@ -110,37 +109,39 @@ function createRxsMedDates(ws,wb,x_index,y_index,event,month,year){
     }
     if(event.dateTaken.getFullYear()==year && event.dateTaken.getMonth()==month){
         var date = event.dateTaken;
-        ws.cell(x_index,y_index).string(getDate(date));
-        y_index = y_index + 1;
-        // ws.cell(x_index,y_index).string(event.wasAdministered.toString());
-        // y_index = y_index + 1;
-        ws.cell(x_index,y_index).string(getTime(date));
-        y_index = y_index + 1;
         var guardianName = "";
         if(typeof(event.createdByStr)!='undefined'){
             guardianName = event.createdByStr;
         }
+
+        ws.cell(x_index,y_index).string(getDate(date) || "-");
+        y_index = y_index + 1;
+        ws.cell(x_index,y_index).string(getTime(date) || "-");
+        y_index = y_index + 1;
         ws.cell(x_index,y_index).string(guardianName);
         y_index = y_index + 1;
-        ws.cell(x_index,y_index).string(event.notes || "-");
 
         obj.x_index = x_index + 1;
-        obj.y_index = y_index - 4;
+        obj.y_index = y_index - 3;
     }
-
     return obj;
 }
 function getTime(date){
+    // date = getCurrentTime(date);
+    // console.log(date)
     return formatAMPM(date);
 }
 function getDate(date){
    return formatMMDDYYYY(date);
 }
 function createRxsMedicationInfo(ws,wb,x_index,y_index,rxsMedication){
-
+    let rxsNumber = "-"
+    if(rxsMedication.rxsNumber){
+        rxsNumber = rxsMedication.rxsNumber.toString();
+    }
     ws.cell(x_index,y_index).string("Rxs Number:");
     y_index = y_index + 1;
-    ws.cell(x_index,y_index).string(rxsMedication.rxsNumber || "-");
+    ws.cell(x_index,y_index).string(rxsNumber);
 
     x_index = x_index + 1;
     y_index = y_index - 1;

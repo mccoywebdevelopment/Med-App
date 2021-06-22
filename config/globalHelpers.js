@@ -194,7 +194,7 @@ function isMedEventValid(events, whenToTake, isAdmin) {
 }
 function formatAMPM(date) {
     date = getCurrentTime(date);
-    date.format('hh:mm a')
+    return date.format('hh:mm a')
 }
 function formatMMDDYYYY(date){
     date = getCurrentTime(date);
