@@ -60,6 +60,8 @@ class Home extends React.Component {
         let morning = this.state.morning;
         let afternoon = this.state.afternoon;
         let today = new Date();
+        let str = "";
+        let todayStr = str + today.toISOString();
 
         let morningStart = morning[0]
         let morningEnd = morning[1]
@@ -68,7 +70,7 @@ class Home extends React.Component {
         let afternoonEnd = afternoon[1]
 
         let newState = this.state;
-        if (isBetween(today, morningStart, morningEnd)) {
+        if (isBetween(todayStr, morningStart, morningEnd)) {
             this._selectNav(0);
         } else if (isBetween(today, afternoonStart, afternoonEnd)) {
             this._selectNav(1);

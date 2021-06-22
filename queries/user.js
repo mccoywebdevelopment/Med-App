@@ -78,9 +78,9 @@ function getDependentsRxs(groups,callback){
                 historyArr,
                 dependents,
                 res,
-                morning: [morningStart,morningEnd],
-                afternoon: [afternoonStart,afternoonEnd],
-                evening: [eveningStart,eveningEnd]
+                morning: [morningStart.format(),morningEnd.format()],
+                afternoon: [afternoonStart.format(),afternoonEnd.format()],
+                evening: [eveningStart.format(),eveningEnd.format()]
               }
               callback(null, obj);
             }
