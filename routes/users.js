@@ -68,7 +68,6 @@ router.route('/get/filtered-medications/:JWT')
             console.log(err);
             res.json({error:err});
         }else{
-            console.log(result)
             res.send(result);
         }
     });

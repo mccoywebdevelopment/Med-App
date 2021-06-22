@@ -32,14 +32,12 @@ export function formatAMPM(date) {
     }
 }
 export function getTime(date) {
-    console.log(date)
+
     if (date) {
         date = new Date(date);
         let str = "";
         str = str + date.toISOString();
-        console.log(str)
         date = moment(str).tz('America/Phoenix').format("HH:mm")
-        console.log(date)
         return date
     } else {
         return ""

@@ -92,10 +92,7 @@ function getMedHistory(whenToTake, events, morningStart, morningEnd,
   afternoonStart, afternoonEnd, eveningStart, eveningEnd, medObj, historyArr) {
 
   let i = 0;
-  console.log(events)
-  console.log(isToday(events[0].dateTaken));
   while (events && i < events.length && isToday(events[i].dateTaken)) {
-    console.log(true)
     if (whenToTake.includes('morning') && isBetween(events[i].dateTaken, morningStart, morningEnd)) {
       historyArr.morningMedsHistory.push(medObj)
     }

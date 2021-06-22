@@ -37,7 +37,7 @@ class RxsMedDates extends React.Component {
     _edit = (index) => {
         let event = this.state.list[index];
         let title = "Edit " + event.title + " on " + formateDate(event.dateTaken);
-        console.log(event)
+
         let isEdit = {
             dateTaken: event.dateTaken,
             notes: event.notes,

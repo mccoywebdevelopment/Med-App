@@ -127,8 +127,6 @@ function createRxsMedDates(ws,wb,x_index,y_index,event,month,year){
     return obj;
 }
 function getTime(date){
-    // date = getCurrentTime(date);
-    // console.log(date)
     return formatAMPM(date);
 }
 function getDate(date){

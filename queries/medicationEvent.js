@@ -203,7 +203,7 @@ function createRxsMedEvent(body, dependent, rxsMedication, guardian, callback) {
     createdBy: guardian,
     createdByStr: guardianName
   }
-  console.log(medicationEventBody)
+
   create(medicationEventBody, function (err, medEventCreated) {
     if (err) {
       callback(err);
@@ -224,7 +224,6 @@ function getDependentByRxsMedication(rxsMedication, callback) {
   });
 }
 function updateModifiedFields(oldDoc, updatedFields, callback) {
-  console.log(updatedFields)
   var title = oldDoc.title;
   var wasAdministered = oldDoc.wasAdministered;
   var notes = oldDoc.notes;
@@ -274,7 +273,6 @@ function updateModifiedFields(oldDoc, updatedFields, callback) {
     createdBy: createdBy,
     createdByStr: createdByStr
   }
-  console.log(obj)
   callback(null, obj);
 }
 
