@@ -24,7 +24,7 @@ export default class GroupNav extends React.Component {
         const list = () => {
             return this.props.items.map((item, index) => {
                 return (
-                    <button id={"groupNav"+index} onClick={() => { this.props.filter(item.id);this._scrollIntoView("groupNav"+index)}} type="button"
+                    <button key={"ekii&&8"+index} id={"groupNav"+index} onClick={() => { this.props.filter(item.id);this._scrollIntoView("groupNav"+index)}} type="button"
                     className={"btn " + (item.isSelected ? "btn-primary" : "btn-outline-secondary")} style={{ fontSize: '0.8em' }}>{item.title}</button>
                 )
             });

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchGetFilteredMedications } from '../../../actions/user';
-import { formatDateHome, isBetween, getCurrentTime} from '../../../config/helpers';
+import { isBetween, getCurrentTime} from '../../../config/helpers';
 
 import UserHeader from "../../../components/user/header/UserHeader";
 import Progress from "../../../components/user/charts/Progress";
@@ -57,10 +57,9 @@ class Home extends React.Component {
         this._setCurrentMeds();
     }
     _setInitNav = () => {
+        let today = this.state.currentTime;
         let morning = this.state.morning;
         let afternoon = this.state.afternoon;
-
-        let today = getCurrentTime();
 
         let morningStart = morning[0]
         let morningEnd = morning[1]
@@ -97,7 +96,7 @@ class Home extends React.Component {
     }
     _setCurrentTime = () => {
         let newState = this.state;
-        let date = getCurrentTime();
+        let date = getCurrentTime()
         newState.currentTime = date;
         this.setState(newState);
     }
