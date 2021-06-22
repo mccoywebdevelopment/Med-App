@@ -36,6 +36,7 @@ function getDependents(user, callback) {
 }
 function getDependentsRxs(groups,callback){
   let { morningStart, morningEnd, afternoonStart, afternoonEnd, eveningStart, eveningEnd } = getPeriods(getCurrentTime());
+      console.log(getPeriods(getCurrentTime()));
       RxsMedication.populate(groups, { path: "dependents.rxsMedications" }, function (err, res) {
         if (err) {
           callback(err);
