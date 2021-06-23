@@ -69,7 +69,7 @@ new CronJob("00 39 " + eveningHour + " * * 0-6", function () {
 admin notifications
 */
 
-morningHour = morningEnd.format('H') + 1;
+morningHour = Number(morningEnd.format('H')) + 1;
 new CronJob("00 02 " + morningHour + " * * 0-6", function () {
     console.log("Admin morning notification triggered @ " + formatAMPM(getCurrentTime()) + " today.");
     sendMedicalNotificationsAdmin(function (err, res) {
@@ -81,7 +81,7 @@ new CronJob("00 02 " + morningHour + " * * 0-6", function () {
     });
 }, undefined, true, TIME_ZONE);
 
-afternoonHour = afternoonEnd.format('H') + 1;
+afternoonHour = Number(afternoonEnd.format('H')) + 1;
 new CronJob("00 02 " + afternoonHour + " * * 0-6", function () {
     console.log("Admin afternoon notification triggered @ " + formatAMPM(getCurrentTime()) + " today.");
     sendMedicalNotificationsAdmin(function (err, res) {
@@ -93,7 +93,7 @@ new CronJob("00 02 " + afternoonHour + " * * 0-6", function () {
     });
 }, undefined, true, TIME_ZONE);
 
-eveningHour = eveningEnd.format('H') + 1;
+eveningHour = Number(eveningEnd.format('H')) + 1;
 new CronJob("00 02 " + eveningHour + " * * 0-6", function () {
     console.log("Admin evening notification triggered @ " + formatAMPM(getCurrentTime()) + " today.");
     sendMedicalNotificationsAdmin(function (err, res) {
