@@ -39,7 +39,7 @@ function sendMedNotificationEmail(username, activeMedications, period, periodEnd
 
 function getActiveMedsForCurrentPeriod(activeArr) {
     let today = getCurrentTime()
-    let { morningEnd, afternoonEnd, eveningEnd } = getPeriods(today);
+    let { morningStart, morningEnd, afternoonStart, afternoonEnd, eveningStart, eveningEnd } = getPeriods(today);
 
     if (isBetween(today, morningStart, morningEnd) && activeArr.morningMedsActive.length > 0) {
         return {

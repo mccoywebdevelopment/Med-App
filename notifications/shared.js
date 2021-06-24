@@ -1,7 +1,6 @@
 let { getCurrentTime } = require('../config/rootHelpers');
 const GroupModel = require('../models/group/Group');
 const UserModel = require('../models/user/User');
-let currentTime = getCurrentTime();
 
 function addDay(currentTime) {
     return (currentTime.format('D') + 1);
