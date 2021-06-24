@@ -7,7 +7,7 @@ function addDay(currentTime) {
 }
 
 function isDuplicate(objs, user) {
-    for (let i = 0; objs.length; ++i) {
+    for (let i = 0; i<objs.length; ++i) {
         if (objs[i].user == user) {
             return {
                 value: true,
