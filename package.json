@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "dev":"nodemon --ignore frontend",
     "heroku-postbuild": "cd frontend && npm install && npm run build"
   },
   "author": "",
