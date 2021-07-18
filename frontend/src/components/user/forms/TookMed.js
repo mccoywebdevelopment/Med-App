@@ -5,7 +5,7 @@ import { fetchCreateMedEvent, fetchUpdateMedEvent } from '../../../actions/event
 import { fetchGuardians } from '../../../actions/guardian';
 import { fetchUsers } from '../../../actions/user';
 import { togglePopUp } from '../../../actions/popUp';
-import { capitalizeFirstLetter, getTime, formateDate, getBodyForRxsMedEvent } from '../../../config/helpers';
+import { capitalizeFirstLetter, getTime, formateDate, getCurrentTime, getBodyForRxsMedEvent } from '../../../config/helpers';
 
 import RxsMedDates from "../../shared/tables/RxsMedDates";
 import Search from "../../shared/Search/Search";
@@ -78,7 +78,7 @@ class TookMed extends React.Component {
     }
     _getBody = () => {
         return getBodyForRxsMedEvent(this.state.values.wasAdministered,this.state.values.notes,
-            this.state.values.reason,this.state.values.dateTaken,this.state.values.guardianID);
+            this.state.values.reason,getCurrentTime(this.state.values.dateTaken).format(),this.state.values.guardian);
     }
     _getSelectedValues = (values) => {
         let newState = this.state;
@@ -112,8 +112,9 @@ class TookMed extends React.Component {
         let yyyy = date[2];
         let mm = date[0];
         let dd = date[1];
-    
-        return (yyyy + '-' + mm + '-' + dd + "T" + time);
+        let str = yyyy + '-' + mm + '-' + dd + "T" + time;
+        // let f = formateDate(str);
+        return str;
     }
     _isUpdated = () => {
         if (JSON.stringify(this.state.values) != JSON.stringify(this.state.oldValues)) {

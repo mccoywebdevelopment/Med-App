@@ -4,7 +4,7 @@ var MedicationEventSchema = new mongoose.Schema({
         title:{type:String,required:true},
         wasAdministered:{type:Boolean,required:true},
         reason:String,
-        dateTaken:{type:Date,required:true},
+        dateTaken:{type:String,required:true},
         notes:String,
         event:{
                 type: mongoose.Schema.Types.ObjectId,

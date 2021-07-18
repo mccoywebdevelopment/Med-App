@@ -8,7 +8,7 @@ var UserSchema = new mongoose.Schema({
     username: { type: String, required: true },
     password: { type: String, min: 8, select: false },
     isAdmin: { type: Boolean, default: false },
-    dateCreated: Date,
+    dateCreated: String,
     lastLoggon: Date,
     notifications: {
         type: { type: String, default: "email" },

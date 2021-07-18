@@ -75,7 +75,7 @@ function sendMedicalNotificationsEmail(callback) {
                     if (groups[i].guardians[ix].user &&
                         groups[i].guardians[ix].user.notifications.type == 'email' &&
                         groups[i].guardians[ix].user.notifications.recieve) {
-                            console.log(groups[i].guardians[ix]);
+
                         let duplicate = isDuplicate(notifiedUsers, groups[i].guardians[ix].user);
                         if (duplicate) {
                             notifiedUsers[duplicate.index].groups.push(groups[i]);

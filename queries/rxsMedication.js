@@ -74,7 +74,8 @@ function findGroupsByDependentID(depID, callback) {
   });
 }
 function findDependentByRxsMedID(rxsMedID, callback) {
-  DependentModel.findOne({ rxsMedication: rxsMedID }, function (err, result) {
+  console.log(rxsMedID)
+  DependentModel.findOne({ rxsMedications: rxsMedID }, function (err, result) {
     if (err) {
       callback(err);
     } else if (!result) {

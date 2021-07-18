@@ -1,5 +1,5 @@
 import React from 'react';
-import { formateDate, capitalizeFirstLetter } from '../../../../config/helpers'
+import { formateDate, capitalizeFirstLetter, formatPhoneNumber } from '../../../../config/helpers'
 
 export default class UserOverviewReadOnly extends React.Component {
     constructor(props) {
@@ -37,7 +37,7 @@ export default class UserOverviewReadOnly extends React.Component {
                                         <span>Name</span><span style={{paddingLeft:'10px'}}>{this.props.user.guardian.name.firstName + " " + (this.props.user.guardian.name.lastName || "")}</span>
                                     </div>
                                     <div className="col-lg-6" style={{marginTop: '10px' }}>
-                                        <span>Phone Number:</span><span style={{paddingLeft:'10px'}}>{(this.props.user.guardian.phoneNumber || "-")}</span>
+                                        <span>Phone Number #:</span><span style={{paddingLeft:'10px'}}>{(formatPhoneNumber(this.props.user.guardian.phoneNumber) || "-")}</span>
                                     </div>
                                 </>
                                 :null

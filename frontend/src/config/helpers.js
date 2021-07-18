@@ -224,12 +224,19 @@ export function isBetween(time, start, end) {
     end = new Date(end);
     start = new Date(start);
 
-    console.log(today);
-    console.log(start);
-    console.log(end);
-
     if (start <= today && today <= end) {
         return true
     }
     return false;
 }
+
+export function formatPhoneNumber(phoneNumberString) {
+    phoneNumberString = phoneNumberString.toString();
+    
+    var cleaned = ('' + phoneNumberString).replace(/\D/g, '');
+    var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+    if (match) {
+      return '(' + match[1] + ') ' + match[2] + '-' + match[3];
+    }
+    return null;
+  }

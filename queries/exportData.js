@@ -87,9 +87,11 @@ function createWorkSheet(wb,dependent,month,year){
             ws.cell(x_index,y_index).string("Time:");
             y_index = y_index + 1;
             ws.cell(x_index,y_index).string("Given By:");
+            y_index = y_index + 1;
+            ws.cell(x_index,y_index).string("Was Administered:");
+            y_index = y_index + 1;
+            ws.cell(x_index,y_index).string("Reason:");
             y_index = 1;
-            // ws.cell(x_index,y_index).string("Notes:");
-            // y_index = 1;
             x_index = x_index + 1;
             for(var j=0;j<dependent.rxsMedications[i].events.length;++j){
                 obj = createRxsMedDates(ws,wb,x_index,y_index,dependent.rxsMedications[i].events[j],month,year);
@@ -107,22 +109,39 @@ function createRxsMedDates(ws,wb,x_index,y_index,event,month,year){
         y_index:y_index,
         ws:ws
     }
-    if(event.dateTaken.getFullYear()==year && event.dateTaken.getMonth()==month){
+    console.log(new Date(event.dateTaken))
+    if(getCurrentTime(event.dateTaken).year()==year && getCurrentTime(event.dateTaken).month()==month){
         var date = event.dateTaken;
         var guardianName = "";
+        var wasGiven = event.wasAdministered.toString();
+        var reason = event.reason;
+        var counter = 0;
         if(typeof(event.createdByStr)!='undefined'){
             guardianName = event.createdByStr;
+        }
+        if(reason.toString().toLowerCase() == 'other'){
+            reason = event.notes;
         }
 
         ws.cell(x_index,y_index).string(getDate(date) || "-");
         y_index = y_index + 1;
+        counter++;
         ws.cell(x_index,y_index).string(getTime(date) || "-");
         y_index = y_index + 1;
+        counter++;
         ws.cell(x_index,y_index).string(guardianName);
         y_index = y_index + 1;
+        counter++;
+        ws.cell(x_index,y_index).string(wasGiven);
+        y_index = y_index + 1;
+        counter++;
+        ws.cell(x_index,y_index).string(reason);
+        y_index = y_index + 1;
+        counter++;
 
+        //Number of cols is five!!!! if you change the number of cols you have to reset it
+        obj.y_index = y_index - counter;
         obj.x_index = x_index + 1;
-        obj.y_index = y_index - 3;
     }
     return obj;
 }

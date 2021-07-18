@@ -324,9 +324,12 @@ background-color:#F0F1F1;
   display: block;
 }
 .content-mobile {
-  display: none;
+  /* display: none; */
   width:100%;
   /* padding:30px; */
+}
+.content-mobile-navbar{
+  display: inline-flex;
 }
 
 @media screen and (max-width: 768px) {

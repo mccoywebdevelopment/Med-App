@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatPhoneNumber } from '../../../config/helpers'
 
 export default class GuardianTableSm extends React.Component {
   constructor(props) {
@@ -41,7 +42,7 @@ export default class GuardianTableSm extends React.Component {
             <th scope="row">{index + 1}</th>
             <td colSpan="2"><a href={url}>{name}</a></td>
             <td>{isAdmin.toString()}</td>
-            <td colSpan="2">{phoneNumber}</td>
+            <td colSpan="2">{formatPhoneNumber(phoneNumber)}</td>
           </tr>
         );
       });
@@ -55,7 +56,7 @@ export default class GuardianTableSm extends React.Component {
             <th scope="col">#</th>
             <th scope="col" colSpan="2">Name</th>
             <th scope="col">is Admin</th>
-            <th scope="col" colSpan="2">Phone Number</th>
+            <th scope="col" colSpan="2">Phone Number #</th>
           </tr>
         </thead>
         <tbody>

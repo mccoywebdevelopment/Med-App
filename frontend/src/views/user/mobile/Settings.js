@@ -1,7 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createMessage } from '../../../actions/messages';
+import { formatPhoneNumber } from '../../../config/helpers';
 import { fetchUpdateProfile } from "../../../actions/auth";
 
 import UserHeader from '../../../components/user/header/UserHeader';
@@ -54,7 +54,7 @@ class Settings extends React.Component {
                             <div className="form-group" style={{ marginBottom: '30px' }}>
                                 <label className="label">Name</label>
                                 <div className="input-group">
-                                    <input type="text" className="form-control" name="email" placeholder="Email" value={this.state.values.name} disabled />
+                                    <input type="text" className="form-control" name="name" placeholder="Name" value={this.state.values.name} disabled />
                                 </div>
                             </div>
                             <div className="form-group" style={{ marginBottom: '30px' }}>
@@ -64,9 +64,9 @@ class Settings extends React.Component {
                                 </div>
                             </div>
                             <div className="form-group" style={{ marginBottom: '30px' }}>
-                                <label className="label">Phone Number</label>
+                                <label className="label">Phone Number #</label>
                                 <div className="input-group">
-                                    <input type="text" className="form-control" name="email" placeholder="Email" value={this.state.values.phoneNumber} disabled />
+                                    <input type="text" className="form-control" name="phoneNumber" placeholder="Phone" value={formatPhoneNumber(this.state.values.phoneNumber)} disabled />
                                 </div>
                             </div>
                         </div>

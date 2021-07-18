@@ -36,7 +36,6 @@ function getDependents(user, callback) {
 }
 function getDependentsRxs(groups,callback){
   let { morningStart, morningEnd, afternoonStart, afternoonEnd, eveningStart, eveningEnd } = getPeriods(getCurrentTime());
-      console.log(getPeriods(getCurrentTime()));
       RxsMedication.populate(groups, { path: "dependents.rxsMedications" }, function (err, res) {
         if (err) {
           callback(err);
@@ -93,6 +92,7 @@ function getMedHistory(whenToTake, events, morningStart, morningEnd,
   afternoonStart, afternoonEnd, eveningStart, eveningEnd, medObj, historyArr) {
 
   let i = 0;
+
   while (events && i < events.length && isToday(events[i].dateTaken)) {
     if (whenToTake.includes('morning') && isBetween(events[i].dateTaken, morningStart, morningEnd)) {
       historyArr.morningMedsHistory.push(medObj)

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { formateDate } from "../../../config/helpers";
+import { formateDate ,formatPhoneNumber } from "../../../config/helpers";
 import WhenToTake from "../../shared/Misc/WhenToTake";
 
 export default class MedicationTable extends React.Component {
@@ -132,7 +132,7 @@ export default class MedicationTable extends React.Component {
                     <span className="inner-title">Doctor's Name:</span><br /><br />{element.values.doctorName || "-"}
                   </td>
                   <td colSpan="3">
-                    <span className="inner-title">Doctor's Number:</span><br /><br />{element.values.doctorPhone || "-"}
+                    <span className="inner-title">Doctor's Number #:</span><br /><br />{formatPhoneNumber(element.values.doctorPhone) || "-"}
                   </td>
                 </tr>
                 <tr index={"medTableInside^&23*&^" + index} className="no-border" style={style}>

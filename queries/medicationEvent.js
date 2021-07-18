@@ -20,6 +20,7 @@ function getEventByRxsMedID(rxsMedID, callback) {
 }
 
 function patchUpdateById(body, id, callback) {
+  console.log(body)
   medicationEventModel.findById(id, function (err, foundDoc) {
     if (err) {
       callback(err);
@@ -32,6 +33,7 @@ function patchUpdateById(body, id, callback) {
         } else if (!guardianFound) {
           callback("Guardian not found.");
         } else {
+          console.log(guardianFound)
           body.guardian = guardianFound;
           updateModifiedFields(foundDoc, body, function (err, obj) {
             foundDoc.update(obj, function (err, result) {
@@ -203,6 +205,8 @@ function createRxsMedEvent(body, dependent, rxsMedication, guardian, callback) {
     createdBy: guardian,
     createdByStr: guardianName
   }
+  console.log('\nCreate rxsMedEvent')
+  console.log(medicationEventBody)
 
   create(medicationEventBody, function (err, medEventCreated) {
     if (err) {
@@ -310,10 +314,13 @@ function saveToDoc(bodyData, schemaModel, callback) {
     callback("Please provide the reason in the notes section when select 'other'.")
     return
   }
+  console.log('\nSave to Doc')
+  console.log(newDoc)
   newDoc.save(function (err, result) {
     if (err) {
       callback(err);
     } else {
+      // console.log(result)
       callback(null, result);
     }
   });

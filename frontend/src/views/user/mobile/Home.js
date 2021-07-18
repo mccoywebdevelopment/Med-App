@@ -187,7 +187,6 @@ class Home extends React.Component {
     componentDidMount = () => {
         this._setCurrentTime();
         this.props.fetchGetFilteredMedications((data) => {
-            console.log(data);
             if (data && data.activeArr) {
                 this._setFilteredMeds(data);
                 this._formatGroupNav(data.res);
