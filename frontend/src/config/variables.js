@@ -7,6 +7,7 @@
 // export const API_URI = "https://med-app-testing.herokuapp.com/api"
 // export const CLIENT_URL = "https://med-app-testing.herokuapp.com"
 
+
 // prod mode:
 export const API_URI = "https://sach-medapp.herokuapp.com/api"
 export const CLIENT_URL = "https://sach-medapp.herokuapp.com"
