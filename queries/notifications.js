@@ -23,6 +23,21 @@ function findAll(callback){
   });
 }
 
+function deleteAll(callback){
+  console.log(1)
+  AdminNotificationModel.deleteMany({},function(err,res){
+    console.log(2)
+    if(err){
+      console.log(3)
+      console.log(err)
+      callback(err);
+    }else{
+      console.log(4)
+      callback(null,[])
+    }
+  })
+}
+
 function patchUpdateById(body,id,callback){
     AdminNotificationModel.findById(id,function(err,foundDoc){
       if(err){
@@ -107,4 +122,4 @@ function create(body,callback){
 }
 
 
-module.exports = {create,findAll,deleteById,findById,patchUpdateById};
+module.exports = {create,findAll,deleteById,findById,patchUpdateById,deleteAll};

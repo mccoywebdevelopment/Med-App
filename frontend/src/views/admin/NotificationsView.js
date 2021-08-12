@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { togglePopUp } from '../../actions/popUp';
-import { fetchNotifications } from "../../actions/notifications"
+import { fetchNotifications, fetchDeleteAllNotifications } from "../../actions/notifications"
 import { changeColor } from "../../actions/theme";
 import { isToday, isMonth } from '../../config/helpers';
 
@@ -58,6 +58,9 @@ class NotificationsView extends React.Component {
 
         return (i);
     }
+    _deleteAll = () =>{
+        this.props.fetchDeleteAllNotifications();
+    }
     componentDidMount = () => {
         this.props.changeColor("rgb(33, 150, 243)");
         this.props.fetchNotifications(true, (res) => {
@@ -76,9 +79,14 @@ class NotificationsView extends React.Component {
                                 <OverviewNotifications today={this._getNumberOfTodayNotifications()}
                                     month={this._getNumberOfMonthlyNotifications()} total={this.props.notifications.data.length} />
                             </div>
-                            <div className="col-lg-12" style={{ marginBottom: "30px" }}>
+                            {/* <div className="col-lg-12" style={{ marginBottom: "30px" }}>
                                 &nbsp;
-</div>
+                            </div> */}
+                            <div className="col-lg-12" style={{ marginBottom: "30px" }}>
+                                <button type="button"
+                                    onClick={() => this._deleteAll()}
+                                    className="btn btn-primary btn-fw" style={{fontSize:'0.8em'}}>Delete All Notification(s)</button>
+                            </div>
                         </div>
                         <div className="row">
                             <div className="col-lg-12">
@@ -98,6 +106,8 @@ NotificationsView.propTypes = {
     togglePopUp: PropTypes.func.isRequired,
     fetchUsers: PropTypes.func.isRequired,
     fetchDeleteUser: PropTypes.func.isRequired,
+    fetchDeleteAllNotifications: PropTypes.func.isRequired,
+
     fetchGroups: PropTypes.func.isRequired,
     changeColor: PropTypes.func.isRequired,
     fetchGuardians: PropTypes.func.isRequired
@@ -109,4 +119,4 @@ const mapStateToProps = (state) => ({
     notifications: state.notifications
 });
 
-export default connect(mapStateToProps, { changeColor, togglePopUp, fetchNotifications })(NotificationsView);
+export default connect(mapStateToProps, { changeColor, fetchDeleteAllNotifications, togglePopUp, fetchNotifications })(NotificationsView);

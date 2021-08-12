@@ -1,4 +1,5 @@
 import { FETCH_DEPENDENTS } from '../actions/types';
+import { sortByLastNameDep } from '../config/helpers';
 
 const initialState = {
     fetched:false,
@@ -11,7 +12,7 @@ export default function(state = initialState, action){
             return{
                 ...state,
                 fetched:true,
-                data:action.payload
+                data:sortByLastNameDep(action.payload)
             }
         default:
             return state;

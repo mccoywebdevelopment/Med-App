@@ -52,6 +52,7 @@ function updateModifiedFields(oldDoc, updatedFields, callback) {
   var firstName = oldDoc.name.firstName;
   var lastName = oldDoc.name.lastName;
   var dateOfBirth = oldDoc.dateOfBirth;
+  var dateOfPlacement = oldDoc.dateOfPlacement
   var pictureUrl = oldDoc.pictureUrl;
   var rxsMedications = oldDoc.rxsMedications;
 
@@ -64,6 +65,9 @@ function updateModifiedFields(oldDoc, updatedFields, callback) {
   if (updatedFields.dateOfBirth) {
     dateOfBirth = updatedFields.dateOfBirth;
   }
+  if (updatedFields.dateOfPlacement) {
+    dateOfPlacement = updatedFields.dateOfPlacement;
+  }
   if (updatedFields.pictureUrl) {
     pictureUrl = updatedFields.pictureUrl;
   }
@@ -73,6 +77,7 @@ function updateModifiedFields(oldDoc, updatedFields, callback) {
       lastName: lastName
     },
     dateOfBirth: dateOfBirth,
+    dateOfPlacement: dateOfPlacement,
     pictureUrl: pictureUrl,
     rxsMedications: rxsMedications,
   }
@@ -179,6 +184,9 @@ function saveToDoc(bodyData, schemaModel, callback) {
   });
   if (typeof (bodyData.pictureUrl) != 'undefined') {
     newDoc.pictureUrl = bodyData.pictureUrl;
+  }
+  if(typeof (bodyData.dateOfPlacement) != 'undefined'){
+    newDoc.dateOfPlacement = bodyData.dateOfPlacement;
   }
 
 

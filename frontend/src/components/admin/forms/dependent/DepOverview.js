@@ -34,13 +34,26 @@ export default class DepOverview extends React.Component {
                     </div>
                     <div className="col-lg-6">
                         <div className="form-group">
-                            <label className="label">Date of Bith</label>
+                            <label className="label">Date of Birth</label>
                             <div className="input-group">
                                 <input type="date" className="form-control" name="dateOfBirth" placeholder="mm/dd/yyyy"
                                     value={convertToDateInput(this.props.data.values.dateOfBirth)} 
                                     onChange={(e)=>{this.props.update("overview","dateOfBirth",e.target.value)}} />
                                 <div className="invalid-feedback" style={{ display: 'block' }}>
                                     {this.props.data.errors.dateOfBirth}&nbsp;
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-lg-6">
+                        <div className="form-group">
+                            <label className="label">Date of Placement (optional)</label>
+                            <div className="input-group">
+                                <input type="date" className="form-control" name="dateOfPlacement" placeholder="mm/dd/yyyy"
+                                    value={convertToDateInput(this.props.data.values.dateOfPlacement)} 
+                                    onChange={(e)=>{this.props.update("overview","dateOfPlacement",e.target.value)}} />
+                                <div className="invalid-feedback" style={{ display: 'block' }}>
+                                    {this.props.data.errors.dateOfPlacement}&nbsp;
                                 </div>
                             </div>
                         </div>
@@ -73,6 +86,9 @@ export default class DepOverview extends React.Component {
                         <span>Date Created:</span><span style={{paddingLeft:'10px'}}>
                             {formateDate(this.props.isDepSelected.dateCreated)}
                         </span>
+                    </div>
+                    <div className="col-lg-6" style={{marginTop:'10px'}}>
+                        <span>Date of Placement:</span><span style={{paddingLeft:'10px'}}>{formateDate(this.props.data.values.dateOfPlacement) || "-"}</span>
                     </div>
                 </>
                 }

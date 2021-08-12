@@ -230,13 +230,38 @@ export function isBetween(time, start, end) {
     return false;
 }
 
+export function sortByLastNameDep(dependents) {
+    dependents.sort(function (a, b) {
+        var nameA = a.name.lastName.toLowerCase(), nameB = b.name.lastName.toLowerCase();
+        if (nameA < nameB) //sort string ascending
+            return -1;
+        if (nameA > nameB)
+            return 1;
+        return 0; //default return value (no sorting)
+    });
+    return dependents
+}
+
+export function sortByLastNameUser(users) {
+    users.sort(function (a, b) {
+        var nameA = a.guardian.name.lastName.toLowerCase(), nameB = b.guardian.name.lastName.toLowerCase();
+        if (nameA < nameB) //sort string ascending
+            return -1;
+        if (nameA > nameB)
+            return 1;
+        return 0; //default return value (no sorting)
+    });
+    return users
+}
+
+
 export function formatPhoneNumber(phoneNumberString) {
     phoneNumberString = phoneNumberString.toString();
-    
+
     var cleaned = ('' + phoneNumberString).replace(/\D/g, '');
     var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
     if (match) {
-      return '(' + match[1] + ') ' + match[2] + '-' + match[3];
+        return '(' + match[1] + ') ' + match[2] + '-' + match[3];
     }
     return null;
-  }
+}

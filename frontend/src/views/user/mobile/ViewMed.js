@@ -71,7 +71,7 @@ class ViewMed extends React.Component {
                             </div>
                             <div className="row" style={{ paddingTop: '20px',paddingBottom:'1em' }}>
                                 <div className="col-12">
-                                    <span style={{ fontWeight: 'bold' }}>Intructions:</span><br />{this.props.data.rxsMedication.instructions || '-'}
+                                    <span style={{ fontWeight: 'bold' }}>Instructions:</span><br />{this.props.data.rxsMedication.instructions || '-'}
                                 </div>
                             </div>
                         </>

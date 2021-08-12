@@ -7,6 +7,7 @@ var DependentSchema = new mongoose.Schema({
         lastName:{type:String,required:true}
     },
     dateOfBirth:{type:String,required:true},
+    dateOfPlacement:{type:String},
     rxsMedications:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'RxsMedication'

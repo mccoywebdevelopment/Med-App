@@ -46,11 +46,13 @@ class CreateDependent extends React.Component {
                 errors: {
                     name: "",
                     dateOfBirth: "",
+                    dateOfPlacement:"",
                     group: "",
                 },
                 values: {
                     name: "",
                     dateOfBirth: "",
+                    dateOfPlacement:"",
                     group: ""
                 },
                 body: null,
@@ -81,6 +83,9 @@ class CreateDependent extends React.Component {
 
         newState.overview.values.name = dep.name.firstName + " " + dep.name.lastName;
         newState.overview.values.dateOfBirth = new Date(dep.dateOfBirth);
+        if(dep.dateOfPlacement){
+            newState.overview.values.dateOfPlacement = new Date(dep.dateOfPlacement);
+        }
         newState.overview.values.group = this._getGroupSelDep(dep);
 
         newState.rxsMedList.list = this._getRxsSelDep(dep);
@@ -306,6 +311,7 @@ class CreateDependent extends React.Component {
         let newState = this.state;
         newState.overview.errors.name = firstAndLastNameValidator(newState.overview.values.name, true).errorMsg;
         newState.overview.errors.dateOfBirth = prevDateValidator(newState.overview.values.dateOfBirth, true).errorMsg;
+        newState.overview.errors.dateOfPlacement = prevDateValidator(newState.overview.values.dateOfPlacement, false).errorMsg;
         newState.overview.errors.group = this._groupValidation();
         this.setState(newState);
     }
@@ -374,7 +380,7 @@ class CreateDependent extends React.Component {
 
             newState.rxsMedList.list[index].errors.name = nameValidator(name, true).errorMsg;
             newState.rxsMedList.list[index].errors.reason = nameValidator(reason, true).errorMsg;
-            newState.rxsMedList.list[index].errors.datePrescribed = prevDateValidator(datePrescribed, true).errorMsg;
+            // newState.rxsMedList.list[index].errors.datePrescribed = prevDateValidator(datePrescribed, true).errorMsg;
             newState.rxsMedList.list[index].errors.dosageQuantity = numberValidator(dosageQuantity, true).errorMsg;
             newState.rxsMedList.list[index].errors.dosageUnits = nameValidator(dosageUnits, true).errorMsg;
             newState.rxsMedList.list[index].errors.doctorName = firstAndLastNameValidator(doctorName, true).errorMsg;
@@ -489,6 +495,10 @@ class CreateDependent extends React.Component {
             lastName: this.state.overview.values.name.split(' ')[1],
             dateOfBirth: new Date(this.state.overview.values.dateOfBirth),
             rxsMedications: this._formatRxsMedication()
+        }
+
+        if(this.state.overview.values.dateOfPlacement){
+            body.dateOfPlacement = new Date(this.state.overview.values.dateOfPlacement);
         }
         return body;
     }

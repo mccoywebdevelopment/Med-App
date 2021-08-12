@@ -1,4 +1,4 @@
-import { FETCH_NOTIFICATIONS } from '../actions/types';
+import { FETCH_NOTIFICATIONS, FETCH_DELETE_ALL_NOTIFICATIONS } from '../actions/types';
 
 const initialState = {
     fetched:false,
@@ -14,6 +14,13 @@ export default function(state = initialState, action){
                 fetched:true,
                 dateFetched:new Date(),
                 data:action.payload
+            }
+        case FETCH_DELETE_ALL_NOTIFICATIONS:
+            return{
+                ...state,
+                fetched:true,
+                dateFetched:new Date(),
+                data:[]
             }
         default:
             return state;

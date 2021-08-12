@@ -77,7 +77,7 @@ class Settings extends React.Component {
                         <div class="card-body">
                             <h4 class="card-title">Notifications</h4>
                             <div className="form-group" style={{ marginBottom: '0px' }}>
-                                <label className="label">Recieve {this.state.values.notifications.type} notifications?</label>
+                                <label className="label">Receive {this.state.values.notifications.type} notifications?</label>
                             </div>
                             <div className="form-group row">
                                 <div className="col-6" style={{ paddingLeft: '0px' }}>

@@ -198,7 +198,7 @@ function createRxsMedicationInfo(ws,wb,x_index,y_index,rxsMedication){
 
     x_index = x_index + 1;
     y_index = y_index - 1;
-    ws.cell(x_index,y_index).string("Intructions:");
+    ws.cell(x_index,y_index).string("Instructions:");
     y_index = y_index + 1;
     ws.cell(x_index,y_index).string(rxsMedication.instructions || "-");
 
@@ -236,6 +236,7 @@ function createHeader(ws,wb,x_index,y_index,text){
 }
 function createDependentInfo(ws,wb,x_index,y_index,dependent){
     var dob = dependent.dateOfBirth;
+    var dop = dependent.dateOfPlacement || "-";
     var year = dob.substr(0,4);
     var day = dob.substr(5,2);
     var month = dob.substr(8,2);
@@ -256,6 +257,12 @@ function createDependentInfo(ws,wb,x_index,y_index,dependent){
     ws.cell(x_index,y_index).string("Date of Birth:");
     y_index = y_index + 1;
     ws.cell(x_index,y_index).string(dob);
+
+    x_index = x_index + 1;
+    y_index = y_index - 1;
+    ws.cell(x_index,y_index).string("Date of Placement:");
+    y_index = y_index + 1;
+    ws.cell(x_index,y_index).string(dop);
 
     var obj = {
         x_index:x_index+1,

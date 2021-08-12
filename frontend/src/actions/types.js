@@ -27,3 +27,4 @@ export const FETCH_USERS = "FETCH_USERS";
 export const FETCH_GUARDIANS = "FETCH_GUARDIANS";
 //===============Notifications============
 export const FETCH_NOTIFICATIONS = "FETCH_NOTIFICATIONS";
+export const FETCH_DELETE_ALL_NOTIFICATIONS = "FETCH_DELETE_ALL_NOTIFICATIONS";

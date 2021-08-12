@@ -14,6 +14,18 @@ router.route("/:JWT")
             res.send(result);
         }
     })
-})
+});
+
+router.route("/:JWT")
+.delete(verifyAdmin,function(req,res){
+    notificationsQ.deleteAll(function(error,result){
+        if(error){
+            console.log(error);
+            res.status(400).json({error:error});
+        }else{
+            res.send(result);
+        }
+    })
+});
 
 module.exports = router;

@@ -77,7 +77,7 @@ function phoneNumberValidator(phoneNumber,isRequired){
         feedback.errorMsg = "Please enter only numeric values";
         feedback.isValid = false;
     }else if(phoneNumber.length != 10){
-        feedback.errorMsg = "Please enter a ten digit phone number recieved: "+phoneNumber.length+".";
+        feedback.errorMsg = "Please enter a ten digit phone number received: "+phoneNumber.length+".";
         feedback.isValid = false;
     }
     return feedback;
@@ -119,7 +119,7 @@ function passwordValidator(password,isRequired){
         feedback.errorMsg = "This field is required";
         feedback.isValid = false;
     }else if(password.length<8){
-        feedback.errorMsg = "Please enter a password with at least eight characters only recieved: "+password.length+".";
+        feedback.errorMsg = "Please enter a password with at least eight characters only received: "+password.length+".";
         feedback.isValid = false;
     }
     return feedback;

@@ -154,7 +154,7 @@ export default class MedicationTable extends React.Component {
                   <td colSpan="2" style={{ verticalAlign: 'top' }}>
                     <span className="inner-title">Reason:</span><br /><br />{element.values.reason || "-"}</td>
                   <td colSpan="3" style={{ verticalAlign: 'top' }}>
-                    <span className="inner-title">Intructions:</span><br /><br />{element.values.instructions || "-"}</td>
+                    <span className="inner-title">Instructions:</span><br /><br />{element.values.instructions || "-"}</td>
                 </tr>
                 <tr index={"medTableInside^&7876*&^" + index} className="no-border-top" style={style}>
                   <td></td>
