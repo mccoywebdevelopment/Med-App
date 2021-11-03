@@ -41,7 +41,7 @@
     "puppeteer": "^8.0.0",
     "qrcode": "^1.4.4",
     "uuid": "^3.3.3",
-    "validator": "^11.1.0",
+    "validator": "^13.7.0",
     "zxcvbn": "^4.4.2"
   },
   "engines": {
