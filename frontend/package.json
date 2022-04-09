@@ -11,7 +11,7 @@
     "chroma-js": "^2.1.1",
     "file-saver": "^2.0.2",
     "jwt-decode": "^2.2.0",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "moment-timezone": "^0.5.33",
     "radium": "^0.26.0",
     "react": "^16.13.1",
